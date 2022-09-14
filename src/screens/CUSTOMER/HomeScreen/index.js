@@ -177,6 +177,7 @@ const HomeScreen = ({navigation}) => {
         data={productData}
         renderItem={renderClubItem}
         keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
       />
      </View>
        <View style={{
@@ -229,6 +230,7 @@ const HomeScreen = ({navigation}) => {
        data={productData}
        renderItem={renderRecentVisitItems}
        keyExtractor={item => item.id}
+       showsHorizontalScrollIndicator={false}
      />
       </View>
      </ScrollView>

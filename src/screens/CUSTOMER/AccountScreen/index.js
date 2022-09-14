@@ -76,7 +76,9 @@ const AccountScreen = ({navigation}) => {
 
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('accountSetting')}
+        style={styles.sectionContainer}>
           <View style={{flexDirection:'row',alignItems:'center'}}>
             <AccountSettingIcon/>
             <Text style={{
@@ -93,7 +95,9 @@ const AccountScreen = ({navigation}) => {
 
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('transection')}
+        style={styles.sectionContainer}>
           <View style={{flexDirection:'row',alignItems:'center'}}>
             <TransactionIcon/>
             <Text style={{
@@ -110,7 +114,9 @@ const AccountScreen = ({navigation}) => {
 
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('favorite')}
+        style={styles.sectionContainer}>
           <View style={{flexDirection:'row',alignItems:'center'}}>
             <FavouriteIcon/>
             <Text style={{

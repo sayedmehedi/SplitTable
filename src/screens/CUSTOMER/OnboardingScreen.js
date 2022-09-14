@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   Image,
@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import SplashScreen from 'react-native-splash-screen';
-const {width, height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('screen');
 
 const COLORS = {primary: 'green', white: '#fff'};
 
@@ -22,19 +22,22 @@ const slides = [
     id: '1',
     image: require('../../assets/onboarding1.jpg'),
     title: 'Choose Nearest Club/Bar',
-    subtitle: 'Reference site about Lorem Ipsum,giving information origins as well as a random',
+    subtitle:
+      'Reference site about Lorem Ipsum,giving information origins as well as a random',
   },
   {
     id: '2',
     image: require('../../assets/onboarding2.jpg'),
     title: 'Book Tables',
-    subtitle: 'Reference site about Lorem Ipsum,giving information origins as well as a random',
+    subtitle:
+      'Reference site about Lorem Ipsum,giving information origins as well as a random',
   },
   {
     id: '3',
     image: require('../../assets/onboarding3.jpg'),
     title: 'Enjoy!!!',
-    subtitle: 'Reference site about Lorem Ipsum,giving information origins as well as a random',
+    subtitle:
+      'Reference site about Lorem Ipsum,giving information origins as well as a random',
   },
 ];
 
@@ -57,13 +60,12 @@ const OnboardingScreen = ({}) => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     SplashScreen.hide();
-
-  },[])
+  }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primary}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#DF3BC0'}}>
       <StatusBar translucent backgroundColor="transparent" />
 
       <FlatList
@@ -80,23 +82,21 @@ const OnboardingScreen = ({}) => {
               <Image source={item?.image} style={{height: '65%', width}} />
 
               <LinearGradient
-              colors={['#DF3BC0','#472BBE']}
-              start={{x: 0, y: 1}}
-              end={{x: 0, y: 0}}
+                colors={['#DF3BC0', '#472BBE']}
+                start={{x: 0, y: 1}}
+                end={{x: 0, y: 0}}
                 style={{
-                  
                   height: 380,
-                  borderTopRightRadius:30,
-                  borderTopLeftRadius:30,
-                  position:'absolute',
-                  bottom:0,
-                  width:'100%',
-                  alignItems:'center',
-                 
-                  justifyContent:'center'
-                  
+                  borderTopRightRadius: 30,
+                  borderTopLeftRadius: 30,
+                  position: 'absolute',
+                  bottom: 0,
+                  width: '100%',
+                  alignItems: 'center',
+
+                  justifyContent: 'center',
                 }}>
-                <View style={{marginTop:-10}}>
+                <View style={{marginTop: -10}}>
                   <Text style={styles.title}>{item?.title}</Text>
                   <Text style={styles.subtitle}>{item?.subtitle}</Text>
                 </View>
@@ -106,7 +106,12 @@ const OnboardingScreen = ({}) => {
                       <TouchableOpacity
                         style={styles.btn}
                         onPress={() => navigation.navigate('customerAuth')}>
-                        <Text style={{fontWeight: 'bold', fontSize: 15,color:'white'}}>
+                        <Text
+                          style={{
+                            fontWeight: 'bold',
+                            fontSize: 15,
+                            color: 'white',
+                          }}>
                           Get Started
                         </Text>
                       </TouchableOpacity>
@@ -122,30 +127,30 @@ const OnboardingScreen = ({}) => {
                           fontSize: 16,
                           color: 'white',
                         }}>
-                       Get Started
+                        Get Started
                       </Text>
                     </TouchableOpacity>
                   )}
                 </View>
                 <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}>
-          {/* Render indicator */}
-          {slides.map((_, index,key) => (
-            <Text
-            key={index}
-            style={
-              index === currentSlideIndex
-                ? {color: 'white', marginHorizontal: 5}
-                : {color: '#402B8C', marginHorizontal: 5}
-            }>
-            ⬤
-          </Text>
-          ))}
-        </View>
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginTop: 20,
+                  }}>
+                  {/* Render indicator */}
+                  {slides.map((_, index, key) => (
+                    <Text
+                      key={index}
+                      style={
+                        index === currentSlideIndex
+                          ? {color: 'white', marginHorizontal: 5}
+                          : {color: '#402B8C', marginHorizontal: 5}
+                      }>
+                      ⬤
+                    </Text>
+                  ))}
+                </View>
               </LinearGradient>
             </View>
           );
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
     maxWidth: '70%',
     textAlign: 'center',
     lineHeight: 23,
-    marginVertical:20
+    marginVertical: 20,
   },
   title: {
     color: COLORS.white,

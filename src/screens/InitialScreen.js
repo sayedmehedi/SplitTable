@@ -32,7 +32,7 @@ const sliderImage = [
 
 const InitialScreen = ({navigation}) => {
 
-  const [dimension, setDimension] = useState(Dimensions.get('window'));
+  const [dimension, setDimension] = useState(Dimensions.get('screen'));
   const [selectedIndex, setSelectedIndex] = useState(0);
   // const [sliderImage,setSliderImage] = useState([
   //   require('../assets/1.jpg'),
@@ -91,7 +91,7 @@ const InitialScreen = ({navigation}) => {
   return (
     <>
       <StatusBar translucent backgroundColor="transparent" />
-      <View style={{flex: 1}}>
+      <View style={{flex: 1,}}>
         <ScrollView
           horizontal
           ref={scrollRef}

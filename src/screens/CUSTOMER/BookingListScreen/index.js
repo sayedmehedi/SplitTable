@@ -135,6 +135,7 @@ const BookingListScreen = () => {
     data={bookingList}
     renderItem={renderBookingItem}
     keyExtractor={item => item.id}
+    showsVerticalScrollIndicator={false}
     />
     </View>
 
