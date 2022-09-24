@@ -10,6 +10,9 @@ import FavouriteIcon from '../assets/icons/favorite-ico.svg'
 import FaqIcon from '../assets/icons/faq-ico.svg'
 import LegalIcon from '../assets/icons/legal.svg'
 import LogoutIcon from '../assets/icons/logout.svg'
+import TablePerson from '../assets/icons/table-person-blue.svg'
+import Clock from '../assets/icons/icon-6.svg'
+import DeleteIcon from '../assets/icons/delete-ico.svg'
 
 export  {
     MapIcon,
@@ -23,6 +26,9 @@ export  {
     FaqIcon,
     LegalIcon,
     LogoutIcon,
-    TransactionIcon
+    TransactionIcon,
+    TablePerson,
+    Clock,
+    DeleteIcon
 
 }

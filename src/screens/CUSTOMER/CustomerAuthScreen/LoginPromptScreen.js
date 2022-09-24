@@ -2,11 +2,12 @@ import {View, Text, StatusBar, Image, StyleSheet} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const LoginPromptScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
-      
       <StatusBar barStyle="light-content" backgroundColor="transparent" />
       <LinearGradient
         colors={['#DF3BC0', '#472BBE']}
@@ -23,8 +24,20 @@ const LoginPromptScreen = ({navigation}) => {
           />
         </View>
 
-        <View style={{flex: 1, justifyContent: 'space-around'}}>
-          <Text>Welcome!</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontFamily: 'SatoshiVariable-Bold',
+              fontSize: 22,
+              color: '#FFFFFF',
+            }}>
+            Welcome!
+          </Text>
 
           <TouchableOpacity
             onPress={() => navigation.navigate('signin')}
@@ -66,15 +79,32 @@ const LoginPromptScreen = ({navigation}) => {
           </View>
 
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              style={styles.socialButtonContainer}></TouchableOpacity>
-            <TouchableOpacity
-              style={styles.socialButtonContainer}></TouchableOpacity>
-            <TouchableOpacity
-              style={styles.socialButtonContainer}></TouchableOpacity>
+            <TouchableOpacity style={styles.socialButtonContainer}>
+              <Feather name="facebook" color={'#FF3FCb'} size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.socialButtonContainer}>
+              <AntDesign name="google" color={'#FF3FCb'} size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.socialButtonContainer}>
+              <Feather name="instagram" color={'#FF3FCb'} size={20} />
+            </TouchableOpacity>
           </View>
-          <Text>
-            Don't have an account?<Text>Sign Up</Text>
+          <Text
+            style={{
+              fontFamily: 'SatoshiRegular',
+              fontSize: 16,
+              color: 'white',
+            }}>
+            Don't have an account?
+            <Text
+              style={{
+                fontFamily: 'SatoshiRegular',
+                fontSize: 18,
+                color: 'white',
+                textDecorationLine: 'underline',
+              }}>
+              Sign Up
+            </Text>
           </Text>
         </View>
       </LinearGradient>

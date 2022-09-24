@@ -50,6 +50,8 @@ const SecondaryButton = ({width, onPress, title, touchableOpacityProps = {}, tex
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: theme.borderRadius,
+    marginVertical:5
+    
    }
   
   
@@ -59,6 +61,7 @@ const SecondaryButton = ({width, onPress, title, touchableOpacityProps = {}, tex
 
   return (
     <TouchableOpacity
+    //style={{marginVertical:5}}
       onPress={onPress}     
       {...touchableOpacityProps}
     >
@@ -94,6 +97,7 @@ const PrimaryButton = ({width, onPress, title, touchableOpacityProps = {}, textP
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: theme.borderRadius,
+  marginVertical:5
  }
 
 

@@ -12,6 +12,7 @@ const RootStackNavigator = () => {
   return (
     <ThemeProvider>
       <RootStack.Navigator
+      initialRouteName={"custom"}
         screenOptions={{
            headerShown: false,
          

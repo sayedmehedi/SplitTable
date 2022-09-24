@@ -144,33 +144,14 @@ const InitialScreen = ({navigation}) => {
             alignItems: 'center',
           }}>
             <Image source={require('../assets/logo-white.png')}
-            style={{height:100,width:160}}
+            style={{height:100,width:160,marginBottom:10}}
             />
+            <View style={{marginVertical:30,alignItems:"center"}}>
             <Text style={{color:'white',fontSize:18}}>Are You</Text>
             <Text style={{color:'white',fontSize:18,fontWeight:'bold'}}>Customer or Club/Bar Owner</Text>
             <Text style={{color:'white',fontSize:18}}>Please Choose One!</Text>
-            {/* <TouchableOpacity
+            </View>
             
-            style={{width: 290, marginVertical: 10}}>
-            <LinearGradient
-              colors={['#00C1FF', '#402B8C']}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
-              style={{
-                height: 50,
-                width: 290,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 5,
-              }}>
-             
-                <Text
-                  style={{color: '#FFFFFF', fontSize: 16, fontWeight: '500'}}>
-                  Customer
-                </Text>
-             
-            </LinearGradient>
-          </TouchableOpacity> */}
 
           <Button width={290} color={"secondary"} variant={"solid"} title={"Customer"}/>
           <Button width={290} color={"primary"} variant={"solid"} title={'Club/Bar Owner'} 

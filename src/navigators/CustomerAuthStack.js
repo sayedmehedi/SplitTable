@@ -1,10 +1,11 @@
 import React from 'react';
 import CommonHeader from '../components/CommonHeader';
 import {createStackNavigator} from '@react-navigation/stack';
-import LoginPromptScreen from '../screens/CUSTOMER/CustomerAuthScreen/LoginPromptScreen';
 import EmailLoginScreen from '../screens/CUSTOMER/CustomerAuthScreen/EmailLoginScreen';
+import LoginPromptScreen from '../screens/CUSTOMER/CustomerAuthScreen/LoginPromptScreen';
 import EmailVerificationScreen from '../screens/CUSTOMER/CustomerAuthScreen/EmailVerificationScreen'
 import LocationEnablePromptScreen from '../screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen'
+
 const CustomerAuth = createStackNavigator();
 
 const CustomerAuthStack = () => {

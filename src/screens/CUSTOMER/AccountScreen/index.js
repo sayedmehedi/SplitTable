@@ -133,7 +133,9 @@ const AccountScreen = ({navigation}) => {
 
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity 
+        onPress={()=>navigation.navigate('faq')}
+        style={styles.sectionContainer}>
           <View style={{flexDirection:'row',alignItems:'center'}}>
             <FaqIcon/>
             <Text style={{
@@ -150,7 +152,9 @@ const AccountScreen = ({navigation}) => {
 
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity 
+        onPress={()=>navigation.navigate('legal')}
+        style={styles.sectionContainer}>
           <View style={{flexDirection:'row',alignItems:'center'}}>
             <LegalIcon/>
             <Text style={{
