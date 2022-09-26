@@ -13,6 +13,8 @@ import LogoutIcon from '../assets/icons/logout.svg'
 import TablePerson from '../assets/icons/table-person-blue.svg'
 import Clock from '../assets/icons/icon-6.svg'
 import DeleteIcon from '../assets/icons/delete-ico.svg'
+import RedTable from '../assets/icons/table-color-ico.svg'
+import MenuIcon from '../assets/icons/menu-ico.svg'
 
 export  {
     MapIcon,
@@ -29,6 +31,8 @@ export  {
     TransactionIcon,
     TablePerson,
     Clock,
-    DeleteIcon
+    DeleteIcon,
+    RedTable,
+    MenuIcon
 
 }

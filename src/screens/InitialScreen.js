@@ -153,9 +153,12 @@ const InitialScreen = ({navigation}) => {
             </View>
             
 
-          <Button width={290} color={"secondary"} variant={"solid"} title={"Customer"}/>
+          <Button width={290} color={"secondary"} variant={"solid"} title={"Customer"}
+           onPress={()=>navigation.navigate('customer')}
+          />
           <Button width={290} color={"primary"} variant={"solid"} title={'Club/Bar Owner'} 
-          onPress={()=>navigation.navigate('customer')}
+         
+          onPress={()=>navigation.navigate('owner')}
           />
         </View>
       </View>
