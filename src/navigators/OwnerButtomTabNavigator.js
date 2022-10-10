@@ -1,20 +1,17 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/CUSTOMER/HomeScreen';
-import BookingListScreen from '../screens/CUSTOMER/BookingListScreen';
-import CustomerTableScreen from '../screens/CUSTOMER/CustomerTableScreen';
-import ChatScreen from '../screens/CUSTOMER/ChatScreen';
-import HomeIcon from '../assets/icons/HomeIcon.svg';
+
 import BookingIcon from '../assets/icons/booking.svg';
-import TableIcon from '../assets/icons/table.svg';
-import ChatIcon from '../assets/icons/chat.svg'
 import { RedTable,MenuIcon } from '../Constants/iconPath';
 import AccountIcon from '../assets/icons/account.svg'
 import {useTheme} from '../Providers/ThemeProvider';
 import LinearGradient from 'react-native-linear-gradient';
 import CommonHeader from '../components/CommonHeader';
+import OwnerProfileStackNavigator from './OwnerProfileStackNavigator';
 import OwnerTableScreen from '../screens/OWNER/OwnerTableScreen';
+import MenuItemScreen from '../screens/OWNER/MenuItemScreen';
+import OwnerBookingListScreen from '../screens/OWNER/OwnerBookingListScreen';
 import Entypo from 'react-native-vector-icons/Entypo'
 //import homeIcon from '../Constants/iconPath/homeIcon'
 const Tab = createBottomTabNavigator();
@@ -69,11 +66,11 @@ const OwnerButtomTabNavigator = () => {
       />
       <Tab.Screen
         name="ownerBooking"
-        component={OwnerTableScreen}
+        component={OwnerBookingListScreen}
         options={{
           header:CommonHeader,
           headerShown:true,
-          headerTitle:'My Booking',
+          headerTitle:'Booking',
           tabBarIcon: ({focused}) => (
             <View
               style={{
@@ -140,8 +137,11 @@ const OwnerButtomTabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen name="menu" component={OwnerTableScreen}
+      <Tab.Screen name="menu" component={MenuItemScreen}
        options={{
+        headerShown:true,
+        header:CommonHeader,
+        headerTitle:'Menu Items',
         tabBarIcon: ({focused}) => (
           <View
             style={{
@@ -170,7 +170,7 @@ const OwnerButtomTabNavigator = () => {
         ),
       }}
       />
-      <Tab.Screen name="ownerAccount" component={OwnerTableScreen}
+      <Tab.Screen name="ownerAccount" component={OwnerProfileStackNavigator}
        options={{
         tabBarIcon: ({focused}) => (
           <View

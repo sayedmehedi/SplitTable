@@ -15,7 +15,9 @@ import Clock from '../assets/icons/icon-6.svg'
 import DeleteIcon from '../assets/icons/delete-ico.svg'
 import RedTable from '../assets/icons/table-color-ico.svg'
 import MenuIcon from '../assets/icons/menu-ico.svg'
-
+import InfoIcon from '../assets/icons/information-ico.svg'
+import ReviewIcon from '../assets/icons/reviews-ico.svg'
+import HolidayIcon from '../assets/icons/holidays-ico.svg'
 export  {
     MapIcon,
     LasVegas,
@@ -33,6 +35,9 @@ export  {
     Clock,
     DeleteIcon,
     RedTable,
-    MenuIcon
+    MenuIcon,
+    InfoIcon,
+    ReviewIcon,
+    HolidayIcon
 
 }
