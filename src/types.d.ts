@@ -5,15 +5,56 @@ import {
   CustomerStackRoutes,
   OwnerProfileStackRoutes,
   OwnerMainBottomTabRoutes,
+  CustomerAuthStackRoutes,
+  CustomerProfileStackRoutes,
+  CustomerMainBottomTabRoutes,
+  CustomerBookingStackRoutes,
 } from "@constants/routes";
 
+type CustomerAuthStackParamList = {
+  [CustomerAuthStackRoutes.SIGNIN]: undefined;
+  [CustomerAuthStackRoutes.LOGIN_PROMPT]: undefined;
+  [CustomerAuthStackRoutes.LOCATION_ENABLE]: undefined;
+  [CustomerAuthStackRoutes.EMAIL_VERIFICATION]: undefined;
+};
+
+type CustomerBookingStackParamList = {
+  [CustomerBookingStackRoutes.PAYMENT]: undefined;
+  [CustomerBookingStackRoutes.SELECT_TABLE]: undefined;
+  [CustomerBookingStackRoutes.ADD_MENU_ITEM]: undefined;
+  [CustomerBookingStackRoutes.DATE_AND_TIME]: undefined;
+  [CustomerBookingStackRoutes.PAYMENT_METHOD]: undefined;
+  [CustomerBookingStackRoutes.GUEST_AND_OFFER]: undefined;
+  [CustomerBookingStackRoutes.BOOKING_DETAILS]: undefined;
+};
+
+type CustomerProfileStackParamList = {
+  [CustomerProfileStackRoutes.FAQ]: undefined;
+  [CustomerProfileStackRoutes.LEGAL]: undefined;
+  [CustomerProfileStackRoutes.ACCOUNT]: undefined;
+  [CustomerProfileStackRoutes.PROFILE]: undefined;
+  [CustomerProfileStackRoutes.FAVORITE]: undefined;
+  [CustomerProfileStackRoutes.TRANSACTION]: undefined;
+  [CustomerProfileStackRoutes.ACCOUNT_SETTING]: undefined;
+};
+
+type CustomerBottomTabParamList = {
+  [CustomerMainBottomTabRoutes.HOME]: undefined;
+  [CustomerMainBottomTabRoutes.CHAT]: undefined;
+  [CustomerMainBottomTabRoutes.TABLE_SCREEN]: undefined;
+  [CustomerMainBottomTabRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
+  [CustomerMainBottomTabRoutes.PROFILE_STACK]: NavigatorScreenParams<CustomerProfileStackParamList>;
+};
+
 type CustomerStackParamList = {
-  [CustomerStackRoutes.BOOKING]: undefined;
-  [CustomerStackRoutes.CLUB_LIST]: undefined;
+  [CustomerStackRoutes.CLUB_LIST]: {
+    headerTitle: string;
+  };
   [CustomerStackRoutes.ONBOARDING]: undefined;
   [CustomerStackRoutes.CLUB_DETAILS]: undefined;
-  [CustomerStackRoutes.CUSTOMER_AUTH]: undefined;
-  [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: undefined;
+  [CustomerStackRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
+  [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
+  [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
 };
 
 type OwnerAccountStackParamList = {

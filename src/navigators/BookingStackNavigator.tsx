@@ -1,7 +1,13 @@
 import React from "react";
-import {View, Text} from "react-native";
+import {RouteProp} from "@react-navigation/native";
+import {CustomerBookingStackParamList} from "@src/types";
 import CommonStackHeader from "@components/CommonStackHeader";
-import {createStackNavigator} from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from "@react-navigation/stack";
+import {CustomerBookingStackRoutes} from "@constants/routes";
+import {CUSTOMER_BOOKING_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import PaymentScreen from "@screens/CUSTOMER/ClubDetailsScreen/PaymentScreen";
 import DateAndTimeScreen from "@screens/CUSTOMER/ClubDetailsScreen/DateAndTimeScreen";
 import SelectTableScreen from "@screens/CUSTOMER/ClubDetailsScreen/SelectTableScreen";
@@ -9,67 +15,152 @@ import AddMenuItemScreen from "@screens/CUSTOMER/ClubDetailsScreen/AddMenuItemSc
 import PaymentMethodScreen from "@screens/CUSTOMER/ClubDetailsScreen/PaymentMethodScreen";
 import BookingDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen/BookingDetailsScreen";
 import GuestAndOfferMenuScreen from "@screens/CUSTOMER/ClubDetailsScreen/GuestAndOfferMenuScreen";
-import PaymentSuccessPromtScreen from "@screens/CUSTOMER/ClubDetailsScreen/PaymentSuccessPromtScreen";
 
-const BookingStack = createStackNavigator();
+const BookingStack = createStackNavigator<CustomerBookingStackParamList>();
 
 export default function BookingStackNavigator() {
   return (
     <BookingStack.Navigator
-      screenOptions={{
-        headerShown: true,
-        header: CommonStackHeader,
-      }}>
+      screenOptions={globalScreenOptions}
+      id={CUSTOMER_BOOKING_STACK_NAVIGATOR_ID}>
       <BookingStack.Screen
-        name="dateAndTime"
         component={DateAndTimeScreen}
-        options={{
-          headerTitle: "Select Date & Time",
-        }}
+        options={dateAndTimeScreenOptions}
+        name={CustomerBookingStackRoutes.DATE_AND_TIME}
       />
 
       <BookingStack.Screen
-        name="selectTable"
         component={SelectTableScreen}
-        options={{
-          headerTitle: "Select Table",
-        }}
+        options={selectTableScreenOptions}
+        name={CustomerBookingStackRoutes.SELECT_TABLE}
       />
+
       <BookingStack.Screen
-        name="guestAndOffer"
+        options={guestScreenOptions}
         component={GuestAndOfferMenuScreen}
-        options={{
-          headerTitle: "Guest & Offer Menu",
-        }}
+        name={CustomerBookingStackRoutes.GUEST_AND_OFFER}
       />
+
       <BookingStack.Screen
-        name="addMenuItem"
         component={AddMenuItemScreen}
-        options={{
-          headerTitle: "Add Menu Item",
-        }}
+        options={addMenuItemScreenOptions}
+        name={CustomerBookingStackRoutes.ADD_MENU_ITEM}
       />
+
       <BookingStack.Screen
-        name="bookingDetails"
         component={BookingDetailsScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={bookingDetailsScreenOptions}
+        name={CustomerBookingStackRoutes.BOOKING_DETAILS}
       />
+
       <BookingStack.Screen
-        name="payment"
         component={PaymentScreen}
-        options={{
-          headerTitle: "Payment",
-        }}
+        options={paymentScreenOptions}
+        name={CustomerBookingStackRoutes.PAYMENT}
       />
+
       <BookingStack.Screen
-        name="paymentMethod"
         component={PaymentMethodScreen}
-        options={{
-          headerTitle: "Select a payment method",
-        }}
+        options={paymentMethodScreenOptions}
+        name={CustomerBookingStackRoutes.PAYMENT_METHOD}
       />
     </BookingStack.Navigator>
   );
 }
+
+const globalScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        keyof CustomerBookingStackParamList
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+};
+
+const dateAndTimeScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.DATE_AND_TIME
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Select Date & Time",
+};
+
+const paymentMethodScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.PAYMENT_METHOD
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Select a payment method",
+};
+
+const paymentScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.PAYMENT
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Payment",
+};
+
+const bookingDetailsScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.BOOKING_DETAILS
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: false,
+};
+
+const addMenuItemScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.ADD_MENU_ITEM
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Add Menu Item",
+};
+
+const guestScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.GUEST_AND_OFFER
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Guest & Offer Menu",
+};
+
+const selectTableScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBookingStackParamList,
+        typeof CustomerBookingStackRoutes.SELECT_TABLE
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Select Table",
+};

@@ -61,9 +61,11 @@ const clubListScreenOptions:
         typeof CustomerStackRoutes.CLUB_LIST
       >;
       navigation: any;
-    }) => StackNavigationOptions) = {
-  headerShown: false,
-};
+    }) => StackNavigationOptions) = ({route}) => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: route.params.headerTitle,
+});
 
 const globalScreenOptions:
   | StackNavigationOptions

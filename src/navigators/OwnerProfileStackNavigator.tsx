@@ -6,7 +6,7 @@ import CommonStackHeader from "@components/CommonStackHeader";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
-import {OWNER_ACCOUNT_STACK_NAVIGATOR_ID} from "@constants/navigators";
+import {OWNER_PROFILE_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
@@ -21,7 +21,7 @@ const OwnerProfileStack = createStackNavigator<OwnerAccountStackParamList>();
 const OwnerProfileStackNavigator = () => {
   return (
     <OwnerProfileStack.Navigator
-      id={OWNER_ACCOUNT_STACK_NAVIGATOR_ID}
+      id={OWNER_PROFILE_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
       <OwnerProfileStack.Screen
         component={OwnerAccountScreen}
