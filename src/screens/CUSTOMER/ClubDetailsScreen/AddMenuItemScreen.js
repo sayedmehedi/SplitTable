@@ -1,6 +1,6 @@
 import {View, Text, FlatList, Image, StyleSheet} from "react-native";
 import React from "react";
-import {productData} from "../../@constants/dummy";
+import {productData} from "@constants/dummy";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Entypo from "react-native-vector-icons/Entypo";
 import LinearGradient from "react-native-linear-gradient";
@@ -92,11 +92,7 @@ const AddMenuItemScreen = ({navigation}) => {
           backgroundColor: "rgba(255,255,255,0.7)",
           padding: 20,
         }}>
-        <FlatList
-          data={productData}
-          renderItem={renderOfferMenu}
-          keyExtractor={item => item.id}
-        />
+        <FlatList data={productData} renderItem={renderOfferMenu} />
       </View>
       <LinearGradient
         colors={["#402B8C", "#FF3FCB"]}

@@ -1,9 +1,10 @@
 import {
   View,
   Text,
-  TouchableHighlight,
-  ImageBackground,
   StyleSheet,
+  ListRenderItem,
+  ImageBackground,
+  TouchableHighlight,
 } from "react-native";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
@@ -12,10 +13,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native-gesture-handler";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {MapIcon, TablePerson} from "@constants/iconPath";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {MapIcon, TablePerson} from "../../@constants/iconPath";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import EachBookingItem from "../OwnerBookingListScreen/EachBookingItem";
+
 const tableData = [
   {
     id: 1,
@@ -154,7 +156,16 @@ const bookingList = [
   },
 ];
 
-const renderBookingItem = ({item}) => <EachBookingItem item={item} />;
+const renderBookingItem: ListRenderItem<{
+  id: number;
+  dateTime: string;
+  totalGuest: string;
+  totalPrice: string;
+  name: string;
+  tableName: string;
+  status: string;
+}> = ({item}) => <EachBookingItem item={item} />;
+
 const OwnerTableScreen = () => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF"}}>
@@ -163,14 +174,14 @@ const OwnerTableScreen = () => {
           backgroundColor: "#FFFFFF",
         }}>
         <LinearGradient
-          colors={["#DF3BC0", "#472BBE"]}
-          start={{x: 0, y: 1}}
           end={{x: 0, y: 0}}
+          start={{x: 0, y: 1}}
+          colors={["#DF3BC0", "#472BBE"]}
           style={{
             height: 180,
             width: "100%",
-            justifyContent: "center",
             paddingHorizontal: 20,
+            justifyContent: "center",
           }}>
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <View>
@@ -202,15 +213,15 @@ const OwnerTableScreen = () => {
               }}>
               <View
                 style={{
-                  height: 17,
                   width: 17,
-                  borderRadius: 17,
-                  backgroundColor: "#402B8C",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  height: 17,
                   marginTop: -12,
-                  marginRight: -25,
+                  borderRadius: 17,
                   marginBottom: -8,
+                  marginRight: -25,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#402B8C",
                 }}>
                 <Text
                   style={{color: "white", fontWeight: "bold", fontSize: 10}}>
@@ -231,13 +242,13 @@ const OwnerTableScreen = () => {
               alignItems: "center",
               marginVertical: 15,
             }}>
-            <MapIcon height={16} width={16} style={{color: "white"}} />
+            <MapIcon height={16} width={16} color={"white"} />
             <Text
               style={{
-                fontFamily: "Satoshi-Regular",
                 fontSize: 14,
                 color: "white",
                 marginLeft: 10,
+                fontFamily: "Satoshi-Regular",
               }}>
               Nevada, Las Vegas
             </Text>
@@ -246,7 +257,7 @@ const OwnerTableScreen = () => {
 
         <View style={{flex: 1, padding: 20}}>
           <ImageBackground
-            source={require("../../@assets/layout.jpg")}
+            source={require("@assets/layout.jpg")}
             style={{
               height: 170,
               width: "100%",
@@ -265,12 +276,11 @@ const OwnerTableScreen = () => {
               </TouchableOpacity>
             </View>
           </ImageBackground>
+
           <FlatList
             data={tableData}
-            keyExtractor={item => item.id}
-            renderItem={({item, index, separators}) => (
+            renderItem={({item, separators}) => (
               <TouchableHighlight
-                key={item.key}
                 onPress={() => {}}
                 onShowUnderlay={separators.highlight}
                 onHideUnderlay={separators.unhighlight}>
@@ -293,25 +303,24 @@ const OwnerTableScreen = () => {
 
           <View
             style={{
+              marginVertical: 20,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-
-              marginVertical: 20,
             }}>
             <Text
               style={{
-                fontFamily: "SatoshiVariable-Bold",
                 fontSize: 20,
                 color: "#030819",
+                fontFamily: "SatoshiVariable-Bold",
               }}>
               Upcomming Booking
             </Text>
             <Text
               style={{
-                fontFamily: "Satoshi-Regular",
                 fontSize: 14,
                 color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
                 textDecorationLine: "underline",
               }}>
               See all
@@ -321,7 +330,6 @@ const OwnerTableScreen = () => {
           <FlatList
             data={bookingList}
             renderItem={renderBookingItem}
-            keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
           />
         </View>

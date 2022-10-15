@@ -1,24 +1,51 @@
+import React from "react";
 import {
   View,
   Text,
   FlatList,
+  Pressable,
   StyleSheet,
   ImageBackground,
-  Pressable,
+  ListRenderItem,
 } from "react-native";
-import React from "react";
-
-import {productData} from "../../@constants/dummy";
+import {productData} from "@constants/dummy";
+import {OwnerProfileStackRoutes} from "@constants/routes";
 import Fontisto from "react-native-vector-icons/Fontisto";
+import {StackScreenProps} from "@react-navigation/stack";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {RedMap, MapIcon, Clock, DeleteIcon} from "../../@constants/iconPath";
+import {CompositeScreenProps} from "@react-navigation/native";
+import {MapIcon, Clock, DeleteIcon} from "@constants/iconPath";
+import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import {Swipeable, GestureHandlerRootView} from "react-native-gesture-handler";
 import {
-  GestureHandlerRootView,
-  Swipeable,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
+  RootStackParamList,
+  OwnerStackParamList,
+  OwnerBottomTabParamList,
+  OwnerAccountStackParamList,
+} from "@src/types";
 
-const renderClubList = ({item}) => {
+type FavoriteScreenProps = CompositeScreenProps<
+  CompositeScreenProps<
+    CompositeScreenProps<
+      StackScreenProps<
+        OwnerAccountStackParamList,
+        typeof OwnerProfileStackRoutes.FAVORITE
+      >,
+      BottomTabScreenProps<OwnerBottomTabParamList>
+    >,
+    StackScreenProps<OwnerStackParamList>
+  >,
+  StackScreenProps<RootStackParamList>
+>;
+
+const renderClubList: ListRenderItem<{
+  id: string;
+  location: string;
+  name: string;
+  rating: number;
+  distance: string;
+  uri: any;
+}> = ({item}) => {
   const rightSwipeActions = () => {
     return (
       <Pressable
@@ -36,16 +63,14 @@ const renderClubList = ({item}) => {
       <Swipeable renderRightActions={rightSwipeActions}>
         <View
           style={{
+            flex: 1,
             height: 236,
             width: "100%",
-            backgroundColor: "white",
-            flex: 1,
-
-            borderRadius: 15,
-            shadowColor: "#D6D6D6",
-
             elevation: 15,
             marginBottom: 20,
+            borderRadius: 15,
+            shadowColor: "#D6D6D6",
+            backgroundColor: "white",
           }}>
           <View style={{flex: 2}}>
             <ImageBackground
@@ -54,10 +79,10 @@ const renderClubList = ({item}) => {
               style={{height: "100%", width: "100%"}}>
               <View
                 style={{
+                  padding: 10,
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: 10,
                 }}>
                 <View
                   style={{
@@ -82,9 +107,9 @@ const renderClubList = ({item}) => {
           <View style={{flex: 1, justifyContent: "space-around", padding: 12}}>
             <Text
               style={{
-                fontFamily: "Satoshi-Medium",
-                color: "#262B2E",
                 fontSize: 18,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Medium",
               }}>
               {item.name}
             </Text>
@@ -102,7 +127,7 @@ const renderClubList = ({item}) => {
                 justifyContent: "space-between",
               }}>
               <View style={{flexDirection: "row", alignItems: "center"}}>
-                <MapIcon height={10} width={10} style={{color: "#402B8C"}} />
+                <MapIcon height={10} width={10} color={"#402B8C"} />
                 <Text
                   style={{
                     color: "#8A8D9F",
@@ -134,14 +159,10 @@ const renderClubList = ({item}) => {
   );
 };
 
-const FavoriteScreen = () => {
+const FavoriteScreen = ({}: FavoriteScreenProps) => {
   return (
     <View style={{padding: 20, backgroundColor: "white"}}>
-      <FlatList
-        data={productData}
-        renderItem={renderClubList}
-        keyExtractor={item => item.id}
-      />
+      <FlatList data={productData} renderItem={renderClubList} />
     </View>
   );
 };
@@ -150,11 +171,11 @@ const styles = StyleSheet.create({
   menuContainer: {
     width: 54,
     height: 22,
-    backgroundColor: "#FDF2EE",
-    borderRadius: 3,
-    justifyContent: "center",
-    alignItems: "center",
     marginRight: 8,
+    borderRadius: 3,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FDF2EE",
   },
 });
 

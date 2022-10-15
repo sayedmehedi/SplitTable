@@ -3,18 +3,18 @@ import {RouteProp} from "@react-navigation/native";
 import {OwnerAccountStackParamList} from "@src/types";
 import {OwnerProfileStackRoutes} from "@constants/routes";
 import CommonStackHeader from "@components/CommonStackHeader";
-import FaqScreen from "@screens/OWNER/AccountScreen/FaqScreen";
 import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
-import LegalScreen from "@screens/OWNER/AccountScreen/LegalScreen";
+import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
+import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
 import {OWNER_PROFILE_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import ProfileScreen from "@screens/OWNER/AccountScreen/ProfileScreen";
-import FavoriteScreen from "@screens/OWNER/AccountScreen/FavoriteScreen";
-import TransactionScreen from "@screens/OWNER/AccountScreen/TransactionScreen";
+import ProfileScreen from "@screens/OWNER/OwnerAccountScreen/ProfileScreen";
+import FavoriteScreen from "@screens/OWNER/OwnerAccountScreen/FavoriteScreen";
+import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
+import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import AccountSettingScreen from "@screens/OWNER/AccountScreen/AccountSettingScreen";
 
 const OwnerProfileStack = createStackNavigator<OwnerAccountStackParamList>();
 

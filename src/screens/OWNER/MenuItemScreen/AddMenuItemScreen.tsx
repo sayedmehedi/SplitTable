@@ -1,9 +1,23 @@
-import {View, Text, StyleSheet, TextInput} from "react-native";
 import React from "react";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import Button from "@components/Button";
+import {OwnerStackRoutes} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Button from "../../@components/Button";
-const AddMenuItemScreen = ({navigation}) => {
+import {TouchableOpacity} from "react-native-gesture-handler";
+import {View, Text, StyleSheet, TextInput} from "react-native";
+import {CompositeScreenProps} from "@react-navigation/native";
+import {OwnerStackParamList, RootStackParamList} from "@src/types";
+
+type Props = CompositeScreenProps<
+  StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.ADD_MENU_ITEM>,
+  StackScreenProps<RootStackParamList>
+>;
+
+const AddMenuItemScreen = ({navigation}: Props) => {
+  const handleSubmit = () => {
+    navigation.goBack();
+  };
+
   return (
     <View
       style={{
@@ -58,10 +72,10 @@ const AddMenuItemScreen = ({navigation}) => {
 
         <Button
           width={"100%"}
+          title={"Submit"}
           color={"primary"}
           variant={"solid"}
-          title={"Submit"}
-          onPress={() => navigation.goBack()}
+          onPress={handleSubmit}
         />
       </View>
     </View>

@@ -1,15 +1,25 @@
-import {View, Text, TextInput, StyleSheet} from "react-native";
 import React from "react";
-import Button from "../@components/Button";
+import Button from "@components/Button";
+import {View, TextInput, StyleSheet} from "react-native";
+import {StackScreenProps} from "@react-navigation/stack";
+import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-const SignUpScreen = ({navigation}) => {
+import {OwnerStackParamList, RootStackParamList} from "@src/types";
+import {OwnerMainBottomTabRoutes, OwnerStackRoutes} from "@constants/routes";
+
+type Props = CompositeScreenProps<
+  StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.OWNER_SIGN_UP>,
+  StackScreenProps<RootStackParamList>
+>;
+
+const SignUpScreen = ({navigation}: Props) => {
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: "#FFFFFF",
         padding: 20,
         justifyContent: "center",
+        backgroundColor: "#FFFFFF",
       }}>
       <View style={{flex: 1, marginTop: 20}}>
         <View
@@ -80,7 +90,11 @@ const SignUpScreen = ({navigation}) => {
           color={"primary"}
           variant={"solid"}
           title={"Sign Up"}
-          onPress={() => navigation.navigate("ownerMainTabs")}
+          onPress={() =>
+            navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
+              screen: OwnerMainBottomTabRoutes.OWNER_TABLE,
+            })
+          }
         />
       </View>
     </View>

@@ -19,7 +19,7 @@ const LoginPromptScreen = ({navigation}) => {
         }}>
         <View style={{flex: 1, justifyContent: "center"}}>
           <Image
-            source={require("../../@assets/logo-white.png")}
+            source={require("@assets/logo-white.png")}
             style={{height: 100, width: 160}}
           />
         </View>

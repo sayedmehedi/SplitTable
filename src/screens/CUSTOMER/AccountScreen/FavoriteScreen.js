@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import React from "react";
 
-import {productData} from "../../@constants/dummy";
+import {productData} from "@constants/dummy";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {RedMap, MapIcon, Clock, DeleteIcon} from "../../@constants/iconPath";
+import {RedMap, MapIcon, Clock, DeleteIcon} from "@constants/iconPath";
 import {
   GestureHandlerRootView,
   Swipeable,
@@ -137,11 +137,7 @@ const renderClubList = ({item}) => {
 const FavoriteScreen = () => {
   return (
     <View style={{padding: 20, backgroundColor: "white"}}>
-      <FlatList
-        data={productData}
-        renderItem={renderClubList}
-        keyExtractor={item => item.id}
-      />
+      <FlatList data={productData} renderItem={renderClubList} />
     </View>
   );
 };

@@ -7,10 +7,20 @@ import {
   ListRenderItem,
 } from "react-native";
 import React from "react";
+import Feather from "react-native-vector-icons/Feather";
+import {StackScreenProps} from "@react-navigation/stack";
+import {OwnerProfileStackRoutes} from "@constants/routes";
 import LinearGradient from "react-native-linear-gradient";
 import {SafeAreaView} from "react-native-safe-area-context";
+import {CompositeScreenProps} from "@react-navigation/native";
 import {TouchableOpacity} from "react-native-gesture-handler";
-import Feather from "react-native-vector-icons/Feather";
+import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import {
+  RootStackParamList,
+  OwnerStackParamList,
+  OwnerBottomTabParamList,
+  OwnerAccountStackParamList,
+} from "@src/types";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -100,7 +110,21 @@ const renderAllStory: ListRenderItem<{
   </View>
 );
 
-const ProfileScreen = () => {
+type ProfileScreenProps = CompositeScreenProps<
+  CompositeScreenProps<
+    CompositeScreenProps<
+      StackScreenProps<
+        OwnerAccountStackParamList,
+        typeof OwnerProfileStackRoutes.PROFILE
+      >,
+      BottomTabScreenProps<OwnerBottomTabParamList>
+    >,
+    StackScreenProps<OwnerStackParamList>
+  >,
+  StackScreenProps<RootStackParamList>
+>;
+
+const ProfileScreen = ({}: ProfileScreenProps) => {
   return (
     <View>
       <LinearGradient
@@ -125,12 +149,12 @@ const ProfileScreen = () => {
       <TouchableOpacity
         style={{
           padding: 5,
-          backgroundColor: "white",
-          height: 155,
           width: 155,
-          justifyContent: "center",
-          alignItems: "center",
+          height: 155,
           borderRadius: 78,
+          alignItems: "center",
+          backgroundColor: "white",
+          justifyContent: "center",
           alignSelf: "center",
           marginTop: -75,
         }}>
@@ -152,9 +176,9 @@ const ProfileScreen = () => {
         </Text>
         <Text
           style={{
+            fontSize: 14,
             color: "#8A8D9F",
             fontFamily: "Satoshi-Regular",
-            fontSize: 14,
           }}>
           Las Vegas, NV 89109
         </Text>
@@ -275,7 +299,6 @@ const ProfileScreen = () => {
           numColumns={3}
           renderItem={renderAllStory}
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id.toString()}
         />
       </View>
     </View>

@@ -2,7 +2,7 @@ import {View, Text, ImageBackground, StyleSheet} from "react-native";
 import React from "react";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {RedMap, MapIcon} from "../../@constants/iconPath";
+import {RedMap, MapIcon} from "@constants/iconPath";
 
 const EachRecentVisitsItem = ({item}) => {
   return (

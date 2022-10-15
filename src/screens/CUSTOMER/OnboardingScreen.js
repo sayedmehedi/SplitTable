@@ -20,21 +20,21 @@ const COLORS = {primary: "green", white: "#fff"};
 const slides = [
   {
     id: "1",
-    image: require("../@assets/onboarding1.jpg"),
+    image: require("@assets/onboarding1.jpg"),
     title: "Choose Nearest Club/Bar",
     subtitle:
       "Reference site about Lorem Ipsum,giving information origins as well as a random",
   },
   {
     id: "2",
-    image: require("../@assets/onboarding2.jpg"),
+    image: require("@assets/onboarding2.jpg"),
     title: "Book Tables",
     subtitle:
       "Reference site about Lorem Ipsum,giving information origins as well as a random",
   },
   {
     id: "3",
-    image: require("../@assets/onboarding3.jpg"),
+    image: require("@assets/onboarding3.jpg"),
     title: "Enjoy!!!",
     subtitle:
       "Reference site about Lorem Ipsum,giving information origins as well as a random",

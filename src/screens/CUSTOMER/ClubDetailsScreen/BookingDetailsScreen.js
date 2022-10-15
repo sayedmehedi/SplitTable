@@ -7,12 +7,12 @@ import {
   StyleSheet,
 } from "react-native";
 import React from "react";
-import {productData} from "../../@constants/dummy";
+import {productData} from "@constants/dummy";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Button from "../../@components/Button";
+import Button from "@components/Button";
 
 const renderOfferMenu = ({item, index}) => {
   if (index <= 1) {
@@ -99,7 +99,7 @@ const BookingDetailsScreen = ({navigation}) => {
             height: 300,
             width: "100%",
           }}
-          source={require("../../@assets/images/book-details.jpg")}>
+          source={require("@assets/images/book-details.jpg")}>
           <SafeAreaView>
             <View
               style={{
@@ -251,7 +251,6 @@ const BookingDetailsScreen = ({navigation}) => {
           <FlatList
             data={productData}
             renderItem={renderOfferMenu}
-            keyExtractor={item => item.id}
             maxToRenderPerBatch={2}
           />
           <View

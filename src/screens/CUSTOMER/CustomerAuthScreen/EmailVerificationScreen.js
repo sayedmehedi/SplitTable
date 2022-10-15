@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet} from "react-native";
 import React from "react";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import Button from "../../@components/Button";
+import Button from "@components/Button";
 
 const EmailVerificationScreen = ({navigation}) => {
   return (

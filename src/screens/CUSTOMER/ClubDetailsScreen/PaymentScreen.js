@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet} from "react-native";
 import React from "react";
 import {TouchableOpacity} from "react-native-gesture-handler";
-import Button from "../../@components/Button";
+import Button from "@components/Button";
 const PaymentScreen = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", padding: 20}}>

@@ -7,9 +7,9 @@ import {
   ImageBackground,
 } from "react-native";
 import React from "react";
-import {MapIcon} from "../../@constants/iconPath";
+import {MapIcon} from "@constants/iconPath";
 import EachOfferMenuItem from "./EachOfferMenuItem";
-import {productData} from "../../@constants/dummy";
+import {productData} from "@constants/dummy";
 import LinearGradient from "react-native-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -28,7 +28,7 @@ const ClubDetailsScreen = ({navigation}) => {
             height: 300,
             width: "100%",
           }}
-          source={require("../../@assets/images/img3.jpg")}>
+          source={require("@assets/images/img3.jpg")}>
           <SafeAreaView>
             <View
               style={{
@@ -177,11 +177,7 @@ const ClubDetailsScreen = ({navigation}) => {
           </View>
 
           <View style={{flex: 1, backgroundColor: "rgba(255,255,255,0.1)"}}>
-            <FlatList
-              data={productData}
-              renderItem={renderOfferMenu}
-              keyExtractor={item => item.id}
-            />
+            <FlatList data={productData} renderItem={renderOfferMenu} />
           </View>
         </View>
       </View>

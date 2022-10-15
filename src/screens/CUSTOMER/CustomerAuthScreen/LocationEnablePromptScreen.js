@@ -1,6 +1,6 @@
 import {View, Text, Image} from "react-native";
 import React from "react";
-import Button from "../../@components/Button";
+import Button from "@components/Button";
 import {TouchableOpacity} from "react-native-gesture-handler";
 
 const LocationEnablePromptScreen = ({navigation}) => {
@@ -12,7 +12,7 @@ const LocationEnablePromptScreen = ({navigation}) => {
           width: "100%",
           borderRadius: 10,
         }}
-        source={require("../../@assets/images/Map-1.png")}
+        source={require("@assets/images/Map-1.png")}
       />
       <Text
         style={{

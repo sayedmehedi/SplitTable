@@ -173,11 +173,7 @@ const renderTransactionList = ({item}) => (
 const TransactionScreen = () => {
   return (
     <View style={{backgroundColor: "white", flex: 1, padding: 10}}>
-      <FlatList
-        data={TransactionData}
-        renderItem={renderTransactionList}
-        keyExtractor={item => item.id.toString()}
-      />
+      <FlatList data={TransactionData} renderItem={renderTransactionList} />
     </View>
   );
 };

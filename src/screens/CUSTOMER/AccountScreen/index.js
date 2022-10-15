@@ -8,7 +8,7 @@ import {
   LegalIcon,
   LogoutIcon,
   TransactionIcon,
-} from "../../@constants/iconPath";
+} from "@constants/iconPath";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Feather from "react-native-vector-icons/Feather";
 

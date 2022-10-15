@@ -23,7 +23,7 @@ import {
   OwnerAccountStackParamList,
 } from "@src/types";
 
-type ProfileScreenProps = CompositeScreenProps<
+type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
     CompositeScreenProps<
       StackScreenProps<
@@ -37,7 +37,7 @@ type ProfileScreenProps = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
-const OwnerAccountScreen = ({navigation}: ProfileScreenProps) => {
+const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
       <View

@@ -9,9 +9,9 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
 import styles from "./styles";
-import {MapIcon, LasVegas, Miami, Chicago} from "../../@constants/iconPath";
-import {productData} from "../../@constants/dummy";
-import EachClubItem from "../../@components/EachClubItem";
+import {MapIcon, LasVegas, Miami, Chicago} from "@constants/iconPath";
+import {productData} from "@constants/dummy";
+import EachClubItem from "@components/EachClubItem";
 import EachNearByItem from "./EachNearByItem";
 import EachRecentVisitsItem from "./EachRecentVisitsItem";
 
@@ -144,12 +144,7 @@ const HomeScreen = ({navigation}) => {
           </View>
         </LinearGradient>
         <View style={{paddingVertical: 10}}>
-          <FlatList
-            horizontal
-            data={category}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
+          <FlatList horizontal data={category} renderItem={renderItem} />
         </View>
 
         <View
@@ -183,7 +178,6 @@ const HomeScreen = ({navigation}) => {
             horizontal
             data={productData}
             renderItem={renderClubItem}
-            keyExtractor={item => item.id}
             showsHorizontalScrollIndicator={false}
           />
         </View>
@@ -213,11 +207,7 @@ const HomeScreen = ({navigation}) => {
           </Text>
         </View>
         <View style={{padding: 20}}>
-          <FlatList
-            data={productData}
-            renderItem={renderNearByItem}
-            keyExtractor={item => item.id}
-          />
+          <FlatList data={productData} renderItem={renderNearByItem} />
         </View>
         <View
           style={{
@@ -249,7 +239,6 @@ const HomeScreen = ({navigation}) => {
             horizontal
             data={productData}
             renderItem={renderRecentVisitItems}
-            keyExtractor={item => item.id}
             showsHorizontalScrollIndicator={false}
           />
         </View>

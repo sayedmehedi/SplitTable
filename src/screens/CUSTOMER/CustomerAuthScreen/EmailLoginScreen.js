@@ -1,6 +1,6 @@
 import {View, Text, TextInput, StyleSheet} from "react-native";
 import React from "react";
-import Button from "../../@components/Button";
+import Button from "@components/Button";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Entypo from "react-native-vector-icons/Entypo";
 const EmailLoginScreen = ({navigation}) => {

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
-import {TablePerson} from "../../@constants/iconPath";
+import {TablePerson} from "@constants/iconPath";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const tableData = [
@@ -78,7 +78,7 @@ const SelectTableScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <Image
-        source={require("../../@assets/layout.jpg")}
+        source={require("@assets/layout.jpg")}
         style={{
           height: 170,
           width: "100%",
@@ -88,7 +88,6 @@ const SelectTableScreen = ({navigation}) => {
       <View style={{padding: 15, backgroundColor: "white", flex: 1}}>
         <FlatList
           data={tableData}
-          keyExtractor={item => item.id}
           renderItem={({item, index, separators}) => (
             <TouchableHighlight
               key={item.key}
