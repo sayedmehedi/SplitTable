@@ -1,235 +1,245 @@
-import { View, Text,Image,StyleSheet } from 'react-native'
-import React from 'react'
+import {View, Text, Image, StyleSheet} from "react-native";
+import React from "react";
 import {
   ProfileIcon,
-    AccountSettingIcon,
-    FavouriteIcon,
-    FaqIcon,
-    LegalIcon,
-    LogoutIcon,
-    TransactionIcon,
-    InfoIcon,
-    ReviewIcon,
-    HolidayIcon
-} from '../../../Constants/iconPath'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import Feather from 'react-native-vector-icons/Feather'
+  AccountSettingIcon,
+  FavouriteIcon,
+  FaqIcon,
+  LegalIcon,
+  LogoutIcon,
+  TransactionIcon,
+  InfoIcon,
+  ReviewIcon,
+  HolidayIcon,
+} from "../../@constants/iconPath";
+import {TouchableOpacity} from "react-native-gesture-handler";
+import Feather from "react-native-vector-icons/Feather";
 
 const OwnerAccountScreen = ({navigation}) => {
   return (
-    <View style={{flex:1,backgroundColor:'#FFFFFF',paddingHorizontal:20,}}>
-      <View style={{
-        height:90,
-        width:'100%',
-        borderWidth:1,
-        borderColor:'#DBDBDB',
-        borderRadius:5,
-        marginVertical:20,
-        flexDirection:'row',
-        alignItems:'center',
-        padding:10
-      }}>
-
-        <Image 
+    <View style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
+      <View
         style={{
-          height:60,
-          width:60,
-          borderRadius:30
-        }}
-        source={{uri:'https://cdn-icons-png.flaticon.com/512/219/219986.png'}}/>
-       
-       <View style={{marginLeft:10}}>
-        <Text style={{
-          fontFamily:'SatoshiVariable-Bold',
-          fontSize:16,
-          color:'#030819'
-        }}>Jewel Night Club</Text>
-        <Text style={{
-          fontFamily:'Satoshi-Regular',
-          fontSize:12,
-          color:'#8A8D9F'
-        }}>Las Vegas, NV 98109</Text>
-        <Text style={{
-          fontFamily:'Satoshi-Regular',
-          fontSize:12,
-          color:'#8A8D9F'
-        }}>Member Since June 2022</Text>
-          
-          </View>
+          height: 90,
+          width: "100%",
+          borderWidth: 1,
+          borderColor: "#DBDBDB",
+          borderRadius: 5,
+          marginVertical: 20,
+          flexDirection: "row",
+          alignItems: "center",
+          padding: 10,
+        }}>
+        <Image
+          style={{
+            height: 60,
+            width: 60,
+            borderRadius: 30,
+          }}
+          source={{
+            uri: "https://cdn-icons-png.flaticon.com/512/219/219986.png",
+          }}
+        />
 
+        <View style={{marginLeft: 10}}>
+          <Text
+            style={{
+              fontFamily: "SatoshiVariable-Bold",
+              fontSize: 16,
+              color: "#030819",
+            }}>
+            Jewel Night Club
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Satoshi-Regular",
+              fontSize: 12,
+              color: "#8A8D9F",
+            }}>
+            Las Vegas, NV 98109
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Satoshi-Regular",
+              fontSize: 12,
+              color: "#8A8D9F",
+            }}>
+            Member Since June 2022
+          </Text>
+        </View>
       </View>
 
       <View>
         <TouchableOpacity
-        onPress={()=>navigation.navigate('profile')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <InfoIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Information</Text>
+          onPress={() => navigation.navigate("profile")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <InfoIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Information
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={()=>navigation.navigate('accountSetting')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <AccountSettingIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Account Setting</Text>
+          onPress={() => navigation.navigate("accountSetting")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <AccountSettingIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Account Setting
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={()=>navigation.navigate('transection')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <TransactionIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Transaction</Text>
+          onPress={() => navigation.navigate("transection")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <TransactionIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Transaction
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={()=>navigation.navigate('favorite')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <ReviewIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Reviews</Text>
+          onPress={() => navigation.navigate("favorite")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <ReviewIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Reviews
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
-        <TouchableOpacity 
-        onPress={()=>navigation.navigate('faq')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <HolidayIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Holidays</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("faq")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <HolidayIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Holidays
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
-        <TouchableOpacity 
-        onPress={()=>navigation.navigate('faq')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <FaqIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Faq's</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("faq")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <FaqIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Faq's
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
-        <TouchableOpacity 
-        onPress={()=>navigation.navigate('legal')}
-        style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <LegalIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Legal</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("legal")}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <LegalIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Legal
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.sectionContainer}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <LogoutIcon/>
-            <Text style={{
-              color:'#262B2E',
-              fontFamily:'Satoshi-Regular',
-              fontSize:16,
-              marginLeft:10
-            }}>Logout</Text>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <LogoutIcon />
+            <Text
+              style={{
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 16,
+                marginLeft: 10,
+              }}>
+              Logout
+            </Text>
           </View>
 
-          <Feather name='chevron-right' color={'#8A8D9F'} size={22}/>
-
-
-
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
-        <Text style={{
-          marginVertical:5,
-          alignSelf:'center'
-        }}>App Version V1.0</Text>
+        <Text
+          style={{
+            marginVertical: 5,
+            alignSelf: "center",
+          }}>
+          App Version V1.0
+        </Text>
       </View>
-
-
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  sectionContainer:{
-    flexDirection:'row',
-    width:'100%',
-    borderBottomWidth:1,
-    borderStyle:'dashed',
-    borderColor:'#C8C8D3',
-    paddingVertical:15,
-    justifyContent:'space-between'
-    
-  }
-})
+  sectionContainer: {
+    flexDirection: "row",
+    width: "100%",
+    borderBottomWidth: 1,
+    borderStyle: "dashed",
+    borderColor: "#C8C8D3",
+    paddingVertical: 15,
+    justifyContent: "space-between",
+  },
+});
 
-export default OwnerAccountScreen
+export default OwnerAccountScreen;

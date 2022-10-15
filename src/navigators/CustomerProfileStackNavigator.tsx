@@ -1,14 +1,14 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import AccountScreen from '../screens/CUSTOMER/AccountScreen';
-import ProfileScreen from '../screens/CUSTOMER/AccountScreen/ProfileScreen';
-import TransectionScreen from '../screens/CUSTOMER/AccountScreen/TransectionScreen';
-import AccountSettingScreen from '../screens/CUSTOMER/AccountScreen/AccountSettingScreen';
-import FavoriteScreen from '../screens/CUSTOMER/AccountScreen/FavoriteScreen';
-import LegalScreen from '../screens/CUSTOMER/AccountScreen/LegalScreen';
-import FaqScreen from '../screens/CUSTOMER/AccountScreen/FaqScreen';
-import CommonHeader from '../components/CommonHeader';
+import {View, Text} from "react-native";
+import React from "react";
+import {createStackNavigator} from "@react-navigation/stack";
+import AccountScreen from "@screens/CUSTOMER/AccountScreen";
+import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
+import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransectionScreen";
+import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
+import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
+import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
+import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
+import CommonStackHeader from "@components/CommonStackHeader";
 
 const CustomerProfileStack = createStackNavigator();
 const CustomerProfileStackNavigator = () => {
@@ -16,13 +16,13 @@ const CustomerProfileStackNavigator = () => {
     <CustomerProfileStack.Navigator
       screenOptions={{
         headerShown: true,
-        header: CommonHeader,
+        header: CommonStackHeader,
       }}>
       <CustomerProfileStack.Screen
         name="account"
         component={AccountScreen}
         options={{
-          headerTitle: 'My Account',
+          headerTitle: "My Account",
         }}
       />
       <CustomerProfileStack.Screen
@@ -35,9 +35,9 @@ const CustomerProfileStackNavigator = () => {
 
       <CustomerProfileStack.Screen
         name="transection"
-        component={TransectionScreen}
+        component={TransactionScreen}
         options={{
-          headerTitle: 'Transaction',
+          headerTitle: "Transaction",
         }}
       />
 
@@ -45,7 +45,7 @@ const CustomerProfileStackNavigator = () => {
         name="accountSetting"
         component={AccountSettingScreen}
         options={{
-          headerTitle: 'Account Settings',
+          headerTitle: "Account Settings",
         }}
       />
 
@@ -53,7 +53,7 @@ const CustomerProfileStackNavigator = () => {
         name="favorite"
         component={FavoriteScreen}
         options={{
-          headerTitle: 'Favorite',
+          headerTitle: "Favorite",
         }}
       />
 
@@ -61,15 +61,15 @@ const CustomerProfileStackNavigator = () => {
         name="legal"
         component={LegalScreen}
         options={{
-          headerTitle: 'Legal',
+          headerTitle: "Legal",
         }}
       />
 
-<CustomerProfileStack.Screen
+      <CustomerProfileStack.Screen
         name="faq"
         component={FaqScreen}
         options={{
-          headerTitle: 'FAQ',
+          headerTitle: "FAQ",
         }}
       />
     </CustomerProfileStack.Navigator>

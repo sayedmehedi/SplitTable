@@ -1,25 +1,28 @@
-import {View, Text, ImageBackground, StyleSheet} from "react-native";
 import React from "react";
+import {useNavigation} from "@react-navigation/native";
+import {RedMap, MapIcon} from "@constants/iconPath";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {RedMap, MapIcon} from "../../@constants/iconPath";
+import {View, Text, ImageBackground, StyleSheet, Pressable} from "react-native";
 
-const EachItem = ({item}) => {
+const EachClubItem = ({item}) => {
+  const navigation = useNavigation();
   return (
-    <View
+    <Pressable
+      onPress={() => navigation.navigate("clubDetails")}
       style={{
-        height: 236,
-        width: "100%",
+        height: 238,
+        width: 266,
         backgroundColor: "white",
         flex: 1,
-
+        margin: 10,
         borderRadius: 15,
         shadowColor: "#D6D6D6",
 
         elevation: 15,
         marginBottom: 20,
       }}>
-      <View style={{flex: 2}}>
+      <View style={{flex: 1.5}}>
         <ImageBackground
           source={item.uri}
           imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
@@ -68,7 +71,8 @@ const EachItem = ({item}) => {
         </ImageBackground>
       </View>
 
-      <View style={{flex: 1, justifyContent: "space-around", padding: 12}}>
+      <View
+        style={{flex: 1, justifyContent: "space-around", paddingHorizontal: 8}}>
         <Text
           style={{
             fontFamily: "Satoshi-Medium",
@@ -77,47 +81,60 @@ const EachItem = ({item}) => {
           }}>
           {item.name}
         </Text>
-        <View
-          style={{
-            height: 1,
-            width: "100%",
-            backgroundColor: "#E2E2E2",
-          }}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}>
-          <View style={{flexDirection: "row", alignItems: "center"}}>
-            <MapIcon height={10} width={10} style={{color: "#402B8C"}} />
+        <View style={{flexDirection: "row", alignItems: "center"}}>
+          <MapIcon height={10} width={10} style={{color: "#402B8C"}} />
+          <Text
+            style={{
+              color: "#8A8D9F",
+              fontFamily: "Satoshi-Regular",
+              fontSize: 12,
+              marginLeft: 5,
+            }}>
+            {item.location}
+          </Text>
+        </View>
+        <View style={{flexDirection: "row", alignItems: "center"}}>
+          <View style={styles.menuContainer}>
             <Text
               style={{
-                color: "#8A8D9F",
+                color: "#FF3FCB",
                 fontFamily: "Satoshi-Regular",
                 fontSize: 12,
-                marginLeft: 5,
               }}>
-              {item.location}
+              Bottle
             </Text>
           </View>
-
-          <View style={{flexDirection: "row"}}>
-            <Text>icon</Text>
+          <View
+            style={[
+              styles.menuContainer,
+              {backgroundColor: "rgba(255,188,0,0.2)"},
+            ]}>
             <Text
               style={{
-                color: "#8A8D9F",
+                color: "#402B8C",
                 fontFamily: "Satoshi-Regular",
                 fontSize: 12,
-                marginLeft: 5,
               }}>
-              Open 10.00am-5.00pm
+              Bubbles
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.menuContainer,
+              {backgroundColor: "rgba(29,191,115,0.2)"},
+            ]}>
+            <Text
+              style={{
+                color: "#00C1FF",
+                fontFamily: "Satoshi-Regular",
+                fontSize: 12,
+              }}>
+              Beer
             </Text>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -133,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EachItem;
+export default EachClubItem;

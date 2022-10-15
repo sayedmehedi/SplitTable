@@ -4,7 +4,7 @@ import styles from '../styles';
 import {Controller, useForm} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {View, Text, Modal, TextInput, TouchableOpacity} from 'react-native';
-import Button from '../../../../components/Button';
+import Button from '../../../@components/Button';
 
 export default function AccountSettingsModal({
   open,
