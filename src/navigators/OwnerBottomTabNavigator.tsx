@@ -9,12 +9,12 @@ import Entypo from "react-native-vector-icons/Entypo";
 import {RedTable, MenuIcon} from "@constants/iconPath";
 import CommonTabHeader from "@components/CommonTabHeader";
 import LinearGradient from "react-native-linear-gradient";
-import MenuItemScreen from "@screens/OWNER/MenuItemScreen";
+import MenuItemScreen from "@screens/OWNER/MenuItemScreen/MenuItemScreen";
 import {OwnerMainBottomTabRoutes} from "@constants/routes";
 import OwnerTableScreen from "@screens/OWNER/OwnerTableScreen";
 import OwnerProfileStackNavigator from "./OwnerProfileStackNavigator";
 import {OWNER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
-import OwnerBookingListScreen from "@screens/OWNER/OwnerBookingListScreen";
+import OwnerBookingListScreen from "@screens/OWNER/OwnerBookingListScreen/OwnerBookingListScreen";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,

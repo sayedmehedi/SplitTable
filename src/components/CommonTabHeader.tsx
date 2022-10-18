@@ -56,8 +56,9 @@ const CommonStackHeader = (props: BottomTabHeaderProps) => {
   const headerTitleStyle = React.useMemo(() => {
     return {
       fontSize: 22,
-      fontWeight: "700",
+      fontWeight: "bold",
       color: theme.colors.black,
+      fontFamily: "SatoshiVariable-Bold",
       ...(typeof options.headerTitleStyle === "object"
         ? (options.headerTitleStyle as any)
         : {}),

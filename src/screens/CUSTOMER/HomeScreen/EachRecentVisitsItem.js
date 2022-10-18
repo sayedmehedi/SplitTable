@@ -1,23 +1,19 @@
-import {View, Text, ImageBackground, StyleSheet} from "react-native";
 import React from "react";
+import {MapIcon} from "@constants/iconPath";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {RedMap, MapIcon} from "@constants/iconPath";
+import {View, Text, ImageBackground, StyleSheet} from "react-native";
 
 const EachRecentVisitsItem = ({item}) => {
   return (
     <View
       style={{
-        height: 238,
-        width: 266,
-        backgroundColor: "white",
         flex: 1,
-        margin: 10,
+        height: 238,
+        elevation: 15,
         borderRadius: 15,
         shadowColor: "#D6D6D6",
-
-        elevation: 15,
-        marginBottom: 20,
+        backgroundColor: "white",
       }}>
       <View style={{flex: 1.5}}>
         <ImageBackground

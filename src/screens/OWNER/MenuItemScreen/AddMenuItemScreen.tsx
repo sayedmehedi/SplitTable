@@ -22,17 +22,17 @@ const AddMenuItemScreen = ({navigation}: Props) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#FFFFFF",
         padding: 10,
         alignItems: "center",
+        backgroundColor: "#FFFFFF",
       }}>
       <TouchableOpacity
         style={{
-          height: 80,
           width: 80,
+          height: 80,
           borderRadius: 40,
-          justifyContent: "center",
           alignItems: "center",
+          justifyContent: "center",
           backgroundColor: "#FFE1F7",
         }}>
         <AntDesign name="camerao" color={"#402B8C"} size={20} />
@@ -42,8 +42,8 @@ const AddMenuItemScreen = ({navigation}: Props) => {
       <View style={{flex: 1, marginTop: 20}}>
         <View style={styles.SectionStyle}>
           <TextInput
+            placeholder={"Menu Title"}
             style={{flex: 1, paddingLeft: 20}}
-            placeholder="Menu Title"
           />
         </View>
 
@@ -57,8 +57,8 @@ const AddMenuItemScreen = ({navigation}: Props) => {
           </View>
           <View style={[styles.SectionStyle, {width: "47%"}]}>
             <TextInput
+              placeholder={"Qty. Stock"}
               style={{flex: 1, paddingLeft: 20}}
-              placeholder="Qty. Stock"
             />
           </View>
         </View>
@@ -66,7 +66,7 @@ const AddMenuItemScreen = ({navigation}: Props) => {
         <View style={[styles.SectionStyle, {height: 100}]}>
           <TextInput
             style={{flex: 1, paddingLeft: 20}}
-            placeholder="Item Short Details"
+            placeholder={"Item Short Details"}
           />
         </View>
 
@@ -84,13 +84,13 @@ const AddMenuItemScreen = ({navigation}: Props) => {
 
 const styles = StyleSheet.create({
   SectionStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F4F5F7",
     height: 50,
     borderRadius: 5,
     marginBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    backgroundColor: "#F4F5F7",
   },
 });
 

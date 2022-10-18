@@ -18,6 +18,7 @@ import MenuIcon from "@assets/icons/menu-ico.svg";
 import InfoIcon from "@assets/icons/information-ico.svg";
 import ReviewIcon from "@assets/icons/reviews-ico.svg";
 import HolidayIcon from "@assets/icons/holidays-ico.svg";
+
 export {
   MapIcon,
   LasVegas,

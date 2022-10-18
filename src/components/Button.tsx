@@ -88,20 +88,20 @@ const SecondaryButton = ({
  */
 const PrimaryButton = ({
   width,
-  onPress,
   title,
-  touchableOpacityProps = {},
+  onPress,
   textProps = {},
   linearGradientProps = {},
+  touchableOpacityProps = {},
 }) => {
   const theme = useTheme();
 
   const defaultStyles = {
     height: 50,
+    marginVertical: 5,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: theme.borderRadius,
-    marginVertical: 5,
   };
 
   if (width) {

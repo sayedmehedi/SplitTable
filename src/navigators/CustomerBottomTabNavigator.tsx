@@ -8,7 +8,7 @@ import HomeIcon from "@assets/icons/HomeIcon.svg";
 import AccountIcon from "@assets/icons/account.svg";
 import BookingIcon from "@assets/icons/booking.svg";
 import {CustomerBottomTabParamList} from "@src/types";
-import HomeScreen from "@screens/CUSTOMER/HomeScreen";
+import HomeScreen from "@screens/CUSTOMER/HomeScreen/HomeScreen";
 import ChatScreen from "@screens/CUSTOMER/ChatScreen";
 import LinearGradient from "react-native-linear-gradient";
 import CommonTabHeader from "@components/CommonTabHeader";

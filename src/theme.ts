@@ -1,6 +1,14 @@
-import {extendTheme} from "native-base";
+import {DefaultTheme} from "@react-navigation/native";
+import {ColorModeOptions, extendTheme} from "native-base";
+
+const config: ColorModeOptions = {
+  useSystemColorMode: false, // TODO: implement this
+  initialColorMode: "light",
+  accessibleColors: false,
+};
 
 export const splitAppTheme = extendTheme({
+  config,
   colors: {
     primary: {
       50: "#ffe2fc",
@@ -109,8 +117,34 @@ export const splitAppTheme = extendTheme({
 
     roboto: "Roboto",
     satoshi: "Sathoshi",
-  },
+  } as const,
 });
+
+// fontSizes: {
+//   '2xs': 10,
+//   'xs': 12,
+//   'sm': 14,
+//   'md': 16,
+//   'lg': 18,
+//   'xl': 20,
+//   '2xl': 24,
+//   '3xl': 30,
+//   '4xl': 36,
+//   '5xl': 48,
+//   '6xl': 60,
+//   '7xl': 72,
+//   '8xl': 96,
+//   '9xl': 128,
+// },
+
+export const splitAppNavigationTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: splitAppTheme.colors.white,
+    primary: splitAppTheme.colors.primary[300],
+  },
+};
 
 // 2. Get the type of the CustomTheme
 type CustomThemeType = typeof splitAppTheme;

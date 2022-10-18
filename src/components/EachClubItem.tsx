@@ -11,16 +11,13 @@ const EachClubItem = ({item}) => {
     <Pressable
       onPress={() => navigation.navigate("clubDetails")}
       style={{
-        height: 238,
-        width: 266,
-        backgroundColor: "white",
         flex: 1,
-        margin: 10,
-        borderRadius: 15,
-        shadowColor: "#D6D6D6",
-
+        height: 238,
         elevation: 15,
+        borderRadius: 15,
         marginBottom: 20,
+        shadowColor: "#D6D6D6",
+        backgroundColor: "white",
       }}>
       <View style={{flex: 1.5}}>
         <ImageBackground
