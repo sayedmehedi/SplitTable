@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {Box, Button, FlatList, HStack, Image, Text} from "native-base";
-import {CustomerStackParamList, RootStackParamList} from "@src/types";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CustomerAuthStackRoutes, CustomerStackRoutes} from "@constants/routes";
 import {
   StatusBar,

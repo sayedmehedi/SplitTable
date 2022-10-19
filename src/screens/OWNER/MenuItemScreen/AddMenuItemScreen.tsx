@@ -6,7 +6,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {View, Text, StyleSheet, TextInput} from "react-native";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {OwnerStackParamList, RootStackParamList} from "@src/types";
+import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.ADD_MENU_ITEM>,

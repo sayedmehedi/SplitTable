@@ -20,7 +20,7 @@ import {
   OwnerStackParamList,
   OwnerBottomTabParamList,
   OwnerAccountStackParamList,
-} from "@src/types";
+} from "@src/navigation";
 
 const screenWidth = Dimensions.get("screen").width;
 

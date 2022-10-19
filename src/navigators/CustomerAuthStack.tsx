@@ -1,5 +1,5 @@
 import React from "react";
-import {CustomerAuthStackParamList} from "@src/types";
+import {CustomerAuthStackParamList} from "@src/navigation";
 import CommonStackHeader from "@components/CommonStackHeader";
 import {
   createStackNavigator,

@@ -1,6 +1,6 @@
 import React from "react";
 import {RouteProp} from "@react-navigation/native";
-import {CustomerBookingStackParamList} from "@src/types";
+import {CustomerBookingStackParamList} from "@src/navigation";
 import CommonStackHeader from "@components/CommonStackHeader";
 import {
   createStackNavigator,

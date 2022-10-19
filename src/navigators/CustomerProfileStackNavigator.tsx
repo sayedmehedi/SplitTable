@@ -1,5 +1,5 @@
 import React from "react";
-import {CustomerProfileStackParamList} from "@src/types";
+import {CustomerProfileStackParamList} from "@src/navigation";
 import {
   createStackNavigator,
   StackNavigationOptions,

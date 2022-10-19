@@ -1,5 +1,5 @@
 import React from "react";
-import {useTheme} from "@providers/ThemeProvider";
+import {useTheme} from "native-base";
 import {View, Text, TouchableOpacity} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
@@ -54,7 +54,7 @@ const SecondaryButton = ({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: theme.borderRadius,
+    borderRadius: 8,
     marginVertical: 5,
   };
 
@@ -101,7 +101,7 @@ const PrimaryButton = ({
     marginVertical: 5,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: theme.borderRadius,
+    borderRadius: 8,
   };
 
   if (width) {
@@ -159,7 +159,7 @@ const OutlinedButton = ({
           borderWidth: 1,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: theme.borderRadius,
+          borderRadius: 8,
         }}>
         <Text style={{color, fontSize: 16, fontWeight: "500"}}>{title}</Text>
       </View>

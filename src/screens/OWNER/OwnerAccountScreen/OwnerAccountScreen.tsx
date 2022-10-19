@@ -21,7 +21,7 @@ import {
   OwnerStackParamList,
   OwnerBottomTabParamList,
   OwnerAccountStackParamList,
-} from "@src/types";
+} from "@src/navigation";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<

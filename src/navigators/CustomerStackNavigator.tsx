@@ -1,5 +1,5 @@
 import React from "react";
-import {CustomerStackParamList} from "@src/types";
+import {CustomerStackParamList} from "@src/navigation";
 import CustomerAuthStack from "./CustomerAuthStack";
 import {RouteProp} from "@react-navigation/native";
 import {CustomerStackRoutes} from "@constants/routes";

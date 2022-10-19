@@ -22,7 +22,7 @@ import {
   CustomerAuthStackParamList,
   CustomerStackParamList,
   RootStackParamList,
-} from "@src/types";
+} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<

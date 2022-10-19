@@ -9,7 +9,7 @@ import {
   RootStackParamList,
   OwnerStackParamList,
   OwnerBottomTabParamList,
-} from "@src/types";
+} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<

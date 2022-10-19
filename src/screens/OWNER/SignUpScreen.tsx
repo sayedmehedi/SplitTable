@@ -4,7 +4,7 @@ import {View, TextInput, StyleSheet} from "react-native";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {OwnerStackParamList, RootStackParamList} from "@src/types";
+import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import {OwnerMainBottomTabRoutes, OwnerStackRoutes} from "@constants/routes";
 
 type Props = CompositeScreenProps<

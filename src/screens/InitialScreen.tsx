@@ -1,3 +1,13 @@
+import Button from "@components/Button";
+import {AuthType} from "@src/models";
+import {AuthTypes} from "@constants/auth";
+import {RootStackParamList} from "@src/navigation";
+import {RootStackRoutes} from "@constants/routes";
+import useAuthContext from "@hooks/useAuthContext";
+import SplashScreen from "react-native-splash-screen";
+import {useDimensions} from "@react-native-community/hooks";
+import type {StackScreenProps} from "@react-navigation/stack";
+import React, {useEffect, useState, useRef, useCallback} from "react";
 import {
   View,
   Text,
@@ -8,13 +18,6 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native";
-import Button from "@components/Button";
-import {RootStackParamList} from "@src/types";
-import {RootStackRoutes} from "@constants/routes";
-import SplashScreen from "react-native-splash-screen";
-import {useDimensions} from "@react-native-community/hooks";
-import type {StackScreenProps} from "@react-navigation/stack";
-import React, {useEffect, useState, useRef, useCallback} from "react";
 
 const sliderImage = [
   {
@@ -37,6 +40,7 @@ type Props = StackScreenProps<
 >;
 
 const InitialScreen = ({navigation}: Props) => {
+  const {setAuthType} = useAuthContext();
   const scrollRef = useRef<ScrollView>(null!);
   const {window: windowDimension} = useDimensions();
   const intervalIdRef = useRef<number | null>(null);
@@ -85,6 +89,10 @@ const InitialScreen = ({navigation}: Props) => {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+
+  const handleSetAuthType = (type: AuthType) => {
+    setAuthType(type);
+  };
 
   return (
     <>
@@ -158,14 +166,14 @@ const InitialScreen = ({navigation}: Props) => {
             variant={"solid"}
             title={"Customer"}
             color={"secondary"}
-            onPress={() => navigation.navigate("customer")}
+            onPress={handleSetAuthType.bind(null, AuthTypes.CUSTOMER)}
           />
           <Button
             width={290}
             color={"primary"}
             variant={"solid"}
             title={"Club/Bar Owner"}
-            onPress={() => navigation.navigate("owner")}
+            onPress={handleSetAuthType.bind(null, AuthTypes.OWNER)}
           />
         </View>
       </View>

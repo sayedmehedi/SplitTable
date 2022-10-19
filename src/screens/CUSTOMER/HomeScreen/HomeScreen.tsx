@@ -22,7 +22,7 @@ import {
   RootStackParamList,
   CustomerStackParamList,
   CustomerBottomTabParamList,
-} from "@src/types";
+} from "@src/navigation";
 import {
   Badge,
   Box,

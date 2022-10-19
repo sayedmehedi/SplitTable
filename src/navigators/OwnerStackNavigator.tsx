@@ -1,5 +1,5 @@
 import React from "react";
-import {OwnerStackParamList} from "@src/types";
+import {OwnerStackParamList} from "@src/navigation";
 import CommonStackHeader from "@components/CommonStackHeader";
 import SignUpScreen from "@screens/OWNER/SignUpScreen";
 import {RouteProp} from "@react-navigation/native";

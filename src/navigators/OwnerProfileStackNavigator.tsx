@@ -1,6 +1,6 @@
 import React from "react";
 import {RouteProp} from "@react-navigation/native";
-import {OwnerAccountStackParamList} from "@src/types";
+import {OwnerAccountStackParamList} from "@src/navigation";
 import {OwnerProfileStackRoutes} from "@constants/routes";
 import CommonStackHeader from "@components/CommonStackHeader";
 import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";

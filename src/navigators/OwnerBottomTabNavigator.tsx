@@ -2,7 +2,7 @@ import React from "react";
 import {useTheme} from "native-base";
 import {View, Text} from "react-native";
 import BookingIcon from "@assets/icons/booking.svg";
-import {OwnerBottomTabParamList} from "@src/types";
+import {OwnerBottomTabParamList} from "@src/navigation";
 import AccountIcon from "@assets/icons/account.svg";
 import {RouteProp} from "@react-navigation/native";
 import Entypo from "react-native-vector-icons/Entypo";

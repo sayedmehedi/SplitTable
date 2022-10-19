@@ -12,7 +12,7 @@ import {
   RootStackParamList,
   CustomerStackParamList,
   CustomerAuthStackParamList,
-} from "@src/types";
+} from "@src/navigation";
 import {Box, Image, Text, Button as NBButton} from "native-base";
 
 type Props = CompositeScreenProps<
