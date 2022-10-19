@@ -1,9 +1,11 @@
 import React from "react";
 import styles from "./styles";
-import EachNearByItem from "./EachNearByItem";
+import {ClubListItem, LocationItem} from "@src/models";
 import {productData} from "@constants/dummy";
+import EachNearByItem from "./EachNearByItem";
 import {TouchableOpacity} from "react-native";
-import EachClubItem from "@components/EachClubItem";
+import EachPopularClubItem from "@components/EachPopularClubItem";
+import LocationSwiper from "@components/LocationSwiper";
 import Feather from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import {StackScreenProps} from "@react-navigation/stack";
@@ -13,29 +15,28 @@ import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
+import {MapIcon} from "@constants/iconPath";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {MapIcon, LasVegas, Miami, Chicago} from "@constants/iconPath";
-
 import {
   RootStackParamList,
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
 import {
-  Badge,
   Box,
+  Badge,
+  Icon,
+  Text,
+  VStack,
   Button,
   Center,
   HStack,
-  Icon,
-  IconButton,
-  Pressable,
   ScrollView,
-  Text,
-  VStack,
+  IconButton,
 } from "native-base";
+import PopularClubsSwiper from "./PopularClubsSwiper";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -48,24 +49,6 @@ type Props = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
-const categories = [
-  {
-    id: 1,
-    Icon: LasVegas,
-    title: "Las Vegas",
-  },
-  {
-    id: 2,
-    Icon: Miami,
-    title: "Miami",
-  },
-  {
-    id: 3,
-    Icon: Chicago,
-    title: "Chicago",
-  },
-];
-
 const HomeScreen = ({navigation}: Props) => {
   const {
     window: {height},
@@ -74,6 +57,19 @@ const HomeScreen = ({navigation}: Props) => {
   const linearGradientStyle = React.useMemo(() => {
     return {height: height * 0.4};
   }, [height]);
+
+  const handleLocationPress = React.useCallback(
+    (item: LocationItem) =>
+      navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+        headerTitle: item.location,
+      }),
+    [navigation],
+  );
+
+  const handlePopularClubItemPress = React.useCallback(
+    (item: ClubListItem) => {},
+    [navigation],
+  );
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -163,36 +159,7 @@ const HomeScreen = ({navigation}: Props) => {
       </LinearGradient>
 
       <Box py={2}>
-        <ScrollView
-          horizontal
-          _contentContainerStyle={{
-            px: 9,
-          }}>
-          {categories.map((item, index) => {
-            return (
-              <Pressable
-                key={item.id}
-                mr={index === productData.length - 1 ? 0 : 3}
-                onPress={() =>
-                  navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
-                    headerTitle: item.title,
-                  })
-                }>
-                <Box m={1} alignItems={"center"}>
-                  <item.Icon />
-
-                  <Text
-                    color={"black"}
-                    mt={2}
-                    fontWeight={"600"}
-                    fontFamily={"roboto"}>
-                    {item.title}
-                  </Text>
-                </Box>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
+        <LocationSwiper onItemPress={handleLocationPress} />
       </Box>
 
       <Center w={"full"}>
@@ -223,23 +190,7 @@ const HomeScreen = ({navigation}: Props) => {
         </Box>
       </Center>
 
-      <ScrollView
-        horizontal
-        _contentContainerStyle={{
-          px: 9,
-        }}
-        showsHorizontalScrollIndicator={false}>
-        {productData.map((item, index) => {
-          return (
-            <Box
-              w={"72"}
-              key={item.id}
-              mr={index === productData.length - 1 ? 0 : 5}>
-              <EachClubItem item={item} />
-            </Box>
-          );
-        })}
-      </ScrollView>
+      <PopularClubsSwiper onItemPress={handlePopularClubItemPress} />
 
       <Center w={"full"}>
         <Box px={9} w={"full"}>

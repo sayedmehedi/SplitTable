@@ -1,22 +1,19 @@
-import Button from "@components/Button";
 import {AuthType} from "@src/models";
+import Button from "@components/Button";
 import {AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
-import {RootStackRoutes} from "@constants/routes";
+import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
 import useAuthContext from "@hooks/useAuthContext";
 import SplashScreen from "react-native-splash-screen";
 import {useDimensions} from "@react-native-community/hooks";
 import type {StackScreenProps} from "@react-navigation/stack";
 import React, {useEffect, useState, useRef, useCallback} from "react";
+import {VStack, StatusBar, ScrollView, Box, Text, Image} from "native-base";
 import {
-  View,
-  Text,
-  Image,
-  StatusBar,
-  ScrollView,
   ImageBackground,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  ScrollView as RNScrollView,
 } from "react-native";
 
 const sliderImage = [
@@ -41,7 +38,7 @@ type Props = StackScreenProps<
 
 const InitialScreen = ({navigation}: Props) => {
   const {setAuthType} = useAuthContext();
-  const scrollRef = useRef<ScrollView>(null!);
+  const scrollRef = useRef<RNScrollView>(null!);
   const {window: windowDimension} = useDimensions();
   const intervalIdRef = useRef<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -96,87 +93,93 @@ const InitialScreen = ({navigation}: Props) => {
 
   return (
     <>
-      <StatusBar translucent backgroundColor="transparent" />
-      <View style={{flex: 1}}>
+      <StatusBar translucent backgroundColor={"transparent"} />
+      <VStack flex={1}>
         <ScrollView
           horizontal
+          pagingEnabled
           ref={scrollRef}
-          onMomentumScrollEnd={setIndex}
-          showsHorizontalScrollIndicator={false}
-          onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
-          pagingEnabled>
+          onTouchStart={onTouchStart}
+          onMomentumScrollEnd={setIndex}
+          showsHorizontalScrollIndicator={false}>
           {sliderImage.map((value, key) => (
             <ImageBackground
               key={value.id}
               source={value.image}
               resizeMode={"cover"}
               style={{
-                width: windowDimension?.width * 1,
-                height: windowDimension?.height * 1,
+                width: windowDimension.width * 1,
+                height: windowDimension.height * 1,
               }}></ImageBackground>
           ))}
         </ScrollView>
-        <View
-          style={{
-            bottom: 30,
-            flexDirection: "row",
-            position: "absolute",
-            alignSelf: "center",
-          }}>
+        <Box
+          bottom={30}
+          flexDirection={"row"}
+          position={"absolute"}
+          alignSelf={"center"}>
           {sliderImage.map((val, key) => (
             <Text
+              mx={1}
               key={key}
-              style={
-                key === selectedIndex
-                  ? {color: "#FF3FCB", marginHorizontal: 5}
-                  : {color: "#402B8C", marginHorizontal: 5}
-              }>
+              color={key === selectedIndex ? "primary.300" : "secondary.300"}>
               ⬤
             </Text>
           ))}
-        </View>
+        </Box>
 
-        <View
-          style={{
-            backgroundColor: "rgba(0,0,0,0.3)",
-            position: "absolute",
-            flex: 1,
-            height: "100%",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
+        <Box
+          flex={1}
+          width={"full"}
+          height={"full"}
+          position={"absolute"}
+          alignItems={"center"}
+          bg={"rgba(0,0,0,0.3)"}
+          justifyContent={"center"}>
           <Image
+            width={160}
+            height={100}
+            alt={"bg-image"}
+            marginBottom={10}
             source={require("@assets/logo-white.png")}
-            style={{height: 100, width: 160, marginBottom: 10}}
           />
-          <View style={{marginVertical: 30, alignItems: "center"}}>
-            <Text style={{color: "white", fontSize: 18}}>Are You</Text>
-            <Text style={{color: "white", fontSize: 18, fontWeight: "bold"}}>
+          <Box my={8} alignItems={"center"}>
+            <Text color={"white"} fontSize={"lg"}>
+              Are You
+            </Text>
+            <Text color={"white"} fontSize={"lg"} fontWeight={"bold"}>
               Customer or Club/Bar Owner
             </Text>
-            <Text style={{color: "white", fontSize: 18}}>
+            <Text color={"white"} fontSize={"lg"}>
               Please Choose One!
             </Text>
-          </View>
+          </Box>
 
           <Button
             width={290}
             variant={"solid"}
             title={"Customer"}
             color={"secondary"}
-            onPress={handleSetAuthType.bind(null, AuthTypes.CUSTOMER)}
+            onPress={() => {
+              handleSetAuthType(AuthTypes.CUSTOMER);
+              // @ts-ignore
+              navigation.navigate(RootStackRoutes.CUSTOMER, {});
+            }}
           />
           <Button
             width={290}
             color={"primary"}
             variant={"solid"}
             title={"Club/Bar Owner"}
-            onPress={handleSetAuthType.bind(null, AuthTypes.OWNER)}
+            onPress={() => {
+              handleSetAuthType(AuthTypes.OWNER);
+              // @ts-ignore
+              navigation.navigate(RootStackRoutes.OWNER, {});
+            }}
           />
-        </View>
-      </View>
+        </Box>
+      </VStack>
     </>
   );
 };

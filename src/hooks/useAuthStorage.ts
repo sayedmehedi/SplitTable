@@ -47,7 +47,7 @@ function useAuthStorage() {
     },
     {
       onSuccess(_data, _variables, _context) {
-        queryClient.invalidateQueries([QueryKeys.AUTH_DATA]);
+        queryClient.refetchQueries([QueryKeys.AUTH_DATA]);
       },
     },
   );
@@ -73,13 +73,11 @@ function useAuthStorage() {
     isError: isAuthTypeSettingError,
   } = useMutation<void, Error, AuthType>(
     value => {
-      const jsonValue = JSON.stringify(value);
-
-      return setStorageAuthType(jsonValue);
+      return setStorageAuthType(value);
     },
     {
       onSuccess(_data, _variables, _context) {
-        queryClient.invalidateQueries([QueryKeys.AUTH_TYPE]);
+        queryClient.refetchQueries([QueryKeys.AUTH_TYPE]);
       },
     },
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import {container} from "@src/appEngine";
-import {LoginResponse, LoginRequest} from "@src/models";
+import {LogoutResponse} from "@src/models";
 import {IAuthService} from "@core/services/IAuthService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
@@ -14,17 +14,14 @@ const authService = container.get<IAuthService>(
   ServiceProviderTypes.AuthService,
 );
 
-const loginMutationFunction: MutationFunction<
-  LoginResponse,
-  LoginRequest
-> = async data => {
-  const response = await authService.login(data);
+const loginMutationFunction: MutationFunction<LogoutResponse> = async data => {
+  const response = await authService.logout();
 
   return response.data;
 };
 
 export default function useLoginMutation(
-  options?: UseMutationOptions<LoginResponse, ApplicationError, LoginRequest>,
+  options?: UseMutationOptions<LogoutResponse, ApplicationError>,
 ) {
   const optionsRef = React.useRef(options);
 
@@ -32,7 +29,7 @@ export default function useLoginMutation(
     optionsRef.current = options;
   }, [options]);
 
-  return useMutation<LoginResponse, ApplicationError, LoginRequest>(
+  return useMutation<LogoutResponse, ApplicationError>(
     loginMutationFunction,
     optionsRef.current,
   );

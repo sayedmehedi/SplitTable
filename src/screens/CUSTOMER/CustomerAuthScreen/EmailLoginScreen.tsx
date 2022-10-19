@@ -1,5 +1,20 @@
 import React from "react";
 import Button from "@components/Button";
+import useAuthContext from "@hooks/useAuthContext";
+import {ErrorMessage} from "@hookform/error-message";
+import {Controller, useForm} from "react-hook-form";
+import {addServerErrors} from "@utils/error-handling";
+import Entypo from "react-native-vector-icons/Entypo";
+import {StackScreenProps} from "@react-navigation/stack";
+import {CustomerAuthStackRoutes} from "@constants/routes";
+import useLoginMutation from "@hooks/auth/useLogoutMutation";
+import {CompositeScreenProps} from "@react-navigation/native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {
+  RootStackParamList,
+  CustomerStackParamList,
+  CustomerAuthStackParamList,
+} from "@src/navigation";
 import {
   Box,
   Icon,
@@ -8,21 +23,12 @@ import {
   VStack,
   Center,
   HStack,
+  Checkbox,
+  useToast,
   Container,
   FormControl,
   WarningOutlineIcon,
-  Checkbox,
 } from "native-base";
-import Entypo from "react-native-vector-icons/Entypo";
-import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerAuthStackRoutes} from "@constants/routes";
-import {CompositeScreenProps} from "@react-navigation/native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import {
-  CustomerAuthStackParamList,
-  CustomerStackParamList,
-  RootStackParamList,
-} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -36,9 +42,58 @@ type Props = CompositeScreenProps<
 >;
 
 const EmailLoginScreen = ({navigation}: Props) => {
-  const handleSignUp = () => {
-    navigation.navigate(CustomerAuthStackRoutes.EMAIL_VERIFICATION);
-  };
+  const toast = useToast();
+  const {setAuthData} = useAuthContext();
+
+  const {control, handleSubmit, setError} = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const {
+    mutate: login,
+    error: loginError,
+    isError: isLoginError,
+    isLoading: isLoggingIn,
+  } = useLoginMutation();
+
+  React.useEffect(() => {
+    if (isLoginError) {
+      toast.show({
+        bg: "error.600",
+        variant: "solid",
+        title: loginError.non_field_error,
+      });
+
+      addServerErrors(loginError.field_errors, setError);
+    }
+  }, [isLoginError, loginError, toast.show, setError]);
+
+  const handleSignin = handleSubmit(values => {
+    login(values, {
+      onSuccess(data) {
+        if ("success" in data) {
+          toast.show({
+            variant: "solid",
+            bg: "success.600",
+            title: data.success,
+          });
+
+          setAuthData(data.user);
+        }
+
+        if ("error" in data) {
+          toast.show({
+            bg: "error.600",
+            variant: "solid",
+            title: data.error,
+          });
+        }
+      },
+    });
+  });
 
   return (
     <Center h={"full"}>
@@ -68,54 +123,94 @@ const EmailLoginScreen = ({navigation}: Props) => {
             </Box>
 
             <VStack space={4} w={"full"}>
-              <FormControl bg={"gray.100"}>
-                <Input
-                  size={"lg"}
-                  isFullWidth
-                  rounded={"lg"}
-                  variant={"filled"}
-                  keyboardType={"email-address"}
-                  placeholder={"Enter Your Name Here"}
-                  InputLeftElement={
-                    <Icon
-                      size={5}
-                      ml={"5"}
-                      color={"black"}
-                      as={<Entypo name={"mail"} />}
+              <Controller
+                name={"email"}
+                rules={{
+                  required: "This field is required",
+                }}
+                control={control}
+                render={({field, formState: {errors}}) => (
+                  <FormControl isInvalid>
+                    <Input
+                      size={"lg"}
+                      isFullWidth
+                      rounded={"lg"}
+                      bg={"gray.100"}
+                      variant={"filled"}
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      keyboardType={"email-address"}
+                      placeholder={"Enter Your Name Here"}
+                      InputLeftElement={
+                        <Icon
+                          size={5}
+                          ml={"5"}
+                          color={"black"}
+                          as={<Entypo name={"mail"} />}
+                        />
+                      }
                     />
-                  }
-                />
 
-                <FormControl.ErrorMessage
-                  leftIcon={<WarningOutlineIcon size={"xs"} />}>
-                  Atleast 6 characters are required.
-                </FormControl.ErrorMessage>
-              </FormControl>
-
-              <FormControl>
-                <Input
-                  size={"lg"}
-                  rounded={"lg"}
-                  secureTextEntry
-                  variant={"filled"}
-                  placeholder={"Password"}
-                  InputLeftElement={
-                    <Icon
-                      size={5}
-                      ml={"5"}
-                      name={"lock"}
-                      color={"black"}
-                      as={FontAwesome5}
+                    <ErrorMessage
+                      errors={errors}
+                      name={"email"}
+                      render={({message}) => {
+                        return (
+                          <FormControl.ErrorMessage
+                            leftIcon={<WarningOutlineIcon size={"xs"} />}>
+                            {message}
+                          </FormControl.ErrorMessage>
+                        );
+                      }}
                     />
-                  }
-                  underlineColorAndroid={"transparent"}
-                />
+                  </FormControl>
+                )}
+              />
 
-                <FormControl.ErrorMessage
-                  leftIcon={<WarningOutlineIcon size={"xs"} />}>
-                  Atleast 6 characters are required.
-                </FormControl.ErrorMessage>
-              </FormControl>
+              <Controller
+                name={"password"}
+                rules={{
+                  required: "This field is required",
+                }}
+                control={control}
+                render={({field, formState: {errors}}) => (
+                  <FormControl isInvalid>
+                    <Input
+                      size={"lg"}
+                      rounded={"lg"}
+                      bg={"gray.100"}
+                      secureTextEntry
+                      variant={"filled"}
+                      value={field.value}
+                      placeholder={"Password"}
+                      onChangeText={field.onChange}
+                      InputLeftElement={
+                        <Icon
+                          size={5}
+                          ml={"5"}
+                          name={"lock"}
+                          color={"black"}
+                          as={FontAwesome5}
+                        />
+                      }
+                      underlineColorAndroid={"transparent"}
+                    />
+
+                    <ErrorMessage
+                      errors={errors}
+                      name={"password"}
+                      render={({message}) => {
+                        return (
+                          <FormControl.ErrorMessage
+                            leftIcon={<WarningOutlineIcon size={"xs"} />}>
+                            {message}
+                          </FormControl.ErrorMessage>
+                        );
+                      }}
+                    />
+                  </FormControl>
+                )}
+              />
             </VStack>
 
             <HStack
@@ -138,7 +233,10 @@ const EmailLoginScreen = ({navigation}: Props) => {
               color={"primary"}
               variant={"solid"}
               title={"Sign in"}
-              onPress={handleSignUp}
+              onPress={handleSignin}
+              touchableOpacityProps={{
+                disabled: isLoggingIn,
+              }}
             />
           </Box>
         </VStack>

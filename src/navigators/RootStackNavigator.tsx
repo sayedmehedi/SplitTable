@@ -1,22 +1,52 @@
 import React from "react";
+import {AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import {RootStackRoutes} from "@constants/routes";
 import InitialScreen from "@screens/InitialScreen";
+import {RouteProp} from "@react-navigation/native";
+import useAuthContext from "@hooks/useAuthContext";
 import OwnerStackNavigator from "./OwnerStackNavigator";
-import {createStackNavigator} from "@react-navigation/stack";
 import CustomerStackNavigator from "./CustomerStackNavigator";
 import {ROOT_STACK_NAVIGATOR_ID} from "@constants/navigators";
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from "@react-navigation/stack";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
+const globalScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<RootStackParamList, keyof RootStackParamList>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: false,
+};
+
 const RootStackNavigator = () => {
-  return (
-    <RootStack.Navigator
-      id={ROOT_STACK_NAVIGATOR_ID}
-      initialRouteName={RootStackRoutes.CUSTOMER}
-      screenOptions={{
-        headerShown: false,
-      }}>
+  const {authType, isAuthenticated} = useAuthContext();
+
+  const authenticatedScreens = (
+    <React.Fragment>
+      {authType === AuthTypes.CUSTOMER && (
+        <RootStack.Screen
+          name={RootStackRoutes.CUSTOMER}
+          component={CustomerStackNavigator}
+        />
+      )}
+
+      {authType === AuthTypes.OWNER && (
+        <RootStack.Screen
+          name={RootStackRoutes.OWNER}
+          component={OwnerStackNavigator}
+        />
+      )}
+    </React.Fragment>
+  );
+
+  const unauthenticatedScreens = (
+    <React.Fragment>
       <RootStack.Screen
         component={InitialScreen}
         name={RootStackRoutes.INITIAL}
@@ -31,6 +61,14 @@ const RootStackNavigator = () => {
         name={RootStackRoutes.OWNER}
         component={OwnerStackNavigator}
       />
+    </React.Fragment>
+  );
+
+  return (
+    <RootStack.Navigator
+      id={ROOT_STACK_NAVIGATOR_ID}
+      screenOptions={globalScreenOptions}>
+      {isAuthenticated ? authenticatedScreens : unauthenticatedScreens}
     </RootStack.Navigator>
   );
 };

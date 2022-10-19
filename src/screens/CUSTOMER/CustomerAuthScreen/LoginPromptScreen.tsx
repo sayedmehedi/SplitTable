@@ -9,13 +9,13 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import {useDimensions} from "@react-native-community/hooks";
 import {
   Box,
+  Text,
+  Icon,
+  Image,
   Button,
   HStack,
-  Icon,
-  IconButton,
-  Image,
-  Text,
   VStack,
+  IconButton,
 } from "native-base";
 import {
   RootStackParamList,

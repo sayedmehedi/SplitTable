@@ -1,7 +1,8 @@
 import React from "react";
-import {CustomerStackParamList} from "@src/navigation";
 import CustomerAuthStack from "./CustomerAuthStack";
 import {RouteProp} from "@react-navigation/native";
+import useAuthContext from "@hooks/useAuthContext";
+import {CustomerStackParamList} from "@src/navigation";
 import {CustomerStackRoutes} from "@constants/routes";
 import BookingStackNavigator from "./BookingStackNavigator";
 import CommonStackHeader from "@components/CommonStackHeader";
@@ -18,35 +19,48 @@ import {
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
 const CustomerStackNavigator = () => {
+  const {isAuthenticated} = useAuthContext();
+
   return (
     <CustomerStack.Navigator
       id={CUSTOMER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      <CustomerStack.Screen
-        component={OnboardingScreen}
-        name={CustomerStackRoutes.ONBOARDING}
-      />
-      <CustomerStack.Screen
-        component={CustomerAuthStack}
-        name={CustomerStackRoutes.CUSTOMER_AUTH}
-      />
-      <CustomerStack.Screen
-        component={CustomerBottomTabNavigator}
-        name={CustomerStackRoutes.CUSTOMER_MAIN_TAB}
-      />
-      <CustomerStack.Screen
-        component={ClubListScreen}
-        options={clubListScreenOptions}
-        name={CustomerStackRoutes.CLUB_LIST}
-      />
-      <CustomerStack.Screen
-        component={ClubDetailsScreen}
-        name={CustomerStackRoutes.CLUB_DETAILS}
-      />
-      <CustomerStack.Screen
-        component={BookingStackNavigator}
-        name={CustomerStackRoutes.BOOKING}
-      />
+      {!isAuthenticated ? (
+        <React.Fragment>
+          <CustomerStack.Screen
+            component={OnboardingScreen}
+            name={CustomerStackRoutes.ONBOARDING}
+          />
+
+          <CustomerStack.Screen
+            component={CustomerAuthStack}
+            name={CustomerStackRoutes.CUSTOMER_AUTH}
+          />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <CustomerStack.Screen
+            component={CustomerBottomTabNavigator}
+            name={CustomerStackRoutes.CUSTOMER_MAIN_TAB}
+          />
+
+          <CustomerStack.Screen
+            component={ClubListScreen}
+            options={clubListScreenOptions}
+            name={CustomerStackRoutes.CLUB_LIST}
+          />
+
+          <CustomerStack.Screen
+            component={ClubDetailsScreen}
+            name={CustomerStackRoutes.CLUB_DETAILS}
+          />
+
+          <CustomerStack.Screen
+            component={BookingStackNavigator}
+            name={CustomerStackRoutes.BOOKING}
+          />
+        </React.Fragment>
+      )}
     </CustomerStack.Navigator>
   );
 };

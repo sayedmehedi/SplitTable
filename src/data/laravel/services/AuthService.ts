@@ -1,8 +1,13 @@
 import {Axios, AxiosResponse} from "axios";
 import {inject, injectable} from "inversify";
-import {IAuthService} from "@core/services/AuthService";
+import {IAuthService} from "@core/services/IAuthService";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {LoginRequest, AuthData, GlobalAxiosRequestConfig} from "@src/models";
+import {
+  LoginRequest,
+  LoginResponse,
+  LogoutResponse,
+  GlobalAxiosRequestConfig,
+} from "@src/models";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -11,9 +16,13 @@ export class AuthService implements IAuthService {
 
   constructor() {}
 
+  logout(): Promise<AxiosResponse<LogoutResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.get<LogoutResponse>("logout");
+  }
+
   login(
     data: LoginRequest,
-  ): Promise<AxiosResponse<AuthData, GlobalAxiosRequestConfig>> {
-    return this._httpService.post("login", data);
+  ): Promise<AxiosResponse<LoginResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<LoginResponse>("login", data);
   }
 }

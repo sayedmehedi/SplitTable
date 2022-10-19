@@ -1,78 +1,85 @@
 import React from "react";
 import {useTheme} from "native-base";
-import {View, Text, TouchableOpacity} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import {
+  View,
+  Text,
+  TextProps,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native";
+import LinearGradient, {
+  LinearGradientProps,
+} from "react-native-linear-gradient";
 
-/**
- *
- * @typedef {Object} SolidBtnProps
- * @property {string} title
- * @property {number} width
- * @property {Function} onPress
- * @property {import("react-native").TouchableOpacityProps} touchableOpacityProps
- * @property {import("react-native-linear-gradient").LinearGradientProps} linearGradientProps
- * @property {import("react-native").TextProps} textProps
- */
+type SolidBtnProps = {
+  title: string;
+  textProps?: TextProps;
+  width?: number | string;
+  onPress: (e: any) => void;
+  linearGradientProps?: LinearGradientProps;
+  touchableOpacityProps?: TouchableOpacityProps;
+};
 
-/**
- *
- * @typedef {Object} OutlinedBtnProps
- * @property {string} title
- * @property {number} width
- * @property {string} color
- * @property {Function} onPress
- * @property {import("react-native").TouchableOpacityProps} touchableOpacityProps
- * @property {import("react-native").TextProps} textProps
- */
+type OutlinedBtnProps = {
+  title: string;
+  color: string;
+  textProps?: TextProps;
+  width?: number | string;
+  onPress: (e: any) => void;
+  touchableOpacityProps?: TouchableOpacityProps;
+};
 
-/**
- *
- * @typedef {Object} BtnProps
- * @property {string} title
- * @property {number} width
- * @property {Function} onPress
- * @property {import("react-native").TouchableOpacityProps} touchableOpacityProps
- * @property {import("react-native-linear-gradient").LinearGradientProps} linearGradientProps
- * @property {import("react-native").TextProps} textProps
- * @property {("solid" | "outlined")} variant
- * @property {("primary" | "secondary" | String)} color
- */
+type BtnProps = {
+  title: string;
+  textProps?: TextProps;
+  width?: number | string;
+  onPress: (e: any) => void;
+  variant: "solid" | "outlined";
+  color: "primary" | "secondary" | string;
+  linearGradientProps?: LinearGradientProps;
+  touchableOpacityProps?: TouchableOpacityProps;
+};
 
-/**
- * @param {SolidBtnProps} props
- */
 const SecondaryButton = ({
   width,
-  onPress,
   title,
-  touchableOpacityProps = {},
+  onPress,
   textProps = {},
-  linearGradientProps = {},
-}) => {
+  linearGradientProps,
+  touchableOpacityProps = {},
+}: SolidBtnProps) => {
   const theme = useTheme();
-  const defaultStyles = {
+  let defaultStyles: LinearGradientProps["style"] = {
     height: 50,
-    alignItems: "center",
-    justifyContent: "center",
     borderRadius: 8,
     marginVertical: 5,
+    alignItems: "center",
+    justifyContent: "center",
   };
 
-  if (width) {
+  if (!!width) {
     defaultStyles.width = width;
   }
 
+  if (
+    linearGradientProps?.style &&
+    typeof linearGradientProps?.style === "object"
+  ) {
+    defaultStyles = {
+      ...defaultStyles,
+      ...linearGradientProps.style,
+    };
+  }
+
   return (
-    <TouchableOpacity
-      //style={{marginVertical:5}}
-      onPress={onPress}
-      {...touchableOpacityProps}>
+    <TouchableOpacity onPress={onPress} {...touchableOpacityProps}>
       <LinearGradient
         end={{x: 1, y: 0}}
         start={{x: 0, y: 0}}
+        // @ts-ignore
         colors={["#00C1FF", "#402B8C"]}
-        {...linearGradientProps}
-        style={{...defaultStyles, ...(linearGradientProps.style ?? {})}}>
+        {...(linearGradientProps ?? {})}
+        style={defaultStyles}>
         <Text
           style={{color: theme.colors.white, fontSize: 16, fontWeight: "500"}}
           {...textProps}>
@@ -83,29 +90,36 @@ const SecondaryButton = ({
   );
 };
 
-/**
- * @param {SolidBtnProps} props
- */
 const PrimaryButton = ({
   width,
   title,
   onPress,
   textProps = {},
-  linearGradientProps = {},
+  linearGradientProps,
   touchableOpacityProps = {},
-}) => {
+}: SolidBtnProps) => {
   const theme = useTheme();
 
-  const defaultStyles = {
+  let defaultStyles: LinearGradientProps["style"] = {
     height: 50,
+    borderRadius: 8,
     marginVertical: 5,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 8,
   };
 
-  if (width) {
+  if (!!width) {
     defaultStyles.width = width;
+  }
+
+  if (
+    linearGradientProps?.style &&
+    typeof linearGradientProps?.style === "object"
+  ) {
+    defaultStyles = {
+      ...defaultStyles,
+      ...linearGradientProps.style,
+    };
   }
 
   return (
@@ -114,8 +128,9 @@ const PrimaryButton = ({
         end={{x: 1, y: 0}}
         start={{x: 0, y: 0}}
         {...linearGradientProps}
+        // @ts-ignore
         colors={["#402B8C", "#FF3FCB"]}
-        style={{...defaultStyles, ...(linearGradientProps.style ?? {})}}>
+        style={defaultStyles}>
         <Text
           style={{color: theme.colors.white, fontSize: 16, fontWeight: "500"}}
           {...textProps}>
@@ -126,32 +141,29 @@ const PrimaryButton = ({
   );
 };
 
-/**
- * @param {OutlinedBtnProps} props
- */
 const OutlinedButton = ({
-  color: propColor = "",
-  onPress,
   title,
-  touchableOpacityProps = {},
+  onPress,
   textProps = {},
-}) => {
+  color: propColor = "",
+  touchableOpacityProps = {},
+}: OutlinedBtnProps) => {
   const theme = useTheme();
   let color, borderColor;
 
   if (propColor === "primary") {
-    color = theme.colors.primary[900];
-    borderColor = theme.colors.primary[900];
+    color = theme.colors.primary[300];
+    borderColor = theme.colors.primary[300];
   } else if (propColor === "primary") {
-    color = theme.colors.secondary[900];
-    borderColor = theme.colors.secondary[900];
+    color = theme.colors.secondary[300];
+    borderColor = theme.colors.secondary[300];
   } else {
     color = propColor;
     borderColor = propColor;
   }
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} {...touchableOpacityProps}>
       <View
         style={{
           height: 50,
@@ -161,16 +173,15 @@ const OutlinedButton = ({
           justifyContent: "center",
           borderRadius: 8,
         }}>
-        <Text style={{color, fontSize: 16, fontWeight: "500"}}>{title}</Text>
+        <Text style={{color, fontSize: 16, fontWeight: "500"}} {...textProps}>
+          {title}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-/**
- * @param {BtnProps} props
- */
-const Button = props => {
+const Button = (props: BtnProps) => {
   if (props.color === "primary" && props.variant === "solid") {
     return <PrimaryButton {...props} />;
   }
