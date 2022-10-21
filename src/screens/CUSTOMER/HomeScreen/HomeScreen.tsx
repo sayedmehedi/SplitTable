@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./styles";
 import {MapIcon} from "@constants/iconPath";
 import {TouchableOpacity} from "react-native";
+import {ClubListTypes} from "@constants/club";
 import NearbyClubsList from "./NearbyClubsList";
 import PopularClubsSwiper from "./PopularClubsSwiper";
 import LocationSwiper from "@components/LocationSwiper";
@@ -32,8 +33,10 @@ import {
   Button,
   Center,
   HStack,
+  StatusBar,
   ScrollView,
   IconButton,
+  useTheme,
 } from "native-base";
 
 type Props = CompositeScreenProps<
@@ -52,36 +55,77 @@ const HomeScreen = ({navigation}: Props) => {
     window: {height},
   } = useDimensions();
 
+  const theme = useTheme();
+
   const linearGradientStyle = React.useMemo(() => {
     return {height: height * 0.4};
   }, [height]);
 
-  const handleLocationPress = React.useCallback(
-    (item: LocationItem) => {
-      navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
-        headerTitle: item.location,
+  const handlePopularClubItemPress = React.useCallback(
+    (item: ClubListItem) => {
+      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
+        clubId: item.id,
       });
     },
     [navigation],
   );
 
-  const handlePopularClubItemPress = React.useCallback(
-    (item: ClubListItem) => {},
-    [navigation],
-  );
-
   const handleRecentVisitClubPress = React.useCallback(
-    (item: ClubListItem) => {},
+    (item: ClubListItem) => {
+      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
+        clubId: item.id,
+      });
+    },
     [navigation],
   );
 
   const handleNearbyClubPress = React.useCallback(
-    (item: NearbyClubListItem) => {},
+    (item: NearbyClubListItem) => {
+      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
+        clubId: item.id,
+      });
+    },
     [navigation],
   );
 
+  const handleLocationItemPress = React.useCallback(
+    (item: LocationItem) => {
+      navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+        locationId: item.id,
+        headerTitle: item.location,
+        listType: ClubListTypes.BY_LOCATION,
+      });
+    },
+    [navigation],
+  );
+
+  const handlePopularClubSeeAll = React.useCallback(() => {
+    navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+      headerTitle: "Popular Clubs/Bars",
+      listType: ClubListTypes.POPULAR,
+    });
+  }, [navigation]);
+
+  const handleRecentVisitClubSeeAll = React.useCallback(() => {
+    navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+      headerTitle: "Your Recent Visits",
+      listType: ClubListTypes.RECENT_VISIT,
+    });
+  }, [navigation]);
+
+  const handleNearbyClubSeeAll = React.useCallback(() => {
+    navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+      headerTitle: "Near by You",
+      listType: ClubListTypes.NEAR,
+    });
+  }, [navigation]);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      <StatusBar
+        backgroundColor={theme.colors.secondary[600]}
+        barStyle={"light-content"}
+      />
       <LinearGradient
         end={{x: 0, y: 0}}
         start={{x: 0, y: 1}}
@@ -168,7 +212,7 @@ const HomeScreen = ({navigation}: Props) => {
       </LinearGradient>
 
       <Box py={2}>
-        <LocationSwiper onItemPress={handleLocationPress} />
+        <LocationSwiper onItemPress={handleLocationItemPress} />
       </Box>
 
       <Center w={"full"}>
@@ -190,6 +234,7 @@ const HomeScreen = ({navigation}: Props) => {
               variant={"unstyled"}
               fontFamily={"satoshi"}
               colorScheme={"transparent"}
+              onPress={handlePopularClubSeeAll}
               _text={{
                 color: "#262B2E",
               }}>
@@ -221,6 +266,7 @@ const HomeScreen = ({navigation}: Props) => {
               variant={"unstyled"}
               fontFamily={"satoshi"}
               colorScheme={"transparent"}
+              onPress={handleNearbyClubSeeAll}
               _text={{
                 color: "#262B2E",
               }}>
@@ -252,6 +298,7 @@ const HomeScreen = ({navigation}: Props) => {
               variant={"unstyled"}
               fontFamily={"satoshi"}
               colorScheme={"transparent"}
+              onPress={handleRecentVisitClubSeeAll}
               _text={{
                 color: "#262B2E",
               }}>

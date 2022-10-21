@@ -6,13 +6,19 @@ import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {GetPopularClubsReposne, GetPopularClubsQueryParams} from "@src/models";
-import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
+import {
+  QueryFunction,
+  useInfiniteQuery,
+  QueryFunctionContext,
+  UseInfiniteQueryOptions,
+} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
   typeof QueryKeys.CLUB,
   "LIST",
+  "infinite",
   "popular",
   GetPopularClubsQueryParams,
 ];
@@ -20,19 +26,24 @@ type QueryKey = [
 const queryFn: QueryFunction<GetPopularClubsReposne, QueryKey> = ({
   signal,
   queryKey,
-}) => {
-  const queryParams = queryKey[3];
+  pageParam,
+}: QueryFunctionContext<QueryKey, GetPopularClubsQueryParams>) => {
+  const queryParams = {
+    ...queryKey[4],
+    ...(pageParam ?? {}),
+  };
 
   return handleCancelableAxiosPromise(service.getPopularClubs(queryParams), {
     signal,
   });
 };
 
-export default function useGetPopularClubsQuery(
+export default function useInfiniteGetPopularClubsQuery(
   queryParams: GetPopularClubsQueryParams = {},
-  options?: UseQueryOptions<
+  options?: UseInfiniteQueryOptions<
     GetPopularClubsReposne,
     ApplicationError,
+    GetPopularClubsReposne,
     GetPopularClubsReposne,
     QueryKey
   >,
@@ -43,13 +54,13 @@ export default function useGetPopularClubsQuery(
     optionsRef.current = options;
   }, [options]);
 
-  return useQuery<
+  return useInfiniteQuery<
     GetPopularClubsReposne,
     ApplicationError,
     GetPopularClubsReposne,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "popular", queryParams],
+    [QueryKeys.CLUB, "LIST", "infinite", "popular", queryParams],
     queryFn,
     optionsRef.current,
   );

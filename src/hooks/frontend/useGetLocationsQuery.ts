@@ -5,16 +5,18 @@ import {QueryKeys} from "@constants/query-keys";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {IFrontendService} from "@core/services/IFrontendService";
+import {ILocationService} from "@core/services/ILocationService";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
-const service = container.get<IFrontendService>(
-  ServiceProviderTypes.FrontendService,
+const service = container.get<ILocationService>(
+  ServiceProviderTypes.LocationService,
 );
+
+type QueryKey = [typeof QueryKeys.LOCATION, "LIST"];
 
 const getLocationsQueryFunction: QueryFunction<
   GetLocationsReposne,
-  [typeof QueryKeys.LOCATION, "LIST"]
+  QueryKey
 > = ({signal}) => {
   return handleCancelableAxiosPromise(service.getLocations(), {
     signal,
@@ -26,7 +28,7 @@ export default function useGetLocationsQuery(
     GetLocationsReposne,
     ApplicationError,
     GetLocationsReposne,
-    [typeof QueryKeys.LOCATION, "LIST"]
+    QueryKey
   >,
 ) {
   const optionsRef = React.useRef(options);
@@ -39,7 +41,7 @@ export default function useGetLocationsQuery(
     GetLocationsReposne,
     ApplicationError,
     GetLocationsReposne,
-    [typeof QueryKeys.LOCATION, "LIST"]
+    QueryKey
   >(
     [QueryKeys.LOCATION, "LIST"],
     getLocationsQueryFunction,

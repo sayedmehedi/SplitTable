@@ -1,28 +1,40 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
-import {handleCancelableAxiosPromise} from "@utils/http";
 import {IClubService} from "@core/services/IClubService";
+import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {
   GetRecentViewedClubsReposne,
   GetRecentViewedClubsQueryParams,
 } from "@src/models";
-import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
+import {
+  QueryFunction,
+  useInfiniteQuery,
+  QueryFunctionContext,
+  UseInfiniteQueryOptions,
+} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
-const queryFn: QueryFunction<
-  GetRecentViewedClubsReposne,
-  [
-    typeof QueryKeys.CLUB,
-    "LIST",
-    "recent-viewed",
-    GetRecentViewedClubsQueryParams,
-  ]
-> = ({signal, queryKey}) => {
-  const queryParams = queryKey[3];
+type QueryKey = [
+  typeof QueryKeys.CLUB,
+  "LIST",
+  "infinite",
+  "recent-viewed",
+  GetRecentViewedClubsQueryParams,
+];
+
+const queryFn: QueryFunction<GetRecentViewedClubsReposne, QueryKey> = ({
+  signal,
+  queryKey,
+  pageParam,
+}: QueryFunctionContext<QueryKey, GetRecentViewedClubsQueryParams>) => {
+  const queryParams = {
+    ...queryKey[4],
+    ...(pageParam ?? {}),
+  };
 
   return handleCancelableAxiosPromise(
     service.getRecentViewedClubs(queryParams),
@@ -32,18 +44,14 @@ const queryFn: QueryFunction<
   );
 };
 
-export default function useGetRecentViewedClubsQuery(
+export default function useInfiniteGetRecentViewedClubsQuery(
   queryParams: GetRecentViewedClubsQueryParams = {},
-  options?: UseQueryOptions<
+  options?: UseInfiniteQueryOptions<
     GetRecentViewedClubsReposne,
     ApplicationError,
     GetRecentViewedClubsReposne,
-    [
-      typeof QueryKeys.CLUB,
-      "LIST",
-      "recent-viewed",
-      GetRecentViewedClubsQueryParams,
-    ]
+    GetRecentViewedClubsReposne,
+    QueryKey
   >,
 ) {
   const optionsRef = React.useRef(options);
@@ -52,18 +60,13 @@ export default function useGetRecentViewedClubsQuery(
     optionsRef.current = options;
   }, [options]);
 
-  return useQuery<
+  return useInfiniteQuery<
     GetRecentViewedClubsReposne,
     ApplicationError,
     GetRecentViewedClubsReposne,
-    [
-      typeof QueryKeys.CLUB,
-      "LIST",
-      "recent-viewed",
-      GetRecentViewedClubsQueryParams,
-    ]
+    QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "recent-viewed", queryParams],
+    [QueryKeys.CLUB, "LIST", "infinite", "recent-viewed", queryParams],
     queryFn,
     optionsRef.current,
   );

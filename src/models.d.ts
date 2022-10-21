@@ -142,3 +142,36 @@ export interface PaginationQueryParams {
   page?: number;
   limit?: number;
 }
+
+export interface ClubByLocationItem {
+  id: number;
+  name: string;
+  image: string;
+  distance: string;
+  location: string;
+  avg_rating: number;
+  opening_time: string;
+  closing_time: string;
+  total_reviews: number;
+  is_favourite: boolean;
+}
+
+export type GetClubsByLocationResponse = {
+  clubs: SimplePaginatedResponse<ClubByLocationItem>;
+};
+
+export type GetClubsByLocationQueryParams = PaginationQueryParams & {
+  locationId: number;
+};
+
+export type GetPopularClubsQueryParams = PaginationQueryParams & {
+  search?: string;
+};
+
+export type GetNearByClubsQueryParams = PaginationQueryParams & {
+  search?: string;
+};
+
+export type GetRecentViewedClubsQueryParams = PaginationQueryParams & {
+  search?: string;
+};

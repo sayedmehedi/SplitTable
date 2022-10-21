@@ -17,7 +17,7 @@ const EachNearByItem = ({item, onPress}: Props) => {
 
   return (
     <Pressable onPress={handlePress}>
-      <HStack my={2} h={"24"} w={"full"}>
+      <HStack my={2} h={"24"} w={"full"} space={"5"}>
         <Image
           h={"24"}
           w={"24"}
@@ -25,8 +25,12 @@ const EachNearByItem = ({item, onPress}: Props) => {
           alt={"recent-club"}
           source={{uri: item.image}}
         />
-        <Box pl={2} justifyContent={"space-between"}>
-          <Text fontSize={"lg"} color={"#262B2E"} fontFamily={"satoshi"}>
+        <Box justifyContent={"space-between"}>
+          <Text
+            fontSize={"lg"}
+            color={"#262B2E"}
+            fontWeight={"semibold"}
+            fontFamily={"satoshi"}>
             {truncate(item.name)}
           </Text>
           <HStack alignItems={"center"}>

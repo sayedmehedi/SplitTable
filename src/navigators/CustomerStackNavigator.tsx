@@ -6,11 +6,11 @@ import {CustomerStackParamList} from "@src/navigation";
 import {CustomerStackRoutes} from "@constants/routes";
 import BookingStackNavigator from "./BookingStackNavigator";
 import CommonStackHeader from "@components/CommonStackHeader";
-import ClubListScreen from "@screens/CUSTOMER/ClubListScreen";
 import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
+import ClubListScreen from "@screens/CUSTOMER/ClubListScreen/ClubListScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,

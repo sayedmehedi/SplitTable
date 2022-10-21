@@ -43,7 +43,7 @@ const CommonStackHeader = (props: StackHeaderProps) => {
           canGoBack={navigation.canGoBack()}
           backImage={() => (
             <Entypo
-              size={30}
+              size={20}
               name={"chevron-thin-left"}
               color={theme.colors.black}
             />

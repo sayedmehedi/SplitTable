@@ -13,9 +13,9 @@ type Props = {
 };
 
 const EachPopularClubItem = ({item, onPress}: Props) => {
-  const handlePress = () => {
+  const handlePress = React.useCallback(() => {
     onPress(item);
-  };
+  }, [onPress, item]);
 
   return (
     <Pressable

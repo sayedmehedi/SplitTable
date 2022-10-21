@@ -1,34 +1,61 @@
 import {Axios, AxiosResponse} from "axios";
 import {inject, injectable} from "inversify";
 import {CancelablePromise} from "cancelable-promise";
+import {IClubService} from "@core/services/IClubService";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {IFrontendService} from "@core/services/IFrontendService";
 import {
-  GetLocationsReposne,
   PaginationQueryParams,
   GetNearByClubsReposne,
   GetPopularClubsReposne,
   GlobalAxiosRequestConfig,
+  GetClubsByLocationResponse,
   GetRecentViewedClubsReposne,
+  GetClubsByLocationQueryParams,
+  GetPopularClubsQueryParams,
+  GetNearByClubsQueryParams,
 } from "@src/models";
 
 @injectable()
-export class FrontendService implements IFrontendService {
+export class ClubService implements IClubService {
   @inject(ServiceProviderTypes.HttpClient)
   private readonly _httpService!: Axios;
 
   constructor() {}
+  getClubsByLocation({
+    locationId,
+    ...params
+  }: GetClubsByLocationQueryParams): CancelablePromise<
+    AxiosResponse<GetClubsByLocationResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetClubsByLocationResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetClubsByLocationResponse>(`clubs-by-location/${locationId}`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   getPopularClubs(
-    params: PaginationQueryParams,
+    params: GetPopularClubsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
   > {
+    const controller = new AbortController();
+
     return new CancelablePromise<
       AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
-      const controller = new AbortController();
-
       onCancel(() => {
         controller.abort();
       });
@@ -48,11 +75,11 @@ export class FrontendService implements IFrontendService {
   ): CancelablePromise<
     AxiosResponse<GetRecentViewedClubsReposne, GlobalAxiosRequestConfig>
   > {
+    const controller = new AbortController();
+
     return new CancelablePromise<
       AxiosResponse<GetRecentViewedClubsReposne, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
-      const controller = new AbortController();
-
       onCancel(() => {
         controller.abort();
       });
@@ -68,15 +95,15 @@ export class FrontendService implements IFrontendService {
   }
 
   getNearByClubs(
-    params: PaginationQueryParams,
+    params: GetNearByClubsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetNearByClubsReposne, GlobalAxiosRequestConfig>
   > {
+    const controller = new AbortController();
+
     return new CancelablePromise<
       AxiosResponse<GetNearByClubsReposne, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
-      const controller = new AbortController();
-
       onCancel(() => {
         controller.abort();
       });
@@ -84,27 +111,6 @@ export class FrontendService implements IFrontendService {
       this._httpService
         .get<GetNearByClubsReposne>("nearby-clubs", {
           params,
-          signal: controller.signal,
-        })
-        .then(resolve)
-        .catch(reject);
-    });
-  }
-
-  getLocations(): CancelablePromise<
-    AxiosResponse<GetLocationsReposne, GlobalAxiosRequestConfig>
-  > {
-    return new CancelablePromise<
-      AxiosResponse<GetLocationsReposne, GlobalAxiosRequestConfig>
-    >((resolve, reject, onCancel) => {
-      const controller = new AbortController();
-
-      onCancel(() => {
-        controller.abort();
-      });
-
-      this._httpService
-        .get<GetLocationsReposne>("home-locations", {
           signal: controller.signal,
         })
         .then(resolve)

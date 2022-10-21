@@ -5,7 +5,10 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetPopularClubsReposne, GetPopularClubsQueryParams} from "@src/models";
+import {
+  GetClubsByLocationResponse,
+  GetClubsByLocationQueryParams,
+} from "@src/models";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
@@ -13,27 +16,27 @@ const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 type QueryKey = [
   typeof QueryKeys.CLUB,
   "LIST",
-  "popular",
-  GetPopularClubsQueryParams,
+  "by-location",
+  GetClubsByLocationQueryParams,
 ];
 
-const queryFn: QueryFunction<GetPopularClubsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetClubsByLocationResponse, QueryKey> = ({
   signal,
   queryKey,
 }) => {
   const queryParams = queryKey[3];
 
-  return handleCancelableAxiosPromise(service.getPopularClubs(queryParams), {
+  return handleCancelableAxiosPromise(service.getClubsByLocation(queryParams), {
     signal,
   });
 };
 
-export default function useGetPopularClubsQuery(
-  queryParams: GetPopularClubsQueryParams = {},
+export default function useGetClubsByLocationQuery(
+  queryParams: GetClubsByLocationQueryParams,
   options?: UseQueryOptions<
-    GetPopularClubsReposne,
+    GetClubsByLocationResponse,
     ApplicationError,
-    GetPopularClubsReposne,
+    GetClubsByLocationResponse,
     QueryKey
   >,
 ) {
@@ -44,12 +47,12 @@ export default function useGetPopularClubsQuery(
   }, [options]);
 
   return useQuery<
-    GetPopularClubsReposne,
+    GetClubsByLocationResponse,
     ApplicationError,
-    GetPopularClubsReposne,
+    GetClubsByLocationResponse,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "popular", queryParams],
+    [QueryKeys.CLUB, "LIST", "by-location", queryParams],
     queryFn,
     optionsRef.current,
   );

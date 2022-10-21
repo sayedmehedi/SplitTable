@@ -1,34 +1,39 @@
 import {AxiosResponse} from "axios";
+import CancelablePromise from "cancelable-promise";
 import {
-  GetLocationsReposne,
   GetNearByClubsReposne,
-  PaginationQueryParams,
   GetPopularClubsReposne,
   GlobalAxiosRequestConfig,
+  GetPopularClubsQueryParams,
   GetRecentViewedClubsReposne,
+  GetNearByClubsQueryParams,
+  GetClubsByLocationResponse,
+  GetClubsByLocationQueryParams,
+  GetRecentViewedClubsQueryParams,
 } from "@src/models";
-import CancelablePromise from "cancelable-promise";
 
-export interface IFrontendService {
-  getLocations(): CancelablePromise<
-    AxiosResponse<GetLocationsReposne, GlobalAxiosRequestConfig>
-  >;
-
+export interface IClubService {
   getPopularClubs(
-    params: PaginationQueryParams,
+    params: GetPopularClubsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
   >;
 
   getRecentViewedClubs(
-    params: PaginationQueryParams,
+    params: GetRecentViewedClubsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetRecentViewedClubsReposne, GlobalAxiosRequestConfig>
   >;
 
   getNearByClubs(
-    params: PaginationQueryParams,
+    params: GetNearByClubsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetNearByClubsReposne, GlobalAxiosRequestConfig>
+  >;
+
+  getClubsByLocation(
+    params: GetClubsByLocationQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetClubsByLocationResponse, GlobalAxiosRequestConfig>
   >;
 }

@@ -17,7 +17,7 @@ export default function NearbyClubsList({onItemPress}: Props) {
       {isNearbyClubsLoading
         ? new Array(5).fill(1).map((_, i) => (
             <Center w={"full"} key={i}>
-              <HStack w={"full"} h={"32"} space={"2"} rounded={"md"}>
+              <HStack w={"full"} h={"32"} space={"5"} rounded={"md"}>
                 <Skeleton
                   h={"24"}
                   w={"24"}

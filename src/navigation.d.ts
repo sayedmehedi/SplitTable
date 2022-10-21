@@ -10,6 +10,7 @@ import {
   CustomerMainBottomTabRoutes,
   CustomerBookingStackRoutes,
 } from "@constants/routes";
+import {ClubListTypes} from "@constants/club";
 
 type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.SIGNIN]: undefined;
@@ -46,12 +47,37 @@ type CustomerBottomTabParamList = {
   [CustomerMainBottomTabRoutes.PROFILE_STACK]: NavigatorScreenParams<CustomerProfileStackParamList>;
 };
 
+type ClubListScreenCommon = {
+  headerTitle: string;
+};
+
+type ClubListScreenTypeByLocation = ClubListScreenCommon & {
+  locationId: number;
+  listType: typeof ClubListTypes["BY_LOCATION"];
+};
+
+type ClubListScreenTypeSearchResult = ClubListScreenCommon & {
+  listType: typeof ClubListTypes["SEARCH_RESULT"];
+  searchTerm: string;
+};
+
+type ClubListScreenTypeRest = ClubListScreenCommon & {
+  listType:
+    | typeof ClubListTypes["ALL"]
+    | typeof ClubListTypes["NEAR"]
+    | typeof ClubListTypes["POPULAR"]
+    | typeof ClubListTypes["RECENT_VISIT"];
+};
+
 type CustomerStackParamList = {
-  [CustomerStackRoutes.CLUB_LIST]: {
-    headerTitle: string;
-  };
+  [CustomerStackRoutes.CLUB_LIST]:
+    | ClubListScreenTypeByLocation
+    | ClubListScreenTypeSearchResult
+    | ClubListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
-  [CustomerStackRoutes.CLUB_DETAILS]: undefined;
+  [CustomerStackRoutes.CLUB_DETAILS]: {
+    clubId: number;
+  };
   [CustomerStackRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
   [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
