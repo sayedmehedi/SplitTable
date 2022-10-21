@@ -1,101 +1,99 @@
 import React from "react";
-import {MapIcon} from "@constants/iconPath";
+import truncate from "lodash.truncate";
+import {ClubListItem} from "@src/models";
+import {Box, HStack, Pressable, Text} from "native-base";
+import {MapIcon, Clock} from "@constants/iconPath";
+import {ImageBackground, StyleSheet} from "react-native";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {View, Text, ImageBackground, StyleSheet} from "react-native";
 
-const EachRecentVisitsItem = ({item}) => {
+type Props = {
+  item: ClubListItem;
+  onPress: (item: ClubListItem) => void;
+};
+
+const EachRecentVisitsItem = ({item, onPress}: Props) => {
+  const handlePress = React.useCallback(() => {
+    onPress(item);
+  }, [item, onPress]);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        height: 238,
-        elevation: 15,
-        borderRadius: 15,
-        shadowColor: "#D6D6D6",
-        backgroundColor: "white",
-      }}>
-      <View style={{flex: 1.5}}>
-        <ImageBackground
-          source={item.uri}
-          imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
-          style={{height: "100%", width: "100%"}}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: 10,
-            }}>
-            <View
-              style={{
-                flexDirection: "row",
-                height: 24,
-                width: 76,
-                backgroundColor: "white",
-                borderRadius: 15,
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-              <Text style={{color: "black"}}>4.5</Text>
-              <Fontisto name="star" color={"#FFC529"} size={16} />
-              <Text style={{color: "black"}}>(20)</Text>
-            </View>
+    <Pressable onPress={handlePress}>
+      <Box flex={1} height={238} shadow={"3"} borderRadius={15} bg={"white"}>
+        <Box flex={1.5}>
+          <ImageBackground
+            source={{uri: item.image}}
+            style={styles.ImageBackground}
+            imageStyle={styles.ImageBackgroundImg}>
+            <HStack
+              p={2}
+              alignItems={"center"}
+              justifyContent={"space-between"}>
+              <HStack
+                p={1}
+                bg={"white"}
+                rounded={"full"}
+                alignItems={"center"}
+                justifyContent={"center"}>
+                <Text color={"black"}>{item.avg_rating}</Text>
+                <Fontisto name="star" color={"#FFC529"} size={16} />
+                <Text color={"black"}>({item.total_reviews})</Text>
+              </HStack>
 
-            <AntDesign name="hearto" size={22} color={"white"} />
-          </View>
-        </ImageBackground>
-      </View>
+              {item.is_favourite ? (
+                <AntDesign name="heart" size={22} color={"white"} />
+              ) : (
+                <AntDesign name="hearto" size={22} color={"white"} />
+              )}
+            </HStack>
+          </ImageBackground>
+        </Box>
 
-      <View
-        style={{flex: 1, justifyContent: "space-around", paddingHorizontal: 8}}>
-        <Text
-          style={{
-            fontFamily: "Satoshi-Medium",
-            color: "#262B2E",
-            fontSize: 18,
-          }}>
-          {item.name}
-        </Text>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
-          <MapIcon height={10} width={10} style={{color: "#402B8C"}} />
+        <Box flex={1} px={2} justifyContent={"space-around"}>
           <Text
-            style={{
-              color: "#8A8D9F",
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
-              marginLeft: 5,
-            }}>
-            {item.location}
+            fontSize={"lg"}
+            color={"#262B2E"}
+            fontWeight={"bold"}
+            fontFamily={"satoshi"}>
+            {truncate(item.name)}
           </Text>
-        </View>
+          <HStack alignItems={"center"}>
+            <MapIcon height={10} width={10} color={"#402B8C"} />
+            <Text
+              ml={1}
+              fontSize={"sm"}
+              color={"#8A8D9F"}
+              fontFamily={"satoshi"}
+              fontWeight={"semibold"}>
+              {truncate(item.location)}
+            </Text>
+          </HStack>
 
-        <View style={{flexDirection: "row", alignItems: "center"}}>
-          <MapIcon height={10} width={10} style={{color: "#402B8C"}} />
-          <Text
-            style={{
-              color: "#8A8D9F",
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
-              marginLeft: 5,
-            }}>
-            {item.location}
-          </Text>
-        </View>
-      </View>
-    </View>
+          <HStack alignItems={"center"} pb={2}>
+            <Clock height={10} width={10} color={"#402B8C"} />
+            <Text
+              ml={1}
+              fontSize={"sm"}
+              color={"#8A8D9F"}
+              fontFamily={"satoshi"}
+              fontWeight={"semibold"}>
+              Open: {item.opening_time} - {item.closing_time}
+            </Text>
+          </HStack>
+        </Box>
+      </Box>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  menuContainer: {
-    width: 54,
-    height: 22,
-    backgroundColor: "#FDF2EE",
-    borderRadius: 3,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 8,
+  ImageBackground: {
+    height: "100%",
+    width: "100%",
+  },
+  ImageBackgroundImg: {
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
 });
 

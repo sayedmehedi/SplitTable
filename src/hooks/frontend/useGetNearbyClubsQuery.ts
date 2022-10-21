@@ -1,6 +1,7 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
+import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {IFrontendService} from "@core/services/IFrontendService";
@@ -14,16 +15,12 @@ const service = container.get<IFrontendService>(
 const queryFn: QueryFunction<
   GetNearByClubsReposne,
   [typeof QueryKeys.CLUB, "LIST", "nearby", PaginationQueryParams]
-> = async ({signal, queryKey}) => {
+> = ({signal, queryKey}) => {
   const queryParams = queryKey[3];
 
-  const params = {
-    ...queryParams,
+  return handleCancelableAxiosPromise(service.getNearByClubs(queryParams), {
     signal,
-  };
-  const response = await service.getNearByClubs(params);
-
-  return response.data;
+  });
 };
 
 export default function useGetNearbyClubsQuery(

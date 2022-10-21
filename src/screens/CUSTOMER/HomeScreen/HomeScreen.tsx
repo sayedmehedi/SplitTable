@@ -1,24 +1,23 @@
 import React from "react";
 import styles from "./styles";
-import {ClubListItem, LocationItem} from "@src/models";
-import {productData} from "@constants/dummy";
-import EachNearByItem from "./EachNearByItem";
+import {MapIcon} from "@constants/iconPath";
 import {TouchableOpacity} from "react-native";
-import EachPopularClubItem from "@components/EachPopularClubItem";
+import NearbyClubsList from "./NearbyClubsList";
+import PopularClubsSwiper from "./PopularClubsSwiper";
 import LocationSwiper from "@components/LocationSwiper";
 import Feather from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import {StackScreenProps} from "@react-navigation/stack";
-import EachRecentVisitsItem from "./EachRecentVisitsItem";
 import {useDimensions} from "@react-native-community/hooks";
+import RecentVisitClubsSwiper from "./RecentVisitClubsSwiper";
+import {CompositeScreenProps} from "@react-navigation/native";
+import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {ClubListItem, LocationItem, NearbyClubListItem} from "@src/models";
 import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
-import {MapIcon} from "@constants/iconPath";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {
   RootStackParamList,
   CustomerStackParamList,
@@ -36,7 +35,6 @@ import {
   ScrollView,
   IconButton,
 } from "native-base";
-import PopularClubsSwiper from "./PopularClubsSwiper";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -59,15 +57,26 @@ const HomeScreen = ({navigation}: Props) => {
   }, [height]);
 
   const handleLocationPress = React.useCallback(
-    (item: LocationItem) =>
+    (item: LocationItem) => {
       navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
         headerTitle: item.location,
-      }),
+      });
+    },
     [navigation],
   );
 
   const handlePopularClubItemPress = React.useCallback(
     (item: ClubListItem) => {},
+    [navigation],
+  );
+
+  const handleRecentVisitClubPress = React.useCallback(
+    (item: ClubListItem) => {},
+    [navigation],
+  );
+
+  const handleNearbyClubPress = React.useCallback(
+    (item: NearbyClubListItem) => {},
     [navigation],
   );
 
@@ -219,16 +228,12 @@ const HomeScreen = ({navigation}: Props) => {
             </Button>
           </HStack>
 
-          <Box>
-            {productData.map(item => {
-              return <EachNearByItem key={item.id} item={item} />;
-            })}
-          </Box>
+          <NearbyClubsList onItemPress={handleNearbyClubPress} />
         </Box>
       </Center>
 
       <Center w={"full"}>
-        <Box px={9} w={"full"} mb={5}>
+        <Box px={9} w={"full"} my={5}>
           <HStack
             my={2}
             w={"full"}
@@ -256,24 +261,7 @@ const HomeScreen = ({navigation}: Props) => {
         </Box>
       </Center>
 
-      <ScrollView
-        mb={5}
-        horizontal
-        _contentContainerStyle={{
-          px: 9,
-        }}
-        showsHorizontalScrollIndicator={false}>
-        {productData.map((item, index) => {
-          return (
-            <Box
-              w={"56"}
-              key={item.id}
-              mr={index === productData.length - 1 ? 0 : 5}>
-              <EachRecentVisitsItem item={item} />
-            </Box>
-          );
-        })}
-      </ScrollView>
+      <RecentVisitClubsSwiper onItemPress={handleRecentVisitClubPress} />
     </ScrollView>
   );
 };

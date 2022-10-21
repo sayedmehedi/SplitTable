@@ -1,6 +1,7 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
+import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {IFrontendService} from "@core/services/IFrontendService";
@@ -14,16 +15,15 @@ const service = container.get<IFrontendService>(
 const queryFn: QueryFunction<
   GetRecentViewedClubsReposne,
   [typeof QueryKeys.CLUB, "LIST", "recent-viewed", PaginationQueryParams]
-> = async ({signal, queryKey}) => {
+> = ({signal, queryKey}) => {
   const queryParams = queryKey[3];
 
-  const params = {
-    ...queryParams,
-    signal,
-  };
-  const response = await service.getRecentViewedClubs(params);
-
-  return response.data;
+  return handleCancelableAxiosPromise(
+    service.getRecentViewedClubs(queryParams),
+    {
+      signal,
+    },
+  );
 };
 
 export default function useGetRecentViewedClubsQuery(

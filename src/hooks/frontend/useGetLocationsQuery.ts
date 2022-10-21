@@ -2,6 +2,7 @@ import React from "react";
 import {container} from "@src/appEngine";
 import {GetLocationsReposne} from "@src/models";
 import {QueryKeys} from "@constants/query-keys";
+import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {IFrontendService} from "@core/services/IFrontendService";
@@ -14,12 +15,10 @@ const service = container.get<IFrontendService>(
 const getLocationsQueryFunction: QueryFunction<
   GetLocationsReposne,
   [typeof QueryKeys.LOCATION, "LIST"]
-> = async ({signal}) => {
-  const response = await service.getLocations({
+> = ({signal}) => {
+  return handleCancelableAxiosPromise(service.getLocations(), {
     signal,
   });
-
-  return response.data;
 };
 
 export default function useGetLocationsQuery(

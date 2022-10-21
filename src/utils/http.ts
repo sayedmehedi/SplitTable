@@ -1,8 +1,10 @@
 import {Container} from "inversify";
-import axios, {AxiosInstance} from "axios";
+import axios, {AxiosInstance, AxiosResponse} from "axios";
+import CancelablePromise from "cancelable-promise";
 import {ConfigService} from "@config/ConfigService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
+import {GlobalAxiosRequestConfig} from "@src/models";
 
 export default function registerHttpClient(container: Container) {
   container
@@ -32,4 +34,19 @@ export default function registerHttpClient(container: Container) {
       return apiHttpClient;
     })
     .inSingletonScope();
+}
+
+export function handleCancelableAxiosPromise<T>(
+  promise: CancelablePromise<AxiosResponse<T, GlobalAxiosRequestConfig>>,
+  {
+    signal,
+  }: {
+    signal?: AbortSignal;
+  },
+) {
+  signal?.addEventListener("abort", () => {
+    promise.cancel();
+  });
+
+  return promise.then(res => res.data);
 }

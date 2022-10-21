@@ -7,7 +7,7 @@ import {addServerErrors} from "@utils/error-handling";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CustomerAuthStackRoutes} from "@constants/routes";
-import useLoginMutation from "@hooks/auth/useLogoutMutation";
+import useLoginMutation from "@hooks/auth/useLoginMutation";
 import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {
