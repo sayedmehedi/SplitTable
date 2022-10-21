@@ -1,15 +1,18 @@
 import React from "react";
-import Button from "@components/Button";
+import useAppToast from "@hooks/useAppToast";
 import useAuthContext from "@hooks/useAuthContext";
 import {ErrorMessage} from "@hookform/error-message";
 import {Controller, useForm} from "react-hook-form";
-import {addServerErrors} from "@utils/error-handling";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CustomerAuthStackRoutes} from "@constants/routes";
 import useLoginMutation from "@hooks/auth/useLoginMutation";
+import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {addServerErrors, isResponseResultError} from "@utils/error-handling";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {
   RootStackParamList,
   CustomerStackParamList,
@@ -24,7 +27,6 @@ import {
   Center,
   HStack,
   Checkbox,
-  useToast,
   Container,
   FormControl,
   WarningOutlineIcon,
@@ -42,7 +44,7 @@ type Props = CompositeScreenProps<
 >;
 
 const EmailLoginScreen = ({navigation}: Props) => {
-  const toast = useToast();
+  const toast = useAppToast();
   const {setAuthData} = useAuthContext();
 
   const {control, handleSubmit, setError} = useForm({
@@ -55,41 +57,27 @@ const EmailLoginScreen = ({navigation}: Props) => {
   const {
     mutate: login,
     error: loginError,
+    data: loginResponse,
     isError: isLoginError,
     isLoading: isLoggingIn,
   } = useLoginMutation();
 
+  useHandleNonFieldError(loginError);
+  useHandleResponseResultError(loginResponse);
+
   React.useEffect(() => {
     if (isLoginError) {
-      toast.show({
-        bg: "error.600",
-        variant: "solid",
-        title: loginError.non_field_error,
-      });
-
       addServerErrors(loginError.field_errors, setError);
     }
-  }, [isLoginError, loginError, toast.show, setError]);
+  }, [isLoginError, loginError, setError]);
 
   const handleSignin = handleSubmit(values => {
     login(values, {
       onSuccess(data) {
-        if ("success" in data) {
-          toast.show({
-            variant: "solid",
-            bg: "success.600",
-            title: data.success,
-          });
+        if (!isResponseResultError(data)) {
+          toast.success(data.success);
 
           setAuthData(data.user);
-        }
-
-        if ("error" in data) {
-          toast.show({
-            bg: "error.600",
-            variant: "solid",
-            title: data.error,
-          });
         }
       },
     });
@@ -228,7 +216,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
               </Text>
             </HStack>
 
-            <Button
+            <AppGradientButton
               width={"100%"}
               color={"primary"}
               variant={"solid"}

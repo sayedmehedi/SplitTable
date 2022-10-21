@@ -181,7 +181,7 @@ const OutlinedButton = ({
   );
 };
 
-const Button = (props: BtnProps) => {
+const AppGradientButton = (props: BtnProps) => {
   if (props.color === "primary" && props.variant === "solid") {
     return <PrimaryButton {...props} />;
   }
@@ -193,4 +193,4 @@ const Button = (props: BtnProps) => {
   return <OutlinedButton {...props} />;
 };
 
-export default Button;
+export default AppGradientButton;

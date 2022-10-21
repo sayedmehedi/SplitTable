@@ -2,7 +2,7 @@ import React from "react";
 import {ClubListItem} from "@src/models";
 import EachRecentVisitsItem from "./EachRecentVisitsItem";
 import {Box, Center, ScrollView, Skeleton, VStack} from "native-base";
-import useGetRecentViewedClubsQuery from "@hooks/frontend/useGetRecentViewedClubsQuery";
+import useGetRecentViewedClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
 
 type Props = {
   onItemPress: (club: ClubListItem) => void;

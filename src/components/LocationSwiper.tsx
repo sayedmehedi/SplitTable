@@ -1,7 +1,7 @@
 import React from "react";
 import {SvgUri} from "react-native-svg";
 import {LocationItem} from "@src/models";
-import useGetLocationsQuery from "@hooks/frontend/useGetLocationsQuery";
+import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 import {Box, Center, Pressable, ScrollView, Skeleton, Text} from "native-base";
 
 type Props = {

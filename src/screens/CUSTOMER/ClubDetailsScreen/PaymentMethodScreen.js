@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet} from "react-native";
 import React from "react";
 import {TouchableOpacity} from "react-native-gesture-handler";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 const PaymentMethodScreen = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", padding: 20}}>
@@ -14,7 +14,7 @@ const PaymentMethodScreen = ({navigation}) => {
         <Text>$396.00</Text>
       </TouchableOpacity>
 
-      <Button
+      <AppGradientButton
         onPress={() => navigation.navigate("paymentMethod")}
         width={"100%"}
         color={"primary"}

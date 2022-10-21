@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 import {StackScreenProps} from "@react-navigation/stack";
 import {
   CustomerAuthStackRoutes,
@@ -50,7 +50,7 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
         Set your location to start exploring club/bars around you
       </Text>
 
-      <Button
+      <AppGradientButton
         width={"100%"}
         color={"primary"}
         variant={"solid"}

@@ -1,6 +1,8 @@
 import {AuthTypes} from "@constants/auth";
 
-export type ResponseResult<T extends {success: string}> = {error: string} | T;
+export type ResponseResult<T extends {} = {}> =
+  | {error: string}
+  | (T & {success: string});
 
 export type AuthData = {
   id: number;
@@ -174,4 +176,10 @@ export type GetNearByClubsQueryParams = PaginationQueryParams & {
 
 export type GetRecentViewedClubsQueryParams = PaginationQueryParams & {
   search?: string;
+};
+
+export type ToggleFavoriteClubResponse = ResponseResult<{message: string}>;
+
+export type ToggleFavoriteClubRequest = {
+  clubId: number;
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 import {StyleSheet} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import {Box, Center, Container, Text} from "native-base";
@@ -74,7 +74,7 @@ const EmailVerificationScreen = ({navigation}: Props) => {
         </Box>
 
         <Box w={"full"}>
-          <Button
+          <AppGradientButton
             width={"100%"}
             color={"primary"}
             variant={"solid"}

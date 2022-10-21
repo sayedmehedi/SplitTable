@@ -41,7 +41,7 @@ const ClubListItem = ({item}: Props) => {
               <Text style={{color: "black"}}>({item.totalReviews})</Text>
             </HStack>
 
-            {item.isFavotire ? (
+            {item.isFavorite ? (
               <AntDesign name="heart" size={22} color={"white"} />
             ) : (
               <AntDesign name="hearto" size={22} color={"white"} />

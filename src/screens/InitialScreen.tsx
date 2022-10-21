@@ -1,5 +1,5 @@
 import {AuthType} from "@src/models";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 import {AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
@@ -156,7 +156,7 @@ const InitialScreen = ({navigation}: Props) => {
             </Text>
           </Box>
 
-          <Button
+          <AppGradientButton
             width={290}
             variant={"solid"}
             title={"Customer"}
@@ -167,7 +167,7 @@ const InitialScreen = ({navigation}: Props) => {
               navigation.navigate(RootStackRoutes.CUSTOMER, {});
             }}
           />
-          <Button
+          <AppGradientButton
             width={290}
             color={"primary"}
             variant={"solid"}

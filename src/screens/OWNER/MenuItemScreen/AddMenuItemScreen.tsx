@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 import {OwnerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -70,7 +70,7 @@ const AddMenuItemScreen = ({navigation}: Props) => {
           />
         </View>
 
-        <Button
+        <AppGradientButton
           width={"100%"}
           title={"Submit"}
           color={"primary"}

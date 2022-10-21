@@ -5,7 +5,7 @@ import {ListRenderItem} from "react-native";
 import {ClubByLocationItem} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {Box, Center, VStack, Spinner, FlatList, Skeleton} from "native-base";
-import useInfiniteGetClubsByLocationQuery from "@hooks/frontend/useInfiniteGetClubsByLocationQuery";
+import useInfiniteGetClubsByLocationQuery from "@hooks/clubs/useInfiniteGetClubsByLocationQuery";
 
 type Props = {
   locationId: number;
@@ -54,7 +54,7 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
           image: item.image,
           location: item.location,
           avgRating: item.avg_rating,
-          isFavotire: item.is_favourite,
+          isFavorite: item.is_favourite,
           closingTime: item.closing_time,
           openingTime: item.opening_time,
           totalReviews: item.total_reviews,

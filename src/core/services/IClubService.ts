@@ -10,6 +10,8 @@ import {
   GetClubsByLocationResponse,
   GetClubsByLocationQueryParams,
   GetRecentViewedClubsQueryParams,
+  ToggleFavoriteClubResponse,
+  ToggleFavoriteClubRequest,
 } from "@src/models";
 
 export interface IClubService {
@@ -35,5 +37,11 @@ export interface IClubService {
     params: GetClubsByLocationQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetClubsByLocationResponse, GlobalAxiosRequestConfig>
+  >;
+
+  toggleFavoriteClub(
+    params: ToggleFavoriteClubRequest,
+  ): Promise<
+    AxiosResponse<ToggleFavoriteClubResponse, GlobalAxiosRequestConfig>
   >;
 }

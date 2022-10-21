@@ -2,7 +2,7 @@ import React from "react";
 import {ClubListItem} from "@src/models";
 import EachPopularClubItem from "@components/EachPopularClubItem";
 import {Box, Center, ScrollView, Skeleton, VStack} from "native-base";
-import useGetPopularClubsQuery from "@hooks/frontend/useGetPopularClubsQuery";
+import useGetPopularClubsQuery from "@hooks/clubs/useGetPopularClubsQuery";
 
 type Props = {
   onItemPress: (club: ClubListItem) => void;

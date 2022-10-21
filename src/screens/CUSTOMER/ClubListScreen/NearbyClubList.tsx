@@ -4,7 +4,7 @@ import ClubListItem from "./ClubListItem";
 import {ListRenderItem} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {Box, Center, FlatList, Skeleton, Spinner, VStack} from "native-base";
-import useInfiniteGetNearByClubsQuery from "@hooks/frontend/useInfiniteGetNearByClubsQuery";
+import useInfiniteGetNearByClubsQuery from "@hooks/clubs/useInfiniteGetNearByClubsQuery";
 
 type Props = {
   searchTerm?: string;
@@ -54,7 +54,7 @@ const NearbyClubList = ({onItemPress, searchTerm}: Props) => {
             image: item.image,
             location: item.location,
             avgRating: item.avg_rating,
-            isFavotire: item.is_favourite,
+            isFavorite: item.is_favourite,
             closingTime: item.closing_time,
             openingTime: item.opening_time,
             totalReviews: item.total_reviews,

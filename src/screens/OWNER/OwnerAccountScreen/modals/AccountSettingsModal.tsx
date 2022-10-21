@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../styles";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 import {Controller, useForm} from "react-hook-form";
 import Entypo from "react-native-vector-icons/Entypo";
 import {
@@ -94,7 +94,7 @@ export default function AccountSettingsModal({
             />
           ))}
 
-          <Button
+          <AppGradientButton
             width={290}
             color={"primary"}
             variant={"solid"}

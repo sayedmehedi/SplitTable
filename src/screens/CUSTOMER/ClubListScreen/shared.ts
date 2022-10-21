@@ -4,7 +4,7 @@ export type TClubItem = {
   image: string;
   location: string;
   avgRating: number;
-  isFavotire: boolean;
+  isFavorite: boolean;
   openingTime: string;
   closingTime: string;
   totalReviews: number;

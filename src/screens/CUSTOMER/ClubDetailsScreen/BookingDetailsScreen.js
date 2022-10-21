@@ -12,7 +12,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 
 const renderOfferMenu = ({item, index}) => {
   if (index <= 1) {
@@ -366,7 +366,7 @@ const BookingDetailsScreen = ({navigation}) => {
               $3966.00
             </Text>
 
-            <Button
+            <AppGradientButton
               onPress={() => navigation.navigate("payment")}
               width={290}
               color={"primary"}

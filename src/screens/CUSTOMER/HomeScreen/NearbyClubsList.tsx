@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, Center, HStack, Skeleton, VStack} from "native-base";
 import EachNearByItem from "./EachNearByItem";
-import useGetNearbyClubsQuery from "@hooks/frontend/useGetNearbyClubsQuery";
+import useGetNearbyClubsQuery from "@hooks/clubs/useGetNearbyClubsQuery";
 import {NearbyClubListItem} from "@src/models";
 
 type Props = {

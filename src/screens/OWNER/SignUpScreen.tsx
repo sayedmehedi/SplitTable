@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@components/Button";
+import AppGradientButton from "@components/AppGradientButton";
 import {View, TextInput, StyleSheet} from "react-native";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
@@ -85,7 +85,7 @@ const SignUpScreen = ({navigation}: Props) => {
           />
         </View>
 
-        <Button
+        <AppGradientButton
           width={"100%"}
           color={"primary"}
           variant={"solid"}

@@ -4,7 +4,7 @@ import styles from '../styles';
 import {Controller, useForm} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {View, Text, Modal, TextInput, TouchableOpacity} from 'react-native';
-import Button from '@components/Button';
+import AppGradientButton from '@components/AppGradientButton';
 
 export default function AccountSettingsModal({
   open,
@@ -83,7 +83,7 @@ export default function AccountSettingsModal({
             />
           ))}
 
-<Button width={290} color={"primary"} variant={"solid"} title={'Update'} 
+<AppGradientButton width={290} color={"primary"} variant={"solid"} title={'Update'} 
           
           />
         </View>

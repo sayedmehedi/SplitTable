@@ -13,6 +13,8 @@ import {
   GetClubsByLocationQueryParams,
   GetPopularClubsQueryParams,
   GetNearByClubsQueryParams,
+  ToggleFavoriteClubRequest,
+  ToggleFavoriteClubResponse,
 } from "@src/models";
 
 @injectable()
@@ -21,6 +23,17 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+
+  toggleFavoriteClub(
+    params: ToggleFavoriteClubRequest,
+  ): Promise<
+    AxiosResponse<ToggleFavoriteClubResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.post<ToggleFavoriteClubResponse>("favourites", {
+      club_id: params.clubId,
+    });
+  }
+
   getClubsByLocation({
     locationId,
     ...params
