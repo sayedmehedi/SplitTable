@@ -6,6 +6,8 @@ import {IClubService} from "@core/services/IClubService";
 import {LocationService} from "./services/LocationService";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {ILocationService} from "@core/services/ILocationService";
+import {NotificationService} from "./services/NotificationService";
+import {INotificationService} from "@core/services/INotificationService";
 
 export const registerLaravelServices = (container: Container) => {
   container
@@ -19,4 +21,8 @@ export const registerLaravelServices = (container: Container) => {
   container
     .bind<ILocationService>(ServiceProviderTypes.LocationService)
     .to(LocationService);
+
+  container
+    .bind<INotificationService>(ServiceProviderTypes.NotificationService)
+    .to(NotificationService);
 };

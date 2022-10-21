@@ -38,7 +38,7 @@ export default function AuthProvider({children}: React.PropsWithChildren) {
     if (!!authData?.token) {
       console.log("setting auth token to http client header");
 
-      httpClient.defaults.headers.common.Authorication = `Bearer ${authData.token}`;
+      httpClient.defaults.headers.common.Authorization = `Bearer ${authData.token}`;
     }
   }, [authData?.token]);
 

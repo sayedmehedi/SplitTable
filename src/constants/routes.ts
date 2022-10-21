@@ -10,6 +10,7 @@ export const CustomerStackRoutes = {
   ONBOARDING: "OnBoarding",
   CLUB_DETAILS: "ClubDetails",
   CUSTOMER_AUTH: "CustomerAuth",
+  NOTIFICATIONS: "Notifications",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
 } as const;
 

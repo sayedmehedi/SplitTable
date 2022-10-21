@@ -10,6 +10,7 @@ import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
+import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
 import ClubListScreen from "@screens/CUSTOMER/ClubListScreen/ClubListScreen";
 import {
   createStackNavigator,
@@ -59,6 +60,12 @@ const CustomerStackNavigator = () => {
             component={BookingStackNavigator}
             name={CustomerStackRoutes.BOOKING}
           />
+
+          <CustomerStack.Screen
+            component={NotificationListScreen}
+            options={notificationListScreenOptions}
+            name={CustomerStackRoutes.NOTIFICATIONS}
+          />
         </React.Fragment>
       )}
     </CustomerStack.Navigator>
@@ -66,6 +73,20 @@ const CustomerStackNavigator = () => {
 };
 
 export default CustomerStackNavigator;
+
+const notificationListScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.NOTIFICATIONS
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = () => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "Notification",
+});
 
 const clubListScreenOptions:
   | StackNavigationOptions

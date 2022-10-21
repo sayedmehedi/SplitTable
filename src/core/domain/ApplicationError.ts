@@ -50,6 +50,10 @@ export class ApplicationError extends Error {
       if (!!nonFieldError.error) {
         return nonFieldError.error;
       }
+
+      if (!!nonFieldError.message) {
+        return nonFieldError.message;
+      }
     }
 
     if (this.isValidationError()) {

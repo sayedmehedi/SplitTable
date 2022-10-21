@@ -15,11 +15,13 @@ export default function registerHttpClient(container: Container) {
 
       const apiHttpClient = axios.create({
         baseURL,
-        headers: {
-          Accept: config.accept,
-          "Content-Type": config.contentType,
-        },
       });
+
+      apiHttpClient.defaults.headers.common["Accept"] = config.accept;
+      apiHttpClient.defaults.headers.common["Content-Type"] =
+        config.contentType;
+      apiHttpClient.defaults.headers.common["X-Requested-With"] =
+        "XMLHttpRequest";
 
       apiHttpClient.interceptors.response.use(
         function (response) {

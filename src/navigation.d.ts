@@ -75,6 +75,7 @@ type CustomerStackParamList = {
     | ClubListScreenTypeSearchResult
     | ClubListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
+  [CustomerStackRoutes.NOTIFICATIONS]: undefined;
   [CustomerStackRoutes.CLUB_DETAILS]: {
     clubId: number;
   };

@@ -1,4 +1,5 @@
 import {AuthTypes} from "@constants/auth";
+import {NotificationStyles, NotificationTypes} from "@constants/notification";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -26,6 +27,7 @@ export type LoginResponse = ResponseResult<{
 export type ServerNonFieldError = {
   status: "failed";
   error: string;
+  message?: string;
 };
 
 export type ServerValidationError = {
@@ -182,4 +184,18 @@ export type ToggleFavoriteClubResponse = ResponseResult<{message: string}>;
 
 export type ToggleFavoriteClubRequest = {
   clubId: number;
+};
+
+export interface NotificationItem {
+  id: number;
+  title: string;
+  message: string;
+  style: typeof NotificationStyles[keyof typeof NotificationStyles];
+  type: typeof NotificationTypes[keyof typeof NotificationTypes];
+}
+
+export type GetNotificationsQueryParams = PaginationQueryParams;
+
+export type GetNotificationsResponse = {
+  notifications: SimplePaginatedResponse<NotificationItem>;
 };

@@ -120,6 +120,10 @@ const HomeScreen = ({navigation}: Props) => {
     });
   }, [navigation]);
 
+  const handleGotoNotifications = () => {
+    navigation.navigate(CustomerStackRoutes.NOTIFICATIONS);
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <StatusBar
@@ -174,6 +178,7 @@ const HomeScreen = ({navigation}: Props) => {
                     rounded={"full"}
                     variant={"subtle"}
                     colorScheme={"white:alpha.20"}
+                    onPress={handleGotoNotifications}
                     _pressed={{
                       bg: "transparent",
                     }}
