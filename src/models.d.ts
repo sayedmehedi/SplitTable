@@ -199,3 +199,29 @@ export type GetNotificationsQueryParams = PaginationQueryParams;
 export type GetNotificationsResponse = {
   notifications: SimplePaginatedResponse<NotificationItem>;
 };
+
+export type SearchHistoryItem = {
+  id: string;
+  data: string;
+  lastUsedTime: string;
+};
+export interface ClubItemBySearchTerm {
+  id: number;
+  name: string;
+  image: string;
+  distance: string;
+  location: string;
+  avg_rating: number;
+  opening_time: string;
+  closing_time: string;
+  total_reviews: number;
+  is_favourite: boolean;
+}
+
+export type GetClubsBySearchTermResponse = {
+  clubs: SimplePaginatedResponse<ClubItemBySearchTerm>;
+};
+
+export type GetClubsBySearchTermQueryParams = PaginationQueryParams & {
+  search?: string;
+};

@@ -51,17 +51,17 @@ type ClubListScreenCommon = {
   headerTitle: string;
 };
 
-type ClubListScreenTypeByLocation = ClubListScreenCommon & {
+export type ClubListScreenTypeByLocation = ClubListScreenCommon & {
   locationId: number;
   listType: typeof ClubListTypes["BY_LOCATION"];
 };
 
-type ClubListScreenTypeSearchResult = ClubListScreenCommon & {
+export type ClubListScreenTypeSearchResult = ClubListScreenCommon & {
   listType: typeof ClubListTypes["SEARCH_RESULT"];
   searchTerm: string;
 };
 
-type ClubListScreenTypeRest = ClubListScreenCommon & {
+export type ClubListScreenTypeRest = ClubListScreenCommon & {
   listType:
     | typeof ClubListTypes["ALL"]
     | typeof ClubListTypes["NEAR"]

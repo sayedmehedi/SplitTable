@@ -15,6 +15,8 @@ import {
   GetNearByClubsQueryParams,
   ToggleFavoriteClubRequest,
   ToggleFavoriteClubResponse,
+  GetClubsBySearchTermQueryParams,
+  GetClubsBySearchTermResponse,
 } from "@src/models";
 
 @injectable()
@@ -23,6 +25,29 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+  getClubsBySearchTerm(
+    params: GetClubsBySearchTermQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetClubsBySearchTermResponse>(`search-clubs`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   toggleFavoriteClub(
     params: ToggleFavoriteClubRequest,

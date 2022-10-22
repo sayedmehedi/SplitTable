@@ -4,14 +4,16 @@ import {
   GetNearByClubsReposne,
   GetPopularClubsReposne,
   GlobalAxiosRequestConfig,
-  GetPopularClubsQueryParams,
-  GetRecentViewedClubsReposne,
+  ToggleFavoriteClubRequest,
   GetNearByClubsQueryParams,
+  GetPopularClubsQueryParams,
   GetClubsByLocationResponse,
+  ToggleFavoriteClubResponse,
+  GetRecentViewedClubsReposne,
+  GetClubsBySearchTermResponse,
   GetClubsByLocationQueryParams,
   GetRecentViewedClubsQueryParams,
-  ToggleFavoriteClubResponse,
-  ToggleFavoriteClubRequest,
+  GetClubsBySearchTermQueryParams,
 } from "@src/models";
 
 export interface IClubService {
@@ -37,6 +39,12 @@ export interface IClubService {
     params: GetClubsByLocationQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetClubsByLocationResponse, GlobalAxiosRequestConfig>
+  >;
+
+  getClubsBySearchTerm(
+    params: GetClubsBySearchTermQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
   >;
 
   toggleFavoriteClub(

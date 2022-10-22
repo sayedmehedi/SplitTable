@@ -16,7 +16,7 @@ export default function PopularClubsSwiper({onItemPress}: Props) {
     <ScrollView
       horizontal
       _contentContainerStyle={{
-        px: 9,
+        px: 6,
         pb: 5,
       }}
       showsHorizontalScrollIndicator={false}>

@@ -7,22 +7,24 @@ import {CustomerStackRoutes} from "@constants/routes";
 import ClubsByLocationList from "./ClubsByLocationList";
 import {StackScreenProps} from "@react-navigation/stack";
 import RecentVisitClubList from "./RecentVisitClubList";
-import useDebouncedState from "@hooks/useDebouncedState";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   Box,
-  HStack,
   Icon,
   Input,
   Modal,
+  HStack,
   Stagger,
+  Button,
   StatusBar,
   IconButton,
   useDisclose,
+  FormControl,
 } from "native-base";
+import ClubListBySearchTerm from "./ClubListBySearchTerm";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -34,20 +36,31 @@ type Props = CompositeScreenProps<
 
 const ClubListScreen = ({route}: Props) => {
   const finalRef = React.useRef(null);
-  const initialRef = React.useRef(null);
+  const initialRef = React.useRef<typeof Input>(null);
   const [clubSearchTerm, setClubSearchTerm] = React.useState("");
-  const [debouncedClubSearchTerm] = useDebouncedState(clubSearchTerm, 500);
+  const {isOpen: isButtonOpened, onToggle: setButtonOpen} = useDisclose();
+  const [clubSearchTermDraft, setClubSearchTermDraft] = React.useState("");
   const {isOpen: isClubSearchModalOpen, onToggle: setToggleClubSearchModal} =
     useDisclose();
 
-  const {isOpen: isButtonOpened, onToggle: setButtonOpen} = useDisclose();
+  React.useEffect(() => {
+    if (route.params.listType === ClubListTypes.SEARCH_RESULT) {
+      setClubSearchTerm(route.params.searchTerm);
+    }
+  }, [route.params.listType]);
 
   const handleSearchTermChange = (text: string) => {
-    setClubSearchTerm(text);
+    setClubSearchTermDraft(text);
   };
 
   const clearClubSearchTerm = () => {
     setClubSearchTerm("");
+  };
+
+  const handleSubmitDraftClubSearchTerm = () => {
+    setClubSearchTerm(clubSearchTermDraft);
+    setToggleClubSearchModal();
+    setClubSearchTermDraft("");
   };
 
   const handleItemPresss = React.useCallback((item: TClubItem) => {}, []);
@@ -64,27 +77,38 @@ const ClubListScreen = ({route}: Props) => {
 
       {route.params.listType === ClubListTypes.POPULAR && (
         <PopularClubList
+          searchTerm={clubSearchTerm}
           onItemPress={handleItemPresss}
-          searchTerm={debouncedClubSearchTerm}
         />
       )}
 
       {route.params.listType === ClubListTypes.NEAR && (
         <NearbyClubList
+          searchTerm={clubSearchTerm}
           onItemPress={handleItemPresss}
-          searchTerm={debouncedClubSearchTerm}
         />
       )}
 
       {route.params.listType === ClubListTypes.RECENT_VISIT && (
         <RecentVisitClubList
+          searchTerm={clubSearchTerm}
           onItemPress={handleItemPresss}
-          searchTerm={debouncedClubSearchTerm}
+        />
+      )}
+
+      {route.params.listType === ClubListTypes.SEARCH_RESULT && (
+        <ClubListBySearchTerm
+          searchTerm={clubSearchTerm}
+          onItemPress={handleItemPresss}
         />
       )}
 
       <Modal
+        size={"xl"}
+        bottom={"4"}
+        avoidKeyboard
         finalFocusRef={finalRef}
+        animationPreset={"slide"}
         initialFocusRef={initialRef}
         isOpen={isClubSearchModalOpen}
         onClose={setToggleClubSearchModal}>
@@ -96,10 +120,25 @@ const ClubListScreen = ({route}: Props) => {
               fontWeight: "bold",
               fontFamily: "satoshi",
             }}>
-            Seach Club
+            Search Club
           </Modal.Header>
           <Modal.Body>
-            <Input ref={initialRef} onChangeText={handleSearchTermChange} />
+            <FormControl>
+              <Input
+                ref={initialRef}
+                onChangeText={handleSearchTermChange}
+                InputRightElement={
+                  <Button
+                    w="1/5"
+                    h={"full"}
+                    size={"sm"}
+                    rounded={"none"}
+                    onPress={handleSubmitDraftClubSearchTerm}>
+                    Submit
+                  </Button>
+                }
+              />
+            </FormControl>
           </Modal.Body>
         </Modal.Content>
       </Modal>

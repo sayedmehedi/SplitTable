@@ -2,11 +2,38 @@ import React from "react";
 import {SvgUri} from "react-native-svg";
 import {LocationItem} from "@src/models";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
-import {Box, Center, Pressable, ScrollView, Skeleton, Text} from "native-base";
+import {
+  Box,
+  Center,
+  Pressable,
+  ScrollView,
+  Skeleton,
+  Spinner,
+  Text,
+  useDisclose,
+} from "native-base";
 
 type Props = {
   onItemPress?: (item: LocationItem) => void;
 };
+
+function EachSvg({uri}: {uri: string}) {
+  const {isOpen: loading, onClose} = useDisclose(true);
+
+  const onError = (e: Error) => {
+    onClose();
+  };
+  const onLoad = () => {
+    onClose();
+  };
+
+  return (
+    <>
+      {loading && <Skeleton size={"20"} rounded={"full"} />}
+      <SvgUri uri={uri} onError={onError} onLoad={onLoad} />
+    </>
+  );
+}
 
 const LocationSwiper = ({onItemPress}: Props) => {
   const {data: locationsResponse, isLoading: isLocationLoading} =
@@ -21,7 +48,7 @@ const LocationSwiper = ({onItemPress}: Props) => {
       horizontal
       showsHorizontalScrollIndicator={false}
       _contentContainerStyle={{
-        px: 9,
+        px: 6,
       }}>
       {isLocationLoading
         ? new Array(6).fill(1).map((_, index) => {
@@ -39,7 +66,7 @@ const LocationSwiper = ({onItemPress}: Props) => {
                 mr={index === locationsResponse.items.data.length - 1 ? 0 : 3}
                 onPress={handleItemPress.bind(null, item)}>
                 <Box m={1} alignItems={"center"}>
-                  <SvgUri uri={item.image} />
+                  <EachSvg uri={item.image} />
 
                   <Text
                     mt={2}

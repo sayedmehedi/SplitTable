@@ -1,11 +1,26 @@
 import React from "react";
 import truncate from "lodash.truncate";
 import {ClubListItem} from "@src/models";
-import {Box, HStack, Pressable, Text} from "native-base";
+import useAppToast from "@hooks/useAppToast";
+import {QueryKeys} from "@constants/query-keys";
 import {MapIcon, Clock} from "@constants/iconPath";
+import {useQueryClient} from "@tanstack/react-query";
 import {ImageBackground, StyleSheet} from "react-native";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import {isResponseResultError} from "@utils/error-handling";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
+import {
+  Box,
+  Icon,
+  Text,
+  HStack,
+  Spinner,
+  Pressable,
+  IconButton,
+} from "native-base";
 
 type Props = {
   item: ClubListItem;
@@ -13,9 +28,35 @@ type Props = {
 };
 
 const EachRecentVisitsItem = ({item, onPress}: Props) => {
+  const toast = useAppToast();
+  const queryClient = useQueryClient();
   const handlePress = React.useCallback(() => {
     onPress(item);
-  }, [item, onPress]);
+  }, [onPress, item]);
+
+  const {
+    mutate: toggleFavoriteClub,
+    error: toggleFavoriteError,
+    isLoading: isTogglingFavorite,
+    data: toggleFavoriteClubResponse,
+  } = useToggleFavoriteClubMutation();
+
+  useHandleNonFieldError(toggleFavoriteError);
+  useHandleResponseResultError(toggleFavoriteClubResponse);
+
+  const handleToggleFavorite = React.useCallback(() => {
+    toggleFavoriteClub(
+      {clubId: item.id},
+      {
+        onSuccess(data) {
+          if (!isResponseResultError(data)) {
+            toast.success(data.message);
+            queryClient.invalidateQueries([QueryKeys.CLUB, "LIST"]);
+          }
+        },
+      },
+    );
+  }, [toggleFavoriteClub]);
 
   return (
     <Pressable onPress={handlePress}>
@@ -40,10 +81,23 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
                 <Text color={"black"}>({item.total_reviews})</Text>
               </HStack>
 
-              {item.is_favourite ? (
-                <AntDesign name="heart" size={22} color={"white"} />
+              {isTogglingFavorite ? (
+                <Box p={3}>
+                  <Spinner color={"white"} size={22} />
+                </Box>
               ) : (
-                <AntDesign name="hearto" size={22} color={"white"} />
+                <IconButton
+                  rounded={"full"}
+                  onPress={handleToggleFavorite}
+                  icon={
+                    <Icon
+                      size={22}
+                      as={AntDesign}
+                      color={"white"}
+                      name={item.is_favourite ? "heart" : "hearto"}
+                    />
+                  }
+                />
               )}
             </HStack>
           </ImageBackground>

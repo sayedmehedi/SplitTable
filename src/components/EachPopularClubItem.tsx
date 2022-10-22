@@ -95,7 +95,6 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
               ) : (
                 <IconButton
                   rounded={"full"}
-                  disabled={isTogglingFavorite}
                   onPress={handleToggleFavorite}
                   icon={
                     <Icon
