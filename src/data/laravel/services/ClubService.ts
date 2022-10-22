@@ -7,16 +7,17 @@ import {
   PaginationQueryParams,
   GetNearByClubsReposne,
   GetPopularClubsReposne,
+  GetClubDetailsResponse,
   GlobalAxiosRequestConfig,
   GetClubsByLocationResponse,
-  GetRecentViewedClubsReposne,
-  GetClubsByLocationQueryParams,
-  GetPopularClubsQueryParams,
   GetNearByClubsQueryParams,
   ToggleFavoriteClubRequest,
+  GetRecentViewedClubsReposne,
   ToggleFavoriteClubResponse,
-  GetClubsBySearchTermQueryParams,
+  GetPopularClubsQueryParams,
+  GetClubsByLocationQueryParams,
   GetClubsBySearchTermResponse,
+  GetClubsBySearchTermQueryParams,
 } from "@src/models";
 
 @injectable()
@@ -25,6 +26,30 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+
+  getClubDetails(
+    clubId: number,
+  ): CancelablePromise<
+    AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetClubDetailsResponse>(`club-details/${clubId}`, {
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
   getClubsBySearchTerm(
     params: GetClubsBySearchTermQueryParams,
   ): CancelablePromise<

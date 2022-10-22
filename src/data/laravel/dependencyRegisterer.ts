@@ -1,6 +1,8 @@
 import {Container} from "inversify";
+import {MenuService} from "./services/MenuService";
 import {AuthService} from "./services/AuthService";
 import {ClubService} from "./services/ClubService";
+import {IMenuService} from "@core/services/IMenuService";
 import {IAuthService} from "@core/services/IAuthService";
 import {IClubService} from "@core/services/IClubService";
 import {LocationService} from "./services/LocationService";
@@ -25,4 +27,8 @@ export const registerLaravelServices = (container: Container) => {
   container
     .bind<INotificationService>(ServiceProviderTypes.NotificationService)
     .to(NotificationService);
+
+  container
+    .bind<IMenuService>(ServiceProviderTypes.MenuService)
+    .to(MenuService);
 };

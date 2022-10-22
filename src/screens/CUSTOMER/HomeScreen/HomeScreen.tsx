@@ -11,6 +11,7 @@ import RestaurantSearchBtn from "./RestaurantSearchBtn";
 import LinearGradient from "react-native-linear-gradient";
 import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";
+import {SafeAreaView} from "react-native-safe-area-context";
 import RecentVisitClubsSwiper from "./RecentVisitClubsSwiper";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
@@ -131,120 +132,112 @@ const HomeScreen = ({navigation}: Props) => {
     navigation.navigate(CustomerStackRoutes.NOTIFICATIONS);
   };
 
-  React.useEffect(() => {
-    StatusBar.setBarStyle("light-content");
-    StatusBar.setBackgroundColor(theme.colors.secondary[600]);
-  }, [theme.colors.primary[600]]);
-
-  React.useEffect(() => {
-    if (isSearchModalOpen) {
-      StatusBar.setBarStyle("dark-content", true);
-      StatusBar.setBackgroundColor("white");
-    } else {
-      StatusBar.setBarStyle("light-content", true);
-      StatusBar.setBackgroundColor(theme.colors.secondary[600]);
-    }
-  }, [isSearchModalOpen, theme.colors.primary[600]]);
-
   return (
-    <Box safeArea>
+    <Box>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* <StatusBar
+        <StatusBar
+          translucent={false}
           barStyle={isSearchModalOpen ? "dark-content" : "light-content"}
           backgroundColor={
             isSearchModalOpen ? "white" : theme.colors.secondary[600]
           }
-        /> */}
+        />
 
-        <LinearGradient
-          end={{x: 0, y: 0}}
-          start={{x: 0, y: 1}}
-          style={linearGradientStyle}
-          colors={["#DF3BC0", "#472BBE"]}>
-          <Center py={2} h={"full"} justifyContent={"flex-end"}>
-            <Box px={6} w={"full"} mb={1}>
-              <VStack space={"0.5"} w={"full"}>
-                <HStack justifyContent={"space-between"} alignItems={"center"}>
-                  <VStack space={"0.5"}>
-                    <Text
-                      fontSize={"xl"}
-                      color={"#FFFFFF"}
-                      fontWeight={"bold"}
-                      fontFamily={"satoshi"}>
-                      Good{" "}
-                      {hours < 12
-                        ? "Morning"
-                        : hours < 18
-                        ? "Afternoon"
-                        : "Evening"}
-                      !
-                    </Text>
+        <Box>
+          <LinearGradient
+            end={{x: 0, y: 0}}
+            start={{x: 0, y: 1}}
+            style={linearGradientStyle}
+            colors={["#DF3BC0", "#472BBE"]}>
+            <SafeAreaView>
+              <Center py={2} h={"full"} justifyContent={"flex-end"}>
+                <Box px={6} w={"full"} mb={1}>
+                  <VStack space={"0.5"} w={"full"}>
+                    <HStack
+                      justifyContent={"space-between"}
+                      alignItems={"center"}>
+                      <VStack space={"0.5"}>
+                        <Text
+                          fontSize={"xl"}
+                          color={"#FFFFFF"}
+                          fontWeight={"bold"}
+                          fontFamily={"satoshi"}>
+                          Good{" "}
+                          {hours < 12
+                            ? "Morning"
+                            : hours < 18
+                            ? "Afternoon"
+                            : "Evening"}
+                          !
+                        </Text>
 
-                    <Text
-                      fontSize={"md"}
-                      color={"white"}
-                      fontWeight={"bold"}
-                      fontFamily={"satoshi"}>
-                      {authData?.name}
-                    </Text>
-                  </VStack>
-
-                  <VStack>
-                    <Badge
-                      mb={-4}
-                      mr={-2}
-                      zIndex={1}
-                      rounded={"full"}
-                      variant={"solid"}
-                      alignSelf={"flex-end"}
-                      colorScheme={"secondary"}
-                      _text={{
-                        fontSize: "sm",
-                      }}>
-                      2
-                    </Badge>
-
-                    <IconButton
-                      size={"xs"}
-                      color={"white"}
-                      rounded={"full"}
-                      variant={"subtle"}
-                      colorScheme={"white:alpha.20"}
-                      onPress={handleGotoNotifications}
-                      _pressed={{
-                        bg: "transparent",
-                      }}
-                      icon={
-                        <Icon
-                          size={7}
+                        <Text
+                          fontSize={"md"}
                           color={"white"}
-                          as={MaterialIcons}
-                          name={"notifications-none"}
+                          fontWeight={"bold"}
+                          fontFamily={"satoshi"}>
+                          {authData?.name}
+                        </Text>
+                      </VStack>
+
+                      <VStack>
+                        <Badge
+                          mb={-4}
+                          mr={-2}
+                          zIndex={1}
+                          rounded={"full"}
+                          variant={"solid"}
+                          alignSelf={"flex-end"}
+                          colorScheme={"secondary"}
+                          _text={{
+                            fontSize: "sm",
+                          }}>
+                          2
+                        </Badge>
+
+                        <IconButton
+                          size={"xs"}
+                          color={"white"}
+                          rounded={"full"}
+                          variant={"subtle"}
+                          colorScheme={"white:alpha.20"}
+                          onPress={handleGotoNotifications}
+                          _pressed={{
+                            bg: "transparent",
+                          }}
+                          icon={
+                            <Icon
+                              size={7}
+                              color={"white"}
+                              as={MaterialIcons}
+                              name={"notifications-none"}
+                            />
+                          }
                         />
-                      }
+                      </VStack>
+                    </HStack>
+
+                    <RestaurantSearchBtn
+                      isSearchModalOpen={isSearchModalOpen}
+                      toggleSearchModal={toggleSearchModal}
                     />
+
+                    <HStack alignItems={"center"}>
+                      <MapIcon height={16} width={16} color={"white"} />
+                      <Text
+                        fontSize={"sm"}
+                        color={"white"}
+                        marginLeft={"2"}
+                        fontFamily={"satoshi"}>
+                        {authData?.location}
+                      </Text>
+                    </HStack>
                   </VStack>
-                </HStack>
-
-                <RestaurantSearchBtn
-                  isSearchModalOpen={isSearchModalOpen}
-                  toggleSearchModal={toggleSearchModal}
-                />
-
-                <HStack alignItems={"center"}>
-                  <MapIcon height={16} width={16} color={"white"} />
-                  <Text
-                    fontSize={"sm"}
-                    color={"white"}
-                    marginLeft={"2"}
-                    fontFamily={"satoshi"}>
-                    Nevada, Las Vegas
-                  </Text>
-                </HStack>
-              </VStack>
-            </Box>
-          </Center>
-        </LinearGradient>
+                </Box>
+              </Center>
+            </SafeAreaView>
+          </LinearGradient>
+        </Box>
 
         <Box py={2}>
           <LocationSwiper onItemPress={handleLocationItemPress} />

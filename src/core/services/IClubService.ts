@@ -2,6 +2,7 @@ import {AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {
   GetNearByClubsReposne,
+  GetClubDetailsResponse,
   GetPopularClubsReposne,
   GlobalAxiosRequestConfig,
   ToggleFavoriteClubRequest,
@@ -17,6 +18,12 @@ import {
 } from "@src/models";
 
 export interface IClubService {
+  getClubDetails(
+    clubId: number,
+  ): CancelablePromise<
+    AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
+  >;
+
   getPopularClubs(
     params: GetPopularClubsQueryParams,
   ): CancelablePromise<

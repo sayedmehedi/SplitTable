@@ -141,8 +141,8 @@ export const splitAppNavigationTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: splitAppTheme.colors.white,
     primary: splitAppTheme.colors.primary[300],
+    background: splitAppTheme.colors.coolGray[50],
   },
 };
 

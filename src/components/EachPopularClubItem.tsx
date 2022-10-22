@@ -136,7 +136,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
           </Text>
         </HStack>
 
-        <HStack alignItems={"center"} pb={2}>
+        <HStack alignItems={"center"} pb={2} space={2} flexWrap={"wrap"}>
           {item.menus.map((menu, index) => (
             <Box
               p={1}
@@ -164,7 +164,6 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
 
 const styles = StyleSheet.create({
   menuContainer: {
-    marginRight: 8,
     borderRadius: 3,
     alignItems: "center",
     justifyContent: "center",

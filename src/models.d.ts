@@ -225,3 +225,52 @@ export type GetClubsBySearchTermResponse = {
 export type GetClubsBySearchTermQueryParams = PaginationQueryParams & {
   search?: string;
 };
+
+export interface ClubDetails {
+  id: number;
+  name: string;
+  owner_id: number;
+  location: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+  email: string;
+  opening_time: string;
+  closing_time: string;
+  total_reviews: number;
+  avg_rating: number;
+  is_favourite: boolean;
+  images: string[];
+  job_role: string;
+  cuisine: string;
+  min_avg_cost: string;
+  max_avg_cost: string;
+  about: string;
+  floor_plan: string;
+}
+
+export interface GetClubDetailsResponse {
+  club: ClubDetails;
+}
+
+export interface GetClubDetailsRquest {
+  clubId: number;
+}
+
+export interface ClubMenuItem {
+  id: number;
+  name: string;
+  price: string;
+  qty: number;
+  image: string;
+  details: string;
+  status: number;
+}
+
+export interface GetClubMenusResponse {
+  menus: SimplePaginatedResponse<ClubMenuItem>;
+}
+
+export type GetClubMenusPaginationQueryParams = PaginationQueryParams & {
+  clubId: number;
+};
