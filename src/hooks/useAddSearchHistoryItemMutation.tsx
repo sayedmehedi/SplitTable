@@ -21,28 +21,34 @@ export default function useAddSearchHistoryItemMutation() {
         previousSearchHistories = JSON.parse(result);
       }
 
-      previousSearchHistories.push(newSearchHistoryItem);
+      const historySet = new Set(
+        previousSearchHistories.map(item => item.data),
+      );
 
-      previousSearchHistories.sort((sh1, sh2) => {
-        const sh1LastUsedTime = sh1.lastUsedTime;
-        const sh2LastUsedTime = sh2.lastUsedTime;
+      if (!historySet.has(newSearchHistoryItem.data)) {
+        previousSearchHistories.sort((sh1, sh2) => {
+          const sh1LastUsedTime = sh1.lastUsedTime;
+          const sh2LastUsedTime = sh2.lastUsedTime;
 
-        if (dayjs(sh1LastUsedTime).isSame(sh2LastUsedTime)) {
-          return 0;
+          if (dayjs(sh1LastUsedTime).isSame(sh2LastUsedTime)) {
+            return 0;
+          }
+
+          if (dayjs(sh1LastUsedTime).isBefore(sh2LastUsedTime)) {
+            return -1;
+          }
+
+          return 1;
+        });
+
+        while (previousSearchHistories.length >= CAPACITY) {
+          previousSearchHistories.unshift();
         }
 
-        if (dayjs(sh1LastUsedTime).isBefore(sh2LastUsedTime)) {
-          return -1;
-        }
+        previousSearchHistories.push(newSearchHistoryItem);
 
-        return 1;
-      });
-
-      while (previousSearchHistories.length > CAPACITY) {
-        previousSearchHistories.unshift();
+        setItem(JSON.stringify(previousSearchHistories));
       }
-
-      return await setItem(JSON.stringify(previousSearchHistories));
     },
     {
       onSuccess() {
