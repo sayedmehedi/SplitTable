@@ -25,8 +25,7 @@ const CustomerStackNavigator = () => {
   return (
     <CustomerStack.Navigator
       id={CUSTOMER_STACK_NAVIGATOR_ID}
-      screenOptions={globalScreenOptions}
-      initialRouteName={"ClubDetails"}>
+      screenOptions={globalScreenOptions}>
       {!isAuthenticated ? (
         <React.Fragment>
           <CustomerStack.Screen
@@ -54,9 +53,6 @@ const CustomerStackNavigator = () => {
 
           <CustomerStack.Screen
             component={ClubDetailsScreen}
-            initialParams={{
-              clubId: 11,
-            }}
             name={CustomerStackRoutes.CLUB_DETAILS}
           />
 
