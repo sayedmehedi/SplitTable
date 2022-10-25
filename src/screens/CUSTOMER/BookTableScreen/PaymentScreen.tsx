@@ -1,7 +1,8 @@
-import {View, Text, StyleSheet} from "react-native";
 import React from "react";
+import {View, Text, StyleSheet} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import AppGradientButton from "@components/AppGradientButton";
+
 const PaymentScreen = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", padding: 20}}>

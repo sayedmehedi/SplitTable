@@ -1,39 +1,45 @@
 import {Axios, AxiosResponse} from "axios";
 import {inject, injectable} from "inversify";
 import {CancelablePromise} from "cancelable-promise";
-import {IMenuService} from "@core/services/IMenuService";
+import {IReviewService} from "@core/services/IReviewService";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {
-  GetClubMenusResponse,
+  GetClubReviewsResponse,
   GlobalAxiosRequestConfig,
-  GetClubMenusQueryParams,
+  GetClubReviewsQueryParams,
 } from "@src/models";
 
 @injectable()
-export class MenuService implements IMenuService {
+export class ReviewService implements IReviewService {
   @inject(ServiceProviderTypes.HttpClient)
   private readonly _httpService!: Axios;
 
   constructor() {}
 
-  getClubMenus({
-    clubId,
+  getClubReviews({
+    ownerId,
     ...params
-  }: GetClubMenusQueryParams): CancelablePromise<
-    AxiosResponse<GetClubMenusResponse, GlobalAxiosRequestConfig>
+  }: GetClubReviewsQueryParams): CancelablePromise<
+    AxiosResponse<GetClubReviewsResponse, GlobalAxiosRequestConfig>
   > {
     const controller = new AbortController();
 
     return new CancelablePromise<
-      AxiosResponse<GetClubMenusResponse, GlobalAxiosRequestConfig>
+      AxiosResponse<GetClubReviewsResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
         controller.abort();
       });
 
+      const queryParams = params as any;
+
+      if (ownerId !== undefined) {
+        queryParams.owner_id = ownerId;
+      }
+
       this._httpService
-        .get<GetClubMenusResponse>(`club-menus/${clubId}`, {
-          params,
+        .get<GetClubReviewsResponse>(`reviews`, {
+          params: queryParams,
           signal: controller.signal,
         })
         .then(resolve)

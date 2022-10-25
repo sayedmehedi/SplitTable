@@ -1,11 +1,11 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
-import {IMenuService} from "@core/services/IMenuService";
+import {IReviewService} from "@core/services/IReviewService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetClubMenusResponse, GetClubMenusQueryParams} from "@src/models";
+import {GetClubReviewsResponse, GetClubReviewsQueryParams} from "@src/models";
 import {
   QueryFunction,
   useInfiniteQuery,
@@ -13,38 +13,39 @@ import {
   UseInfiniteQueryOptions,
 } from "@tanstack/react-query";
 
-const service = container.get<IMenuService>(ServiceProviderTypes.MenuService);
+const service = container.get<IReviewService>(
+  ServiceProviderTypes.ReviewService,
+);
 
 type QueryKey = [
-  typeof QueryKeys.MENU,
+  typeof QueryKeys.REVIEW,
   "LIST",
   "infinite",
-  "by-club-id",
-  GetClubMenusQueryParams,
+  GetClubReviewsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetClubMenusResponse, QueryKey> = ({
+const queryFn: QueryFunction<GetClubReviewsResponse, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetClubMenusQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetClubReviewsQueryParams>) => {
   const queryParams = {
-    ...queryKey[4],
+    ...queryKey[3],
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(service.getClubMenus(queryParams), {
+  return handleCancelableAxiosPromise(service.getClubReviews(queryParams), {
     signal,
   });
 };
 
-export default function useInfiniteGetClubMenusQuery(
-  queryParams: GetClubMenusQueryParams,
+export default function useInfiniteGetClubReviewsQuery(
+  queryParams: GetClubReviewsQueryParams,
   options?: UseInfiniteQueryOptions<
-    GetClubMenusResponse,
+    GetClubReviewsResponse,
     ApplicationError,
-    GetClubMenusResponse,
-    GetClubMenusResponse,
+    GetClubReviewsResponse,
+    GetClubReviewsResponse,
     QueryKey
   >,
 ) {
@@ -55,12 +56,12 @@ export default function useInfiniteGetClubMenusQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetClubMenusResponse,
+    GetClubReviewsResponse,
     ApplicationError,
-    GetClubMenusResponse,
+    GetClubReviewsResponse,
     QueryKey
   >(
-    [QueryKeys.MENU, "LIST", "infinite", "by-club-id", queryParams],
+    [QueryKeys.REVIEW, "LIST", "infinite", queryParams],
     queryFn,
     optionsRef.current,
   );

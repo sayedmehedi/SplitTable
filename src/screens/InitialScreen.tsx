@@ -1,11 +1,11 @@
 import {AuthType} from "@src/models";
-import AppGradientButton from "@components/AppGradientButton";
 import {AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
-import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
+import {RootStackRoutes} from "@constants/routes";
 import useAuthContext from "@hooks/useAuthContext";
 import SplashScreen from "react-native-splash-screen";
 import {useDimensions} from "@react-native-community/hooks";
+import AppGradientButton from "@components/AppGradientButton";
 import type {StackScreenProps} from "@react-navigation/stack";
 import React, {useEffect, useState, useRef, useCallback} from "react";
 import {VStack, StatusBar, ScrollView, Box, Text, Image} from "native-base";

@@ -7,6 +7,7 @@ export const ServiceProviderTypes = {
   AuthService: Symbol("AuthService"),
   MenuService: Symbol("MenuService"),
   ClubService: Symbol("ClubService"),
+  ReviewService: Symbol("ReviewService"),
   LocationService: Symbol("LocationService"),
   NotificationService: Symbol("NotificationService"),
 };

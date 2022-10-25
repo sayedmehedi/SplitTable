@@ -3,12 +3,12 @@ import CancelablePromise from "cancelable-promise";
 import {
   GetClubMenusResponse,
   GlobalAxiosRequestConfig,
-  GetClubMenusPaginationQueryParams,
+  GetClubMenusQueryParams,
 } from "@src/models";
 
 export interface IMenuService {
   getClubMenus(
-    params: GetClubMenusPaginationQueryParams,
+    params: GetClubMenusQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetClubMenusResponse, GlobalAxiosRequestConfig>
   >;

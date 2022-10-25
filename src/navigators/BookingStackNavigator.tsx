@@ -8,13 +8,13 @@ import {
 } from "@react-navigation/stack";
 import {CustomerBookingStackRoutes} from "@constants/routes";
 import {CUSTOMER_BOOKING_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import PaymentScreen from "@screens/CUSTOMER/ClubDetailsScreen/PaymentScreen";
-import DateAndTimeScreen from "@screens/CUSTOMER/ClubDetailsScreen/DateAndTimeScreen";
-import SelectTableScreen from "@screens/CUSTOMER/ClubDetailsScreen/SelectTableScreen";
-import AddMenuItemScreen from "@screens/CUSTOMER/ClubDetailsScreen/AddMenuItemScreen";
-import PaymentMethodScreen from "@screens/CUSTOMER/ClubDetailsScreen/PaymentMethodScreen";
-import BookingDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen/BookingDetailsScreen";
-import GuestAndOfferMenuScreen from "@screens/CUSTOMER/ClubDetailsScreen/GuestAndOfferMenuScreen";
+import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
+import DateAndTimeScreen from "@screens/CUSTOMER/BookTableScreen/DateAndTimeScreen";
+import SelectTableScreen from "@screens/CUSTOMER/BookTableScreen/SelectTableScreen";
+import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
+import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
+import BookingDetailsScreen from "@screens/CUSTOMER/BookTableScreen/BookingDetailsScreen";
+import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
 
 const BookingStack = createStackNavigator<CustomerBookingStackParamList>();
 

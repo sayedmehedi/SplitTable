@@ -142,10 +142,15 @@ export type GetNearByClubsReposne = {
   clubs: SimplePaginatedResponse<NearbyClubListItem>;
 };
 
-export interface PaginationQueryParams {
-  page?: number;
-  limit?: number;
-}
+export type PaginationQueryParams =
+  | {
+      page?: number;
+      paginate?: number;
+    }
+  | {
+      page?: number;
+      limit?: number;
+    };
 
 export interface ClubByLocationItem {
   id: number;
@@ -271,6 +276,27 @@ export interface GetClubMenusResponse {
   menus: SimplePaginatedResponse<ClubMenuItem>;
 }
 
-export type GetClubMenusPaginationQueryParams = PaginationQueryParams & {
+export type GetClubMenusQueryParams = PaginationQueryParams & {
   clubId: number;
+};
+
+export type ReviewItem = {
+  id: number;
+  user_image: string;
+  user_name: string;
+  rating: number;
+  date: string;
+  review: string;
+};
+
+export interface GetClubReviewsResponse {
+  avg_rating?: number;
+  total_reviews: number;
+  review_numbers: Record<number, number>;
+  review_percentages: Record<number, number>;
+  reviews: SimplePaginatedResponse<ReviewItem>;
+}
+
+export type GetClubReviewsQueryParams = PaginationQueryParams & {
+  ownerId?: number;
 };

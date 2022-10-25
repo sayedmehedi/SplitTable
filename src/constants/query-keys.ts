@@ -1,6 +1,7 @@
 export const QueryKeys = {
   CLUB: "club",
   MENU: "menu",
+  REVIEW: "review",
   LOCATION: "location",
   AUTH_DATA: "auth-data",
   AUTH_TYPE: "auth-type",

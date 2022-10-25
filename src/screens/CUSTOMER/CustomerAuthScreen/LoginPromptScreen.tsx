@@ -27,7 +27,7 @@ type Props = CompositeScreenProps<
   CompositeScreenProps<
     StackScreenProps<
       CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.EMAIL_VERIFICATION
+      typeof CustomerAuthStackRoutes.LOGIN_PROMPT
     >,
     StackScreenProps<CustomerStackParamList>
   >,

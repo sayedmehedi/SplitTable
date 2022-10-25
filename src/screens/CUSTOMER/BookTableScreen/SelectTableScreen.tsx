@@ -1,3 +1,7 @@
+import React from "react";
+import {TablePerson} from "@constants/iconPath";
+import LinearGradient from "react-native-linear-gradient";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   View,
   Text,
@@ -7,10 +11,6 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
-import LinearGradient from "react-native-linear-gradient";
-import {TablePerson} from "@constants/iconPath";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
 const tableData = [
   {
