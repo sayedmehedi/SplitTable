@@ -18,6 +18,7 @@ import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import useInfiniteGetClubReviewsQuery from "@hooks/review/useInfiniteGetClubReviewsQuery";
 import {
+  FlatList,
   Dimensions,
   StyleSheet,
   ListRenderItem,
@@ -37,7 +38,6 @@ import {
   Center,
   Spinner,
   Heading,
-  FlatList,
   Skeleton,
   StatusBar,
   useTheme,
@@ -49,6 +49,8 @@ import {
 dayjs.extend(relativeTime);
 
 const windowDimension = Dimensions.get("window");
+
+const keyExtractor = (item: {id: number}) => item.id.toString();
 
 const CARD_HEIGHT = 180;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
@@ -161,6 +163,19 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
       });
     }
   };
+
+  const flatlistContentContainerStyle = React.useMemo(() => {
+    return {
+      padding: theme.space["6"],
+    };
+  }, [theme.space[6]]);
+
+  const flatlistHeaderComponentStyle = React.useMemo(() => {
+    return {
+      paddingBottom: theme.space[6],
+      marginHorizontal: -theme.space[6],
+    };
+  }, [theme.space[6]]);
 
   if (isClubDetailsLoading) {
     return (
@@ -595,17 +610,12 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
         onRefresh={refetch}
         data={resourceListData}
         refreshing={isRefetching}
+        keyExtractor={keyExtractor}
         renderItem={renderEachReview}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponentStyle={{
-          paddingBottom: 24,
-          marginHorizontal: -24,
-        }}
-        _contentContainerStyle={{
-          p: 6,
-          bg: "white",
-        }}
+        contentContainerStyle={flatlistContentContainerStyle}
+        ListHeaderComponentStyle={flatlistHeaderComponentStyle}
         ListFooterComponent={
           isFetchingNextPage ? (
             <Box>

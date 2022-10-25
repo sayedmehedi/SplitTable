@@ -15,6 +15,7 @@ import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
 import useInfiniteGetClubMenusQuery from "@hooks/menu/useInfiniteGetClubMenusQuery";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
+  FlatList,
   Dimensions,
   StyleSheet,
   ListRenderItem,
@@ -33,17 +34,19 @@ import {
   Button,
   Center,
   Spinner,
-  FlatList,
   Skeleton,
   StatusBar,
   IconButton,
   ScrollView,
+  useTheme,
 } from "native-base";
 
 const windowDimension = Dimensions.get("window");
 
 const CARD_HEIGHT = 180;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
+
+const keyExtractor = (item: {id: number}) => item.id.toString();
 
 const renderOfferMenu: ListRenderItem<ClubMenuItem> = ({item}) => (
   <Box mb={"4"}>
@@ -54,6 +57,7 @@ const renderOfferMenu: ListRenderItem<ClubMenuItem> = ({item}) => (
 type Props = {clubId: number; jumpTo: (key: string) => void};
 
 const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
+  const theme = useTheme();
   const {
     screen: {width: SCREEN_WIDTH},
   } = useDimensions();
@@ -138,6 +142,19 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
       });
     }
   };
+
+  const flatlistContentContainerStyle = React.useMemo(() => {
+    return {
+      padding: theme.space["6"],
+    };
+  }, [theme.space[6]]);
+
+  const flatlistHeaderComponentStyle = React.useMemo(() => {
+    return {
+      paddingBottom: theme.space[6],
+      marginHorizontal: -theme.space[6],
+    };
+  }, [theme.space[6]]);
 
   if (isClubDetailsLoading) {
     return (
@@ -509,18 +526,14 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
 
       <FlatList
         onRefresh={refetch}
-        refreshing={isRefetching}
         data={resourceListData}
+        refreshing={isRefetching}
+        keyExtractor={keyExtractor}
         renderItem={renderOfferMenu}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponentStyle={{
-          paddingBottom: 24,
-          marginHorizontal: -24,
-        }}
-        _contentContainerStyle={{
-          p: 6,
-        }}
+        contentContainerStyle={flatlistContentContainerStyle}
+        ListHeaderComponentStyle={flatlistHeaderComponentStyle}
         ListFooterComponent={
           isFetchingNextPage ? (
             <Box>
