@@ -33,7 +33,6 @@ import {
   Button,
   Center,
   Skeleton,
-  StatusBar,
   IconButton,
   ScrollView,
 } from "native-base";
@@ -205,8 +204,6 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
       _contentContainerStyle={{
         pb: "5",
       }}>
-      <StatusBar translucent backgroundColor={"transparent"} />
-
       <Box position={"relative"}>
         <ScrollView
           horizontal

@@ -39,7 +39,6 @@ import {
   Spinner,
   Heading,
   Skeleton,
-  StatusBar,
   useTheme,
   Progress,
   IconButton,
@@ -603,31 +602,27 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   }
 
   return (
-    <Box>
-      <StatusBar translucent backgroundColor={"transparent"} />
-
-      <FlatList
-        onRefresh={refetch}
-        data={resourceListData}
-        refreshing={isRefetching}
-        keyExtractor={keyExtractor}
-        renderItem={renderEachReview}
-        onEndReached={handleFetchNextPage}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={flatlistContentContainerStyle}
-        ListHeaderComponentStyle={flatlistHeaderComponentStyle}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <Box>
-              <Spinner />
-            </Box>
-          ) : resourceListData.length === 0 ? (
-            <GenericListEmpty />
-          ) : null
-        }
-        ListHeaderComponent={ListHeaderComponent}
-      />
-    </Box>
+    <FlatList
+      onRefresh={refetch}
+      data={resourceListData}
+      refreshing={isRefetching}
+      keyExtractor={keyExtractor}
+      renderItem={renderEachReview}
+      onEndReached={handleFetchNextPage}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={flatlistContentContainerStyle}
+      ListHeaderComponentStyle={flatlistHeaderComponentStyle}
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <Box>
+            <Spinner />
+          </Box>
+        ) : resourceListData.length === 0 ? (
+          <GenericListEmpty />
+        ) : null
+      }
+      ListHeaderComponent={ListHeaderComponent}
+    />
   );
 };
 

@@ -47,6 +47,7 @@ export function handleCancelableAxiosPromise<T>(
   },
 ) {
   signal?.addEventListener("abort", () => {
+    console.log("cancelling query");
     promise.cancel();
   });
 

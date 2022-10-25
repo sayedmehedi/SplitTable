@@ -35,7 +35,6 @@ import {
   Center,
   Spinner,
   Skeleton,
-  StatusBar,
   IconButton,
   ScrollView,
   useTheme,
@@ -521,31 +520,27 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
   }
 
   return (
-    <Box>
-      <StatusBar translucent backgroundColor={"transparent"} />
-
-      <FlatList
-        onRefresh={refetch}
-        data={resourceListData}
-        refreshing={isRefetching}
-        keyExtractor={keyExtractor}
-        renderItem={renderOfferMenu}
-        onEndReached={handleFetchNextPage}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={flatlistContentContainerStyle}
-        ListHeaderComponentStyle={flatlistHeaderComponentStyle}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <Box>
-              <Spinner />
-            </Box>
-          ) : resourceListData.length === 0 ? (
-            <GenericListEmpty />
-          ) : null
-        }
-        ListHeaderComponent={ListHeaderComponent}
-      />
-    </Box>
+    <FlatList
+      onRefresh={refetch}
+      data={resourceListData}
+      refreshing={isRefetching}
+      keyExtractor={keyExtractor}
+      renderItem={renderOfferMenu}
+      onEndReached={handleFetchNextPage}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={flatlistContentContainerStyle}
+      ListHeaderComponentStyle={flatlistHeaderComponentStyle}
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <Box>
+            <Spinner />
+          </Box>
+        ) : resourceListData.length === 0 ? (
+          <GenericListEmpty />
+        ) : null
+      }
+      ListHeaderComponent={ListHeaderComponent}
+    />
   );
 };
 

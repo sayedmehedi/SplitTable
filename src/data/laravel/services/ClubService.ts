@@ -120,6 +120,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("cancelling popular clubs");
         controller.abort();
       });
 

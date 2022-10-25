@@ -7,12 +7,12 @@ import {RouteProp} from "@react-navigation/native";
 import HomeIcon from "@assets/icons/HomeIcon.svg";
 import AccountIcon from "@assets/icons/account.svg";
 import BookingIcon from "@assets/icons/booking.svg";
-import {CustomerBottomTabParamList} from "@src/navigation";
-import HomeScreen from "@screens/CUSTOMER/HomeScreen/HomeScreen";
 import ChatScreen from "@screens/CUSTOMER/ChatScreen";
 import LinearGradient from "react-native-linear-gradient";
+import {CustomerBottomTabParamList} from "@src/navigation";
 import CommonTabHeader from "@components/CommonTabHeader";
 import {CustomerMainBottomTabRoutes} from "@constants/routes";
+import HomeScreen from "@screens/CUSTOMER/HomeScreen/HomeScreen";
 import BookingListScreen from "@screens/CUSTOMER/BookingListScreen";
 import {
   BottomTabNavigationOptions,
@@ -77,8 +77,8 @@ const CustomerBottomTabNavigator = () => {
         navigation: any;
       }) => BottomTabNavigationOptions) = React.useMemo(() => {
     return {
-      header: CommonTabHeader,
       headerShown: true,
+      header: CommonTabHeader,
       headerTitle: "My Booking",
       tabBarIcon: ({focused}) => (
         <View
@@ -107,7 +107,7 @@ const CustomerBottomTabNavigator = () => {
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, []);
 
   const tableScreenOptions:
     | BottomTabNavigationOptions
