@@ -1,5 +1,5 @@
 import React from "react";
-import {StatusBar} from "native-base";
+import {StatusBar, View} from "native-base";
 import {useWindowDimensions} from "react-native";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
@@ -65,17 +65,18 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
   );
 
   return (
-    <React.Fragment>
+    <View bg={"red.100"}>
       <StatusBar translucent backgroundColor={"transparent"} />
 
       <TabView
+        swipeEnabled={false}
         onIndexChange={setIndex}
         renderScene={renderScene}
         renderTabBar={() => null}
         navigationState={{index, routes}}
         initialLayout={{width: layout.width}}
       />
-    </React.Fragment>
+    </View>
   );
 };
 

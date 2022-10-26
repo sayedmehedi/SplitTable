@@ -99,7 +99,7 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
       ownerId: clubDetailsResponse?.club?.owner_id ?? 0,
     },
     {
-      enabled: clubDetailsResponse !== undefined,
+      enabled: clubDetailsResponse?.club?.owner_id !== undefined,
       getNextPageParam(lastPage) {
         if (lastPage.reviews?.has_more_data) {
           return {
@@ -110,6 +110,13 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
     },
   );
   useHandleNonFieldError(infiniteGetResourcesError);
+
+  React.useEffect(() => {
+    console.log("mounted");
+    return () => {
+      console.log("unmounted");
+    };
+  }, []);
 
   const resourceListData = React.useMemo(() => {
     return (

@@ -1,5 +1,6 @@
 import "@src/appEngine";
 import React from "react";
+import Toast from "react-native-toast-message";
 import {enableLatestRenderer} from "react-native-maps";
 import AllTheProviders from "@providers/AllTheProviders";
 import RootStackNavigator from "@navigators/RootStackNavigator";
@@ -12,6 +13,8 @@ const App = () => {
     <AllTheProviders>
       <FlipperAsyncStorage />
       <RootStackNavigator />
+
+      <Toast />
     </AllTheProviders>
   );
 };

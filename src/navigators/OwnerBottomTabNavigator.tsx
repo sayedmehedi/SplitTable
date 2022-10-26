@@ -1,5 +1,5 @@
 import React from "react";
-import {useTheme} from "native-base";
+import {useTheme} from "styled-components";
 import {View, Text} from "react-native";
 import BookingIcon from "@assets/icons/booking.svg";
 import {OwnerBottomTabParamList} from "@src/navigation";

@@ -3,6 +3,7 @@ import truncate from "lodash.truncate";
 import {ClubListItem} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
+import {Box, HStack, Pressable, Text} from "./ui";
 import {RedMap, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
 import Fontisto from "react-native-vector-icons/Fontisto";
@@ -12,16 +13,7 @@ import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
-import {
-  Box,
-  Text,
-  Badge,
-  Icon,
-  HStack,
-  Spinner,
-  Pressable,
-  IconButton,
-} from "native-base";
+import {Badge, Icon, Spinner, IconButton} from "native-base";
 
 type Props = {
   item: ClubListItem;
@@ -62,10 +54,10 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
   return (
     <Pressable
       flex={1}
-      minH={238}
-      shadow={"3"}
+      // shadow={"3"}
       bg={"white"}
-      rounded={"lg"}
+      borderRadius={"lg"}
+      minHeight={238}
       onPress={handlePress}>
       <Box flex={1.5}>
         <ImageBackground
@@ -79,7 +71,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
             <HStack
               p={1}
               bg={"white"}
-              rounded={"full"}
+              borderRadius={"full"}
               alignItems={"center"}
               justifyContent={"center"}>
               <Text color={"black"}>{item.avg_rating}</Text>
@@ -94,7 +86,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
                 </Box>
               ) : (
                 <IconButton
-                  rounded={"full"}
+                  borderRadius={"full"}
                   onPress={handleToggleFavorite}
                   icon={
                     <Icon
@@ -110,7 +102,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
               <Badge
                 py={1}
                 bg={"white"}
-                rounded={"full"}
+                borderRadius={"full"}
                 startIcon={<Icon as={RedMap} height={16} width={16} />}>
                 {item.distance}
               </Badge>

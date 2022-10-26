@@ -1,5 +1,5 @@
 import React from "react";
-import {useTheme} from "native-base";
+import {useTheme} from "styled-components";
 import {splitAppTheme} from "@src/theme";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackHeaderProps} from "@react-navigation/stack";

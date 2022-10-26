@@ -137,10 +137,8 @@ const HomeScreen = ({navigation}: Props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar
           translucent={false}
-          barStyle={isSearchModalOpen ? "dark-content" : "light-content"}
-          backgroundColor={
-            isSearchModalOpen ? "white" : theme.colors.secondary[600]
-          }
+          barStyle={"light-content"}
+          backgroundColor={theme.colors.secondary[600]}
         />
 
         <Box>

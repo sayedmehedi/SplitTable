@@ -1,6 +1,6 @@
 import React from "react";
-import {useTheme} from "native-base";
 import {View, Text} from "react-native";
+import {useTheme} from "styled-components";
 import ChatIcon from "@assets/icons/chat.svg";
 import TableIcon from "@assets/icons/table.svg";
 import {RouteProp} from "@react-navigation/native";

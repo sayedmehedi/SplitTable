@@ -1,5 +1,5 @@
 import React from "react";
-import {useTheme} from "native-base";
+import {useTheme} from "styled-components";
 import {
   View,
   Text,

@@ -1,6 +1,6 @@
 import React from "react";
 import AuthProvider from "./AuthProvider";
-import {NativeBaseProvider} from "native-base";
+import {ThemeProvider} from "styled-components";
 import {AppState, Platform} from "react-native";
 import {QueryClient} from "@tanstack/react-query";
 import type {AppStateStatus} from "react-native";
@@ -64,11 +64,11 @@ function AllTheProviders({children}: React.PropsWithChildren) {
       persistOptions={{
         persister: asyncStoragePersister,
       }}>
-      <NativeBaseProvider theme={splitAppTheme}>
+      <ThemeProvider theme={splitAppTheme}>
         <NavigationContainer theme={splitAppNavigationTheme}>
           <AuthProvider>{children}</AuthProvider>
         </NavigationContainer>
-      </NativeBaseProvider>
+      </ThemeProvider>
     </PersistQueryClientProvider>
   );
 }
