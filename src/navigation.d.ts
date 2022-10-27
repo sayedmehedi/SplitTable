@@ -82,6 +82,7 @@ type CustomerStackParamList = {
   [CustomerStackRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
   [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
+  [CustomerStackRoutes.CLUB_SEARCH]: undefined;
 };
 
 type OwnerAccountStackParamList = {

@@ -1,27 +1,28 @@
 import React from "react";
 import {TClubItem} from "./shared";
 import truncate from "lodash.truncate";
+import {StyleSheet} from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {Clock, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
-import {ImageBackground, StyleSheet} from "react-native";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import {
   Box,
-  Icon,
   Text,
   Divider,
   HStack,
-  Spinner,
   Pressable,
-  IconButton,
-} from "native-base";
+  ImageBackground,
+  TouchableOpacity,
+  Spinner,
+} from "@components/ui";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   item: TClubItem;
@@ -63,11 +64,11 @@ const ClubListItem = ({item, onPress}: Props) => {
     <Pressable mb={5} onPress={handlePress}>
       <Box
         flex={1}
-        shadow={"3"}
         height={"64"}
-        rounded={"lg"}
         width={"full"}
-        backgroundColor={"white"}>
+        borderRadius={"lg"}
+        backgroundColor={"white"}
+        style={splitAppTheme.shadows[3]}>
         <Box flex={2}>
           <ImageBackground
             source={{uri: item.image}}
@@ -80,33 +81,34 @@ const ClubListItem = ({item, onPress}: Props) => {
               <HStack
                 p={1}
                 px={"2.5"}
-                space={"0.5"}
-                rounded={"full"}
+                borderRadius={"full"}
                 alignItems={"center"}
                 justifyContent={"center"}
                 backgroundColor={"white"}>
                 <Text style={{color: "black"}}>{item.avgRating}</Text>
-                <Fontisto name="star" color={"#FFC529"} size={16} />
+                <Box mx={"0.5"}>
+                  <Fontisto name="star" color={"#FFC529"} size={16} />
+                </Box>
                 <Text style={{color: "black"}}>({item.totalReviews})</Text>
               </HStack>
 
               {isTogglingFavorite ? (
                 <Box p={3}>
-                  <Spinner color={"white"} size={22} />
+                  <Spinner color={"white"} size={"small"} />
                 </Box>
               ) : (
-                <IconButton
-                  rounded={"full"}
-                  onPress={handleToggleFavorite}
-                  icon={
-                    <Icon
-                      size={22}
-                      as={AntDesign}
-                      color={"white"}
-                      name={item.isFavorite ? "heart" : "hearto"}
-                    />
-                  }
-                />
+                <TouchableOpacity
+                  size={50}
+                  borderRadius={"full"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  onPress={handleToggleFavorite}>
+                  <AntDesign
+                    size={22}
+                    color={"white"}
+                    name={item.isFavorite ? "heart" : "hearto"}
+                  />
+                </TouchableOpacity>
               )}
             </HStack>
           </ImageBackground>
@@ -114,39 +116,33 @@ const ClubListItem = ({item, onPress}: Props) => {
 
         <Box flex={1} justifyContent={"space-around"} p={"3"}>
           <Text
-            fontFamily={"satoshi"}
-            color={"#262B2E"}
             fontSize={"lg"}
-            fontWeight={"bold"}>
+            color={"#262B2E"}
+            fontFamily={"SatoshiVariable-Bold"}>
             {truncate(item.name)}
           </Text>
           <Divider />
-          <HStack
-            space={2}
-            alignItems={"center"}
-            justifyContent={"space-between"}>
+          <HStack alignItems={"center"} justifyContent={"space-between"}>
             <HStack alignItems={"center"}>
               <MapIcon height={10} width={10} color={"#402B8C"} />
               <Text
                 ml={1}
                 fontSize={"sm"}
                 color={"#8A8D9F"}
-                fontFamily={"satoshi"}
-                fontWeight={"semibold"}>
+                fontFamily={"Satoshi-Medium"}>
                 {truncate(item.location, {
-                  length: 20,
+                  length: 15,
                 })}
               </Text>
             </HStack>
 
-            <HStack alignItems={"center"}>
+            <HStack alignItems={"center"} ml={2}>
               <Clock height={10} width={10} color={"#402B8C"} />
               <Text
                 ml={1}
                 fontSize={"sm"}
                 color={"#8A8D9F"}
-                fontFamily={"satoshi"}
-                fontWeight={"semibold"}>
+                fontFamily={"Satoshi-Medium"}>
                 Open: {item.openingTime} - {item.closingTime}
               </Text>
             </HStack>

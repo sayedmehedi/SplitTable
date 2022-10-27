@@ -1,10 +1,10 @@
 import React from "react";
 import dayjs from "dayjs";
 import styles from "./styles";
+import {Modal} from "react-native";
 import uuid from "react-native-uuid";
 import {Clock} from "@constants/iconPath";
 import useAppToast from "@hooks/useAppToast";
-import {TouchableOpacity, Modal} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import useDebouncedState from "@hooks/useDebouncedState";
 import {StackNavigationProp} from "@react-navigation/stack";
@@ -20,18 +20,14 @@ import useAddSearchHistoryItemMutation from "@hooks/useAddSearchHistoryItemMutat
 import useDeleteSearchHistoryItemMutation from "@hooks/useDeleteSearchHistoryItemMutation";
 import {
   Box,
-  Icon,
   Text,
   Input,
-  Button,
   HStack,
-  Heading,
   Divider,
-  Skeleton,
-  IconButton,
-  ScrollView,
   Pressable,
-} from "native-base";
+  ScrollView,
+  TouchableOpacity,
+} from "@components/ui";
 import {
   CustomerBottomTabParamList,
   CustomerStackParamList,
@@ -40,10 +36,7 @@ import {
 import {ClubListTypes} from "@constants/club";
 import {SearchHistoryItem} from "@src/models";
 
-type Props = {
-  isSearchModalOpen: boolean;
-  toggleSearchModal: () => void;
-};
+type Props = {};
 
 type NavigationProps = CompositeNavigationProp<
   CompositeNavigationProp<
@@ -140,6 +133,7 @@ export default function RestaurantSearchBtn({
 
   const handleItemDelete = (id?: string) => {
     return () => {
+      console.log("deleting");
       deleteSearchHistory(id);
     };
   };
@@ -163,56 +157,69 @@ export default function RestaurantSearchBtn({
 
   return (
     <React.Fragment>
-      <TouchableOpacity style={styles.searchButton} onPress={toggleSearchModal}>
+      <TouchableOpacity
+        style={styles.searchButton}
+        onPress={() => {
+          navigation.navigate(CustomerStackRoutes.CLUB_SEARCH);
+        }}>
         <Feather name="search" color={"#3B3B3B"} size={15} />
         <Text marginLeft={2} fontSize={"sm"} color={"#3B3B3B"}>
           Find your restaurant
         </Text>
       </TouchableOpacity>
 
-      <Modal
-        animationType={"slide"}
-        visible={isSearchModalOpen}
-        onRequestClose={handleModalClose}>
+      <Modal animationType={"slide"} visible onRequestClose={handleModalClose}>
         <Box p={6}>
-          <HStack space={5} alignItems={"center"}>
+          <HStack alignItems={"center"}>
             <Box flex={1}>
               <Input
-                size={"lg"}
-                variant={"filled"}
-                _focus={{
-                  bg: "gray.100",
-                }}
+                p={4}
+                bg={"gray.100"}
+                width={"full"}
+                borderRadius={"lg"}
                 value={searchTerm}
                 onChangeText={handleChange}
+                underlineColorAndroid={"transparent"}
                 placeholder={"Type of club/bar name or location"}
               />
             </Box>
 
-            <Box>
-              <IconButton
-                size={"lg"}
-                rounded={"full"}
+            <Box ml={5}>
+              <TouchableOpacity
+                size={50}
+                borderRadius={"full"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                bg={"rgba(255, 77, 207, 0.7)"}
+                onPress={handleSubmitSearchTerm}>
+                <MaterialIcons size={30} name={"search"} color={"white"} />
+              </TouchableOpacity>
+
+              {/* <IconButton
+                width={"lg"}
+                borderRadius={"full"}
                 color={"primary"}
                 disabled={isAdding}
                 bg={"primary.100:aplha.70"}
                 onPress={handleSubmitSearchTerm}
                 icon={<Icon as={MaterialIcons} name={"search"} size={"xl"} />}
-              />
+              /> */}
             </Box>
           </HStack>
 
           <Box mt={5}>
             <HStack alignItems={"center"} justifyContent={"space-between"}>
-              <Heading>Search History</Heading>
+              <Box>
+                <Text>Search History</Text>
+              </Box>
 
-              <Button
-                size={"lg"}
-                variant={"ghost"}
-                disabled={isDeleting}
-                onPress={handleItemDelete()}>
-                Clear all
-              </Button>
+              <Box>
+                <TouchableOpacity
+                  disabled={isDeleting}
+                  onPress={handleItemDelete()}>
+                  <Text>Clear all</Text>
+                </TouchableOpacity>
+              </Box>
             </HStack>
           </Box>
 
@@ -225,33 +232,33 @@ export default function RestaurantSearchBtn({
                     alignItems={"center"}
                     justifyContent={"space-between"}>
                     <HStack space={3} alignItems={"center"}>
-                      <Skeleton
+                      {/* <Skeleton
                         width={"5"}
                         height={"5"}
-                        rounded={"full"}
+                        borderRadius={"full"}
                         bg={"yellow.300"}
                       />
-                      <Skeleton w={"3/5"} h={"5"} bg={"purple.300"} />
+                      <Skeleton width={"3/5"} height={"5"} bg={"purple.300"} /> */}
                     </HStack>
 
-                    <Skeleton
+                    {/* <Skeleton
                       width={"5"}
                       height={"5"}
-                      rounded={"full"}
+                      borderRadius={"full"}
                       bg={"red.300"}
-                    />
+                    /> */}
                   </HStack>
                   <Divider />
                 </React.Fragment>
               ))
             ) : filteredSearchHistories?.length === 0 ? (
-              <Heading
+              <Text
                 py={5}
                 size={"sm"}
                 textAlign={"center"}
-                fontWeight={"semibold"}>
+                fontFamily={"Satoshi-Medium"}>
                 No history
-              </Heading>
+              </Text>
             ) : (
               filteredSearchHistories?.map(item => (
                 <Pressable key={item.id} onPress={handleItemPress(item)}>
@@ -261,12 +268,12 @@ export default function RestaurantSearchBtn({
                     justifyContent={"space-between"}>
                     <HStack space={3} alignItems={"center"}>
                       <Clock height={20} width={20} />
-                      <Text fontWeight={"semibold"} fontSize={"md"}>
+                      <Text fontFamily={"Satoshi-Medium"} fontSize={"md"}>
                         {item.data}
                       </Text>
                     </HStack>
 
-                    <IconButton
+                    {/* <IconButton
                       size={"md"}
                       color={"red.300"}
                       disabled={isDeleting}
@@ -274,7 +281,7 @@ export default function RestaurantSearchBtn({
                       icon={
                         <Icon as={MaterialIcons} name={"close"} size={"md"} />
                       }
-                    />
+                    /> */}
                   </HStack>
                   <Divider />
                 </Pressable>

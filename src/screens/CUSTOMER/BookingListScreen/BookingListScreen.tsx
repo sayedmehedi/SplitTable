@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./styles";
+import {useTheme} from "styled-components";
 import EachBookingItem from "./EachBookingItem";
-import {SceneMap, SceneRendererProps, TabView} from "react-native-tab-view";
 import LinearGradient from "react-native-linear-gradient";
-import {View, Text, StatusBar, HStack, Box, useToken} from "native-base";
+import {View, Text, StatusBar, HStack, Box} from "@components/ui";
 import {FlatList, TouchableOpacity, useWindowDimensions} from "react-native";
+import {SceneMap, SceneRendererProps, TabView} from "react-native-tab-view";
 
 const bookingList = [
   {
@@ -84,29 +85,28 @@ const bookingList = [
 const renderBookingItem = ({item}: any) => <EachBookingItem item={item} />;
 
 const UpcomingBookingRoute = (props: SceneRendererProps) => {
-  const p = useToken("space", "6");
-  const mb = useToken("space", "4");
+  const theme = useTheme();
 
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
-      padding: p,
+      padding: theme.space[6],
     };
-  }, [p]);
+  }, [theme.space[6]]);
 
   const flatlistListheadercomponentStyle = React.useMemo(() => {
     return {
-      marginBottom: mb,
+      marginBottom: theme.space[4],
     };
-  }, [mb]);
+  }, [theme.space[4]]);
 
   return (
     <FlatList
       data={bookingList}
-      ItemSeparatorComponent={() => <Box h={"2.5"} />}
+      ItemSeparatorComponent={() => <Box height={"2.5"} />}
       contentContainerStyle={flatlistContentContainerStyle}
       ListHeaderComponentStyle={flatlistListheadercomponentStyle}
       ListHeaderComponent={
-        <HStack justifyContent={"space-between"} space={"5"}>
+        <HStack justifyContent={"space-between"}>
           <Box flex={1}>
             <TouchableOpacity
               style={styles.buttonContainer}
@@ -119,15 +119,14 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
                 <Text
                   color={"white"}
                   fontSize={"md"}
-                  fontWeight={"bold"}
-                  fontFamily={"satoshi"}>
+                  fontFamily={"SatoshiVariable-Bold"}>
                   Upcomming
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
           </Box>
 
-          <Box flex={1}>
+          <Box flex={1} ml={"5"}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => props.jumpTo("history")}>
@@ -139,8 +138,7 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
                 <Text
                   color={"white"}
                   fontSize={"md"}
-                  fontWeight={"bold"}
-                  fontFamily={"satoshi"}>
+                  fontFamily={"SatoshiVariable-Bold"}>
                   History
                 </Text>
               </LinearGradient>
@@ -155,28 +153,28 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
 };
 
 const HistoryBookingRoute = (props: SceneRendererProps) => {
-  const p = useToken("space", "6");
-  const mb = useToken("space", "4");
+  const theme = useTheme();
 
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
-      padding: p,
+      padding: theme.space[6],
     };
-  }, [p]);
+  }, [theme.space[6]]);
 
   const flatlistListheadercomponentStyle = React.useMemo(() => {
     return {
-      marginBottom: mb,
+      marginBottom: theme.space[4],
     };
-  }, [mb]);
+  }, [theme.space[4]]);
 
   return (
     <FlatList
       data={bookingList}
+      ItemSeparatorComponent={() => <Box height={"2.5"} />}
       contentContainerStyle={flatlistContentContainerStyle}
       ListHeaderComponentStyle={flatlistListheadercomponentStyle}
       ListHeaderComponent={
-        <HStack justifyContent={"space-between"} space={"5"}>
+        <HStack justifyContent={"space-between"}>
           <Box flex={1}>
             <TouchableOpacity
               style={styles.buttonContainer}
@@ -189,15 +187,14 @@ const HistoryBookingRoute = (props: SceneRendererProps) => {
                 <Text
                   color={"white"}
                   fontSize={"md"}
-                  fontWeight={"bold"}
-                  fontFamily={"satoshi"}>
+                  fontFamily={"SatoshiVariable-Bold"}>
                   Upcomming
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
           </Box>
 
-          <Box flex={1}>
+          <Box flex={1} ml={"5"}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => props.jumpTo("history")}>
@@ -209,8 +206,7 @@ const HistoryBookingRoute = (props: SceneRendererProps) => {
                 <Text
                   color={"white"}
                   fontSize={"md"}
-                  fontWeight={"bold"}
-                  fontFamily={"satoshi"}>
+                  fontFamily={"SatoshiVariable-Bold"}>
                   History
                 </Text>
               </LinearGradient>

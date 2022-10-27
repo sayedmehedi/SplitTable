@@ -7,6 +7,7 @@ export const RootStackRoutes = {
 export const CustomerStackRoutes = {
   BOOKING: "Booking",
   CLUB_LIST: "ClubList",
+  CLUB_SEARCH: "ClubSearch",
   ONBOARDING: "OnBoarding",
   CLUB_DETAILS: "ClubDetails",
   CUSTOMER_AUTH: "CustomerAuth",

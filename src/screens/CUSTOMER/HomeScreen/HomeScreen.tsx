@@ -1,11 +1,15 @@
 import React from "react";
+import styles from "./styles";
 import {StatusBar} from "react-native";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
+import {useTheme} from "styled-components";
 import {ClubListTypes} from "@constants/club";
 import NearbyClubsList from "./NearbyClubsList";
 import useAuthContext from "@hooks/useAuthContext";
+import {useDisclosure} from "react-use-disclosure";
 import PopularClubsSwiper from "./PopularClubsSwiper";
+import Feather from "react-native-vector-icons/Feather";
 import LocationSwiper from "@components/LocationSwiper";
 import RestaurantSearchBtn from "./RestaurantSearchBtn";
 import LinearGradient from "react-native-linear-gradient";
@@ -28,18 +32,12 @@ import {
 } from "@src/navigation";
 import {
   Box,
-  Badge,
-  Icon,
   Text,
   VStack,
-  Button,
-  Center,
   HStack,
-  useTheme,
   ScrollView,
-  IconButton,
-  useDisclose,
-} from "native-base";
+  TouchableOpacity,
+} from "@components/ui";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -53,21 +51,13 @@ type Props = CompositeScreenProps<
 >;
 
 const HomeScreen = ({navigation}: Props) => {
+  const theme = useTheme();
   const {authData} = useAuthContext();
   const {hours} = useTime({format: "12-hour"});
 
   const {
     window: {height: windowHeight},
   } = useDimensions();
-
-  const {isOpen: isSearchModalOpen, onToggle: toggleSearchModal} =
-    useDisclose();
-
-  const theme = useTheme();
-
-  const linearGradientStyle = React.useMemo(() => {
-    return {height: windowHeight * 0.25};
-  }, [windowHeight]);
 
   const handlePopularClubItemPress = React.useCallback(
     (item: ClubListItem) => {
@@ -145,21 +135,21 @@ const HomeScreen = ({navigation}: Props) => {
           <LinearGradient
             end={{x: 0, y: 0}}
             start={{x: 0, y: 1}}
-            style={linearGradientStyle}
+            // @ts-ignore
+            height={windowHeight * 0.25}
             colors={["#DF3BC0", "#472BBE"]}>
             <SafeAreaView>
-              <Center py={2} h={"full"} justifyContent={"flex-end"}>
-                <Box px={6} w={"full"} mb={1}>
-                  <VStack space={"0.5"} w={"full"}>
+              <Box py={2} height={"full"} justifyContent={"flex-end"}>
+                <Box px={6} width={"full"} mb={1}>
+                  <VStack width={"full"}>
                     <HStack
-                      justifyContent={"space-between"}
-                      alignItems={"center"}>
-                      <VStack space={"0.5"}>
+                      alignItems={"center"}
+                      justifyContent={"space-between"}>
+                      <VStack>
                         <Text
                           fontSize={"xl"}
                           color={"#FFFFFF"}
-                          fontWeight={"bold"}
-                          fontFamily={"satoshi"}>
+                          fontFamily={"SatoshiVariable-Bold"}>
                           Good{" "}
                           {hours < 12
                             ? "Morning"
@@ -170,20 +160,20 @@ const HomeScreen = ({navigation}: Props) => {
                         </Text>
 
                         <Text
+                          mt={"0.5"}
                           fontSize={"md"}
                           color={"white"}
-                          fontWeight={"bold"}
-                          fontFamily={"satoshi"}>
+                          fontFamily={"SatoshiVariable-Bold"}>
                           {authData?.name}
                         </Text>
                       </VStack>
 
                       <VStack>
-                        <Badge
+                        {/* <Badge
                           mb={-4}
                           mr={-2}
                           zIndex={1}
-                          rounded={"full"}
+                          borderRadius={"full"}
                           variant={"solid"}
                           alignSelf={"flex-end"}
                           colorScheme={"secondary"}
@@ -191,34 +181,34 @@ const HomeScreen = ({navigation}: Props) => {
                             fontSize: "sm",
                           }}>
                           2
-                        </Badge>
+                        </Badge> */}
 
-                        <IconButton
-                          size={"xs"}
-                          color={"white"}
-                          rounded={"full"}
-                          variant={"subtle"}
-                          colorScheme={"white:alpha.20"}
-                          onPress={handleGotoNotifications}
-                          _pressed={{
-                            bg: "transparent",
-                          }}
-                          icon={
-                            <Icon
-                              size={7}
-                              color={"white"}
-                              as={MaterialIcons}
-                              name={"notifications-none"}
-                            />
-                          }
-                        />
+                        <TouchableOpacity
+                          p={1}
+                          borderRadius={"full"}
+                          bg={"rgba(255,255,255,0.2)"}
+                          onPress={handleGotoNotifications}>
+                          <MaterialIcons
+                            size={30}
+                            color={"white"}
+                            name={"notifications-none"}
+                          />
+                        </TouchableOpacity>
                       </VStack>
                     </HStack>
 
-                    <RestaurantSearchBtn
-                      isSearchModalOpen={isSearchModalOpen}
-                      toggleSearchModal={toggleSearchModal}
-                    />
+                    <Box my={"0.5"}>
+                      <TouchableOpacity
+                        style={styles.searchButton}
+                        onPress={() => {
+                          navigation.navigate(CustomerStackRoutes.CLUB_SEARCH);
+                        }}>
+                        <Feather name="search" color={"#3B3B3B"} size={15} />
+                        <Text marginLeft={2} fontSize={"sm"} color={"#3B3B3B"}>
+                          Find your restaurant
+                        </Text>
+                      </TouchableOpacity>
+                    </Box>
 
                     <HStack alignItems={"center"}>
                       <MapIcon height={16} width={16} color={"white"} />
@@ -226,13 +216,13 @@ const HomeScreen = ({navigation}: Props) => {
                         fontSize={"sm"}
                         color={"white"}
                         marginLeft={"2"}
-                        fontFamily={"satoshi"}>
+                        fontFamily={"Satoshi-Regular"}>
                         {authData?.location}
                       </Text>
                     </HStack>
                   </VStack>
                 </Box>
-              </Center>
+              </Box>
             </SafeAreaView>
           </LinearGradient>
         </Box>
@@ -241,75 +231,67 @@ const HomeScreen = ({navigation}: Props) => {
           <LocationSwiper onItemPress={handleLocationItemPress} />
         </Box>
 
-        <Center w={"full"}>
-          <Box px={6} w={"full"} mb={1}>
+        <Box width={"full"}>
+          <Box px={6} width={"full"} mb={1}>
             <HStack
               my={2}
-              w={"full"}
+              width={"full"}
               alignItems={"center"}
               justifyContent={"space-between"}>
               <Text
                 fontSize={"xl"}
                 color={"#030819"}
-                fontWeight={"bold"}
-                fontFamily={"satoshi"}>
+                fontFamily={"SatoshiVariable-Bold"}>
                 Popular Clubs/Bars
               </Text>
-              <Button
-                fontSize={14}
-                variant={"unstyled"}
-                fontFamily={"satoshi"}
-                colorScheme={"transparent"}
-                onPress={handlePopularClubSeeAll}
-                _text={{
-                  color: "#262B2E",
-                }}>
-                See all
-              </Button>
+              <TouchableOpacity onPress={handlePopularClubSeeAll}>
+                <Text
+                  fontSize={"sm"}
+                  color={"#262B2E"}
+                  fontFamily={"Roboto-Regular"}>
+                  See all
+                </Text>
+              </TouchableOpacity>
             </HStack>
           </Box>
-        </Center>
+        </Box>
 
         <PopularClubsSwiper onItemPress={handlePopularClubItemPress} />
 
-        <Center w={"full"}>
-          <Box px={6} w={"full"}>
+        <Box width={"full"}>
+          <Box px={6} width={"full"}>
             <HStack
               mb={1}
-              w={"full"}
+              width={"full"}
               alignItems={"center"}
               justifyContent={"space-between"}>
               <Text
                 fontSize={"xl"}
                 color={"#030819"}
-                fontWeight={"bold"}
-                fontFamily={"satoshi"}>
+                fontFamily={"SatoshiVariable-Bold"}>
                 Near by You
               </Text>
-              <Button
-                p={0}
-                fontSize={"sm"}
-                variant={"unstyled"}
-                fontFamily={"satoshi"}
-                colorScheme={"transparent"}
-                onPress={handleNearbyClubSeeAll}
-                _text={{
-                  color: "#262B2E",
-                }}>
-                See all
-              </Button>
+
+              <TouchableOpacity onPress={handleNearbyClubSeeAll}>
+                <Text
+                  fontSize={"sm"}
+                  color={"#262B2E"}
+                  fontFamily={"Roboto-Regular"}>
+                  See all
+                </Text>
+              </TouchableOpacity>
             </HStack>
 
             <NearbyClubsList onItemPress={handleNearbyClubPress} />
           </Box>
-        </Center>
+        </Box>
 
         <RecentVisitClubsSwiper
           onSeeAll={handleRecentVisitClubSeeAll}
           onItemPress={handleRecentVisitClubPress}
         />
 
-        <Box h={"4"} />
+        <Box height={"4"} />
       </ScrollView>
     </Box>
   );

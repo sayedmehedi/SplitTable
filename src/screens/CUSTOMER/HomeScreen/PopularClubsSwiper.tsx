@@ -1,7 +1,7 @@
 import React from "react";
 import {ClubListItem} from "@src/models";
+import {Box, Center, ScrollView, VStack} from "@components/ui";
 import EachPopularClubItem from "@components/EachPopularClubItem";
-import {Box, Center, ScrollView, Skeleton, VStack} from "native-base";
 import useGetPopularClubsQuery from "@hooks/clubs/useGetPopularClubsQuery";
 
 type Props = {
@@ -15,29 +15,29 @@ export default function PopularClubsSwiper({onItemPress}: Props) {
   return (
     <ScrollView
       horizontal
-      _contentContainerStyle={{
-        px: 6,
-        pb: 5,
+      contentContainerStyle={{
+        paddingBottom: 30,
+        paddingHorizontal: 24,
       }}
       showsHorizontalScrollIndicator={false}>
       {isPopularClubsLoading
         ? new Array(7).fill(1).map((_, index) => (
-            <Center w={"72"} key={index} mr={index === 6 ? 0 : 5}>
+            <Center width={"72"} key={index} mr={index === 6 ? 0 : 5}>
               <VStack
-                w={"72"}
                 space={8}
-                rounded={"md"}
+                width={"72"}
+                borderRadius={"md"}
                 borderWidth={"1"}
                 overflow={"hidden"}>
-                <Skeleton h={"32"} />
-                <Skeleton.Text px={"2"} my={"4"} />
+                {/* <Skeleton height={"32"} />
+                <Skeleton.Text px={"2"} my={"4"} /> */}
               </VStack>
             </Center>
           ))
         : popularClubsResponse?.clubs.data.map((item, index) => {
             return (
               <Box
-                w={"72"}
+                width={"72"}
                 key={item.id}
                 mr={
                   index === popularClubsResponse.clubs.data.length - 1 ? 0 : 5

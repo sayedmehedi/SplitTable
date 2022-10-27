@@ -12,18 +12,15 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {
   Box,
   Text,
-  Icon,
-  Center,
   VStack,
   HStack,
-  Heading,
-  StatusBar,
-  Skeleton,
-  FlatList,
+  Center,
   Spinner,
-  ScrollView,
-} from "native-base";
+  FlatList,
+  StatusBar,
+} from "@components/ui";
 import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList>,
@@ -34,28 +31,27 @@ const renderNotificationItem: ListRenderItem<NotificationItem> = ({item}) => (
   <HStack
     p={5}
     mb={5}
-    space={5}
-    rounded={"xl"}
     borderWidth={"1"}
+    borderRadius={"xl"}
     alignItems={"center"}
     borderColor={"#ECECEC"}>
     <Box>
       <Box
-        w={"16"}
-        h={"16"}
-        rounded={"full"}
+        width={"16"}
+        height={"16"}
+        borderRadius={"full"}
         bg={getNotificationIconBgColor(item)}>
-        <Center h={"full"}>{getNotificationIcon(item)}</Center>
+        <Center height={"full"}>{getNotificationIcon(item)}</Center>
       </Box>
     </Box>
 
-    <VStack space={1}>
-      <Heading size={"md"}>
+    <VStack ml={5}>
+      <Text fontSize={"md"} fontFamily={"Roboto-Bold"}>
         {truncate(item.title, {
           length: 22,
         })}
-      </Heading>
-      <Text numberOfLines={3} fontSize={"sm"}>
+      </Text>
+      <Text ml={1} numberOfLines={3} fontSize={"sm"}>
         {item.message}
       </Text>
     </VStack>
@@ -105,31 +101,31 @@ export default function NotificationListScreen({}: Props) {
       <Box safeArea>
         <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
-        <ScrollView
+        {/* <ScrollView
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{
             p: 6,
           }}>
           {new Array(5).fill(1).map((_, i) => (
-            <Center w={"full"} key={i}>
-              <HStack w={"full"} h={"32"} space={"5"} rounded={"md"}>
+            <Center width={"full"} key={i}>
+              <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
                 <Skeleton
-                  h={"24"}
-                  w={"24"}
-                  rounded={"sm"}
+                  height={"24"}
+                  width={"24"}
+                  borderRadius={"sm"}
                   startColor="coolGray.100"
                 />
                 <VStack flex={"3"} space={"2.5"}>
-                  <Skeleton h={"5"} startColor="amber.300" />
+                  <Skeleton height={"5"} startColor="amber.300" />
                   <Skeleton.Text lines={2} />
 
                   <HStack space="2" alignItems="center">
-                    <Skeleton size={"5"} rounded={"full"} />
-                    <Skeleton h={"3"} flex={"2"} rounded={"full"} />
+                    <Skeleton size={"5"} borderRadius={"full"} />
+                    <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
                     <Skeleton
-                      h={"3"}
+                      height={"3"}
                       flex={"1"}
-                      rounded={"full"}
+                      borderRadius={"full"}
                       startColor={"indigo.300"}
                     />
                   </HStack>
@@ -137,7 +133,7 @@ export default function NotificationListScreen({}: Props) {
               </HStack>
             </Center>
           ))}
-        </ScrollView>
+        </ScrollView> */}
       </Box>
     );
   }
@@ -146,15 +142,15 @@ export default function NotificationListScreen({}: Props) {
     <Box safeArea>
       <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
-      <FlatList<typeof resources[0]>
+      <FlatList
         data={resources}
         onRefresh={refetch}
         refreshing={isRefetching}
         renderItem={renderNotificationItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
-        _contentContainerStyle={{
-          p: 6,
+        contentContainerStyle={{
+          padding: 24,
         }}
         ListFooterComponent={
           isFetchingNextPage ? (
@@ -171,11 +167,11 @@ export default function NotificationListScreen({}: Props) {
 
 function getNotificationIconBgColor(notificationItem: NotificationItem) {
   if (notificationItem.style === NotificationStyles.SUCCESS) {
-    return "success.50:alpha.70";
+    return "success.50";
   }
 
   if (notificationItem.style === NotificationStyles.ERROR) {
-    return "red.50:alpha.70";
+    return "red.50";
   }
 
   return "yellow.50";
@@ -183,27 +179,26 @@ function getNotificationIconBgColor(notificationItem: NotificationItem) {
 
 function getNotificationIconColor(notificationItem: NotificationItem) {
   if (notificationItem.style === NotificationStyles.SUCCESS) {
-    return "success.400";
+    return splitAppTheme.colors.success[400];
   }
 
   if (notificationItem.style === NotificationStyles.ERROR) {
-    return "red.400";
+    return splitAppTheme.colors.red[400];
   }
 
-  return "yellow.400";
+  return splitAppTheme.colors.yellow[400];
 }
 
 function getNotificationIcon(notificationItem: NotificationItem) {
   if (notificationItem.type === NotificationTypes.INVITATION) {
     return (
-      <Icon
+      <MaterialCommunityIcons
         size={30}
         name={
           notificationItem.style === NotificationStyles.SUCCESS
             ? "check-circle"
             : "close-circle"
         }
-        as={MaterialCommunityIcons}
         color={getNotificationIconColor(notificationItem)}
       />
     );
@@ -211,14 +206,19 @@ function getNotificationIcon(notificationItem: NotificationItem) {
 
   if (notificationItem.type === NotificationTypes.PAYMENT) {
     return (
-      <Icon
+      <MaterialCommunityIcons
         size={30}
         name={"toolbox"}
-        as={MaterialCommunityIcons}
         color={getNotificationIconColor(notificationItem)}
       />
     );
   }
 
-  return "yellow.400";
+  return (
+    <MaterialCommunityIcons
+      size={30}
+      name={"toolbox"}
+      color={getNotificationIconColor(notificationItem)}
+    />
+  );
 }

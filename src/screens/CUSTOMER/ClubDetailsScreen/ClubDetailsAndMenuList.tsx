@@ -20,25 +20,20 @@ import {
   StyleSheet,
   ListRenderItem,
   ImageBackground,
-  TouchableOpacity,
   ScrollView as RNScrollView,
 } from "react-native";
 import {
   Box,
   Text,
   View,
-  Icon,
   HStack,
-  Divider,
   VStack,
-  Button,
-  Center,
   Spinner,
-  Skeleton,
-  IconButton,
+  Divider,
   ScrollView,
-  useTheme,
-} from "native-base";
+  TouchableOpacity,
+} from "@components/ui";
+import {useTheme} from "styled-components";
 
 const windowDimension = Dimensions.get("window");
 
@@ -155,101 +150,101 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
     };
   }, [theme.space[6]]);
 
-  if (isClubDetailsLoading) {
-    return (
-      <ScrollView>
-        <Skeleton height={300} />
+  // if (isClubDetailsLoading) {
+  //   return (
+  //     <ScrollView>
+  //       <Skeleton height={300} />
 
-        <Box mx={"6"}>
-          <Skeleton
-            w={"full"}
-            rounded={"xl"}
-            h={CARD_HEIGHT}
-            bg={"tomato"}
-            marginTop={CARD_NEGATIVE_MARGIN}
-          />
+  //       <Box mx={"6"}>
+  //         <Skeleton
+  //           width={"full"}
+  //           borderRadius={"xl"}
+  //           height={CARD_HEIGHT}
+  //           bg={"tomato"}
+  //           marginTop={CARD_NEGATIVE_MARGIN}
+  //         />
 
-          <Skeleton
-            h={"12"}
-            my={"5"}
-            w={"full"}
-            rounded={"lg"}
-            borderWidth={"2"}
-            borderColor={"primary.300"}
-          />
+  //         <Skeleton
+  //           height={"12"}
+  //           my={"5"}
+  //           width={"full"}
+  //           borderRadius={"lg"}
+  //           borderWidth={"2"}
+  //           borderColor={"primary.300"}
+  //         />
 
-          <HStack space={"2"}>
-            <Box flex={1}>
-              <Skeleton
-                h={"12"}
-                my={"5"}
-                w={"full"}
-                rounded={"lg"}
-                bg={"secondary.300"}
-              />
-            </Box>
+  //         <HStack space={"2"}>
+  //           <Box flex={1}>
+  //             <Skeleton
+  //               height={"12"}
+  //               my={"5"}
+  //               width={"full"}
+  //               borderRadius={"lg"}
+  //               bg={"secondary.300"}
+  //             />
+  //           </Box>
 
-            <Box flex={1}>
-              <Skeleton
-                h={"12"}
-                my={"5"}
-                w={"full"}
-                rounded={"lg"}
-                bg={"blue.300"}
-              />
-            </Box>
+  //           <Box flex={1}>
+  //             <Skeleton
+  //               height={"12"}
+  //               my={"5"}
+  //               width={"full"}
+  //               borderRadius={"lg"}
+  //               bg={"blue.300"}
+  //             />
+  //           </Box>
 
-            <Box flex={1}>
-              <Skeleton
-                h={"12"}
-                my={"5"}
-                w={"full"}
-                rounded={"lg"}
-                bg={"secondary.100"}
-              />
-            </Box>
-          </HStack>
-        </Box>
+  //           <Box flex={1}>
+  //             <Skeleton
+  //               height={"12"}
+  //               my={"5"}
+  //               width={"full"}
+  //               borderRadius={"lg"}
+  //               bg={"secondary.100"}
+  //             />
+  //           </Box>
+  //         </HStack>
+  //       </Box>
 
-        <Box p={6}>
-          {new Array(5).fill(1).map((_, i) => (
-            <Center w={"full"} key={i}>
-              <HStack w={"full"} h={"32"} space={"5"} rounded={"md"}>
-                <Skeleton
-                  h={"24"}
-                  w={"24"}
-                  rounded={"sm"}
-                  startColor="coolGray.100"
-                />
-                <VStack flex={"3"} space={"2.5"}>
-                  <Skeleton h={"5"} startColor="amber.300" />
-                  <Skeleton.Text lines={2} />
+  //       <Box p={6}>
+  //         {new Array(5).fill(1).map((_, i) => (
+  //           <Center width={"full"} key={i}>
+  //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+  //               <Skeleton
+  //                 height={"24"}
+  //                 width={"24"}
+  //                 borderRadius={"sm"}
+  //                 startColor="coolGray.100"
+  //               />
+  //               <VStack flex={"3"} space={"2.5"}>
+  //                 <Skeleton height={"5"} startColor="amber.300" />
+  //                 <Skeleton.Text lines={2} />
 
-                  <HStack space="2" alignItems="center">
-                    <Skeleton size={"5"} rounded={"full"} />
-                    <Skeleton h={"3"} flex={"2"} rounded={"full"} />
-                    <Skeleton
-                      h={"3"}
-                      flex={"1"}
-                      rounded={"full"}
-                      startColor={"indigo.300"}
-                    />
-                  </HStack>
-                </VStack>
-              </HStack>
-            </Center>
-          ))}
-        </Box>
-      </ScrollView>
-    );
-  }
+  //                 <HStack space="2" alignItems="center">
+  //                   <Skeleton size={"5"} borderRadius={"full"} />
+  //                   <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+  //                   <Skeleton
+  //                     height={"3"}
+  //                     flex={"1"}
+  //                     borderRadius={"full"}
+  //                     startColor={"indigo.300"}
+  //                   />
+  //                 </HStack>
+  //               </VStack>
+  //             </HStack>
+  //           </Center>
+  //         ))}
+  //       </Box>
+  //     </ScrollView>
+  //   );
+  // }
 
   if (!clubDetailsResponse) {
     return (
-      <HStack safeArea h={"full"} w={"full"}>
-        <Center w={"full"} h={"full"}>
+      <HStack height={"full"} width={"full"}>
+        <Box width={"full"} height={"full"}>
           <GenericListEmpty />
-        </Center>
+        </Box>
       </HStack>
     );
   }
@@ -260,10 +255,7 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
         <ScrollView
           horizontal
           pagingEnabled
-          ref={originalRef => {
-            // @ts-ignore
-            imageSliderRef.current = originalRef;
-          }}
+          ref={imageSliderRef}
           showsHorizontalScrollIndicator={false}>
           {clubDetailsResponse.club.images.map((img, i) => (
             <ImageBackground
@@ -274,139 +266,132 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
           ))}
         </ScrollView>
 
-        <Box position={"absolute"} w={"full"} top={0} left={0}>
+        <Box position={"absolute"} width={"full"} top={0} left={0}>
           <SafeAreaView>
             <HStack p={"6"} justifyContent={"space-between"}>
-              <IconButton
-                rounded={"full"}
-                variant={"ghost"}
-                _icon={{
-                  color: "white",
-                }}
-                icon={<Icon as={FontAwesome5} name={"chevron-left"} />}
-              />
+              <TouchableOpacity
+                borderRadius={"full"}
+                alignItems={"center"}
+                justifyContent={"center"}>
+                <FontAwesome5 size={22} name={"chevron-left"} color={"white"} />
+              </TouchableOpacity>
 
-              <HStack space={4}>
-                <IconButton
-                  rounded={"full"}
-                  variant={"ghost"}
-                  _icon={{
-                    color: "white",
-                  }}
-                  icon={<Icon as={AntDesign} name={"sharealt"} />}
-                />
-
-                <IconButton
-                  size={"md"}
-                  rounded={"full"}
-                  variant={"subtle"}
+              <HStack>
+                <TouchableOpacity
+                  p={2}
+                  borderRadius={"full"}
+                  alignItems={"center"}
                   bg={"rgba(0,0,0,0.5)"}
-                  _pressed={{
-                    bg: "secondary.300",
-                  }}
-                  _icon={{
-                    color: "white",
-                  }}
-                  icon={
-                    <Icon
-                      as={AntDesign}
-                      name={
-                        clubDetailsResponse.club.is_favourite
-                          ? "heart"
-                          : "hearto"
-                      }
-                    />
-                  }
-                />
+                  justifyContent={"center"}>
+                  <AntDesign size={22} name={"sharealt"} color={"white"} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  p={2}
+                  ml={4}
+                  borderRadius={"full"}
+                  alignItems={"center"}
+                  bg={"rgba(0,0,0,0.5)"}
+                  justifyContent={"center"}>
+                  <AntDesign
+                    size={22}
+                    name={
+                      clubDetailsResponse.club.is_favourite ? "heart" : "hearto"
+                    }
+                    color={"white"}
+                  />
+                </TouchableOpacity>
               </HStack>
             </HStack>
           </SafeAreaView>
         </Box>
 
         <Box top={"50%"} mt={-3} position={"absolute"} left={"6"}>
-          <IconButton
-            size={"md"}
-            rounded={"full"}
-            variant={"subtle"}
+          <TouchableOpacity
+            p={2}
+            ml={4}
+            borderRadius={"full"}
+            alignItems={"center"}
             bg={"rgba(0,0,0,0.5)"}
-            onPress={handlePreviousSlide}
-            _pressed={{
-              bg: "secondary.300",
-            }}
-            _icon={{
-              color: "white",
-            }}
-            icon={<Icon name={"arrow-left"} as={MaterialCommunityIcons} />}
-          />
+            justifyContent={"center"}
+            onPress={handlePreviousSlide}>
+            <MaterialCommunityIcons
+              size={22}
+              name={"arrow-left"}
+              color={"white"}
+            />
+          </TouchableOpacity>
         </Box>
 
         <Box top={"50%"} mt={-3} position={"absolute"} right={"6"}>
-          <IconButton
-            size={"md"}
-            rounded={"full"}
-            variant={"subtle"}
+          <TouchableOpacity
+            p={2}
+            ml={4}
+            borderRadius={"full"}
+            alignItems={"center"}
             bg={"rgba(0,0,0,0.5)"}
-            onPress={handleNextSlide}
-            _pressed={{
-              bg: "secondary.300",
-            }}
-            _icon={{
-              color: "white",
-            }}
-            icon={<Icon name={"arrow-right"} as={MaterialCommunityIcons} />}
-          />
+            justifyContent={"center"}
+            onPress={handleNextSlide}>
+            <MaterialCommunityIcons
+              size={22}
+              name={"arrow-right"}
+              color={"white"}
+            />
+          </TouchableOpacity>
         </Box>
       </Box>
 
       <VStack px={"6"} flex={1} bg={"rgba(255,255,255,0.1)"}>
         <View
           p={"4"}
-          w={"full"}
           bg={"white"}
-          shadow={"3"}
-          rounded={"xl"}
-          h={CARD_HEIGHT}
+          width={"full"}
+          borderRadius={"xl"}
+          height={CARD_HEIGHT}
+          style={theme.shadows[3]}
           marginTop={CARD_NEGATIVE_MARGIN}>
           <Text
+            mb={4}
             fontSize={"xl"}
             color={"#030819"}
-            fontWeight={"bold"}
-            fontFamily={"satoshi"}>
+            fontFamily={"SatoshiVariable-Bold"}>
             {truncate(clubDetailsResponse.club.name)}
           </Text>
 
-          <HStack my={2} space={"4"}>
+          <HStack my={2}>
             <MapIcon height={20} width={20} color={"#402B8C"} />
 
             <Text
-              maxW={"75%"}
+              ml={4}
               fontSize={"sm"}
+              maxWidth={"75%"}
               color={"#030819"}
-              fontFamily={"satoshi"}>
+              fontFamily={"Roboto-Regular"}>
               {truncate(clubDetailsResponse.club.location, {
                 length: 70,
               })}
             </Text>
           </HStack>
 
-          <Divider my={"2"} />
+          <Divider my={"3"} />
 
           <HStack justifyContent={"space-between"} alignItems={"center"}>
-            <HStack alignItems={"center"} space={"4"}>
+            <HStack alignItems={"center"}>
               <Clock height={20} width={20} />
-              <Text fontSize={"sm"} color={"#030819"} fontFamily={"satoshi"}>
+              <Text
+                ml={4}
+                fontSize={"sm"}
+                color={"#030819"}
+                fontFamily={"Satoshi-Regular"}>
                 Open {clubDetailsResponse.club.opening_time} -{" "}
                 {clubDetailsResponse.club.closing_time}
               </Text>
             </HStack>
 
             <Box>
-              <HStack
-                space={"1"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+              <HStack alignItems={"center"} justifyContent={"center"}>
                 <Fontisto name="star" color={"#FFC529"} size={16} />
-                <Text color={"black"} fontSize={"sm"}>
+                <Text ml={1} color={"black"} fontSize={"sm"}>
                   ({clubDetailsResponse.club.avg_rating})
                 </Text>
               </HStack>
@@ -415,26 +400,27 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
         </View>
 
         <Box>
-          <Button
+          <TouchableOpacity
+            p={4}
             my={"5"}
-            size={"md"}
-            rounded={"2xl"}
+            borderRadius={"2xl"}
             borderWidth={"2"}
             variant={"outline"}
-            borderColor={"primary.300"}
-            _text={{
-              fontSize: "xl",
-              color: "primary.300",
-              fontFamily: "satoshi",
-              fontWeight: "semibold",
-            }}>
-            Book a Table
-          </Button>
+            borderColor={"primary.300"}>
+            <Text
+              fontSize={"xl"}
+              textAlign={"center"}
+              color={"primary.300"}
+              fontFamily={"Satoshi-Medium"}>
+              Book a Table
+            </Text>
+          </TouchableOpacity>
         </Box>
 
-        <HStack justifyContent={"space-between"} space={"2"}>
+        <HStack justifyContent={"space-between"}>
           <TouchableOpacity
-            style={{flex: 1, width: "100%"}}
+            flex={1}
+            width={"full"}
             onPress={() => jumpTo("menus")}>
             <LinearGradient
               end={{x: 1, y: 0}}
@@ -448,7 +434,9 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{flex: 1, width: "100%"}}
+            mx={2}
+            flex={1}
+            width={"full"}
             onPress={() => jumpTo("reviews")}>
             <LinearGradient
               end={{x: 0, y: 0}}
@@ -462,7 +450,8 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{flex: 1, width: "100%"}}
+            flex={1}
+            width={"full"}
             onPress={() => jumpTo("information")}>
             <LinearGradient
               end={{x: 1, y: 0}}
@@ -475,49 +464,47 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
             </LinearGradient>
           </TouchableOpacity>
         </HStack>
-
-        <View flex={1} bg={"rgba(255,255,255,0.1)"}></View>
       </VStack>
     </View>
   );
 
-  if (isLoadingInfiniteResources) {
-    return (
-      <ScrollView>
-        {ListHeaderComponent}
+  // if (isLoadingInfiniteResources) {
+  //   return (
+  //     <ScrollView>
+  //       {ListHeaderComponent}
 
-        <Box p={6}>
-          {new Array(5).fill(1).map((_, i) => (
-            <Center w={"full"} key={i}>
-              <HStack w={"full"} h={"32"} space={"5"} rounded={"md"}>
-                <Skeleton
-                  h={"24"}
-                  w={"24"}
-                  rounded={"sm"}
-                  startColor="coolGray.100"
-                />
-                <VStack flex={"3"} space={"2.5"}>
-                  <Skeleton h={"5"} startColor="amber.300" />
-                  <Skeleton.Text lines={2} />
+  //       <Box p={6}>
+  //         {new Array(5).fill(1).map((_, i) => (
+  //           <Box width={"full"} key={i}>
+  //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+  //               <Skeleton
+  //                 height={"24"}
+  //                 width={"24"}
+  //                 borderRadius={"sm"}
+  //                 startColor="coolGray.100"
+  //               />
+  //               <VStack flex={"3"} space={"2.5"}>
+  //                 <Skeleton height={"5"} startColor="amber.300" />
+  //                 <Skeleton.Text lines={2} />
 
-                  <HStack space="2" alignItems="center">
-                    <Skeleton size={"5"} rounded={"full"} />
-                    <Skeleton h={"3"} flex={"2"} rounded={"full"} />
-                    <Skeleton
-                      h={"3"}
-                      flex={"1"}
-                      rounded={"full"}
-                      startColor={"indigo.300"}
-                    />
-                  </HStack>
-                </VStack>
-              </HStack>
-            </Center>
-          ))}
-        </Box>
-      </ScrollView>
-    );
-  }
+  //                 <HStack space="2" alignItems="center">
+  //                   <Skeleton size={"5"} borderRadius={"full"} />
+  //                   <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+  //                   <Skeleton
+  //                     height={"3"}
+  //                     flex={"1"}
+  //                     borderRadius={"full"}
+  //                     startColor={"indigo.300"}
+  //                   />
+  //                 </HStack>
+  //               </VStack>
+  //             </HStack>
+  //           </Box>
+  //         ))}
+  //       </Box>
+  //     </ScrollView>
+  //   );
+  // }
 
   return (
     <FlatList

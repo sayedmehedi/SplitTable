@@ -2,10 +2,12 @@ import React from "react";
 import {Axios} from "axios";
 import {container} from "@src/appEngine";
 import {AuthData, AuthType} from "@src/models";
+import {Center, Spinner, VStack} from "@components/ui";
 import useAuthStorage from "@hooks/useAuthStorage";
-import {Center, Spinner, VStack} from "native-base";
 import SplashScreen from "react-native-splash-screen";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
+import {ActivityIndicator} from "react-native";
+import {useTheme} from "styled-components";
 
 const httpClient = container.get<Axios>(ServiceProviderTypes.HttpClient);
 
@@ -22,6 +24,7 @@ export const AuthContext = React.createContext(
 );
 
 export default function AuthProvider({children}: React.PropsWithChildren) {
+  const theme = useTheme();
   const {
     authData,
     authType,
@@ -50,11 +53,9 @@ export default function AuthProvider({children}: React.PropsWithChildren) {
 
   if (isLoading) {
     return (
-      <VStack safeArea flex={1}>
-        <Center h={"full"}>
-          <Spinner size={"lg"} />
-        </Center>
-      </VStack>
+      <Center flex={1}>
+        <Spinner size={"large"} color={theme.colors.primary[300]} />
+      </Center>
     );
   }
 

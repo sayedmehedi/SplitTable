@@ -10,17 +10,16 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import {
   Box,
-  Icon,
   Text,
   HStack,
   Spinner,
   Pressable,
-  IconButton,
-} from "native-base";
+  TouchableOpacity,
+} from "@components/ui";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 
 type Props = {
   item: ClubListItem;
@@ -73,7 +72,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
               <HStack
                 p={1}
                 bg={"white"}
-                rounded={"full"}
+                borderRadius={"full"}
                 alignItems={"center"}
                 justifyContent={"center"}>
                 <Text color={"black"}>{item.avg_rating}</Text>
@@ -83,32 +82,28 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
 
               {isTogglingFavorite ? (
                 <Box p={3}>
-                  <Spinner color={"white"} size={22} />
+                  <Spinner color={"white"} size={"small"} />
                 </Box>
               ) : (
-                <IconButton
-                  rounded={"full"}
-                  onPress={handleToggleFavorite}
-                  icon={
-                    <Icon
-                      size={22}
-                      as={AntDesign}
-                      color={"white"}
-                      name={item.is_favourite ? "heart" : "hearto"}
-                    />
-                  }
-                />
+                <TouchableOpacity
+                  size={50}
+                  borderRadius={"full"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  onPress={handleToggleFavorite}>
+                  <AntDesign
+                    size={22}
+                    color={"white"}
+                    name={item.is_favourite ? "heart" : "hearto"}
+                  />
+                </TouchableOpacity>
               )}
             </HStack>
           </ImageBackground>
         </Box>
 
         <Box flex={1} px={2} justifyContent={"space-around"}>
-          <Text
-            fontSize={"lg"}
-            color={"#262B2E"}
-            fontWeight={"bold"}
-            fontFamily={"satoshi"}>
+          <Text fontSize={"lg"} color={"#262B2E"} fontFamily={"Roboto-Medium"}>
             {truncate(item.name)}
           </Text>
           <HStack alignItems={"center"}>
@@ -117,8 +112,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
               ml={1}
               fontSize={"sm"}
               color={"#8A8D9F"}
-              fontFamily={"satoshi"}
-              fontWeight={"semibold"}>
+              fontFamily={"Satoshi-Medium"}>
               {truncate(item.location)}
             </Text>
           </HStack>
@@ -129,8 +123,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
               ml={1}
               fontSize={"sm"}
               color={"#8A8D9F"}
-              fontFamily={"satoshi"}
-              fontWeight={"semibold"}>
+              fontFamily={"Satoshi-Medium"}>
               Open: {item.opening_time} - {item.closing_time}
             </Text>
           </HStack>

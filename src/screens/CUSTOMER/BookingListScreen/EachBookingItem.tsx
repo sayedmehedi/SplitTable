@@ -1,38 +1,49 @@
 import React from "react";
-import {Text, HStack, Avatar, Box, VStack, Button} from "native-base";
+import {Text, HStack, Box, VStack, Image} from "@components/ui";
 
 const EachBookingItem = ({item}: any) => {
   return (
     <HStack
       px={"4"}
       py={"1.5"}
-      space={"4"}
       bg={"white"}
-      rounded={"xl"}
       width={"full"}
       borderWidth={1}
+      borderRadius={"xl"}
       alignItems={"center"}
       borderColor={"#F1F1F1"}>
-      <Avatar
-        size={"lg"}
-        rounded={"full"}
+      <Image
+        size={65}
+        borderRadius={"full"}
         source={{
           uri: "https://www.tripsavvy.com/thmb/gauQCVHTK9uk1QZYdM4k2UeRBO8=/640x427/filters:fill(auto,1)/club-56a3e8683df78cf7727fcf6d.jpg",
         }}
       />
 
-      <VStack flex={"1"}>
+      <VStack flex={1} ml={4}>
         <HStack alignItems={"center"} justifyContent={"space-between"}>
           <Box>
-            <Text fontFamily={"satoshi"} fontSize={"sm"} color={"#8A8D9F"}>
+            <Text
+              fontSize={"sm"}
+              color={"#8A8D9F"}
+              fontFamily={"Roboto-Regular"}>
               {item.dateTime}
             </Text>
           </Box>
 
-          <HStack alignItems={"center"} space={"1"}>
-            <Box w={"2"} h={"2"} bg={"blue.300"} rounded={"full"} />
+          <HStack alignItems={"center"}>
+            <Box
+              width={"2"}
+              height={"2"}
+              bg={"blue.300"}
+              borderRadius={"full"}
+            />
 
-            <Text fontSize={"sm"} color={"#8A8D9F"} fontFamily={"satoshi"}>
+            <Text
+              ml={"1"}
+              fontSize={"sm"}
+              color={"#8A8D9F"}
+              fontFamily={"Roboto-Regular"}>
               {item.totalGuest} Guest
             </Text>
           </HStack>
@@ -41,8 +52,7 @@ const EachBookingItem = ({item}: any) => {
             <Text
               fontSize={"sm"}
               color={"blue.300"}
-              fontWeight={"bold"}
-              fontFamily={"satoshi"}>
+              fontFamily={"SatoshiVariable-Bold"}>
               {item.totalPrice}
             </Text>
           </Box>
@@ -51,25 +61,33 @@ const EachBookingItem = ({item}: any) => {
         <Text
           fontSize={"md"}
           color={"#262B2E"}
-          fontWeight={"bold"}
-          fontFamily={"satoshi"}>
+          fontFamily={"SatoshiVariable-Bold"}>
           {item.name}
         </Text>
 
-        <Text fontSize={"md"} color={"#8A8D9F"} fontFamily={"satoshi"}>
+        <Text fontSize={"md"} color={"#8A8D9F"} fontFamily={"Roboto-Regular"}>
           {item.tableName}
         </Text>
 
         <HStack alignItems={"center"} justifyContent={"space-between"}>
-          <HStack alignItems={"center"} space={"1"}>
-            <Box w={"2"} h={"2"} bg={"green.300"} rounded={"full"} />
+          <HStack alignItems={"center"}>
+            <Box
+              width={"2"}
+              height={"2"}
+              bg={"green.300"}
+              borderRadius={"full"}
+            />
 
-            <Text fontSize={"sm"} color={"green.300"} fontFamily={"satoshi"}>
+            <Text
+              ml={"1"}
+              fontSize={"sm"}
+              color={"green.300"}
+              fontFamily={"Roboto-Regular"}>
               {item.status}
             </Text>
           </HStack>
 
-          <Button
+          {/* <Button
             variant={"link"}
             _text={{
               fontSize: "sm",
@@ -87,7 +105,7 @@ const EachBookingItem = ({item}: any) => {
               fontFamily: "satoshi",
             }}>
             Cancel
-          </Button>
+          </Button> */}
         </HStack>
       </VStack>
     </HStack>

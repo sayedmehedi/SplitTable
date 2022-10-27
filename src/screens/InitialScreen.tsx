@@ -1,14 +1,13 @@
+import React from "react";
 import {AuthType} from "@src/models";
 import {AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import {RootStackRoutes} from "@constants/routes";
 import useAuthContext from "@hooks/useAuthContext";
-import SplashScreen from "react-native-splash-screen";
 import {useDimensions} from "@react-native-community/hooks";
 import AppGradientButton from "@components/AppGradientButton";
 import type {StackScreenProps} from "@react-navigation/stack";
-import React, {useEffect, useState, useRef, useCallback} from "react";
-import {VStack, StatusBar, ScrollView, Box, Text, Image} from "native-base";
+import {VStack, StatusBar, ScrollView, Box, Text, Image} from "@components/ui";
 import {
   ImageBackground,
   NativeScrollEvent,
@@ -38,12 +37,12 @@ type Props = StackScreenProps<
 
 const InitialScreen = ({navigation}: Props) => {
   const {setAuthType} = useAuthContext();
-  const scrollRef = useRef<RNScrollView>(null!);
+  const scrollRef = React.useRef<RNScrollView>(null!);
   const {window: windowDimension} = useDimensions();
-  const intervalIdRef = useRef<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const intervalIdRef = React.useRef<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const onSlideChange = useCallback(() => {
+  const onSlideChange = React.useCallback(() => {
     const newIndex =
       selectedIndex === sliderImage.length - 1 ? 0 : selectedIndex + 1;
 
@@ -56,11 +55,11 @@ const InitialScreen = ({navigation}: Props) => {
     });
   }, [selectedIndex]);
 
-  const startInterval = useCallback(() => {
+  const startInterval = React.useCallback(() => {
     intervalIdRef.current = setInterval(onSlideChange, 3000);
   }, [onSlideChange]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     startInterval();
 
     return () => {
@@ -82,10 +81,6 @@ const InitialScreen = ({navigation}: Props) => {
     let carouselIndex = Math.floor(contentOffset / viewSize);
     setSelectedIndex(carouselIndex);
   };
-
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
 
   const handleSetAuthType = (type: AuthType) => {
     setAuthType(type);
@@ -148,7 +143,10 @@ const InitialScreen = ({navigation}: Props) => {
             <Text color={"white"} fontSize={"lg"}>
               Are You
             </Text>
-            <Text color={"white"} fontSize={"lg"} fontWeight={"bold"}>
+            <Text
+              color={"white"}
+              fontSize={"lg"}
+              fontFamily={"SatoshiVariable-Bold"}>
               Customer or Club/Bar Owner
             </Text>
             <Text color={"white"} fontSize={"lg"}>

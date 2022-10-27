@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Image, Text} from "native-base";
+import {Box, Image, Text} from "@components/ui";
 import emptyListStateImage from "@assets/empty-list.png";
 import {useDimensions} from "@react-native-community/hooks";
 
@@ -20,7 +20,11 @@ const GenericListEmpty = () => {
         height={windowHeight * 0.4}
         source={emptyListStateImage}
       />
-      <Text mt={5} textAlign={"center"} fontWeight={"bold"} fontSize={"lg"}>
+      <Text
+        mt={5}
+        fontSize={"lg"}
+        textAlign={"center"}
+        fontFamily={"SatoshiVariable-Bold"}>
         No Data
       </Text>
     </Box>

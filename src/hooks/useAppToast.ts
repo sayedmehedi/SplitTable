@@ -1,15 +1,12 @@
-import {IToastProps, useToast} from "native-base";
 import React from "react";
+import Toast, {ToastShowParams} from "react-native-toast-message";
 
 export default function useAppToast() {
-  const {show} = useToast();
-
   const success = React.useCallback(
-    (title: string, props: Omit<IToastProps, "title"> = {}) => {
-      show({
-        title,
-        bg: "success.600",
-        variant: "solid",
+    (msg: string, props: ToastShowParams = {}) => {
+      Toast.show({
+        text1: "Success",
+        text2: msg,
         ...props,
       });
     },
@@ -17,11 +14,11 @@ export default function useAppToast() {
   );
 
   const error = React.useCallback(
-    (title: string, props: Omit<IToastProps, "title"> = {}) => {
-      show({
-        title,
-        bg: "error.600",
-        variant: "solid",
+    (msg: string, props: ToastShowParams = {}) => {
+      Toast.show({
+        text1: "Error",
+        text2: msg,
+        type: "error",
         ...props,
       });
     },
@@ -29,7 +26,7 @@ export default function useAppToast() {
   );
 
   return {
-    success,
     error,
+    success,
   };
 }

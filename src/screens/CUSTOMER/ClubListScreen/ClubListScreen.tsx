@@ -3,28 +3,17 @@ import {TClubItem} from "./shared";
 import {ClubListTypes} from "@constants/club";
 import PopularClubList from "./PopularClubList";
 import NearbyClubList from "./NearbyClubList";
+import {useDisclosure} from "react-use-disclosure";
 import {CustomerStackRoutes} from "@constants/routes";
 import ClubsByLocationList from "./ClubsByLocationList";
 import {StackScreenProps} from "@react-navigation/stack";
 import RecentVisitClubList from "./RecentVisitClubList";
+import ClubListBySearchTerm from "./ClubListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {Box, Input, Modal, HStack, StatusBar} from "@components/ui";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  Box,
-  Icon,
-  Input,
-  Modal,
-  HStack,
-  Stagger,
-  Button,
-  StatusBar,
-  IconButton,
-  useDisclose,
-  FormControl,
-} from "native-base";
-import ClubListBySearchTerm from "./ClubListBySearchTerm";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -38,10 +27,10 @@ const ClubListScreen = ({route}: Props) => {
   const finalRef = React.useRef(null);
   const initialRef = React.useRef<typeof Input>(null);
   const [clubSearchTerm, setClubSearchTerm] = React.useState("");
-  const {isOpen: isButtonOpened, onToggle: setButtonOpen} = useDisclose();
+  const {isOpen: isButtonOpened, toggle: setButtonOpen} = useDisclosure();
   const [clubSearchTermDraft, setClubSearchTermDraft] = React.useState("");
-  const {isOpen: isClubSearchModalOpen, onToggle: setToggleClubSearchModal} =
-    useDisclose();
+  const {isOpen: isClubSearchModalOpen, toggle: setToggleClubSearchModal} =
+    useDisclosure();
 
   React.useEffect(() => {
     if (route.params.listType === ClubListTypes.SEARCH_RESULT) {
@@ -66,7 +55,7 @@ const ClubListScreen = ({route}: Props) => {
   const handleItemPresss = React.useCallback((item: TClubItem) => {}, []);
 
   return (
-    <Box safeArea position={"relative"} h={"full"}>
+    <Box position={"relative"} height={"full"}>
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
       {route.params.listType === ClubListTypes.BY_LOCATION && (
         <ClubsByLocationList
@@ -103,7 +92,7 @@ const ClubListScreen = ({route}: Props) => {
         />
       )}
 
-      <Modal
+      {/* <Modal
         size={"xl"}
         bottom={"4"}
         avoidKeyboard
@@ -112,7 +101,7 @@ const ClubListScreen = ({route}: Props) => {
         initialFocusRef={initialRef}
         isOpen={isClubSearchModalOpen}
         onClose={setToggleClubSearchModal}>
-        <Modal.Content>
+        <Box>
           <Modal.CloseButton />
           <Modal.Header
             _text={{
@@ -130,9 +119,9 @@ const ClubListScreen = ({route}: Props) => {
                 InputRightElement={
                   <Button
                     w="1/5"
-                    h={"full"}
+                    height={"full"}
                     size={"sm"}
-                    rounded={"none"}
+                    borderRadius={"none"}
                     onPress={handleSubmitDraftClubSearchTerm}>
                     Submit
                   </Button>
@@ -140,12 +129,12 @@ const ClubListScreen = ({route}: Props) => {
               />
             </FormControl>
           </Modal.Body>
-        </Modal.Content>
-      </Modal>
+        </Box>
+      </Modal> */}
 
       <Box position={"absolute"} bottom={"6"} right={"6"}>
         <Box alignItems="center">
-          <Stagger
+          {/* <Stagger
             visible={isButtonOpened}
             initial={{
               opacity: 0,
@@ -218,11 +207,11 @@ const ClubListScreen = ({route}: Props) => {
                 }
               />
             )}
-          </Stagger>
+          </Stagger> */}
         </Box>
 
         <HStack justifyContent={"center"}>
-          <IconButton
+          {/* <IconButton
             size={"lg"}
             bg={"cyan.400"}
             variant={"solid"}
@@ -239,7 +228,7 @@ const ClubListScreen = ({route}: Props) => {
                 as={MaterialCommunityIcons}
               />
             }
-          />
+          /> */}
         </HStack>
       </Box>
     </Box>

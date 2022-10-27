@@ -16,6 +16,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import ClubSearchScreen from "@screens/CUSTOMER/ClubSearchScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -66,6 +67,12 @@ const CustomerStackNavigator = () => {
             options={notificationListScreenOptions}
             name={CustomerStackRoutes.NOTIFICATIONS}
           />
+
+          <CustomerStack.Screen
+            component={ClubSearchScreen}
+            options={clubSearchScreenOptions}
+            name={CustomerStackRoutes.CLUB_SEARCH}
+          />
         </React.Fragment>
       )}
     </CustomerStack.Navigator>
@@ -73,6 +80,18 @@ const CustomerStackNavigator = () => {
 };
 
 export default CustomerStackNavigator;
+
+const clubSearchScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.CLUB_SEARCH
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = () => ({
+  headerShown: false,
+});
 
 const notificationListScreenOptions:
   | StackNavigationOptions

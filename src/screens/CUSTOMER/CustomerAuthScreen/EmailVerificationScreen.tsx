@@ -1,10 +1,10 @@
 import React from "react";
-import AppGradientButton from "@components/AppGradientButton";
 import {StyleSheet} from "react-native";
 import {splitAppTheme} from "@src/theme";
-import {Box, Center, Container, Text} from "native-base";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CustomerAuthStackRoutes} from "@constants/routes";
+import {Box, Text} from "@components/ui";
+import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import {
@@ -30,22 +30,28 @@ const EmailVerificationScreen = ({navigation}: Props) => {
   };
 
   return (
-    <Center h={"full"}>
-      <Container centerContent w={"full"}>
+    <Box height={"full"}>
+      <Box width={"full"}>
         <Box bg={"white"} p={7} mt={7} alignItems={"center"}>
           <Text
             fontSize={"2xl"}
             color={"blue.300"}
-            fontWeight={"bold"}
-            fontFamily={"satoshi"}>
+            fontFamily={"SatoshiVariable-Bold"}>
             Verification Code
           </Text>
 
-          <Text fontSize={"sm"} color={"#262B2E"} fontFamily={"satoshi"} my={2}>
+          <Text
+            fontSize={"sm"}
+            color={"#262B2E"}
+            fontFamily={"Satoshi-Regular"}
+            my={2}>
             An authentication code has been sent to
           </Text>
 
-          <Text fontFamily={"satoshi"} fontSize={"md"} color={"blue.300"}>
+          <Text
+            fontFamily={"Satoshi-Regular"}
+            fontSize={"md"}
+            color={"blue.300"}>
             john..@gmail.com
           </Text>
 
@@ -60,12 +66,12 @@ const EmailVerificationScreen = ({navigation}: Props) => {
             }}
           />
 
-          <Text fontSize={"md"} color={"#262B2E"} fontFamily={"satoshi"}>
+          <Text
+            fontSize={"md"}
+            color={"#262B2E"}
+            fontFamily={"Satoshi-Regular"}>
             I didn't received code{" "}
-            <Text
-              fontWeight={"bold"}
-              color={"primary.300"}
-              fontFamily={"satoshi"}>
+            <Text color={"primary.300"} fontFamily={"SatoshiVariable-Bold"}>
               Resend Code
             </Text>
           </Text>
@@ -73,7 +79,7 @@ const EmailVerificationScreen = ({navigation}: Props) => {
           <Text color={"red.300"}>1:20 Sec left</Text>
         </Box>
 
-        <Box w={"full"}>
+        <Box width={"full"}>
           <AppGradientButton
             width={"100%"}
             color={"primary"}
@@ -82,8 +88,8 @@ const EmailVerificationScreen = ({navigation}: Props) => {
             onPress={handleVerify}
           />
         </Box>
-      </Container>
-    </Center>
+      </Box>
+    </Box>
   );
 };
 

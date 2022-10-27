@@ -3,7 +3,7 @@ import truncate from "lodash.truncate";
 import {MapIcon} from "@constants/iconPath";
 import {NearbyClubListItem} from "@src/models";
 import Fontisto from "react-native-vector-icons/Fontisto";
-import {Box, HStack, Image, Pressable, Text} from "native-base";
+import {Box, HStack, Image, Pressable, Text} from "@components/ui";
 
 type Props = {
   item: NearbyClubListItem;
@@ -17,20 +17,16 @@ const EachNearByItem = ({item, onPress}: Props) => {
 
   return (
     <Pressable onPress={handlePress}>
-      <HStack my={2} h={"24"} w={"full"} space={"5"}>
+      <HStack my={2} height={"24"} width={"full"}>
         <Image
-          h={"24"}
-          w={"24"}
-          rounded={"sm"}
+          height={"24"}
+          width={"24"}
+          borderRadius={"sm"}
           alt={"recent-club"}
           source={{uri: item.image}}
         />
-        <Box justifyContent={"space-between"}>
-          <Text
-            fontSize={"lg"}
-            color={"#262B2E"}
-            fontWeight={"semibold"}
-            fontFamily={"satoshi"}>
+        <Box justifyContent={"space-between"} ml={5}>
+          <Text fontSize={"lg"} color={"#262B2E"} fontFamily={"Roboto-Medium"}>
             {truncate(item.name)}
           </Text>
           <HStack alignItems={"center"}>
@@ -39,7 +35,7 @@ const EachNearByItem = ({item, onPress}: Props) => {
               ml={1}
               fontSize={"sm"}
               color={"#8A8D9F"}
-              fontFamily={"satoshi"}>
+              fontFamily={"Satoshi-Regular"}>
               {truncate(item.location)}
             </Text>
           </HStack>
@@ -50,7 +46,7 @@ const EachNearByItem = ({item, onPress}: Props) => {
               ml={1}
               fontSize={"sm"}
               color={"#8A8D9F"}
-              fontFamily={"satoshi"}>
+              fontFamily={"Satoshi-Regular"}>
               {item.distance}
             </Text>
           </HStack>

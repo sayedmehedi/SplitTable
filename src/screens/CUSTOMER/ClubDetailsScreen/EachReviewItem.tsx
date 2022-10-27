@@ -2,17 +2,7 @@ import React from "react";
 import truncate from "lodash.truncate";
 import {ReviewItem} from "@src/models";
 import {Rating} from "react-native-ratings";
-import {
-  View,
-  Text,
-  Image,
-  HStack,
-  VStack,
-  Box,
-  Avatar,
-  Heading,
-  Flex,
-} from "native-base";
+import {Text, HStack, VStack, Image} from "@components/ui";
 
 type Props = {
   item: ReviewItem;
@@ -20,13 +10,17 @@ type Props = {
 
 const EachReviewItem = ({item}: Props) => {
   return (
-    <VStack h={"32"} space={"4"}>
-      <HStack space={"4"} alignItems={"center"}>
-        <Avatar size={"lg"} source={{uri: item.user_image}} />
+    <VStack height={"32"}>
+      <HStack alignItems={"center"}>
+        <Image
+          size={50}
+          source={{uri: item.user_image}}
+          borderRadius={"full"}
+        />
 
-        <HStack flexWrap={"wrap"} flex={1} justifyContent={"flex-start"}>
-          <HStack justifyContent={"space-between"} w={"full"}>
-            <Heading size={"md"}>{item.user_name}</Heading>
+        <HStack ml={4} flexWrap={"wrap"} flex={1} justifyContent={"flex-start"}>
+          <HStack justifyContent={"space-between"} width={"full"} mb={1}>
+            <Text fontSize={"md"}>{item.user_name}</Text>
 
             <Text fontSize={"md"}>{item.date}</Text>
           </HStack>
@@ -41,7 +35,9 @@ const EachReviewItem = ({item}: Props) => {
         </HStack>
       </HStack>
 
-      <Text fontSize={"md"}>{item.review}</Text>
+      <Text mt={4} fontSize={"md"}>
+        {truncate(item.review)}
+      </Text>
     </VStack>
   );
 };

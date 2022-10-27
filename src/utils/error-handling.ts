@@ -1,5 +1,5 @@
 import {ResponseResult} from "@src/models";
-import {Toast} from "native-base";
+import Toast from "react-native-toast-message";
 import {FieldValues, UseFormSetError} from "react-hook-form";
 
 export function addServerErrors<T extends FieldValues>(
@@ -25,9 +25,9 @@ export function handleResponseResultError<T extends {}>(
 ) {
   if (isResponseResultError(responseResult)) {
     Toast.show({
-      bg: "error.600",
-      variant: "solid",
-      title: responseResult.error,
+      type: "error",
+      text1: "Error",
+      text2: responseResult.error,
     });
   }
 }

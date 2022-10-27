@@ -3,7 +3,7 @@ import {TClubItem} from "./shared";
 import ClubListItem from "./ClubListItem";
 import {ListRenderItem} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {Box, Center, FlatList, Skeleton, Spinner, VStack} from "native-base";
+import {Box, FlatList, Spinner, VStack} from "@components/ui";
 import useInfiniteGetRecentViewedClubsQuery from "@hooks/clubs/useInfiniteGetRecentViewedClubsQuery";
 
 type Props = {
@@ -69,36 +69,36 @@ const RecentVisitClubList = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  if (isLoading) {
-    return (
-      <Box p={6}>
-        {new Array(7).fill(1).map((_, index) => (
-          <Center w={"full"} key={index} mb={index === 6 ? 0 : 5}>
-            <VStack
-              space={8}
-              w={"full"}
-              rounded={"md"}
-              borderWidth={"1"}
-              overflow={"hidden"}>
-              <Skeleton h={"32"} />
-              <Skeleton.Text px={"2"} my={"4"} />
-            </VStack>
-          </Center>
-        ))}
-      </Box>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Box p={6}>
+  //       {new Array(7).fill(1).map((_, index) => (
+  //         <Box width={"full"} key={index} mb={index === 6 ? 0 : 5}>
+  //           <VStack
+  //             space={8}
+  //             width={"full"}
+  //             borderRadius={"md"}
+  //             borderWidth={"1"}
+  //             overflow={"hidden"}>
+  //             <Skeleton height={"32"} />
+  //             <Skeleton.Text px={"2"} my={"4"} />
+  //           </VStack>
+  //         </Box>
+  //       ))}
+  //     </Box>
+  //   );
+  // }
 
   return (
-    <FlatList<typeof clubListData[0]>
+    <FlatList
       data={clubListData}
       onRefresh={refetch}
       refreshing={isRefetching}
       renderItem={renderClubList}
       onEndReached={handleFetchNextPage}
       showsVerticalScrollIndicator={false}
-      _contentContainerStyle={{
-        p: 6,
+      contentContainerStyle={{
+        padding: 24,
       }}
       ListFooterComponent={
         isFetchingNextPage ? (

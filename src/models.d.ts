@@ -12,7 +12,7 @@ export type AuthData = {
   email: string;
   token: string;
   status: number;
-  user_type: number;
+  user_type: 2 | 3;
   location: string;
   latitude: number;
   longitude: number;

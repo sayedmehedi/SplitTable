@@ -1,4 +1,5 @@
 import React from "react";
+import {useTheme} from "styled-components";
 import {StatusBar, StyleSheet} from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
@@ -10,13 +11,11 @@ import {useDimensions} from "@react-native-community/hooks";
 import {
   Box,
   Text,
-  Icon,
   Image,
-  Button,
   HStack,
   VStack,
-  IconButton,
-} from "native-base";
+  TouchableOpacity,
+} from "@components/ui";
 import {
   RootStackParamList,
   CustomerStackParamList,
@@ -38,6 +37,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
   const {
     window: {width},
   } = useDimensions();
+  const theme = useTheme();
 
   const handleEmailLogin = () => {
     navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
@@ -46,10 +46,15 @@ const LoginPromptScreen = ({navigation}: Props) => {
   return (
     <Box flex={1}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" />
+
       <LinearGradient
+        // @ts-ignore
+        flex={1}
+        paddingBottom={20}
         end={{x: 0, y: 0}}
         start={{x: 0, y: 1}}
-        style={styles.linearGradient}
+        // @ts-ignore
+        alignItems={"center"}
         colors={["#DF3BC0", "#472BBE"]}>
         <Box flex={1} justifyContent={"center"}>
           <Image
@@ -60,55 +65,55 @@ const LoginPromptScreen = ({navigation}: Props) => {
           />
         </Box>
 
-        <Box flex={1.5} alignItems={"center"} justifyContent={"space-around"}>
+        <Box
+          px={6}
+          width={"full"}
+          alignItems={"center"}
+          justifyContent={"space-around"}>
           <Box mb={5}>
             <Text
               fontSize={22}
               color={"white"}
-              fontWeight={"bold"}
-              fontFamily={"satoshi"}>
+              fontFamily={"SatoshiVariable-Bold"}>
               Welcome!
             </Text>
           </Box>
 
-          <VStack space={3}>
+          <VStack width={"full"}>
             <Box>
-              <Button
-                w={"full"}
-                size={"lg"}
-                rounded={"lg"}
-                width={width * 0.7}
-                variant={"outline"}
-                colorScheme={"transparent"}
-                _text={{
-                  fontSize: "lg",
-                  color: "white",
-                  fontWeight: "bold",
-                  fontFamily: "sathoshi",
-                }}
+              <TouchableOpacity
+                p={4}
+                width={"full"}
+                borderWidth={1}
+                borderRadius={"lg"}
+                borderColor={"white"}
                 onPress={handleEmailLogin}>
-                Continue with email
-              </Button>
+                <Text
+                  fontSize={"lg"}
+                  color={"white"}
+                  textAlign={"center"}
+                  fontFamily={"SatoshiVariable-Bold"}>
+                  Continue with email
+                </Text>
+              </TouchableOpacity>
             </Box>
 
-            <Box>
-              <Button
-                mt={2}
-                w={"full"}
-                size={"lg"}
-                rounded={"lg"}
+            <Box mt={4}>
+              <TouchableOpacity
+                p={4}
+                width={"full"}
                 variant={"subtle"}
-                width={width * 0.7}
-                colorScheme={"white"}
-                bg={"rgba(255,255,255, 0.3)"}
-                _text={{
-                  fontSize: "lg",
-                  color: "white",
-                  fontWeight: "bold",
-                  fontFamily: "sathoshi",
-                }}>
-                Continue with Phone Number
-              </Button>
+                borderRadius={"lg"}
+                // colorScheme={"white"}
+                bg={"rgba(255,255,255, 0.3)"}>
+                <Text
+                  fontSize={"lg"}
+                  color={"white"}
+                  textAlign={"center"}
+                  fontFamily={"SatoshiVariable-Bold"}>
+                  Continue with Phone Number
+                </Text>
+              </TouchableOpacity>
             </Box>
           </VStack>
 
@@ -122,59 +127,59 @@ const LoginPromptScreen = ({navigation}: Props) => {
             <Box height={"1px"} width={100} bg={"white"} />
           </HStack>
 
-          <VStack space={10} alignItems={"center"}>
-            <HStack space={5}>
-              <IconButton
+          <VStack alignItems={"center"}>
+            <HStack>
+              <TouchableOpacity
+                size={50}
                 bg={"white"}
                 borderRadius={"full"}
-                colorScheme={"transparent"}
-                icon={
-                  <Icon
-                    size={5}
-                    as={Feather}
-                    name={"facebook"}
-                    color={"primary.300"}
-                  />
-                }
-              />
+                alignItems={"center"}
+                justifyContent={"center"}>
+                <Feather
+                  size={30}
+                  name={"facebook"}
+                  color={theme.colors.primary[300]}
+                />
+              </TouchableOpacity>
 
-              <IconButton
+              <TouchableOpacity
+                mx={5}
+                size={50}
                 bg={"white"}
                 borderRadius={"full"}
-                colorScheme={"transparent"}
-                icon={
-                  <Icon
-                    size={5}
-                    as={AntDesign}
-                    name={"google"}
-                    color={"primary.300"}
-                  />
-                }
-              />
+                alignItems={"center"}
+                justifyContent={"center"}>
+                <AntDesign
+                  size={30}
+                  name={"google"}
+                  color={theme.colors.primary[300]}
+                />
+              </TouchableOpacity>
 
-              <IconButton
-                colorScheme={"transparent"}
+              <TouchableOpacity
+                size={50}
                 bg={"white"}
                 borderRadius={"full"}
-                icon={
-                  <Icon
-                    size={5}
-                    as={Feather}
-                    name={"instagram"}
-                    color={"primary.300"}
-                  />
-                }
-              />
+                alignItems={"center"}
+                justifyContent={"center"}>
+                <Feather
+                  size={30}
+                  name={"instagram"}
+                  color={theme.colors.primary[300]}
+                />
+              </TouchableOpacity>
             </HStack>
 
-            <Box>
-              <Text fontSize={"lg"} color={"white"} fontFamily={"satoshi"}>
+            <Box mt={10}>
+              <Text
+                fontSize={"lg"}
+                color={"white"}
+                fontFamily={"Satoshi-Regular"}>
                 Don't have an account?{" "}
                 <Text
                   fontSize={"lg"}
                   color={"white"}
-                  fontWeight={"bold"}
-                  fontFamily={"satoshi"}
+                  fontFamily={"SatoshiVariable-Bold"}
                   textDecorationLine={"underline"}>
                   Sign Up
                 </Text>

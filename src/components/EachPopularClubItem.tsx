@@ -1,19 +1,20 @@
 import React from "react";
+import {StyleSheet} from "react-native";
 import truncate from "lodash.truncate";
 import {ClubListItem} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
-import {Box, HStack, Pressable, Text} from "./ui";
+import {Box, HStack, Pressable, Text, TouchableOpacity} from "./ui";
 import {RedMap, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
+import {ImageBackground, Spinner} from "@components/ui";
 import Fontisto from "react-native-vector-icons/Fontisto";
-import {ImageBackground, StyleSheet} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
-import {Badge, Icon, Spinner, IconButton} from "native-base";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   item: ClubListItem;
@@ -54,15 +55,16 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
   return (
     <Pressable
       flex={1}
-      // shadow={"3"}
       bg={"white"}
-      borderRadius={"lg"}
       minHeight={238}
-      onPress={handlePress}>
+      borderRadius={"lg"}
+      onPress={handlePress}
+      style={splitAppTheme.shadows[3]}>
       <Box flex={1.5}>
         <ImageBackground
+          width={"full"}
+          height={"full"}
           source={{uri: item.image}}
-          style={{height: "100%", width: "100%"}}
           imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
           <HStack
             padding={2}
@@ -82,56 +84,62 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
             <HStack alignItems={"center"}>
               {isTogglingFavorite ? (
                 <Box p={3}>
-                  <Spinner color={"white"} size={22} />
+                  <Spinner color={"white"} size={"small"} />
                 </Box>
               ) : (
-                <IconButton
+                <TouchableOpacity
+                  size={50}
                   borderRadius={"full"}
-                  onPress={handleToggleFavorite}
-                  icon={
-                    <Icon
-                      size={22}
-                      as={AntDesign}
-                      color={"white"}
-                      name={item.is_favourite ? "heart" : "hearto"}
-                    />
-                  }
-                />
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  onPress={handleToggleFavorite}>
+                  <AntDesign
+                    size={22}
+                    color={"white"}
+                    name={item.is_favourite ? "heart" : "hearto"}
+                  />
+                </TouchableOpacity>
               )}
 
-              <Badge
-                py={1}
+              <HStack
+                p={1}
                 bg={"white"}
                 borderRadius={"full"}
-                startIcon={<Icon as={RedMap} height={16} width={16} />}>
-                {item.distance}
-              </Badge>
+                alignItems={"center"}
+                justifyContent={"center"}>
+                <RedMap height={16} width={16} />
+                <Text color={"black"}>{item.distance}</Text>
+              </HStack>
             </HStack>
           </HStack>
         </ImageBackground>
       </Box>
 
       <Box px={2} flex={1} justifyContent={"space-around"}>
-        <Text
-          fontSize={"lg"}
-          color={"#262B2E"}
-          fontFamily={"satoshi"}
-          fontWeight={"semibold"}>
+        <Text fontSize={"lg"} color={"#262B2E"} fontFamily={"Roboto-Medium"}>
           {item.name}
         </Text>
 
-        <HStack alignItems="center" space={2}>
+        <HStack alignItems="center">
           <MapIcon height={20} width={20} color={"#402B8C"} />
 
-          <Text mr={1} fontSize={"sm"} color={"#8A8D9F"} fontFamily={"satoshi"}>
-            {truncate(item.location)}
-          </Text>
+          <Box ml={2}>
+            <Text
+              mr={1}
+              fontSize={"sm"}
+              color={"#8A8D9F"}
+              fontFamily={"Satoshi-Regular"}>
+              {truncate(item.location)}
+            </Text>
+          </Box>
         </HStack>
 
-        <HStack alignItems={"center"} pb={2} space={2} flexWrap={"wrap"}>
+        <HStack alignItems={"center"} pb={2} flexWrap={"wrap"}>
           {item.menus.map((menu, index) => (
             <Box
               p={1}
+              mr={2}
+              mb={2}
               style={[
                 styles.menuContainer,
                 index === 1
@@ -141,7 +149,10 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
                   : {},
               ]}
               key={menu.id}>
-              <Text color={"#FF3FCB"} fontFamily={"satoshi"} fontSize={"sm"}>
+              <Text
+                fontSize={"sm"}
+                color={"#FF3FCB"}
+                fontFamily={"Satoshi-Regular"}>
                 {truncate(menu.name, {
                   length: 12,
                 })}

@@ -1,18 +1,24 @@
 import React from "react";
 import SplashScreen from "react-native-splash-screen";
 import {StackScreenProps} from "@react-navigation/stack";
-import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {Box, Button, FlatList, HStack, Image, Text} from "native-base";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {
+  Box,
+  Text,
+  Image,
+  HStack,
+  FlatList,
+  TouchableOpacity,
+  LinearGradient,
+} from "@components/ui";
 import {CustomerAuthStackRoutes, CustomerStackRoutes} from "@constants/routes";
 import {
   StatusBar,
   StyleSheet,
   SafeAreaView,
   ListRenderItem,
-  TouchableOpacity,
   NativeScrollEvent,
   NativeSyntheticEvent,
   FlatList as RNFlatList,
@@ -94,25 +100,25 @@ const OnboardingScreen = ({navigation}: Props) => {
           />
 
           <LinearGradient
+            width={"full"}
             end={{x: 0, y: 0}}
             start={{x: 0, y: 1}}
+            // @ts-ignore
+            alignItems={"center"}
+            position={"absolute"}
+            borderTopLeftRadius={30}
+            borderTopRightRadius={30}
+            // @ts-ignore
+            justifyContent={"center"}
             colors={["#DF3BC0", "#472BBE"]}
-            style={{
-              bottom: PAGINATION_INDICATOR_HEIGHT,
-              height: height * 0.47 - PAGINATION_INDICATOR_HEIGHT,
-              width: "100%",
-              position: "absolute",
-              alignItems: "center",
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-              justifyContent: "center",
-            }}>
+            bottom={PAGINATION_INDICATOR_HEIGHT}
+            height={height * 0.47 - PAGINATION_INDICATOR_HEIGHT}>
             <Box>
               <Text
                 color={"white"}
                 fontSize={"2xl"}
-                fontWeight={"bold"}
-                textAlign={"center"}>
+                textAlign={"center"}
+                fontFamily={"SatoshiVariable-Bold"}>
                 {item?.title}
               </Text>
 
@@ -129,12 +135,12 @@ const OnboardingScreen = ({navigation}: Props) => {
               </Text>
             </Box>
 
-            <Box mb={5}>
-              <Box height={PAGINATION_INDICATOR_HEIGHT}>
-                <Button
-                  w={"full"}
-                  variant={"subtle"}
-                  bgColor={"rgba(255,255,255, 0.3)"}
+            <Box mb={5} width={"full"}>
+              <Box height={PAGINATION_INDICATOR_HEIGHT} px={6}>
+                <TouchableOpacity
+                  p={4}
+                  borderRadius={"lg"}
+                  bg={"rgba(255,255,255, 0.3)"}
                   onPress={() => {
                     if (currentSlideIndex === slides.length - 1) {
                       navigation.navigate(CustomerStackRoutes.CUSTOMER_AUTH, {
@@ -145,14 +151,13 @@ const OnboardingScreen = ({navigation}: Props) => {
                     }
                   }}>
                   <Text
-                    style={{
-                      fontSize: 15,
-                      color: "white",
-                      fontWeight: "bold",
-                    }}>
+                    fontSize={"md"}
+                    color={"white"}
+                    textAlign={"center"}
+                    fontFamily={"SatoshiVariable-Bold"}>
                     Get Started
                   </Text>
-                </Button>
+                </TouchableOpacity>
               </Box>
             </Box>
           </LinearGradient>

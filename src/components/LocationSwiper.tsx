@@ -1,24 +1,16 @@
 import React from "react";
 import {SvgUri} from "react-native-svg";
 import {LocationItem} from "@src/models";
+import {useDisclosure} from "react-use-disclosure";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
-import {
-  Box,
-  Center,
-  Pressable,
-  ScrollView,
-  Skeleton,
-  Spinner,
-  Text,
-  useDisclose,
-} from "native-base";
+import {Box, Pressable, ScrollView, Spinner, Text} from "@components/ui";
 
 type Props = {
   onItemPress?: (item: LocationItem) => void;
 };
 
 function EachSvg({uri}: {uri: string}) {
-  const {isOpen: loading, onClose} = useDisclose(true);
+  const {isOpen: loading, close: onClose} = useDisclosure(true);
 
   const onError = (e: Error) => {
     onClose();
@@ -29,7 +21,7 @@ function EachSvg({uri}: {uri: string}) {
 
   return (
     <>
-      {loading && <Skeleton size={"20"} rounded={"full"} />}
+      {/* {loading && <Skeleton size={"20"} borderRadius={"full"} />} */}
       <SvgUri uri={uri} onError={onError} onLoad={onLoad} />
     </>
   );
@@ -50,12 +42,12 @@ const LocationSwiper = ({onItemPress}: Props) => {
       _contentContainerStyle={{
         px: 6,
       }}>
-      {isLocationLoading
+      {/* {isLocationLoading
         ? new Array(6).fill(1).map((_, index) => {
             return (
-              <Center w={"24"} key={index}>
-                <Skeleton size={"20"} rounded={"full"} />
-                <Skeleton size={"2"} w={"1/2"} mt={"3"} />
+              <Center width={"24"} key={index}>
+                <Skeleton size={"20"} borderRadius={"full"} />
+                <Skeleton size={"2"} width={"1/2"} mt={"3"} />
               </Center>
             );
           })
@@ -78,7 +70,7 @@ const LocationSwiper = ({onItemPress}: Props) => {
                 </Box>
               </Pressable>
             );
-          })}
+          })} */}
     </ScrollView>
   );
 };

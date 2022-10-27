@@ -9,6 +9,7 @@ import {CustomerAuthStackRoutes} from "@constants/routes";
 import useLoginMutation from "@hooks/auth/useLoginMutation";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
+import {Box, Text, Input, VStack, HStack, Center} from "@components/ui";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
@@ -18,19 +19,6 @@ import {
   CustomerStackParamList,
   CustomerAuthStackParamList,
 } from "@src/navigation";
-import {
-  Box,
-  Icon,
-  Text,
-  Input,
-  VStack,
-  Center,
-  HStack,
-  Checkbox,
-  Container,
-  FormControl,
-  WarningOutlineIcon,
-} from "native-base";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -84,19 +72,18 @@ const EmailLoginScreen = ({navigation}: Props) => {
   });
 
   return (
-    <Center h={"full"}>
+    <Box height={"full"}>
       <Box flex={1} />
 
-      <Container centerContent>
+      <Box px={6}>
         <VStack>
           <Box>
-            <Box mb={"3.5"}>
+            <Box mb={3.5}>
               <Text
                 fontSize={"2xl"}
                 color={"blue.300"}
-                fontWeight={"bold"}
-                fontFamily={"satoshi"}
-                textAlign={"center"}>
+                textAlign={"center"}
+                fontFamily={"SatoshiVariable-Bold"}>
                 Login
               </Text>
 
@@ -104,13 +91,13 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 my={1}
                 fontSize={"lg"}
                 color={"#262B2E"}
-                fontFamily={"satoshi"}
-                textAlign={"center"}>
+                textAlign={"center"}
+                fontFamily={"Roboto-Regular"}>
                 With your email address
               </Text>
             </Box>
 
-            <VStack space={4} w={"full"}>
+            <VStack width={"full"}>
               <Controller
                 name={"email"}
                 rules={{
@@ -118,40 +105,47 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 }}
                 control={control}
                 render={({field, formState: {errors}}) => (
-                  <FormControl isInvalid>
-                    <Input
-                      size={"lg"}
-                      isFullWidth
-                      rounded={"lg"}
-                      bg={"gray.100"}
-                      variant={"filled"}
-                      value={field.value}
-                      onChangeText={field.onChange}
-                      keyboardType={"email-address"}
-                      placeholder={"Enter Your Name Here"}
-                      InputLeftElement={
-                        <Icon
-                          size={5}
-                          ml={"5"}
-                          color={"black"}
-                          as={<Entypo name={"mail"} />}
+                  <Box>
+                    <HStack
+                      width={"full"}
+                      borderWidth={!!errors.email ? 1 : 0}
+                      borderRadius={"lg"}
+                      borderColor={"red.300"}>
+                      <Center
+                        bg={"gray.100"}
+                        pl={2}
+                        borderTopLeftRadius={"lg"}
+                        borderBottomLeftRadius={"lg"}>
+                        <Entypo size={30} name={"mail"} color={"black"} />
+                      </Center>
+
+                      <Box flex={1}>
+                        <Input
+                          p={4}
+                          width={"full"}
+                          bg={"gray.100"}
+                          borderTopRightRadius={"lg"}
+                          borderBottomRightRadius={"lg"}
+                          value={field.value}
+                          onChangeText={field.onChange}
+                          keyboardType={"email-address"}
+                          placeholder={"Enter Your Name Here"}
                         />
-                      }
-                    />
+                      </Box>
+                    </HStack>
 
                     <ErrorMessage
                       errors={errors}
                       name={"email"}
                       render={({message}) => {
                         return (
-                          <FormControl.ErrorMessage
-                            leftIcon={<WarningOutlineIcon size={"xs"} />}>
+                          <Text color={"red.300"} py={1}>
                             {message}
-                          </FormControl.ErrorMessage>
+                          </Text>
                         );
                       }}
                     />
-                  </FormControl>
+                  </Box>
                 )}
               />
 
@@ -162,41 +156,48 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 }}
                 control={control}
                 render={({field, formState: {errors}}) => (
-                  <FormControl isInvalid>
-                    <Input
-                      size={"lg"}
-                      rounded={"lg"}
-                      bg={"gray.100"}
-                      secureTextEntry
-                      variant={"filled"}
-                      value={field.value}
-                      placeholder={"Password"}
-                      onChangeText={field.onChange}
-                      InputLeftElement={
-                        <Icon
-                          size={5}
-                          ml={"5"}
-                          name={"lock"}
-                          color={"black"}
-                          as={FontAwesome5}
+                  <Box mt={4}>
+                    <HStack
+                      width={"full"}
+                      borderWidth={!!errors.password ? 1 : 0}
+                      borderRadius={"lg"}
+                      borderColor={"red.300"}>
+                      <Center
+                        pl={2}
+                        bg={"gray.100"}
+                        borderTopLeftRadius={"lg"}
+                        borderBottomLeftRadius={"lg"}>
+                        <FontAwesome5 size={30} name={"lock"} color={"black"} />
+                      </Center>
+
+                      <Box flex={1}>
+                        <Input
+                          p={4}
+                          width={"full"}
+                          bg={"gray.100"}
+                          secureTextEntry
+                          value={field.value}
+                          placeholder={"Password"}
+                          borderTopRightRadius={"lg"}
+                          borderBottomRightRadius={"lg"}
+                          onChangeText={field.onChange}
+                          underlineColorAndroid={"transparent"}
                         />
-                      }
-                      underlineColorAndroid={"transparent"}
-                    />
+                      </Box>
+                    </HStack>
 
                     <ErrorMessage
                       errors={errors}
                       name={"password"}
                       render={({message}) => {
                         return (
-                          <FormControl.ErrorMessage
-                            leftIcon={<WarningOutlineIcon size={"xs"} />}>
+                          <Text color={"red.300"} py={1}>
                             {message}
-                          </FormControl.ErrorMessage>
+                          </Text>
                         );
                       }}
                     />
-                  </FormControl>
+                  </Box>
                 )}
               />
             </VStack>
@@ -204,12 +205,12 @@ const EmailLoginScreen = ({navigation}: Props) => {
             <HStack
               px={2}
               my={4}
-              w={"full"}
+              width={"full"}
               alignItems={"center"}
               justifyContent={"space-between"}>
-              <Checkbox value={"one"} fontFamily={"satoshi"}>
+              {/* <Checkbox value={"one"} fontFamily={"Satoshi-Regular"}>
                 Remember me
-              </Checkbox>
+              </Checkbox> */}
 
               <Text fontSize={"md"} color={"primary.300"}>
                 Forget password?
@@ -228,14 +229,14 @@ const EmailLoginScreen = ({navigation}: Props) => {
             />
           </Box>
         </VStack>
-      </Container>
+      </Box>
 
       <Box flex={1} />
 
-      <Text fontSize={"md"} mb={5}>
+      <Text fontSize={"md"} mb={5} textAlign={"center"}>
         Don't have an account? <Text color={"primary.300"}>Sign Up</Text>
       </Text>
-    </Center>
+    </Box>
   );
 };
 

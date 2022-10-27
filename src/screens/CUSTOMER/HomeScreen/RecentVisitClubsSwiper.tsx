@@ -6,12 +6,11 @@ import {
   Box,
   Text,
   VStack,
-  Button,
   Center,
   HStack,
-  Skeleton,
   ScrollView,
-} from "native-base";
+  TouchableOpacity,
+} from "@components/ui";
 
 type Props = {
   onSeeAll: () => void;
@@ -27,32 +26,28 @@ export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
     <Box my={1} />
   ) : (
     <Box>
-      <Center w={"full"}>
-        <Box px={6} w={"full"} my={1}>
+      <Center width={"full"}>
+        <Box px={6} width={"full"} my={1}>
           <HStack
             my={2}
-            w={"full"}
+            width={"full"}
             alignItems={"center"}
             justifyContent={"space-between"}>
             <Text
               fontSize={"xl"}
               color={"#030819"}
-              fontWeight={"bold"}
-              fontFamily={"satoshi"}>
+              fontFamily={"SatoshiVariable-Bold"}>
               Your Recent Visits
             </Text>
-            <Button
-              p={0}
-              fontSize={"sm"}
-              onPress={onSeeAll}
-              variant={"unstyled"}
-              fontFamily={"satoshi"}
-              colorScheme={"transparent"}
-              _text={{
-                color: "#262B2E",
-              }}>
-              See all
-            </Button>
+
+            <TouchableOpacity onPress={onSeeAll}>
+              <Text
+                fontSize={"sm"}
+                color={"#262B2E"}
+                fontFamily={"Roboto-Regular"}>
+                See all
+              </Text>
+            </TouchableOpacity>
           </HStack>
         </Box>
       </Center>
@@ -60,29 +55,29 @@ export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
       <ScrollView
         mb={5}
         horizontal
-        _contentContainerStyle={{
-          px: 6,
-          pb: 2,
+        contentContainerStyle={{
+          paddingBottom: 8,
+          paddingHorizontal: 24,
         }}
         showsHorizontalScrollIndicator={false}>
         {isRecentVisitClubsLoading
           ? new Array(7).fill(1).map((_, index) => (
-              <Center w={"56"} key={index} mr={index === 6 ? 0 : 5}>
+              <Center width={"56"} key={index} mr={index === 6 ? 0 : 5}>
                 <VStack
-                  w={"56"}
                   space={8}
-                  rounded={"md"}
+                  width={"56"}
+                  borderRadius={"md"}
                   borderWidth={"1"}
                   overflow={"hidden"}>
-                  <Skeleton h={"32"} />
-                  <Skeleton.Text px={"2"} my={"4"} />
+                  {/* <Skeleton height={"32"} />
+                  <Skeleton.Text px={"2"} my={"4"} /> */}
                 </VStack>
               </Center>
             ))
           : recentVisitClubsResponse?.clubs.data.map((item, index) => {
               return (
                 <Box
-                  w={"56"}
+                  width={"56"}
                   key={item.id}
                   mr={
                     index === recentVisitClubsResponse.clubs.data.length - 1

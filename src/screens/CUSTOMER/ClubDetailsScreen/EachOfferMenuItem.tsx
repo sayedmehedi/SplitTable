@@ -1,7 +1,7 @@
 import React from "react";
 import truncate from "lodash.truncate";
 import {ClubMenuItem} from "@src/models";
-import {View, Text, Image, HStack, VStack, Box} from "native-base";
+import {View, Text, Image, HStack, VStack, Box} from "@components/ui";
 
 type Props = {
   item: ClubMenuItem;
@@ -9,7 +9,7 @@ type Props = {
 
 const EachOfferMenuItem = ({item}: Props) => {
   return (
-    <HStack h={"32"} space={"4"} alignItems={"center"} bg={"white"}>
+    <HStack height={"32"} alignItems={"center"} bg={"white"}>
       <Box width={"2/6"} height={"full"}>
         <Image
           width={"full"}
@@ -19,21 +19,21 @@ const EachOfferMenuItem = ({item}: Props) => {
         />
       </Box>
 
-      <VStack flex={1} justifyContent={"space-between"}>
+      <VStack flex={1} justifyContent={"space-between"} ml={4}>
         <Text
           fontSize={"lg"}
           color={"#262B2E"}
           fontWeight={"medium"}
-          fontFamily={"satoshi"}>
+          fontFamily={"Satoshi-Regular"}>
           {item.name}
         </Text>
 
-        <View maxW={"80%"}>
+        <View maxWidth={"80%"}>
           <Text
             fontSize={"sm"}
             color={"#8A8D9F"}
             numberOfLines={3}
-            fontFamily={"satoshi"}>
+            fontFamily={"Satoshi-Regular"}>
             {truncate(item.details, {
               length: 30,
             })}
@@ -41,11 +41,10 @@ const EachOfferMenuItem = ({item}: Props) => {
         </View>
 
         <Text
+          pb={"1.5"}
           fontSize={"sm"}
           color={"blue.300"}
-          fontWeight={"bold"}
-          fontFamily={"satoshi"}
-          pb={"1.5"}>
+          fontFamily={"SatoshiVariable-Bold"}>
           Price: ${item.price}
         </Text>
       </VStack>

@@ -13,7 +13,7 @@ import {
   CustomerStackParamList,
   CustomerAuthStackParamList,
 } from "@src/navigation";
-import {Box, Image, Text, Button as NBButton} from "native-base";
+import {Box, Image, Text} from "@components/ui";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -37,7 +37,7 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
       <Image
         height={200}
         width={"full"}
-        rounded={"lg"}
+        borderRadius={"lg"}
         source={require("@assets/images/Map-1.png")}
         alt={"map"}
       />
@@ -46,7 +46,7 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
         fontSize={"md"}
         color={"#262B2E"}
         textAlign={"center"}
-        fontFamily={"satoshi"}>
+        fontFamily={"Satoshi-Regular"}>
         Set your location to start exploring club/bars around you
       </Text>
 
@@ -58,10 +58,10 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
         onPress={handleEnableLocation}
       />
 
-      <NBButton
+      {/* <NBButton
         mt={5}
         size={"lg"}
-        rounded={"lg"}
+        borderRadius={"lg"}
         borderWidth={2}
         variant={"outline"}
         color={"blue.300"}
@@ -75,7 +75,7 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
           color: "blue.300",
         }}>
         No, I do it later
-      </NBButton>
+      </NBButton> */}
     </Box>
   );
 };
