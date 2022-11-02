@@ -18,22 +18,22 @@ import useGetSearchHistoryQuery from "@hooks/useGetSearchHistoryQuery";
 import {useNavigation, CompositeNavigationProp} from "@react-navigation/native";
 import useAddSearchHistoryItemMutation from "@hooks/useAddSearchHistoryItemMutation";
 import useDeleteSearchHistoryItemMutation from "@hooks/useDeleteSearchHistoryItemMutation";
-import {
-  Box,
-  Text,
-  Input,
-  HStack,
-  Divider,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-  Spinner,
-} from "@components/ui";
+
 import {
   CustomerBottomTabParamList,
   CustomerStackParamList,
   RootStackParamList,
 } from "@src/navigation";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type NavigationProps = CompositeNavigationProp<
   StackNavigationProp<CustomerStackParamList>,
@@ -135,63 +135,110 @@ const ClubSearchScreen = () => {
 
   return (
     <React.Fragment>
-      <Box p={6}>
-        <HStack alignItems={"center"}>
-          <Box flex={1}>
-            <Input
-              p={4}
-              bg={"gray.100"}
-              width={"full"}
-              borderRadius={"lg"}
+      <View
+        style={{
+          padding: splitAppTheme.space[6],
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}>
+          <View
+            style={{
+              flex: 1,
+            }}>
+            <TextInput
+              style={{
+                padding: splitAppTheme.space[4],
+                width: splitAppTheme.space.full,
+                borderRadius: splitAppTheme.radii.lg,
+                backgroundColor: splitAppTheme.colors.gray[100],
+              }}
               value={searchTerm}
               onChangeText={handleChange}
               underlineColorAndroid={"transparent"}
               placeholder={"Type of club/bar name or location"}
             />
-          </Box>
+          </View>
 
-          <Box ml={5}>
+          <View
+            style={{
+              marginLeft: splitAppTheme.space[5],
+            }}>
             {isAdding ? (
-              <Spinner size={"small"} />
+              <ActivityIndicator size={"small"} />
             ) : (
               <TouchableOpacity
-                size={50}
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                bg={isAdding ? "rgba(0,0,0,0.7)" : "rgba(139, 118, 213, 0.95)"}
+                style={{
+                  height: 50,
+                  width: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                  backgroundColor: isAdding
+                    ? "rgba(0,0,0,0.7)"
+                    : "rgba(139, 118, 213, 0.95)",
+                }}
                 onPress={handleSubmitSearchTerm}>
                 <MaterialIcons size={30} name={"search"} color={"white"} />
               </TouchableOpacity>
             )}
-          </Box>
-        </HStack>
+          </View>
+        </View>
 
-        <Box mt={5}>
-          <HStack alignItems={"center"} justifyContent={"space-between"}>
-            <Box>
-              <Text color={"black"}>Search History</Text>
-            </Box>
+        <View
+          style={{
+            marginTop: splitAppTheme.space[5],
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <View>
+              <Text
+                style={{
+                  color: "black",
+                }}>
+                Search History
+              </Text>
+            </View>
 
-            <Box>
+            <View>
               <TouchableOpacity
                 disabled={isDeleting}
                 onPress={handleItemDelete()}>
-                <Text color={isDeleting ? "red.100" : "black"}>Clear all</Text>
+                <Text
+                  style={{
+                    color: isDeleting
+                      ? splitAppTheme.colors.red[100]
+                      : splitAppTheme.colors.black,
+                  }}>
+                  Clear all
+                </Text>
               </TouchableOpacity>
-            </Box>
-          </HStack>
-        </Box>
+            </View>
+          </View>
+        </View>
 
         <ScrollView>
           {isSearchHistoriesLoading ? (
             new Array(20).fill(1).map((_, indx) => (
               <React.Fragment key={indx}>
-                <HStack
-                  py={3}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}>
-                  <HStack space={3} alignItems={"center"}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingTop: splitAppTheme.space[3],
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}>
                     {/* <Skeleton
                           width={"5"}
                           height={"5"}
@@ -199,7 +246,7 @@ const ClubSearchScreen = () => {
                           bg={"yellow.300"}
                         />
                         <Skeleton width={"3/5"} height={"5"} bg={"purple.300"} /> */}
-                  </HStack>
+                  </View>
 
                   {/* <Skeleton
                         width={"5"}
@@ -207,60 +254,66 @@ const ClubSearchScreen = () => {
                         borderRadius={"full"}
                         bg={"red.300"}
                       /> */}
-                </HStack>
-                <Divider />
+                </View>
+                {/* <Divider /> */}
               </React.Fragment>
             ))
           ) : filteredSearchHistories?.length === 0 ? (
             <Text
-              py={5}
-              size={"sm"}
-              textAlign={"center"}
-              fontFamily={"Satoshi-Medium"}>
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.sm,
+                paddingVertical: splitAppTheme.space[5],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
               No history
             </Text>
           ) : (
             filteredSearchHistories?.map(item => (
               <Pressable key={item.id} onPress={handleItemPress(item)}>
-                <HStack
-                  py={3}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}>
-                  <HStack alignItems={"center"}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingVertical: splitAppTheme.space[3],
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}>
                     <Clock height={20} width={20} />
-                    <Text ml={3} fontFamily={"Roboto-Medium"} fontSize={"md"}>
+                    <Text
+                      style={{
+                        fontSize: splitAppTheme.fontSizes.md,
+                        marginLeft: splitAppTheme.space[3],
+                        fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                      }}>
                       {item.data}
                     </Text>
-                  </HStack>
+                  </View>
 
                   {isDeleting ? (
-                    <Spinner size={"small"} />
+                    <ActivityIndicator size={"small"} />
                   ) : (
                     <TouchableOpacity
-                      borderRadius={"full"}
-                      alignItems={"center"}
-                      justifyContent={"center"}
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: splitAppTheme.radii.full,
+                      }}
                       onPress={handleItemDelete(item.id)}>
                       <MaterialIcons size={22} name={"close"} color={"red"} />
                     </TouchableOpacity>
                   )}
-
-                  {/* <IconButton
-                        size={"md"}
-                        color={"red.300"}
-                        disabled={isDeleting}
-                        onPress={handleItemDelete(item.id)}
-                        icon={
-                          <Icon as={MaterialIcons} name={"close"} size={"md"} />
-                        }
-                      /> */}
-                </HStack>
-                <Divider />
+                </View>
+                {/* <Divider /> */}
               </Pressable>
             ))
           )}
         </ScrollView>
-      </Box>
+      </View>
     </React.Fragment>
   );
 };

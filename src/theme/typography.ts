@@ -39,7 +39,7 @@ const typography = {
       900: {
         normal: "Roboto-Black",
       },
-    },
+    } as const,
 
     Sathoshi: {
       300: {

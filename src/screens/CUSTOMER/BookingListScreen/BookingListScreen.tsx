@@ -3,9 +3,15 @@ import styles from "./styles";
 import {useTheme} from "styled-components";
 import EachBookingItem from "./EachBookingItem";
 import LinearGradient from "react-native-linear-gradient";
-import {View, Text, StatusBar, HStack, Box} from "@components/ui";
-import {FlatList, TouchableOpacity, useWindowDimensions} from "react-native";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import {SceneMap, SceneRendererProps, TabView} from "react-native-tab-view";
+import {splitAppTheme} from "@src/theme";
 
 const bookingList = [
   {
@@ -102,12 +108,25 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
   return (
     <FlatList
       data={bookingList}
-      ItemSeparatorComponent={() => <Box height={"2.5"} />}
+      ItemSeparatorComponent={() => (
+        <View
+          style={{
+            height: splitAppTheme.sizes["2.5"],
+          }}
+        />
+      )}
       contentContainerStyle={flatlistContentContainerStyle}
       ListHeaderComponentStyle={flatlistListheadercomponentStyle}
       ListHeaderComponent={
-        <HStack justifyContent={"space-between"}>
-          <Box flex={1}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}>
+          <View
+            style={{
+              flex: 1,
+            }}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => props.jumpTo("upcoming")}>
@@ -117,16 +136,22 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
                 style={styles.linearGradient}
                 colors={["#00C1FF", "#402B8C"]}>
                 <Text
-                  color={"white"}
-                  fontSize={"md"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.md,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   Upcomming
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
-          </Box>
+          </View>
 
-          <Box flex={1} ml={"5"}>
+          <View
+            style={{
+              flex: 1,
+              marginLeft: splitAppTheme.space[5],
+            }}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => props.jumpTo("history")}>
@@ -136,15 +161,17 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
                 style={styles.linearGradient}
                 colors={["#00C1FF", "#402B8C"]}>
                 <Text
-                  color={"white"}
-                  fontSize={"md"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.md,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   History
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
-          </Box>
-        </HStack>
+          </View>
+        </View>
       }
       renderItem={renderBookingItem}
       showsVerticalScrollIndicator={false}
@@ -170,12 +197,25 @@ const HistoryBookingRoute = (props: SceneRendererProps) => {
   return (
     <FlatList
       data={bookingList}
-      ItemSeparatorComponent={() => <Box height={"2.5"} />}
+      ItemSeparatorComponent={() => (
+        <View
+          style={{
+            height: splitAppTheme.sizes["2.5"],
+          }}
+        />
+      )}
       contentContainerStyle={flatlistContentContainerStyle}
       ListHeaderComponentStyle={flatlistListheadercomponentStyle}
       ListHeaderComponent={
-        <HStack justifyContent={"space-between"}>
-          <Box flex={1}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}>
+          <View
+            style={{
+              flex: 1,
+            }}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => props.jumpTo("upcoming")}>
@@ -185,16 +225,22 @@ const HistoryBookingRoute = (props: SceneRendererProps) => {
                 style={styles.linearGradient}
                 colors={["#00C1FF", "#402B8C"]}>
                 <Text
-                  color={"white"}
-                  fontSize={"md"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.md,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   Upcomming
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
-          </Box>
+          </View>
 
-          <Box flex={1} ml={"5"}>
+          <View
+            style={{
+              flex: 1,
+              marginLeft: splitAppTheme.space[5],
+            }}>
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() => props.jumpTo("history")}>
@@ -204,15 +250,17 @@ const HistoryBookingRoute = (props: SceneRendererProps) => {
                 style={styles.linearGradient}
                 colors={["#00C1FF", "#402B8C"]}>
                 <Text
-                  color={"white"}
-                  fontSize={"md"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.md,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   History
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
-          </Box>
-        </HStack>
+          </View>
+        </View>
       }
       renderItem={renderBookingItem}
       showsVerticalScrollIndicator={false}

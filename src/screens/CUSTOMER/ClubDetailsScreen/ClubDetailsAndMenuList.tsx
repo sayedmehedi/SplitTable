@@ -1,6 +1,7 @@
 import React from "react";
 import truncate from "lodash.truncate";
 import {ClubMenuItem} from "@src/models";
+import {splitAppTheme} from "@src/theme";
 import {Clock, MapIcon} from "@constants/iconPath";
 import EachOfferMenuItem from "./EachOfferMenuItem";
 import GenericListEmpty from "@components/GenericListEmpty";
@@ -15,25 +16,18 @@ import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
 import useInfiniteGetClubMenusQuery from "@hooks/menu/useInfiniteGetClubMenusQuery";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
+  View,
   FlatList,
   Dimensions,
   StyleSheet,
   ListRenderItem,
   ImageBackground,
   ScrollView as RNScrollView,
-} from "react-native";
-import {
-  Box,
-  Text,
-  View,
-  HStack,
-  VStack,
-  Spinner,
-  Divider,
   ScrollView,
   TouchableOpacity,
-} from "@components/ui";
-import {useTheme} from "styled-components";
+  Text,
+  ActivityIndicator,
+} from "react-native";
 
 const windowDimension = Dimensions.get("window");
 
@@ -43,15 +37,17 @@ const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
 const keyExtractor = (item: {id: number}) => item.id.toString();
 
 const renderOfferMenu: ListRenderItem<ClubMenuItem> = ({item}) => (
-  <Box mb={"4"}>
+  <View
+    style={{
+      marginBottom: splitAppTheme.space["4"],
+    }}>
     <EachOfferMenuItem item={item} />
-  </Box>
+  </View>
 );
 
 type Props = {clubId: number; jumpTo: (key: string) => void};
 
 const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
-  const theme = useTheme();
   const {
     screen: {width: SCREEN_WIDTH},
   } = useDimensions();
@@ -139,16 +135,16 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
 
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
-      padding: theme.space["6"],
+      padding: splitAppTheme.space["6"],
     };
-  }, [theme.space[6]]);
+  }, []);
 
   const flatlistHeaderComponentStyle = React.useMemo(() => {
     return {
-      paddingBottom: theme.space[6],
-      marginHorizontal: -theme.space[6],
+      paddingBottom: splitAppTheme.space[6],
+      marginHorizontal: -splitAppTheme.space[6],
     };
-  }, [theme.space[6]]);
+  }, []);
 
   // if (isClubDetailsLoading) {
   //   return (
@@ -241,17 +237,31 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
 
   if (!clubDetailsResponse) {
     return (
-      <HStack height={"full"} width={"full"}>
-        <Box width={"full"} height={"full"}>
+      <View
+        style={{
+          width: splitAppTheme.sizes.full,
+          height: splitAppTheme.sizes.full,
+        }}>
+        <View
+          style={{
+            width: splitAppTheme.sizes.full,
+            height: splitAppTheme.sizes.full,
+          }}>
           <GenericListEmpty />
-        </Box>
-      </HStack>
+        </View>
+      </View>
     );
   }
 
   const ListHeaderComponent = (
-    <View flex={1}>
-      <Box position={"relative"}>
+    <View
+      style={{
+        flex: 1,
+      }}>
+      <View
+        style={{
+          position: "relative",
+        }}>
         <ScrollView
           horizontal
           pagingEnabled
@@ -266,33 +276,50 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
           ))}
         </ScrollView>
 
-        <Box position={"absolute"} width={"full"} top={0} left={0}>
+        <View
+          style={{
+            top: 0,
+            left: 0,
+            position: "absolute",
+            width: splitAppTheme.sizes.full,
+          }}>
           <SafeAreaView>
-            <HStack p={"6"} justifyContent={"space-between"}>
+            <View
+              style={{
+                flexDirection: "row",
+                padding: splitAppTheme.space[6],
+                justifyContent: "space-between",
+              }}>
               <TouchableOpacity
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                }}>
                 <FontAwesome5 size={22} name={"chevron-left"} color={"white"} />
               </TouchableOpacity>
 
-              <HStack>
+              <View>
                 <TouchableOpacity
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  bg={"rgba(0,0,0,0.5)"}
-                  justifyContent={"center"}>
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    borderRadius: splitAppTheme.radii.full,
+                  }}>
                   <AntDesign size={22} name={"sharealt"} color={"white"} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  p={2}
-                  ml={4}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  bg={"rgba(0,0,0,0.5)"}
-                  justifyContent={"center"}>
+                  style={{
+                    padding: splitAppTheme.space[2],
+                    marginLeft: splitAppTheme.space[4],
+                    borderRadius: splitAppTheme.radii.full,
+                    alignItems: "center",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    justifyContent: "center",
+                  }}>
                   <AntDesign
                     size={22}
                     name={
@@ -301,19 +328,27 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
                     color={"white"}
                   />
                 </TouchableOpacity>
-              </HStack>
-            </HStack>
+              </View>
+            </View>
           </SafeAreaView>
-        </Box>
+        </View>
 
-        <Box top={"50%"} mt={-3} position={"absolute"} left={"6"}>
+        <View
+          style={{
+            top: "50%",
+            position: "absolute",
+            left: splitAppTheme.space[6],
+            marginTop: splitAppTheme.space[3] * -1,
+          }}>
           <TouchableOpacity
-            p={2}
-            ml={4}
-            borderRadius={"full"}
-            alignItems={"center"}
-            bg={"rgba(0,0,0,0.5)"}
-            justifyContent={"center"}
+            style={{
+              alignItems: "center",
+              padding: splitAppTheme.space[2],
+              marginLeft: splitAppTheme.space[4],
+              borderRadius: splitAppTheme.radii.full,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              justifyContent: "center",
+            }}
             onPress={handlePreviousSlide}>
             <MaterialCommunityIcons
               size={22}
@@ -321,16 +356,24 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
               color={"white"}
             />
           </TouchableOpacity>
-        </Box>
+        </View>
 
-        <Box top={"50%"} mt={-3} position={"absolute"} right={"6"}>
+        <View
+          style={{
+            top: "50%",
+            position: "absolute",
+            right: splitAppTheme.space[6],
+            marginTop: splitAppTheme.space[3] * -1,
+          }}>
           <TouchableOpacity
-            p={2}
-            ml={4}
-            borderRadius={"full"}
-            alignItems={"center"}
-            bg={"rgba(0,0,0,0.5)"}
-            justifyContent={"center"}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: splitAppTheme.space[2],
+              marginLeft: splitAppTheme.space[4],
+              backgroundColor: "rgba(0,0,0,0.5)",
+              borderRadius: splitAppTheme.radii.full,
+            }}
             onPress={handleNextSlide}>
             <MaterialCommunityIcons
               size={22}
@@ -338,133 +381,191 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
               color={"white"}
             />
           </TouchableOpacity>
-        </Box>
-      </Box>
+        </View>
+      </View>
 
-      <VStack px={"6"} flex={1} bg={"rgba(255,255,255,0.1)"}>
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: splitAppTheme.space[6],
+          backgroundColor: "rgba(255,255,255,0.1)",
+        }}>
         <View
-          p={"4"}
-          bg={"white"}
-          width={"full"}
-          borderRadius={"xl"}
-          height={CARD_HEIGHT}
-          style={theme.shadows[3]}
-          marginTop={CARD_NEGATIVE_MARGIN}>
+          style={{
+            height: CARD_HEIGHT,
+            ...splitAppTheme.shadows[3],
+            padding: splitAppTheme.space[4],
+            marginTop: CARD_NEGATIVE_MARGIN,
+            width: splitAppTheme.sizes.full,
+            borderRadius: splitAppTheme.radii.xl,
+            backgroundColor: splitAppTheme.colors.white,
+          }}>
           <Text
-            mb={4}
-            fontSize={"xl"}
-            color={"#030819"}
-            fontFamily={"SatoshiVariable-Bold"}>
+            style={{
+              color: "#030819",
+              marginBottom: splitAppTheme.space[4],
+              fontSize: splitAppTheme.fontSizes.xl,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
             {truncate(clubDetailsResponse.club.name)}
           </Text>
 
-          <HStack my={2}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginVertical: splitAppTheme.space[2],
+            }}>
             <MapIcon height={20} width={20} color={"#402B8C"} />
 
             <Text
-              ml={4}
-              fontSize={"sm"}
-              maxWidth={"75%"}
-              color={"#030819"}
-              fontFamily={"Roboto-Regular"}>
+              style={{
+                maxWidth: "75%",
+                color: "#030819",
+                marginLeft: splitAppTheme.space[4],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
               {truncate(clubDetailsResponse.club.location, {
                 length: 70,
               })}
             </Text>
-          </HStack>
+          </View>
 
-          <Divider my={"3"} />
+          {/* <Divider my={"3"} /> */}
 
-          <HStack justifyContent={"space-between"} alignItems={"center"}>
-            <HStack alignItems={"center"}>
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+              }}>
               <Clock height={20} width={20} />
               <Text
-                ml={4}
-                fontSize={"sm"}
-                color={"#030819"}
-                fontFamily={"Satoshi-Regular"}>
+                style={{
+                  color: "#030819",
+                  marginLeft: splitAppTheme.space[4],
+                  fontSize: splitAppTheme.fontSizes.sm,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+                }}>
                 Open {clubDetailsResponse.club.opening_time} -{" "}
                 {clubDetailsResponse.club.closing_time}
               </Text>
-            </HStack>
+            </View>
 
-            <Box>
-              <HStack alignItems={"center"} justifyContent={"center"}>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
                 <Fontisto name="star" color={"#FFC529"} size={16} />
-                <Text ml={1} color={"black"} fontSize={"sm"}>
+                <Text
+                  style={{
+                    color: "black",
+                    marginLeft: splitAppTheme.space[1],
+                    fontSize: splitAppTheme.fontSizes.sm,
+                  }}>
                   ({clubDetailsResponse.club.avg_rating})
                 </Text>
-              </HStack>
-            </Box>
-          </HStack>
+              </View>
+            </View>
+          </View>
         </View>
 
-        <Box>
+        <View>
           <TouchableOpacity
-            p={4}
-            my={"5"}
-            borderRadius={"2xl"}
-            borderWidth={"2"}
-            variant={"outline"}
-            borderColor={"primary.300"}>
+            style={{
+              padding: splitAppTheme.space[4],
+              borderWidth: splitAppTheme.sizes[2],
+              marginVertical: splitAppTheme.space[5],
+              borderRadius: splitAppTheme.radii["2xl"],
+              borderColor: splitAppTheme.colors.primary[300],
+            }}>
             <Text
-              fontSize={"xl"}
-              textAlign={"center"}
-              color={"primary.300"}
-              fontFamily={"Satoshi-Medium"}>
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.xl,
+                color: splitAppTheme.colors.primary[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
               Book a Table
             </Text>
           </TouchableOpacity>
-        </Box>
+        </View>
 
-        <HStack justifyContent={"space-between"}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}>
           <TouchableOpacity
-            flex={1}
-            width={"full"}
+            style={{
+              flex: 1,
+              width: splitAppTheme.sizes.full,
+            }}
             onPress={() => jumpTo("menus")}>
             <LinearGradient
               end={{x: 1, y: 0}}
               start={{x: 0, y: 0}}
               colors={["#472BBE", "#DF3BC0"]}
               style={styles.linearGradientButtons}>
-              <Text color={"white"} fontWeight={"medium"}>
+              <Text
+                style={{
+                  color: "white",
+                }}>
                 Offer Menu
               </Text>
             </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity
-            mx={2}
-            flex={1}
-            width={"full"}
+            style={{
+              flex: 1,
+              marginHorizontal: splitAppTheme.space[2],
+              width: splitAppTheme.sizes.full,
+            }}
             onPress={() => jumpTo("reviews")}>
             <LinearGradient
               end={{x: 0, y: 0}}
               start={{x: 0, y: 1}}
               colors={["#402BBC", "#00C1FF"]}
               style={styles.linearGradientButtons}>
-              <Text color={"white"} fontWeight={"medium"}>
+              <Text
+                style={{
+                  color: "white",
+                }}>
                 Reviews
               </Text>
             </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity
-            flex={1}
-            width={"full"}
+            style={{
+              flex: 1,
+              width: splitAppTheme.sizes.full,
+            }}
             onPress={() => jumpTo("information")}>
             <LinearGradient
               end={{x: 1, y: 0}}
               start={{x: 0, y: 0}}
               colors={["#201648", "#7359D1"]}
               style={styles.linearGradientButtons}>
-              <Text color={"white"} fontWeight={"medium"}>
+              <Text
+                style={{
+                  color: "white",
+                }}>
                 Information
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-        </HStack>
-      </VStack>
+        </View>
+      </View>
     </View>
   );
 
@@ -519,9 +620,9 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
       ListHeaderComponentStyle={flatlistHeaderComponentStyle}
       ListFooterComponent={
         isFetchingNextPage ? (
-          <Box>
-            <Spinner />
-          </Box>
+          <View>
+            <ActivityIndicator />
+          </View>
         ) : resourceListData.length === 0 ? (
           <GenericListEmpty />
         ) : null

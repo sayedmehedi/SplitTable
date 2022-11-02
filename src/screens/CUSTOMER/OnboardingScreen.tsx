@@ -4,15 +4,6 @@ import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import {
-  Box,
-  Text,
-  Image,
-  HStack,
-  FlatList,
-  TouchableOpacity,
-  LinearGradient,
-} from "@components/ui";
 import {CustomerAuthStackRoutes, CustomerStackRoutes} from "@constants/routes";
 import {
   StatusBar,
@@ -22,7 +13,14 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   FlatList as RNFlatList,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
+import {splitAppTheme} from "@src/theme";
+import LinearGradient from "react-native-linear-gradient";
 
 const slides = [
   {
@@ -91,56 +89,71 @@ const OnboardingScreen = ({navigation}: Props) => {
   const renderEachItem: ListRenderItem<typeof slides[0]> = React.useCallback(
     ({item}) => {
       return (
-        <Box>
+        <View>
           <Image
-            width={width}
-            height={"2/3"}
+            style={{
+              width: width,
+              height: splitAppTheme.sizes["2/3"],
+            }}
             source={item?.image}
-            alt={"onboarding-image"}
           />
 
           <LinearGradient
-            width={"full"}
+            style={{
+              alignItems: "center",
+              position: "absolute",
+              borderTopLeftRadius: 30,
+              justifyContent: "center",
+              borderTopRightRadius: 30,
+              width: splitAppTheme.sizes.full,
+              bottom: PAGINATION_INDICATOR_HEIGHT,
+              height: height * 0.47 - PAGINATION_INDICATOR_HEIGHT,
+            }}
             end={{x: 0, y: 0}}
             start={{x: 0, y: 1}}
-            // @ts-ignore
-            alignItems={"center"}
-            position={"absolute"}
-            borderTopLeftRadius={30}
-            borderTopRightRadius={30}
-            // @ts-ignore
-            justifyContent={"center"}
-            colors={["#DF3BC0", "#472BBE"]}
-            bottom={PAGINATION_INDICATOR_HEIGHT}
-            height={height * 0.47 - PAGINATION_INDICATOR_HEIGHT}>
-            <Box>
+            colors={["#DF3BC0", "#472BBE"]}>
+            <View>
               <Text
-                color={"white"}
-                fontSize={"2xl"}
-                textAlign={"center"}
-                fontFamily={"SatoshiVariable-Bold"}>
+                style={{
+                  textAlign: "center",
+                  color: splitAppTheme.colors.white,
+                  fontSize: splitAppTheme.sizes["2xl"],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
                 {item?.title}
               </Text>
 
               <Text
-                mb={5}
-                mt={1.5}
-                mx={"auto"}
-                fontSize={"md"}
-                color={"white"}
-                lineHeight={23}
-                maxWidth={"3/5"}
-                textAlign={"center"}>
+                style={{
+                  lineHeight: 23,
+                  textAlign: "center",
+                  marginHorizontal: "auto",
+                  color: splitAppTheme.colors.white,
+                  marginTop: splitAppTheme.space[1.5],
+                  marginBottom: splitAppTheme.space[5],
+                  fontSize: splitAppTheme.fontSizes.md,
+                  maxWidth: splitAppTheme.sizes["3/5"],
+                }}>
                 {item?.subtitle}
               </Text>
-            </Box>
+            </View>
 
-            <Box mb={5} width={"full"}>
-              <Box height={PAGINATION_INDICATOR_HEIGHT} px={6}>
+            <View
+              style={{
+                width: splitAppTheme.sizes.full,
+                marginBottom: splitAppTheme.space[5],
+              }}>
+              <View
+                style={{
+                  paddingHorizontal: 6,
+                  height: PAGINATION_INDICATOR_HEIGHT,
+                }}>
                 <TouchableOpacity
-                  p={4}
-                  borderRadius={"lg"}
-                  bg={"rgba(255,255,255, 0.3)"}
+                  style={{
+                    padding: splitAppTheme.space[4],
+                    borderRadius: splitAppTheme.radii.lg,
+                    backgroundColor: "rgba(255,255,255, 0.3)",
+                  }}
                   onPress={() => {
                     if (currentSlideIndex === slides.length - 1) {
                       navigation.navigate(CustomerStackRoutes.CUSTOMER_AUTH, {
@@ -151,17 +164,19 @@ const OnboardingScreen = ({navigation}: Props) => {
                     }
                   }}>
                   <Text
-                    fontSize={"md"}
-                    color={"white"}
-                    textAlign={"center"}
-                    fontFamily={"SatoshiVariable-Bold"}>
+                    style={{
+                      fontSize: splitAppTheme.fontSizes.md,
+                      color: "white",
+                      textAlign: "center",
+                      fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                    }}>
                     Get Started
                   </Text>
                 </TouchableOpacity>
-              </Box>
-            </Box>
+              </View>
+            </View>
           </LinearGradient>
-        </Box>
+        </View>
       );
     },
     [currentSlideIndex, goToNextSlide],
@@ -190,17 +205,24 @@ const OnboardingScreen = ({navigation}: Props) => {
         end={{x: 3, y: 3}}
         start={{x: 0, y: 1}}
         colors={["#DF3BC0", "#472BBE"]}>
-        <HStack height={50} alignItems={"center"} justifyContent={"center"}>
+        <View
+          style={{
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
           {/* Render indicator */}
           {slides.map((_, index) => (
             <Text
-              mx={1}
-              key={index}
-              color={index === currentSlideIndex ? "white" : "#402B8C"}>
+              style={{
+                marginHorizontal: splitAppTheme.space[1],
+                color: index === currentSlideIndex ? "white" : "#402B8C",
+              }}
+              key={index}>
               ⬤
             </Text>
           ))}
-        </HStack>
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );

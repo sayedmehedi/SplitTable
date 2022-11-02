@@ -1,20 +1,26 @@
 import React from "react";
-import {StyleSheet} from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  StyleSheet,
+  ImageBackground,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import truncate from "lodash.truncate";
+import {splitAppTheme} from "@src/theme";
 import {ClubListItem} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
-import {Box, HStack, Pressable, Text, TouchableOpacity} from "./ui";
 import {RedMap, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
-import {ImageBackground, Spinner} from "@components/ui";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
-import {splitAppTheme} from "@src/theme";
 
 type Props = {
   item: ClubListItem;
@@ -54,44 +60,66 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
 
   return (
     <Pressable
-      flex={1}
-      bg={"white"}
-      minHeight={238}
-      borderRadius={"lg"}
-      onPress={handlePress}
-      style={splitAppTheme.shadows[3]}>
-      <Box flex={1.5}>
+      style={{
+        ...splitAppTheme.shadows[3],
+        flex: 1,
+        minHeight: 238,
+        backgroundColor: "white",
+        borderRadius: splitAppTheme.sizes.lg,
+      }}
+      onPress={handlePress}>
+      <View
+        style={{
+          flex: 1.5,
+        }}>
         <ImageBackground
-          width={"full"}
-          height={"full"}
+          style={{
+            width: splitAppTheme.sizes.full,
+            height: splitAppTheme.sizes.full,
+          }}
           source={{uri: item.image}}
           imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
-          <HStack
-            padding={2}
-            alignItems={"center"}
-            justifyContent={"space-between"}>
-            <HStack
-              p={1}
-              bg={"white"}
-              borderRadius={"full"}
-              alignItems={"center"}
-              justifyContent={"center"}>
-              <Text color={"black"}>{item.avg_rating}</Text>
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              padding: splitAppTheme.space[2],
+            }}>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                padding: splitAppTheme.space[1],
+              }}>
+              <Text style={{color: splitAppTheme.colors.black}}>
+                {item.avg_rating}
+              </Text>
               <Fontisto name="star" color={"#FFC529"} size={16} />
-              <Text color={"black"}>({item.total_reviews})</Text>
-            </HStack>
+              <Text style={{color: splitAppTheme.colors.black}}>
+                ({item.total_reviews})
+              </Text>
+            </View>
 
-            <HStack alignItems={"center"}>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+              }}>
               {isTogglingFavorite ? (
-                <Box p={3}>
-                  <Spinner color={"white"} size={"small"} />
-                </Box>
+                <View style={{padding: splitAppTheme.space[3]}}>
+                  <ActivityIndicator color={"white"} size={"small"} />
+                </View>
               ) : (
                 <TouchableOpacity
-                  size={50}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: splitAppTheme.radii.full,
+                  }}
                   onPress={handleToggleFavorite}>
                   <AntDesign
                     size={22}
@@ -101,45 +129,75 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
                 </TouchableOpacity>
               )}
 
-              <HStack
-                p={1}
-                bg={"white"}
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: splitAppTheme.space[1],
+                  borderRadius: splitAppTheme.radii.full,
+                  backgroundColor: splitAppTheme.colors.white,
+                }}>
                 <RedMap height={16} width={16} />
-                <Text color={"black"}>{item.distance}</Text>
-              </HStack>
-            </HStack>
-          </HStack>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.black,
+                  }}>
+                  {item.distance}
+                </Text>
+              </View>
+            </View>
+          </View>
         </ImageBackground>
-      </Box>
+      </View>
 
-      <Box px={2} flex={1} justifyContent={"space-around"}>
-        <Text fontSize={"lg"} color={"#262B2E"} fontFamily={"Roboto-Medium"}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-around",
+          paddingHorizontal: splitAppTheme.space[2],
+        }}>
+        <Text
+          style={{
+            color: "#262B2E",
+            fontSize: splitAppTheme.fontSizes.lg,
+            fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+          }}>
           {item.name}
         </Text>
 
-        <HStack alignItems="center">
+        <View
+          style={{
+            alignItems: "center",
+            flexDirection: "row",
+          }}>
           <MapIcon height={20} width={20} color={"#402B8C"} />
 
-          <Box ml={2}>
+          <View
+            style={{
+              marginLeft: splitAppTheme.space[2],
+            }}>
             <Text
-              mr={1}
-              fontSize={"sm"}
-              color={"#8A8D9F"}
-              fontFamily={"Satoshi-Regular"}>
+              style={{
+                color: "#8A8D9F",
+                marginRight: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+              }}>
               {truncate(item.location)}
             </Text>
-          </Box>
-        </HStack>
+          </View>
+        </View>
 
-        <HStack alignItems={"center"} pb={2} flexWrap={"wrap"}>
+        <View
+          style={{
+            flexWrap: "wrap",
+            alignItems: "center",
+            flexDirection: "row",
+            paddingBottom: splitAppTheme.space[2],
+          }}>
           {item.menus.map((menu, index) => (
-            <Box
-              p={1}
-              mr={2}
-              mb={2}
+            <View
               style={[
                 styles.menuContainer,
                 index === 1
@@ -150,17 +208,19 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
               ]}
               key={menu.id}>
               <Text
-                fontSize={"sm"}
-                color={"#FF3FCB"}
-                fontFamily={"Satoshi-Regular"}>
+                style={{
+                  fontSize: splitAppTheme.fontSizes.sm,
+                  color: splitAppTheme.colors.primary[300],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+                }}>
                 {truncate(menu.name, {
                   length: 12,
                 })}
               </Text>
-            </Box>
+            </View>
           ))}
-        </HStack>
-      </Box>
+        </View>
+      </View>
     </Pressable>
   );
 };
@@ -171,6 +231,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FDF2EE",
+    padding: splitAppTheme.space[1],
+    marginRight: splitAppTheme.space[2],
+    marginBottom: splitAppTheme.space[2],
   },
 });
 

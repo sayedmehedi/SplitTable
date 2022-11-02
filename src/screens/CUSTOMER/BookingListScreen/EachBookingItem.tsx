@@ -1,91 +1,138 @@
+import {splitAppTheme} from "@src/theme";
 import React from "react";
-import {Text, HStack, Box, VStack, Image} from "@components/ui";
+import {Image, Text, View} from "react-native";
 
 const EachBookingItem = ({item}: any) => {
   return (
-    <HStack
-      px={"4"}
-      py={"1.5"}
-      bg={"white"}
-      width={"full"}
-      borderWidth={1}
-      borderRadius={"xl"}
-      alignItems={"center"}
-      borderColor={"#F1F1F1"}>
+    <View
+      style={{
+        borderWidth: 1,
+        alignItems: "center",
+        borderColor: "#F1F1F1",
+        backgroundColor: "white",
+        width: splitAppTheme.sizes.full,
+        borderRadius: splitAppTheme.radii.xl,
+        paddingHorizontal: splitAppTheme.space["4"],
+        paddingVertical: splitAppTheme.space["1.5"],
+      }}>
       <Image
-        size={65}
-        borderRadius={"full"}
+        style={{
+          width: 65,
+          height: 65,
+          borderRadius: splitAppTheme.radii.xl,
+        }}
         source={{
           uri: "https://www.tripsavvy.com/thmb/gauQCVHTK9uk1QZYdM4k2UeRBO8=/640x427/filters:fill(auto,1)/club-56a3e8683df78cf7727fcf6d.jpg",
         }}
       />
 
-      <VStack flex={1} ml={4}>
-        <HStack alignItems={"center"} justifyContent={"space-between"}>
-          <Box>
+      <View
+        style={{
+          flex: 1,
+          marginLeft: splitAppTheme.space[4],
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}>
+          <View>
             <Text
-              fontSize={"sm"}
-              color={"#8A8D9F"}
-              fontFamily={"Roboto-Regular"}>
+              style={{
+                color: "#8A8D9F",
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
               {item.dateTime}
             </Text>
-          </Box>
+          </View>
 
-          <HStack alignItems={"center"}>
-            <Box
-              width={"2"}
-              height={"2"}
-              bg={"blue.300"}
-              borderRadius={"full"}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}>
+            <View
+              style={{
+                width: splitAppTheme.sizes[2],
+                height: splitAppTheme.sizes[2],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: splitAppTheme.colors.blue[300],
+              }}
             />
 
             <Text
-              ml={"1"}
-              fontSize={"sm"}
-              color={"#8A8D9F"}
-              fontFamily={"Roboto-Regular"}>
+              style={{
+                color: "#8A8D9F",
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
               {item.totalGuest} Guest
             </Text>
-          </HStack>
+          </View>
 
-          <Box>
+          <View>
             <Text
-              fontSize={"sm"}
-              color={"blue.300"}
-              fontFamily={"SatoshiVariable-Bold"}>
+              style={{
+                fontSize: splitAppTheme.fontSizes.sm,
+                color: splitAppTheme.colors.blue[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
               {item.totalPrice}
             </Text>
-          </Box>
-        </HStack>
+          </View>
+        </View>
 
         <Text
-          fontSize={"md"}
-          color={"#262B2E"}
-          fontFamily={"SatoshiVariable-Bold"}>
+          style={{
+            color: "#262B2E",
+            fontSize: splitAppTheme.fontSizes.md,
+            fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+          }}>
           {item.name}
         </Text>
 
-        <Text fontSize={"md"} color={"#8A8D9F"} fontFamily={"Roboto-Regular"}>
+        <Text
+          style={{
+            color: "#8A8D9F",
+            fontSize: splitAppTheme.fontSizes.md,
+            fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+          }}>
           {item.tableName}
         </Text>
 
-        <HStack alignItems={"center"} justifyContent={"space-between"}>
-          <HStack alignItems={"center"}>
-            <Box
-              width={"2"}
-              height={"2"}
-              bg={"green.300"}
-              borderRadius={"full"}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}>
+            <View
+              style={{
+                width: splitAppTheme.sizes[2],
+                height: splitAppTheme.sizes[2],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: splitAppTheme.colors.green[300],
+              }}
             />
 
             <Text
-              ml={"1"}
-              fontSize={"sm"}
-              color={"green.300"}
-              fontFamily={"Roboto-Regular"}>
+              style={{
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                color: splitAppTheme.colors.green[300],
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
               {item.status}
             </Text>
-          </HStack>
+          </View>
 
           {/* <Button
             variant={"link"}
@@ -106,9 +153,9 @@ const EachBookingItem = ({item}: any) => {
             }}>
             Cancel
           </Button> */}
-        </HStack>
-      </VStack>
-    </HStack>
+        </View>
+      </View>
+    </View>
   );
 };
 

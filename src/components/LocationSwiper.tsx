@@ -1,9 +1,10 @@
 import React from "react";
 import {SvgUri} from "react-native-svg";
 import {LocationItem} from "@src/models";
+import {ScrollView} from "react-native";
+import {splitAppTheme} from "@src/theme";
 import {useDisclosure} from "react-use-disclosure";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
-import {Box, Pressable, ScrollView, Spinner, Text} from "@components/ui";
 
 type Props = {
   onItemPress?: (item: LocationItem) => void;
@@ -39,8 +40,8 @@ const LocationSwiper = ({onItemPress}: Props) => {
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      _contentContainerStyle={{
-        px: 6,
+      contentContainerStyle={{
+        paddingHorizontal: splitAppTheme.space[6],
       }}>
       {/* {isLocationLoading
         ? new Array(6).fill(1).map((_, index) => {

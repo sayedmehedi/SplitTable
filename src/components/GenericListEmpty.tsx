@@ -1,5 +1,6 @@
 import React from "react";
-import {Box, Image, Text} from "@components/ui";
+import {splitAppTheme} from "@src/theme";
+import {Image, Text, View} from "react-native";
 import emptyListStateImage from "@assets/empty-list.png";
 import {useDimensions} from "@react-native-community/hooks";
 
@@ -9,25 +10,30 @@ const GenericListEmpty = () => {
   } = useDimensions();
 
   return (
-    <Box
-      alignItems={"center"}
-      justifyContent={"center"}
-      height={windowHeight * 0.8}>
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        height: windowHeight * 0.8,
+      }}>
       <Image
-        alt={"empty-list"}
         resizeMode={"contain"}
-        width={windowWidth * 0.9}
-        height={windowHeight * 0.4}
+        style={{
+          width: windowWidth * 0.9,
+          height: windowHeight * 0.4,
+        }}
         source={emptyListStateImage}
       />
       <Text
-        mt={5}
-        fontSize={"lg"}
-        textAlign={"center"}
-        fontFamily={"SatoshiVariable-Bold"}>
+        style={{
+          textAlign: "center",
+          marginTop: splitAppTheme.space[5],
+          fontSize: splitAppTheme.fontSizes.lg,
+          fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+        }}>
         No Data
       </Text>
-    </Box>
+    </View>
   );
 };
 

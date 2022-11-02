@@ -7,13 +7,18 @@ import useAuthContext from "@hooks/useAuthContext";
 import {useDimensions} from "@react-native-community/hooks";
 import AppGradientButton from "@components/AppGradientButton";
 import type {StackScreenProps} from "@react-navigation/stack";
-import {VStack, StatusBar, ScrollView, Box, Text, Image} from "@components/ui";
 import {
+  View,
+  StatusBar,
+  ScrollView,
   ImageBackground,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView as RNScrollView,
+  Text,
+  Image,
 } from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 const sliderImage = [
   {
@@ -89,7 +94,10 @@ const InitialScreen = ({navigation}: Props) => {
   return (
     <>
       <StatusBar translucent backgroundColor={"transparent"} />
-      <VStack flex={1}>
+      <View
+        style={{
+          flex: 1,
+        }}>
         <ScrollView
           horizontal
           pagingEnabled
@@ -109,50 +117,74 @@ const InitialScreen = ({navigation}: Props) => {
               }}></ImageBackground>
           ))}
         </ScrollView>
-        <Box
-          bottom={30}
-          flexDirection={"row"}
-          position={"absolute"}
-          alignSelf={"center"}>
+        <View
+          style={{
+            bottom: 30,
+            flexDirection: "row",
+            position: "absolute",
+            alignSelf: "center",
+          }}>
           {sliderImage.map((val, key) => (
             <Text
-              mx={1}
-              key={key}
-              color={key === selectedIndex ? "primary.300" : "secondary.300"}>
+              style={{
+                marginHorizontal: 1,
+                color:
+                  key === selectedIndex
+                    ? splitAppTheme.colors.primary[300]
+                    : splitAppTheme.colors.secondary[300],
+              }}
+              key={key}>
               ⬤
             </Text>
           ))}
-        </Box>
+        </View>
 
-        <Box
-          flex={1}
-          width={"full"}
-          height={"full"}
-          position={"absolute"}
-          alignItems={"center"}
-          bg={"rgba(0,0,0,0.3)"}
-          justifyContent={"center"}>
+        <View
+          style={{
+            flex: 1,
+            position: "absolute",
+            alignItems: "center",
+            justifyContent: "center",
+            width: splitAppTheme.space.full,
+            height: splitAppTheme.space.full,
+            backgroundColor: "rgba(0,0,0,0.3)",
+          }}>
           <Image
-            width={160}
-            height={100}
-            alt={"bg-image"}
-            marginBottom={10}
+            style={{
+              width: 160,
+              height: 100,
+              marginBottom: 10,
+            }}
             source={require("@assets/logo-white.png")}
           />
-          <Box my={8} alignItems={"center"}>
-            <Text color={"white"} fontSize={"lg"}>
+          <View
+            style={{
+              marginVertical: splitAppTheme.space[8],
+              alignItems: "center",
+            }}>
+            <Text
+              style={{
+                color: "white",
+                fontSize: splitAppTheme.fontSizes.lg,
+              }}>
               Are You
             </Text>
             <Text
-              color={"white"}
-              fontSize={"lg"}
-              fontFamily={"SatoshiVariable-Bold"}>
+              style={{
+                color: "white",
+                fontSize: splitAppTheme.fontSizes.lg,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
               Customer or Club/Bar Owner
             </Text>
-            <Text color={"white"} fontSize={"lg"}>
+            <Text
+              style={{
+                color: "white",
+                fontSize: splitAppTheme.fontSizes.lg,
+              }}>
               Please Choose One!
             </Text>
-          </Box>
+          </View>
 
           <AppGradientButton
             width={290}
@@ -176,8 +208,8 @@ const InitialScreen = ({navigation}: Props) => {
               navigation.navigate(RootStackRoutes.OWNER, {});
             }}
           />
-        </Box>
-      </VStack>
+        </View>
+      </View>
     </>
   );
 };
