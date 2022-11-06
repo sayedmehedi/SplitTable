@@ -43,7 +43,7 @@ type Props = StackScreenProps<
 const InitialScreen = ({navigation}: Props) => {
   const {setAuthType} = useAuthContext();
   const scrollRef = React.useRef<RNScrollView>(null!);
-  const {window: windowDimension} = useDimensions();
+  const {screen: windowDimension} = useDimensions();
   const intervalIdRef = React.useRef<number | null>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -114,9 +114,11 @@ const InitialScreen = ({navigation}: Props) => {
               style={{
                 width: windowDimension.width * 1,
                 height: windowDimension.height * 1,
-              }}></ImageBackground>
+              }}
+            />
           ))}
         </ScrollView>
+
         <View
           style={{
             bottom: 30,

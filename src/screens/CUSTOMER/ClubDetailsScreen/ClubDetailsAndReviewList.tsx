@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import React from "react";
 import {ReviewItem} from "@src/models";
 import truncate from "lodash.truncate";
-import {useTheme} from "styled-components";
 import {Rating} from "react-native-ratings";
 import EachReviewItem from "./EachReviewItem";
 import {Clock, MapIcon} from "@constants/iconPath";
@@ -25,18 +24,13 @@ import {
   ListRenderItem,
   ImageBackground,
   ScrollView as RNScrollView,
-} from "react-native";
-import {
-  Box,
-  Text,
   View,
-  HStack,
-  VStack,
-  Spinner,
-  Divider,
   ScrollView,
   TouchableOpacity,
-} from "@components/ui";
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 dayjs.extend(relativeTime);
 
@@ -48,14 +42,19 @@ const CARD_HEIGHT = 180;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
 
 const renderEachReview: ListRenderItem<ReviewItem> = ({item}) => (
-  <Box mb={"4"}>
+  <View
+    style={{
+      marginBottom: splitAppTheme.space[4],
+    }}>
     <EachReviewItem item={item} />
-    <Box
-      borderStyle={"dashed"}
-      borderBottomWidth={"2"}
-      borderColor={"coolGray.300"}
+    <View
+      style={{
+        borderStyle: "dashed",
+        borderBottomWidth: splitAppTheme.space[2],
+        borderColor: splitAppTheme.colors.coolGray[300],
+      }}
     />
-  </Box>
+  </View>
 );
 
 type Props = {
@@ -64,7 +63,6 @@ type Props = {
 };
 
 const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
-  const theme = useTheme();
   const {
     screen: {width: SCREEN_WIDTH},
   } = useDimensions();
@@ -158,23 +156,23 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
 
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
-      padding: theme.space["6"],
+      padding: splitAppTheme.space["6"],
     };
-  }, [theme.space[6]]);
+  }, [splitAppTheme.space[6]]);
 
   const flatlistHeaderComponentStyle = React.useMemo(() => {
     return {
-      paddingBottom: theme.space[6],
-      marginHorizontal: -theme.space[6],
+      paddingBottom: splitAppTheme.space[6],
+      marginHorizontal: -splitAppTheme.space[6],
     };
-  }, [theme.space[6]]);
+  }, [splitAppTheme.space[6]]);
 
   // if (isClubDetailsLoading) {
   //   return (
   //     <ScrollView>
   //       <Skeleton height={300} />
 
-  //       <Box mx={"6"}>
+  //       <View mx={"6"}>
   //         <Skeleton
   //           width={"full"}
   //           borderRadius={"xl"}
@@ -193,7 +191,7 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //         />
 
   //         <HStack space={"2"}>
-  //           <Box flex={1}>
+  //           <View flex={1}>
   //             <Skeleton
   //               height={"12"}
   //               my={"5"}
@@ -201,9 +199,9 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //               borderRadius={"lg"}
   //               bg={"secondary.300"}
   //             />
-  //           </Box>
+  //           </View>
 
-  //           <Box flex={1}>
+  //           <View flex={1}>
   //             <Skeleton
   //               height={"12"}
   //               my={"5"}
@@ -211,9 +209,9 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //               borderRadius={"lg"}
   //               bg={"blue.300"}
   //             />
-  //           </Box>
+  //           </View>
 
-  //           <Box flex={1}>
+  //           <View flex={1}>
   //             <Skeleton
   //               height={"12"}
   //               my={"5"}
@@ -221,11 +219,11 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //               borderRadius={"lg"}
   //               bg={"secondary.100"}
   //             />
-  //           </Box>
+  //           </View>
   //         </HStack>
-  //       </Box>
+  //       </View>
 
-  //       <Box p={6}>
+  //       <View p={6}>
   //         {new Array(5).fill(1).map((_, i) => (
   //           <Center width={"full"} key={i}>
   //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
@@ -253,24 +251,36 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //             </HStack>
   //           </Center>
   //         ))}
-  //       </Box>
+  //       </View>
   //     </ScrollView>
   //   );
   // }
 
   if (!clubDetailsResponse) {
     return (
-      <HStack safeArea height={"full"} width={"full"}>
-        <Box width={"full"} height={"full"}>
+      <View
+        style={{
+          flexDirection: "row",
+          height: splitAppTheme.sizes.full,
+          width: splitAppTheme.sizes.full,
+        }}>
+        <View
+          style={{
+            height: splitAppTheme.sizes.full,
+            width: splitAppTheme.sizes.full,
+          }}>
           <GenericListEmpty />
-        </Box>
-      </HStack>
+        </View>
+      </View>
     );
   }
 
   const ListHeaderComponent = (
-    <View flex={1}>
-      <Box position={"relative"}>
+    <View
+      style={{
+        flex: 1,
+      }}>
+      <View style={{position: "relative"}}>
         <ScrollView
           horizontal
           pagingEnabled
@@ -285,33 +295,50 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
           ))}
         </ScrollView>
 
-        <Box position={"absolute"} width={"full"} top={0} left={0}>
+        <View
+          style={{
+            top: 0,
+            left: 0,
+            position: "absolute",
+            width: splitAppTheme.sizes.full,
+          }}>
           <SafeAreaView>
-            <HStack p={"6"} justifyContent={"space-between"}>
+            <View
+              style={{
+                flexDirection: "row",
+                padding: splitAppTheme.space[6],
+                justifyContent: "space-between",
+              }}>
               <TouchableOpacity
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                }}>
                 <FontAwesome5 size={22} name={"chevron-left"} color={"white"} />
               </TouchableOpacity>
 
-              <HStack>
+              <View style={{flexDirection: "row"}}>
                 <TouchableOpacity
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  bg={"rgba(0,0,0,0.5)"}
-                  justifyContent={"center"}>
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    borderRadius: splitAppTheme.radii.full,
+                  }}>
                   <AntDesign size={22} name={"sharealt"} color={"white"} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  p={2}
-                  ml={4}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  bg={"rgba(0,0,0,0.5)"}
-                  justifyContent={"center"}>
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: splitAppTheme.space[4],
+                    padding: splitAppTheme.space[2],
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    borderRadius: splitAppTheme.radii.full,
+                  }}>
                   <AntDesign
                     size={22}
                     name={
@@ -320,19 +347,27 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
                     color={"white"}
                   />
                 </TouchableOpacity>
-              </HStack>
-            </HStack>
+              </View>
+            </View>
           </SafeAreaView>
-        </Box>
+        </View>
 
-        <Box top={"50%"} mt={-3} position={"absolute"} left={"6"}>
+        <View
+          style={{
+            top: "50%",
+            position: "absolute",
+            left: splitAppTheme.space[6],
+            marginTop: splitAppTheme.space[3] * -1,
+          }}>
           <TouchableOpacity
-            p={2}
-            ml={4}
-            borderRadius={"full"}
-            alignItems={"center"}
-            bg={"rgba(0,0,0,0.5)"}
-            justifyContent={"center"}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: splitAppTheme.space[2],
+              marginLeft: splitAppTheme.space[4],
+              backgroundColor: "rgba(0,0,0,0.5)",
+              borderRadius: splitAppTheme.radii.full,
+            }}
             onPress={handlePreviousSlide}>
             <MaterialCommunityIcons
               size={22}
@@ -340,16 +375,24 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
               color={"white"}
             />
           </TouchableOpacity>
-        </Box>
+        </View>
 
-        <Box top={"50%"} mt={-3} position={"absolute"} right={"6"}>
+        <View
+          style={{
+            top: "50%",
+            position: "absolute",
+            right: splitAppTheme.space[6],
+            marginTop: splitAppTheme.space[3] * -1,
+          }}>
           <TouchableOpacity
-            p={2}
-            ml={4}
-            borderRadius={"full"}
-            alignItems={"center"}
-            bg={"rgba(0,0,0,0.5)"}
-            justifyContent={"center"}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: splitAppTheme.space[2],
+              marginLeft: splitAppTheme.space[4],
+              backgroundColor: "rgba(0,0,0,0.5)",
+              borderRadius: splitAppTheme.radii.full,
+            }}
             onPress={handleNextSlide}>
             <MaterialCommunityIcons
               size={22}
@@ -357,171 +400,264 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
               color={"white"}
             />
           </TouchableOpacity>
-        </Box>
-      </Box>
+        </View>
+      </View>
 
-      <VStack px={"6"} flex={1} bg={"rgba(255,255,255,0.1)"}>
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: splitAppTheme.space[6],
+          backgroundColor: "rgba(255,255,255,0.1)",
+        }}>
         <View
-          p={"4"}
-          bg={"white"}
-          width={"full"}
-          borderRadius={"xl"}
-          height={CARD_HEIGHT}
-          style={theme.shadows[3]}
-          marginTop={CARD_NEGATIVE_MARGIN}>
+          style={[
+            splitAppTheme.shadows[3],
+            {
+              height: CARD_HEIGHT,
+              width: splitAppTheme.sizes.full,
+              marginTop: CARD_NEGATIVE_MARGIN,
+              padding: splitAppTheme.space[4],
+              borderRadius: splitAppTheme.radii.xl,
+              backgroundColor: splitAppTheme.colors.white,
+            },
+          ]}>
           <Text
-            mb={4}
-            fontSize={"xl"}
-            color={"#030819"}
-            fontFamily={"SatoshiVariable-Bold"}>
+            style={{
+              color: "#030819",
+              marginBottom: splitAppTheme.space[4],
+              fontSize: splitAppTheme.fontSizes.xl,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
             {truncate(clubDetailsResponse.club.name)}
           </Text>
 
-          <HStack my={2}>
+          <View
+            style={{
+              marginVertical: splitAppTheme.space[2],
+            }}>
             <MapIcon height={20} width={20} color={"#402B8C"} />
 
             <Text
-              ml={4}
-              fontSize={"sm"}
-              maxWidth={"75%"}
-              color={"#030819"}
-              fontFamily={"Roboto-Regular"}>
+              style={{
+                maxWidth: "75%",
+                color: "#030819",
+                marginLeft: splitAppTheme.space[4],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
               {truncate(clubDetailsResponse.club.location, {
                 length: 70,
               })}
             </Text>
-          </HStack>
+          </View>
 
-          <Divider my={"3"} />
+          <View
+            style={{
+              height: 1,
+              backgroundColor: "black",
+              marginVertical: splitAppTheme.space[3],
+            }}
+          />
 
-          <HStack justifyContent={"space-between"} alignItems={"center"}>
-            <HStack alignItems={"center"}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
               <Clock height={20} width={20} />
               <Text
-                ml={4}
-                fontSize={"sm"}
-                color={"#030819"}
-                fontFamily={"Satoshi-Regular"}>
+                style={{
+                  color: "#030819",
+                  marginLeft: splitAppTheme.space[4],
+                  fontSize: splitAppTheme.fontSizes.sm,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+                }}>
                 Open {clubDetailsResponse.club.opening_time} -{" "}
                 {clubDetailsResponse.club.closing_time}
               </Text>
-            </HStack>
+            </View>
 
-            <Box>
-              <HStack alignItems={"center"} justifyContent={"center"}>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}>
                 <Fontisto name="star" color={"#FFC529"} size={16} />
-                <Text ml={1} color={"black"} fontSize={"sm"}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.black,
+                    marginLeft: splitAppTheme.space[1],
+                    fontSize: splitAppTheme.fontSizes.sm,
+                  }}>
                   ({clubDetailsResponse.club.avg_rating})
                 </Text>
-              </HStack>
-            </Box>
-          </HStack>
+              </View>
+            </View>
+          </View>
         </View>
 
-        <Box>
+        <View>
           <TouchableOpacity
-            p={4}
-            my={"5"}
-            borderRadius={"2xl"}
-            borderWidth={"2"}
-            variant={"outline"}
-            borderColor={"primary.300"}>
+            style={{
+              padding: splitAppTheme.space[4],
+              marginVertical: splitAppTheme.space[5],
+              borderRadius: splitAppTheme.radii["2xl"],
+              borderWidth: splitAppTheme.sizes[2],
+              borderColor: splitAppTheme.colors.primary[300],
+            }}>
             <Text
-              fontSize={"xl"}
-              textAlign={"center"}
-              color={"primary.300"}
-              fontFamily={"Satoshi-Medium"}>
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.xl,
+                color: splitAppTheme.colors.primary[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
               Book a Table
             </Text>
           </TouchableOpacity>
-        </Box>
+        </View>
 
-        <HStack justifyContent={"space-between"}>
-          <TouchableOpacity
-            flex={1}
-            width={"full"}
-            onPress={() => jumpTo("menus")}>
-            <LinearGradient
-              end={{x: 1, y: 0}}
-              start={{x: 0, y: 0}}
-              colors={["#472BBE", "#DF3BC0"]}
-              style={styles.linearGradientButtons}>
-              <Text color={"white"} fontWeight={"medium"}>
-                Offer Menu
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            <TouchableOpacity
+              style={{flex: 1, width: "100%"}}
+              onPress={() => jumpTo("menus")}>
+              <LinearGradient
+                end={{x: 1, y: 0}}
+                start={{x: 0, y: 0}}
+                colors={["#472BBE", "#DF3BC0"]}
+                style={styles.linearGradientButtons}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  Offer Menu
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            mx={2}
-            flex={1}
-            width={"full"}
-            onPress={() => jumpTo("reviews")}>
-            <LinearGradient
-              end={{x: 0, y: 0}}
-              start={{x: 0, y: 1}}
-              colors={["#402BBC", "#00C1FF"]}
-              style={styles.linearGradientButtons}>
-              <Text color={"white"} fontWeight={"medium"}>
-                Reviews
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => jumpTo("reviews")}
+              style={{
+                flex: 1,
+                width: "100%",
+                marginVertical: splitAppTheme.space[2],
+              }}>
+              <LinearGradient
+                end={{x: 0, y: 0}}
+                start={{x: 0, y: 1}}
+                colors={["#402BBC", "#00C1FF"]}
+                style={styles.linearGradientButtons}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  Reviews
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            flex={1}
-            width={"full"}
-            onPress={() => jumpTo("information")}>
-            <LinearGradient
-              end={{x: 1, y: 0}}
-              start={{x: 0, y: 0}}
-              colors={["#201648", "#7359D1"]}
-              style={styles.linearGradientButtons}>
-              <Text color={"white"} fontWeight={"medium"}>
-                Information
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </HStack>
+            <TouchableOpacity
+              style={{flex: 1, width: "100%"}}
+              onPress={() => jumpTo("information")}>
+              <LinearGradient
+                end={{x: 1, y: 0}}
+                start={{x: 0, y: 0}}
+                colors={["#201648", "#7359D1"]}
+                style={styles.linearGradientButtons}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  Information
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {infiniteGetResourcesResponse !== undefined &&
           infiniteGetResourcesResponse?.pages?.length > 0 && (
-            <HStack
-              mt={"6"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
-              <VStack maxWidth={"32"}>
-                <HStack alignItems={"center"}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: splitAppTheme.space[6],
+              }}>
+              <View
+                style={{
+                  maxWidth: splitAppTheme.sizes[32],
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}>
                   <Fontisto name="star" color={"#FFC529"} size={10} />
-                  <Text fontSize={"md"} ml={1}>
+                  <Text
+                    style={{
+                      fontSize: splitAppTheme.fontSizes.md,
+                      marginLeft: splitAppTheme.space[1],
+                    }}>
                     {infiniteGetResourcesResponse.pages[0].avg_rating}
                   </Text>
-                </HStack>
+                </View>
 
-                <Text numberOfLines={2} fontSize={"md"} ml={1}>
+                <Text
+                  numberOfLines={2}
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                    marginLeft: splitAppTheme.space[1],
+                  }}>
                   Based on {infiniteGetResourcesResponse.pages[0].total_reviews}{" "}
                   Review
                 </Text>
-              </VStack>
+              </View>
 
-              <VStack space={"2"} flex={1} ml={5}>
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: splitAppTheme.space[5],
+                }}>
                 {Object.entries(
                   infiniteGetResourcesResponse?.pages?.[0]
                     ?.review_percentages ?? {},
                 ).map(([id, percentage]) => {
                   return (
-                    <HStack
+                    <View
                       key={id}
-                      alignItems={"center"}
-                      justifyContent={"space-between"}>
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}>
                       <Rating
-                        type={"custom"}
                         readonly
                         jumpValue={1}
                         imageSize={15}
+                        type={"custom"}
                         showRating={false}
-                        tintColor={theme.colors.white}
-                        ratingBackgroundColor={theme.colors.coolGray[100]}
+                        tintColor={splitAppTheme.colors.white}
+                        ratingBackgroundColor={
+                          splitAppTheme.colors.coolGray[100]
+                        }
                         startingValue={
                           infiniteGetResourcesResponse.pages[0].review_numbers[
                             id as any
@@ -529,43 +665,54 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
                         }
                       />
 
-                      <Box flex={1} mx={3} position={"relative"}>
-                        <Box
-                          top={0}
-                          left={0}
-                          right={0}
-                          bottom={0}
-                          height={1}
-                          zIndex={1}
-                          width={"full"}
-                          bg={"gray.300"}
-                          position={"absolute"}
-                          borderRadius={"full"}
+                      <View
+                        style={{
+                          flex: 1,
+                          position: "relative",
+                          marginHorizontal: splitAppTheme.space[3],
+                        }}>
+                        <View
+                          style={{
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: 1,
+                            zIndex: 1,
+                            position: "absolute",
+                            width: splitAppTheme.sizes.full,
+                            borderRadius: splitAppTheme.radii.full,
+                            backgroundColor: splitAppTheme.colors.gray[300],
+                          }}
                         />
-                        <Box
-                          top={0}
-                          left={0}
-                          right={0}
-                          zIndex={2}
-                          bottom={0}
-                          height={1}
-                          bg={"yellow.300"}
-                          borderRadius={"full"}
-                          position={"absolute"}
-                          width={`${percentage}%`}
+                        <View
+                          style={{
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: 1,
+                            zIndex: 2,
+                            position: "absolute",
+                            width: `${percentage}%` as string,
+                            borderRadius: splitAppTheme.radii.full,
+                            backgroundColor: splitAppTheme.colors.yellow[300],
+                          }}
                         />
-                      </Box>
+                      </View>
 
-                      <Box width={"40px"}>
-                        <Text fontSize={"xs"}>{percentage}%</Text>
-                      </Box>
-                    </HStack>
+                      <View style={{width: 40}}>
+                        <Text style={{fontSize: splitAppTheme.fontSizes.xs}}>
+                          {percentage}%
+                        </Text>
+                      </View>
+                    </View>
                   );
                 })}
-              </VStack>
-            </HStack>
+              </View>
+            </View>
           )}
-      </VStack>
+      </View>
     </View>
   );
 
@@ -574,7 +721,7 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //     <ScrollView>
   //       {ListHeaderComponent}
 
-  //       <Box p={6}>
+  //       <View p={6}>
   //         {new Array(5).fill(1).map((_, i) => (
   //           <Center width={"full"} key={i}>
   //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
@@ -602,7 +749,7 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
   //             </HStack>
   //           </Center>
   //         ))}
-  //       </Box>
+  //       </View>
   //     </ScrollView>
   //   );
   // }
@@ -620,9 +767,9 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
       ListHeaderComponentStyle={flatlistHeaderComponentStyle}
       ListFooterComponent={
         isFetchingNextPage ? (
-          <Box>
-            <Spinner />
-          </Box>
+          <View>
+            <ActivityIndicator size={"small"} />
+          </View>
         ) : resourceListData.length === 0 ? (
           <GenericListEmpty />
         ) : null

@@ -13,7 +13,8 @@ import {
   CustomerStackParamList,
   CustomerAuthStackParamList,
 } from "@src/navigation";
-import {Box, Image, Text} from "@components/ui";
+import {Image, Text, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -33,20 +34,23 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
     });
 
   return (
-    <Box style={{padding: 30, flex: 1, backgroundColor: "white"}}>
+    <View style={{padding: 30, flex: 1, backgroundColor: "white"}}>
       <Image
-        height={200}
-        width={"full"}
-        borderRadius={"lg"}
+        style={{
+          height: 200,
+          width: splitAppTheme.sizes.full,
+          borderRadius: splitAppTheme.radii.lg,
+        }}
         source={require("@assets/images/Map-1.png")}
-        alt={"map"}
       />
       <Text
-        margin={5}
-        fontSize={"md"}
-        color={"#262B2E"}
-        textAlign={"center"}
-        fontFamily={"Satoshi-Regular"}>
+        style={{
+          color: "#262B2E",
+          textAlign: "center",
+          margin: splitAppTheme.space[5],
+          fontSize: splitAppTheme.fontSizes.md,
+          fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+        }}>
         Set your location to start exploring club/bars around you
       </Text>
 
@@ -76,7 +80,7 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
         }}>
         No, I do it later
       </NBButton> */}
-    </Box>
+    </View>
   );
 };
 

@@ -1,11 +1,11 @@
 import React from "react";
 import {TClubItem} from "./shared";
 import ClubListItem from "./ClubListItem";
-import {ListRenderItem} from "react-native";
+import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
 import {ClubByLocationItem} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {Box, VStack, Spinner, FlatList} from "@components/ui";
 import useInfiniteGetClubsByLocationQuery from "@hooks/clubs/useInfiniteGetClubsByLocationQuery";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   locationId: number;
@@ -98,13 +98,13 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
       onEndReached={handleFetchNextPage}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: 24,
+        padding: splitAppTheme.space[6],
       }}
       ListFooterComponent={
         isFetchingNextPage ? (
-          <Box>
-            <Spinner />
-          </Box>
+          <View>
+            <ActivityIndicator size={"small"} />
+          </View>
         ) : null
       }
       ListEmptyComponent={<GenericListEmpty />}

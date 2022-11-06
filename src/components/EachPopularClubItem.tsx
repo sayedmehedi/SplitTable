@@ -61,11 +61,11 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
   return (
     <Pressable
       style={{
-        ...splitAppTheme.shadows[3],
         flex: 1,
         minHeight: 238,
         backgroundColor: "white",
-        borderRadius: splitAppTheme.sizes.lg,
+        ...splitAppTheme.shadows[3],
+        borderRadius: splitAppTheme.radii.lg,
       }}
       onPress={handlePress}>
       <View

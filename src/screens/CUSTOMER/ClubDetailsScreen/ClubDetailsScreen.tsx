@@ -1,6 +1,5 @@
 import React from "react";
-import {StatusBar, View} from "@components/ui";
-import {useWindowDimensions} from "react-native";
+import {StatusBar, useWindowDimensions, View} from "react-native";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
@@ -9,6 +8,7 @@ import ClubDetailsAndReviewList from "./ClubDetailsAndReviewList";
 import ClubDetailsAndMenuListScreen from "./ClubDetailsAndMenuList";
 import {SceneRendererProps, TabView} from "react-native-tab-view";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -65,7 +65,10 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
   );
 
   return (
-    <View height={"full"}>
+    <View
+      style={{
+        height: splitAppTheme.sizes.full,
+      }}>
       <StatusBar translucent backgroundColor={"transparent"} />
 
       <TabView

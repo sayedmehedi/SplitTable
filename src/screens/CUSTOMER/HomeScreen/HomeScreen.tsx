@@ -1,9 +1,14 @@
 import React from "react";
 import styles from "./styles";
-import {StatusBar} from "react-native";
+import {
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
-import {useTheme} from "styled-components";
 import {ClubListTypes} from "@constants/club";
 import NearbyClubsList from "./NearbyClubsList";
 import useAuthContext from "@hooks/useAuthContext";
@@ -30,14 +35,7 @@ import {
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
-import {
-  Box,
-  Text,
-  VStack,
-  HStack,
-  ScrollView,
-  TouchableOpacity,
-} from "@components/ui";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -51,7 +49,6 @@ type Props = CompositeScreenProps<
 >;
 
 const HomeScreen = ({navigation}: Props) => {
-  const theme = useTheme();
   const {authData} = useAuthContext();
   const {hours} = useTime({format: "12-hour"});
 
@@ -123,15 +120,15 @@ const HomeScreen = ({navigation}: Props) => {
   };
 
   return (
-    <Box>
+    <View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar
           translucent={false}
           barStyle={"light-content"}
-          backgroundColor={theme.colors.secondary[600]}
+          backgroundColor={splitAppTheme.colors.secondary[600]}
         />
 
-        <Box>
+        <View>
           <LinearGradient
             end={{x: 0, y: 0}}
             start={{x: 0, y: 1}}
@@ -139,17 +136,36 @@ const HomeScreen = ({navigation}: Props) => {
             height={windowHeight * 0.25}
             colors={["#DF3BC0", "#472BBE"]}>
             <SafeAreaView>
-              <Box py={2} height={"full"} justifyContent={"flex-end"}>
-                <Box px={6} width={"full"} mb={1}>
-                  <VStack width={"full"}>
-                    <HStack
-                      alignItems={"center"}
-                      justifyContent={"space-between"}>
-                      <VStack>
+              <View
+                style={{
+                  paddingVertical: splitAppTheme.space[2],
+                  height: splitAppTheme.sizes.full,
+                  justifyContent: "flex-end",
+                }}>
+                <View
+                  style={{
+                    width: splitAppTheme.sizes.full,
+                    marginBottom: splitAppTheme.space[1],
+                    paddingHorizontal: splitAppTheme.space[6],
+                  }}>
+                  <View
+                    style={{
+                      width: splitAppTheme.sizes.full,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}>
+                      <View>
                         <Text
-                          fontSize={"xl"}
-                          color={"#FFFFFF"}
-                          fontFamily={"SatoshiVariable-Bold"}>
+                          style={{
+                            color: splitAppTheme.colors.white,
+                            fontSize: splitAppTheme.fontSizes.xl,
+                            fontFamily:
+                              splitAppTheme.fontConfig.Sathoshi[700].normal,
+                          }}>
                           Good{" "}
                           {hours < 12
                             ? "Morning"
@@ -160,15 +176,18 @@ const HomeScreen = ({navigation}: Props) => {
                         </Text>
 
                         <Text
-                          mt={"0.5"}
-                          fontSize={"md"}
-                          color={"white"}
-                          fontFamily={"SatoshiVariable-Bold"}>
+                          style={{
+                            color: splitAppTheme.colors.white,
+                            fontSize: splitAppTheme.fontSizes.md,
+                            marginTop: splitAppTheme.space["0.5"],
+                            fontFamily:
+                              splitAppTheme.fontConfig.Sathoshi[700].normal,
+                          }}>
                           {authData?.name}
                         </Text>
-                      </VStack>
+                      </View>
 
-                      <VStack>
+                      <View>
                         {/* <Badge
                           mb={-4}
                           mr={-2}
@@ -184,9 +203,11 @@ const HomeScreen = ({navigation}: Props) => {
                         </Badge> */}
 
                         <TouchableOpacity
-                          p={1}
-                          borderRadius={"full"}
-                          bg={"rgba(255,255,255,0.2)"}
+                          style={{
+                            padding: splitAppTheme.space[1],
+                            borderRadius: splitAppTheme.radii.full,
+                            backgroundColor: "rgba(255,255,255,0.2)",
+                          }}
                           onPress={handleGotoNotifications}>
                           <MaterialIcons
                             size={30}
@@ -194,106 +215,157 @@ const HomeScreen = ({navigation}: Props) => {
                             name={"notifications-none"}
                           />
                         </TouchableOpacity>
-                      </VStack>
-                    </HStack>
+                      </View>
+                    </View>
 
-                    <Box my={"0.5"}>
+                    <View
+                      style={{
+                        marginVertical: splitAppTheme.space["0.5"],
+                      }}>
                       <TouchableOpacity
                         style={styles.searchButton}
                         onPress={() => {
                           navigation.navigate(CustomerStackRoutes.CLUB_SEARCH);
                         }}>
                         <Feather name="search" color={"#3B3B3B"} size={15} />
-                        <Text marginLeft={2} fontSize={"sm"} color={"#3B3B3B"}>
+                        <Text
+                          style={{
+                            color: "#3B3B3B",
+                            marginLeft: splitAppTheme.space[2],
+                            fontSize: splitAppTheme.fontSizes.sm,
+                          }}>
                           Find your restaurant
                         </Text>
                       </TouchableOpacity>
-                    </Box>
+                    </View>
 
-                    <HStack alignItems={"center"}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}>
                       <MapIcon height={16} width={16} color={"white"} />
                       <Text
-                        fontSize={"sm"}
-                        color={"white"}
-                        marginLeft={"2"}
-                        fontFamily={"Satoshi-Regular"}>
+                        style={{
+                          color: splitAppTheme.colors.white,
+                          fontSize: splitAppTheme.fontSizes.sm,
+                          marginLeft: splitAppTheme.space[2],
+                          fontFamily:
+                            splitAppTheme.fontConfig.Sathoshi[400].normal,
+                        }}>
                         {authData?.location}
                       </Text>
-                    </HStack>
-                  </VStack>
-                </Box>
-              </Box>
+                    </View>
+                  </View>
+                </View>
+              </View>
             </SafeAreaView>
           </LinearGradient>
-        </Box>
+        </View>
 
-        <Box py={2}>
+        <View
+          style={{
+            paddingVertical: splitAppTheme.space[2],
+          }}>
           <LocationSwiper onItemPress={handleLocationItemPress} />
-        </Box>
+        </View>
 
-        <Box width={"full"}>
-          <Box px={6} width={"full"} mb={1}>
-            <HStack
-              my={2}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
+        <View
+          style={{
+            width: splitAppTheme.sizes.full,
+          }}>
+          <View
+            style={{
+              width: splitAppTheme.sizes.full,
+              marginBottom: splitAppTheme.space[1],
+              paddingHorizontal: splitAppTheme.space[6],
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                marginVertical: splitAppTheme.space[2],
+              }}>
               <Text
-                fontSize={"xl"}
-                color={"#030819"}
-                fontFamily={"SatoshiVariable-Bold"}>
+                style={{
+                  fontSize: splitAppTheme.fontSizes.xl,
+                  color: "#030819",
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
                 Popular Clubs/Bars
               </Text>
               <TouchableOpacity onPress={handlePopularClubSeeAll}>
                 <Text
-                  fontSize={"sm"}
-                  color={"#262B2E"}
-                  fontFamily={"Roboto-Regular"}>
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.sm,
+                    color: "#030819",
+                    fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                  }}>
                   See all
                 </Text>
               </TouchableOpacity>
-            </HStack>
-          </Box>
-        </Box>
+            </View>
+          </View>
+        </View>
 
         <PopularClubsSwiper onItemPress={handlePopularClubItemPress} />
 
-        <Box width={"full"}>
-          <Box px={6} width={"full"}>
-            <HStack
-              mb={1}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
+        <View
+          style={{
+            width: splitAppTheme.sizes.full,
+          }}>
+          <View
+            style={{
+              width: splitAppTheme.sizes.full,
+              paddingHorizontal: splitAppTheme.space[6],
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                width: splitAppTheme.sizes.full,
+                justifyContent: "space-between",
+                marginBottom: splitAppTheme.space[1],
+              }}>
               <Text
-                fontSize={"xl"}
-                color={"#030819"}
-                fontFamily={"SatoshiVariable-Bold"}>
+                style={{
+                  fontSize: splitAppTheme.fontSizes.xl,
+                  color: "#030819",
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
                 Near by You
               </Text>
 
               <TouchableOpacity onPress={handleNearbyClubSeeAll}>
                 <Text
-                  fontSize={"sm"}
-                  color={"#262B2E"}
-                  fontFamily={"Roboto-Regular"}>
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.sm,
+                    color: "#030819",
+                    fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                  }}>
                   See all
                 </Text>
               </TouchableOpacity>
-            </HStack>
+            </View>
 
             <NearbyClubsList onItemPress={handleNearbyClubPress} />
-          </Box>
-        </Box>
+          </View>
+        </View>
 
         <RecentVisitClubsSwiper
           onSeeAll={handleRecentVisitClubSeeAll}
           onItemPress={handleRecentVisitClubPress}
         />
 
-        <Box height={"4"} />
+        <View
+          style={{
+            height: splitAppTheme.sizes[4],
+          }}
+        />
       </ScrollView>
-    </Box>
+    </View>
   );
 };
 

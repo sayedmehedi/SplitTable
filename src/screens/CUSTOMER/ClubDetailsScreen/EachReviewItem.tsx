@@ -2,7 +2,8 @@ import React from "react";
 import truncate from "lodash.truncate";
 import {ReviewItem} from "@src/models";
 import {Rating} from "react-native-ratings";
-import {Text, HStack, VStack, Image} from "@components/ui";
+import {Image, Text, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   item: ReviewItem;
@@ -10,20 +11,46 @@ type Props = {
 
 const EachReviewItem = ({item}: Props) => {
   return (
-    <VStack height={"32"}>
-      <HStack alignItems={"center"}>
+    <View style={{height: "32"}}>
+      <View style={{alignItems: "center", flexDirection: "row"}}>
         <Image
-          size={50}
           source={{uri: item.user_image}}
-          borderRadius={"full"}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: splitAppTheme.radii.full,
+          }}
         />
 
-        <HStack ml={4} flexWrap={"wrap"} flex={1} justifyContent={"flex-start"}>
-          <HStack justifyContent={"space-between"} width={"full"} mb={1}>
-            <Text fontSize={"md"}>{item.user_name}</Text>
+        <View
+          style={{
+            flex: 1,
+            flexWrap: "wrap",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            marginLeft: splitAppTheme.space[4],
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: splitAppTheme.space[1],
+              width: splitAppTheme.sizes.full,
+            }}>
+            <Text
+              style={{
+                fontSize: splitAppTheme.sizes.md,
+              }}>
+              {item.user_name}
+            </Text>
 
-            <Text fontSize={"md"}>{item.date}</Text>
-          </HStack>
+            <Text
+              style={{
+                fontSize: splitAppTheme.sizes.md,
+              }}>
+              {item.date}
+            </Text>
+          </View>
 
           <Rating
             readonly
@@ -32,13 +59,17 @@ const EachReviewItem = ({item}: Props) => {
             tintColor={"white"}
             startingValue={item.rating}
           />
-        </HStack>
-      </HStack>
+        </View>
+      </View>
 
-      <Text mt={4} fontSize={"md"}>
+      <Text
+        style={{
+          fontSize: splitAppTheme.sizes.md,
+          marginTop: splitAppTheme.space[4],
+        }}>
         {truncate(item.review)}
       </Text>
-    </VStack>
+    </View>
   );
 };
 

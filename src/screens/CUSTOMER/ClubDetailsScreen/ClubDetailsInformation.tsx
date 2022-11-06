@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import React from "react";
 import MapView from "react-native-maps";
 import truncate from "lodash.truncate";
-import {useTheme} from "styled-components";
 import {Clock, MapIcon} from "@constants/iconPath";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Fontisto from "react-native-vector-icons/Fontisto";
@@ -21,17 +20,12 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView as RNScrollView,
-} from "react-native";
-import {
-  Box,
-  Text,
   View,
-  HStack,
-  VStack,
   ScrollView,
   TouchableOpacity,
-  Divider,
-} from "@components/ui";
+  Text,
+} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 dayjs.extend(relativeTime);
 
@@ -46,7 +40,6 @@ type Props = {
 };
 
 const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
-  const theme = useTheme();
   const {
     screen: {width: SCREEN_WIDTH},
   } = useDimensions();
@@ -101,7 +94,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
   //     <ScrollView>
   //       <Skeleton height={300} />
 
-  //       <Box mx={"6"}>
+  //       <View mx={"6"}>
   //         <Skeleton
   //           width={"full"}
   //           borderRadius={"xl"}
@@ -120,7 +113,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
   //         />
 
   //         <HStack space={"2"}>
-  //           <Box flex={1}>
+  //           <View flex={1}>
   //             <Skeleton
   //               height={"12"}
   //               my={"5"}
@@ -128,9 +121,9 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
   //               borderRadius={"lg"}
   //               bg={"secondary.300"}
   //             />
-  //           </Box>
+  //           </View>
 
-  //           <Box flex={1}>
+  //           <View flex={1}>
   //             <Skeleton
   //               height={"12"}
   //               my={"5"}
@@ -138,9 +131,9 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
   //               borderRadius={"lg"}
   //               bg={"blue.300"}
   //             />
-  //           </Box>
+  //           </View>
 
-  //           <Box flex={1}>
+  //           <View flex={1}>
   //             <Skeleton
   //               height={"12"}
   //               my={"5"}
@@ -148,11 +141,11 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
   //               borderRadius={"lg"}
   //               bg={"secondary.100"}
   //             />
-  //           </Box>
+  //           </View>
   //         </HStack>
-  //       </Box>
+  //       </View>
 
-  //       <Box p={6}>
+  //       <View p={6}>
   //         {new Array(5).fill(1).map((_, i) => (
   //           <Center width={"full"} key={i}>
   //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
@@ -180,18 +173,27 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
   //             </HStack>
   //           </Center>
   //         ))}
-  //       </Box>
+  //       </View>
   //     </ScrollView>
   //   );
   // }
 
   if (!clubDetailsResponse) {
     return (
-      <HStack safeArea height={"full"} width={"full"}>
-        <Box width={"full"} height={"full"}>
+      <View
+        style={{
+          flexDirection: "row",
+          width: splitAppTheme.sizes.full,
+          height: splitAppTheme.sizes.full,
+        }}>
+        <View
+          style={{
+            width: splitAppTheme.sizes.full,
+            height: splitAppTheme.sizes.full,
+          }}>
           <GenericListEmpty />
-        </Box>
-      </HStack>
+        </View>
+      </View>
     );
   }
 
@@ -201,7 +203,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
       contentContainerStyle={{
         paddingBottom: 20,
       }}>
-      <Box position={"relative"}>
+      <View style={{position: "relative"}}>
         <ScrollView
           horizontal
           pagingEnabled
@@ -216,33 +218,50 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
           ))}
         </ScrollView>
 
-        <Box position={"absolute"} width={"full"} top={0} left={0}>
+        <View
+          style={{
+            top: 0,
+            left: 0,
+            position: "absolute",
+            width: splitAppTheme.sizes.full,
+          }}>
           <SafeAreaView>
-            <HStack p={"6"} justifyContent={"space-between"}>
+            <View
+              style={{
+                flexDirection: "row",
+                padding: splitAppTheme.space[6],
+                justifyContent: "space-between",
+              }}>
               <TouchableOpacity
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                }}>
                 <FontAwesome5 size={22} name={"chevron-left"} color={"white"} />
               </TouchableOpacity>
 
-              <HStack>
+              <View style={{flexDirection: "row"}}>
                 <TouchableOpacity
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  bg={"rgba(0,0,0,0.5)"}
-                  justifyContent={"center"}>
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    borderRadius: splitAppTheme.radii.full,
+                  }}>
                   <AntDesign size={22} name={"sharealt"} color={"white"} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  p={2}
-                  ml={4}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  bg={"rgba(0,0,0,0.5)"}
-                  justifyContent={"center"}>
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: splitAppTheme.space[4],
+                    padding: splitAppTheme.space[2],
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    borderRadius: splitAppTheme.radii.full,
+                  }}>
                   <AntDesign
                     size={22}
                     name={
@@ -251,19 +270,27 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                     color={"white"}
                   />
                 </TouchableOpacity>
-              </HStack>
-            </HStack>
+              </View>
+            </View>
           </SafeAreaView>
-        </Box>
+        </View>
 
-        <Box top={"50%"} mt={-3} position={"absolute"} left={"6"}>
+        <View
+          style={{
+            top: "50%",
+            position: "absolute",
+            left: splitAppTheme.space[6],
+            marginTop: splitAppTheme.space[3] * -1,
+          }}>
           <TouchableOpacity
-            p={2}
-            ml={4}
-            borderRadius={"full"}
-            alignItems={"center"}
-            bg={"rgba(0,0,0,0.5)"}
-            justifyContent={"center"}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: splitAppTheme.space[2],
+              marginLeft: splitAppTheme.space[4],
+              backgroundColor: "rgba(0,0,0,0.5)",
+              borderRadius: splitAppTheme.radii.full,
+            }}
             onPress={handlePreviousSlide}>
             <MaterialCommunityIcons
               size={22}
@@ -271,16 +298,24 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
               color={"white"}
             />
           </TouchableOpacity>
-        </Box>
+        </View>
 
-        <Box top={"50%"} mt={-3} position={"absolute"} right={"6"}>
+        <View
+          style={{
+            top: "50%",
+            position: "absolute",
+            right: splitAppTheme.space[6],
+            marginTop: splitAppTheme.space[3] * -1,
+          }}>
           <TouchableOpacity
-            p={2}
-            ml={4}
-            borderRadius={"full"}
-            alignItems={"center"}
-            bg={"rgba(0,0,0,0.5)"}
-            justifyContent={"center"}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              padding: splitAppTheme.space[2],
+              marginLeft: splitAppTheme.space[4],
+              backgroundColor: "rgba(0,0,0,0.5)",
+              borderRadius: splitAppTheme.radii.full,
+            }}
             onPress={handleNextSlide}>
             <MaterialCommunityIcons
               size={22}
@@ -288,87 +323,138 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
               color={"white"}
             />
           </TouchableOpacity>
-        </Box>
-      </Box>
+        </View>
+      </View>
 
-      <VStack px={"6"} flex={1} bg={"rgba(255,255,255,0.1)"}>
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: splitAppTheme.space[6],
+          backgroundColor: "rgba(255,255,255,0.1)",
+        }}>
         <View
-          p={"4"}
-          bg={"white"}
-          width={"full"}
-          borderRadius={"xl"}
-          height={CARD_HEIGHT}
-          style={theme.shadows[3]}
-          marginTop={CARD_NEGATIVE_MARGIN}>
+          style={[
+            splitAppTheme.shadows[3],
+            {
+              height: CARD_HEIGHT,
+              width: splitAppTheme.sizes.full,
+              marginTop: CARD_NEGATIVE_MARGIN,
+              padding: splitAppTheme.space[4],
+              borderRadius: splitAppTheme.radii.xl,
+              backgroundColor: splitAppTheme.colors.white,
+            },
+          ]}>
           <Text
-            mb={4}
-            fontSize={"xl"}
-            color={"#030819"}
-            fontFamily={"SatoshiVariable-Bold"}>
+            style={{
+              color: "#030819",
+              marginBottom: splitAppTheme.space[4],
+              fontSize: splitAppTheme.fontSizes.xl,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
             {truncate(clubDetailsResponse.club.name)}
           </Text>
 
-          <HStack my={2}>
+          <View
+            style={{
+              marginVertical: splitAppTheme.space[2],
+            }}>
             <MapIcon height={20} width={20} color={"#402B8C"} />
 
             <Text
-              ml={4}
-              fontSize={"sm"}
-              maxWidth={"75%"}
-              color={"#030819"}
-              fontFamily={"Roboto-Regular"}>
+              style={{
+                maxWidth: "75%",
+                color: "#030819",
+                marginLeft: splitAppTheme.space[4],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
               {truncate(clubDetailsResponse.club.location, {
                 length: 70,
               })}
             </Text>
-          </HStack>
+          </View>
 
-          <Divider my={"3"} />
+          <View
+            style={{
+              height: 1,
+              backgroundColor: "black",
+              marginVertical: splitAppTheme.space[3],
+            }}
+          />
 
-          <HStack justifyContent={"space-between"} alignItems={"center"}>
-            <HStack alignItems={"center"}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
               <Clock height={20} width={20} />
               <Text
-                ml={4}
-                fontSize={"sm"}
-                color={"#030819"}
-                fontFamily={"Satoshi-Regular"}>
+                style={{
+                  color: "#030819",
+                  marginLeft: splitAppTheme.space[4],
+                  fontSize: splitAppTheme.fontSizes.sm,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+                }}>
                 Open {clubDetailsResponse.club.opening_time} -{" "}
                 {clubDetailsResponse.club.closing_time}
               </Text>
-            </HStack>
+            </View>
 
-            <Box>
-              <HStack alignItems={"center"} justifyContent={"center"}>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}>
                 <Fontisto name="star" color={"#FFC529"} size={16} />
-                <Text ml={1} color={"black"} fontSize={"sm"}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.black,
+                    marginLeft: splitAppTheme.space[1],
+                    fontSize: splitAppTheme.fontSizes.sm,
+                  }}>
                   ({clubDetailsResponse.club.avg_rating})
                 </Text>
-              </HStack>
-            </Box>
-          </HStack>
+              </View>
+            </View>
+          </View>
         </View>
 
-        <Box>
+        <View>
           <TouchableOpacity
-            p={4}
-            my={"5"}
-            borderRadius={"2xl"}
-            borderWidth={"2"}
-            variant={"outline"}
-            borderColor={"primary.300"}>
+            style={{
+              padding: splitAppTheme.space[4],
+              borderWidth: splitAppTheme.sizes[2],
+              marginVertical: splitAppTheme.space[5],
+              borderRadius: splitAppTheme.radii["2xl"],
+              borderColor: splitAppTheme.colors.primary[300],
+            }}>
             <Text
-              fontSize={"xl"}
-              textAlign={"center"}
-              color={"primary.300"}
-              fontFamily={"Satoshi-Medium"}>
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.xl,
+                color: splitAppTheme.colors.primary[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
               Book a Table
             </Text>
           </TouchableOpacity>
-        </Box>
+        </View>
 
-        <VStack>
-          <HStack justifyContent={"space-between"}>
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
             <TouchableOpacity
               style={{flex: 1, width: "100%"}}
               onPress={() => jumpTo("menus")}>
@@ -377,22 +463,33 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                 start={{x: 0, y: 0}}
                 colors={["#472BBE", "#DF3BC0"]}
                 style={styles.linearGradientButtons}>
-                <Text color={"white"} fontWeight={"medium"}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
                   Offer Menu
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
 
             <TouchableOpacity
-              mx={2}
-              style={{flex: 1, width: "100%"}}
-              onPress={() => jumpTo("reviews")}>
+              onPress={() => jumpTo("reviews")}
+              style={{
+                flex: 1,
+                width: "100%",
+                marginVertical: splitAppTheme.space[2],
+              }}>
               <LinearGradient
                 end={{x: 0, y: 0}}
                 start={{x: 0, y: 1}}
                 colors={["#402BBC", "#00C1FF"]}
                 style={styles.linearGradientButtons}>
-                <Text color={"white"} fontWeight={"medium"}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
                   Reviews
                 </Text>
               </LinearGradient>
@@ -406,14 +503,21 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                 start={{x: 0, y: 0}}
                 colors={["#201648", "#7359D1"]}
                 style={styles.linearGradientButtons}>
-                <Text color={"white"} fontWeight={"medium"}>
+                <Text
+                  style={{
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
                   Information
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
-          </HStack>
+          </View>
 
-          <Box my={5}>
+          <View
+            style={{
+              marginVertical: splitAppTheme.space[5],
+            }}>
             <MapView
               zoomEnabled={false}
               style={styles.mapStyles}
@@ -425,137 +529,215 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                 longitude: clubDetailsResponse.club.longitude,
               }}
             />
-          </Box>
+          </View>
 
-          <VStack flexWrap={"wrap"}>
-            <HStack
-              mb={5}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
-              <HStack alignItems={"center"}>
-                <Box
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  bg={"rgba(72, 212, 255,0.5)"}>
+          <View
+            style={{
+              flexWrap: "wrap",
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: splitAppTheme.space[5],
+                width: splitAppTheme.sizes.full,
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor: "rgba(72, 212, 255,0.5)",
+                  }}>
                   <MaterialIcons
                     size={22}
                     name={"phone"}
-                    color={theme.colors.blue[300]}
+                    color={splitAppTheme.colors.blue[300]}
                   />
-                </Box>
+                </View>
 
-                <Text fontSize={"md"} ml={2}>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                    marginLeft: splitAppTheme.space[2],
+                  }}>
                   Phone:
                 </Text>
-              </HStack>
+              </View>
 
-              <Box>
-                <Text fontSize={"md"}>{clubDetailsResponse.club.phone}</Text>
-              </Box>
-            </HStack>
+              <View>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                  }}>
+                  {clubDetailsResponse.club.phone}
+                </Text>
+              </View>
+            </View>
 
-            <HStack
-              mb={5}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
-              <HStack alignItems={"center"}>
-                <Box
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  bg={"rgba(72, 212, 255,0.5)"}>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                marginBottom: splitAppTheme.space[5],
+              }}>
+              <View
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}>
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor: "rgba(72, 212, 255,0.5)",
+                  }}>
                   <MaterialIcons
                     size={22}
                     name={"email"}
-                    color={theme.colors.blue[300]}
+                    color={splitAppTheme.colors.blue[300]}
                   />
-                </Box>
+                </View>
 
-                <Text fontSize={"md"} ml={2}>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                    marginLeft: splitAppTheme.space[2],
+                  }}>
                   Email:
                 </Text>
-              </HStack>
+              </View>
 
-              <Box>
-                <Text fontSize={"md"}>{clubDetailsResponse.club.email}</Text>
-              </Box>
-            </HStack>
+              <View>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                  }}>
+                  {clubDetailsResponse.club.email}
+                </Text>
+              </View>
+            </View>
 
-            <HStack
-              mb={5}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
-              <HStack alignItems={"center"}>
-                <Box
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  bg={"rgba(72, 212, 255,0.5)"}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                marginBottom: splitAppTheme.space[5],
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor: "rgba(72, 212, 255,0.5)",
+                  }}>
                   <MaterialIcons
                     size={22}
                     name={"shopping-bag"}
-                    color={theme.colors.blue[300]}
+                    color={splitAppTheme.colors.blue[300]}
                   />
-                </Box>
+                </View>
 
-                <Text fontSize={"md"} ml={2}>
+                <Text
+                  style={{
+                    marginLeft: splitAppTheme.space[2],
+                    fontSize: splitAppTheme.fontSizes.md,
+                  }}>
                   Cuisines:
                 </Text>
-              </HStack>
+              </View>
 
-              <Box>
-                <Text fontSize={"md"}>{clubDetailsResponse.club.cuisine}</Text>
-              </Box>
-            </HStack>
+              <View>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                  }}>
+                  {clubDetailsResponse.club.cuisine}
+                </Text>
+              </View>
+            </View>
 
-            <HStack
-              mb={5}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
-              <HStack alignItems={"center"}>
-                <Box
-                  p={2}
-                  borderRadius={"full"}
-                  alignItems={"center"}
-                  justifyContent={"center"}
-                  bg={"rgba(72, 212, 255,0.5)"}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                marginBottom: splitAppTheme.space[5],
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor: "rgba(72, 212, 255,0.5)",
+                  }}>
                   <MaterialIcons
                     size={22}
                     name={"shopping-bag"}
-                    color={theme.colors.blue[300]}
+                    color={splitAppTheme.colors.blue[300]}
                   />
-                </Box>
+                </View>
 
-                <Text fontSize={"md"} ml={2}>
+                <Text
+                  style={{
+                    marginLeft: splitAppTheme.space[2],
+                    fontSize: splitAppTheme.fontSizes.md,
+                  }}>
                   Average Cost:
                 </Text>
-              </HStack>
+              </View>
 
-              <Box>
+              <View>
                 <Text
-                  fontSize={"md"}
-                  color={"blue.300"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    marginLeft: splitAppTheme.space[2],
+                    fontSize: splitAppTheme.fontSizes.md,
+                    color: splitAppTheme.colors.blue[300],
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   ${clubDetailsResponse.club.min_avg_cost}-$
                   {clubDetailsResponse.club.max_avg_cost}
                 </Text>
-              </Box>
-            </HStack>
-          </VStack>
+              </View>
+            </View>
+          </View>
 
-          <Box>
-            <Text fontSize={"md"}>{clubDetailsResponse.club.about}</Text>
-          </Box>
-        </VStack>
-      </VStack>
+          <View>
+            <Text
+              style={{
+                fontSize: splitAppTheme.fontSizes.md,
+              }}>
+              {clubDetailsResponse.club.about}
+            </Text>
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 };

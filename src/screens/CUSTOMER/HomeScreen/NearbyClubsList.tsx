@@ -1,8 +1,9 @@
 import React from "react";
 import EachNearByItem from "./EachNearByItem";
 import {NearbyClubListItem} from "@src/models";
-import {Box, HStack, VStack} from "@components/ui";
 import useGetNearbyClubsQuery from "@hooks/clubs/useGetNearbyClubsQuery";
+import {splitAppTheme} from "@src/theme";
+import {View} from "react-native";
 
 type Props = {
   onItemPress: (item: NearbyClubListItem) => void;
@@ -13,15 +14,21 @@ export default function NearbyClubsList({onItemPress}: Props) {
     useGetNearbyClubsQuery();
 
   return (
-    <Box>
+    <View>
       {isNearbyClubsLoading
         ? new Array(5).fill(1).map((_, i) => (
-            <Box width={"full"} key={i}>
-              <HStack
-                width={"full"}
-                height={"32"}
-                space={"5"}
-                borderRadius={"md"}>
+            <View
+              style={{
+                width: splitAppTheme.sizes.full,
+              }}
+              key={i}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: splitAppTheme.sizes.full,
+                  height: splitAppTheme.sizes[32],
+                  borderRadius: splitAppTheme.radii.md,
+                }}>
                 {/* <Skeleton
                   height={"24"}
                   width={"24"}
@@ -43,14 +50,14 @@ export default function NearbyClubsList({onItemPress}: Props) {
                     />
                   </HStack>
                 </VStack> */}
-              </HStack>
-            </Box>
+              </View>
+            </View>
           ))
         : nearbyClubsResponse?.clubs.data.map(item => {
             return (
               <EachNearByItem key={item.id} item={item} onPress={onItemPress} />
             );
           })}
-    </Box>
+    </View>
   );
 }

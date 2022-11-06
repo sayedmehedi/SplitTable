@@ -1,9 +1,8 @@
 import React from "react";
-import {StyleSheet} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CustomerAuthStackRoutes} from "@constants/routes";
-import {Box, Text} from "@components/ui";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
@@ -30,28 +29,47 @@ const EmailVerificationScreen = ({navigation}: Props) => {
   };
 
   return (
-    <Box height={"full"}>
-      <Box width={"full"}>
-        <Box bg={"white"} p={7} mt={7} alignItems={"center"}>
+    <View
+      style={{
+        height: splitAppTheme.sizes.full,
+      }}>
+      <View
+        style={{
+          width: splitAppTheme.sizes.full,
+        }}>
+        <View
+          style={{
+            alignItems: "center",
+            padding: splitAppTheme.space[7],
+            marginTop: splitAppTheme.space[7],
+            backgroundColor: splitAppTheme.colors.white,
+          }}>
           <Text
-            fontSize={"2xl"}
-            color={"blue.300"}
-            fontFamily={"SatoshiVariable-Bold"}>
+            style={{
+              color: splitAppTheme.colors.blue[300],
+              fontSize: splitAppTheme.fontSizes["2xl"],
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
             Verification Code
           </Text>
 
           <Text
-            fontSize={"sm"}
-            color={"#262B2E"}
-            fontFamily={"Satoshi-Regular"}
-            my={2}>
+            style={{
+              color: "#262B2E",
+              marginVertical: splitAppTheme.space[2],
+              fontSize: splitAppTheme.fontSizes["sm"],
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+            }}>
             An authentication code has been sent to
           </Text>
 
           <Text
-            fontFamily={"Satoshi-Regular"}
-            fontSize={"md"}
-            color={"blue.300"}>
+            style={{
+              color: splitAppTheme.colors.blue[300],
+              marginVertical: splitAppTheme.space[2],
+              fontSize: splitAppTheme.fontSizes["md"],
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+            }}>
             john..@gmail.com
           </Text>
 
@@ -67,19 +85,36 @@ const EmailVerificationScreen = ({navigation}: Props) => {
           />
 
           <Text
-            fontSize={"md"}
-            color={"#262B2E"}
-            fontFamily={"Satoshi-Regular"}>
+            style={{
+              color: "#262B2E",
+              marginVertical: splitAppTheme.space[2],
+              fontSize: splitAppTheme.fontSizes["md"],
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+            }}>
             I didn't received code{" "}
-            <Text color={"primary.300"} fontFamily={"SatoshiVariable-Bold"}>
+            <Text
+              style={{
+                marginVertical: splitAppTheme.space[2],
+                fontSize: splitAppTheme.fontSizes["md"],
+                color: splitAppTheme.colors.primary[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
               Resend Code
             </Text>
           </Text>
 
-          <Text color={"red.300"}>1:20 Sec left</Text>
-        </Box>
+          <Text
+            style={{
+              color: splitAppTheme.colors.red[300],
+            }}>
+            1:20 Sec left
+          </Text>
+        </View>
 
-        <Box width={"full"}>
+        <View
+          style={{
+            width: splitAppTheme.sizes.full,
+          }}>
           <AppGradientButton
             width={"100%"}
             color={"primary"}
@@ -87,9 +122,9 @@ const EmailVerificationScreen = ({navigation}: Props) => {
             title={"Verify Now"}
             onPress={handleVerify}
           />
-        </Box>
-      </Box>
-    </Box>
+        </View>
+      </View>
+    </View>
   );
 };
 

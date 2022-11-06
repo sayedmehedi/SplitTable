@@ -11,9 +11,10 @@ import RecentVisitClubList from "./RecentVisitClubList";
 import ClubListBySearchTerm from "./ClubListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {Box, Input, Modal, HStack, StatusBar} from "@components/ui";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {StatusBar, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -24,8 +25,6 @@ type Props = CompositeScreenProps<
 >;
 
 const ClubListScreen = ({route}: Props) => {
-  const finalRef = React.useRef(null);
-  const initialRef = React.useRef<typeof Input>(null);
   const [clubSearchTerm, setClubSearchTerm] = React.useState("");
   const {isOpen: isButtonOpened, toggle: setButtonOpen} = useDisclosure();
   const [clubSearchTermDraft, setClubSearchTermDraft] = React.useState("");
@@ -55,7 +54,11 @@ const ClubListScreen = ({route}: Props) => {
   const handleItemPresss = React.useCallback((item: TClubItem) => {}, []);
 
   return (
-    <Box position={"relative"} height={"full"}>
+    <View
+      style={{
+        position: "relative",
+        height: splitAppTheme.sizes.full,
+      }}>
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
       {route.params.listType === ClubListTypes.BY_LOCATION && (
         <ClubsByLocationList
@@ -101,7 +104,7 @@ const ClubListScreen = ({route}: Props) => {
         initialFocusRef={initialRef}
         isOpen={isClubSearchModalOpen}
         onClose={setToggleClubSearchModal}>
-        <Box>
+        <View>
           <Modal.CloseButton />
           <Modal.Header
             _text={{
@@ -129,11 +132,19 @@ const ClubListScreen = ({route}: Props) => {
               />
             </FormControl>
           </Modal.Body>
-        </Box>
+        </Vi>
       </Modal> */}
 
-      <Box position={"absolute"} bottom={"6"} right={"6"}>
-        <Box alignItems="center">
+      <View
+        style={{
+          position: "absolute",
+          bottom: splitAppTheme.space[6],
+          right: splitAppTheme.space[6],
+        }}>
+        <View
+          style={{
+            alignItems: "center",
+          }}>
           {/* <Stagger
             visible={isButtonOpened}
             initial={{
@@ -208,9 +219,13 @@ const ClubListScreen = ({route}: Props) => {
               />
             )}
           </Stagger> */}
-        </Box>
+        </View>
 
-        <HStack justifyContent={"center"}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+          }}>
           {/* <IconButton
             size={"lg"}
             bg={"cyan.400"}
@@ -229,9 +244,9 @@ const ClubListScreen = ({route}: Props) => {
               />
             }
           /> */}
-        </HStack>
-      </Box>
-    </Box>
+        </View>
+      </View>
+    </View>
   );
 };
 

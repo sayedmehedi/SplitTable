@@ -117,7 +117,7 @@ const OnboardingScreen = ({navigation}: Props) => {
                 style={{
                   textAlign: "center",
                   color: splitAppTheme.colors.white,
-                  fontSize: splitAppTheme.sizes["2xl"],
+                  fontSize: splitAppTheme.fontSizes["2xl"],
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                 }}>
                 {item?.title}
@@ -165,9 +165,9 @@ const OnboardingScreen = ({navigation}: Props) => {
                   }}>
                   <Text
                     style={{
-                      fontSize: splitAppTheme.fontSizes.md,
                       color: "white",
                       textAlign: "center",
+                      fontSize: splitAppTheme.fontSizes.md,
                       fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                     }}>
                     Get Started
@@ -208,6 +208,7 @@ const OnboardingScreen = ({navigation}: Props) => {
         <View
           style={{
             height: 50,
+            flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
           }}>

@@ -1,7 +1,15 @@
 import React from "react";
 import truncate from "lodash.truncate";
+import {splitAppTheme} from "@src/theme";
 import {NotificationItem} from "@src/models";
-import {ListRenderItem} from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItem,
+  StatusBar,
+  Text,
+  View,
+} from "react-native";
 import {StackScreenProps} from "@react-navigation/stack";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {CompositeScreenProps} from "@react-navigation/native";
@@ -9,18 +17,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-  Box,
-  Text,
-  VStack,
-  HStack,
-  Center,
-  Spinner,
-  FlatList,
-  StatusBar,
-} from "@components/ui";
 import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
-import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList>,
@@ -28,34 +25,53 @@ type Props = CompositeScreenProps<
 >;
 
 const renderNotificationItem: ListRenderItem<NotificationItem> = ({item}) => (
-  <HStack
-    p={5}
-    mb={5}
-    borderWidth={"1"}
-    borderRadius={"xl"}
-    alignItems={"center"}
-    borderColor={"#ECECEC"}>
-    <Box>
-      <Box
-        width={"16"}
-        height={"16"}
-        borderRadius={"full"}
-        bg={getNotificationIconBgColor(item)}>
-        <Center height={"full"}>{getNotificationIcon(item)}</Center>
-      </Box>
-    </Box>
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      borderColor: "#ECECEC",
+      padding: splitAppTheme.space[5],
+      borderWidth: splitAppTheme.sizes[1],
+      marginBottom: splitAppTheme.space[5],
+      borderRadius: splitAppTheme.radii.xl,
+    }}>
+    <View>
+      <View
+        style={{
+          width: splitAppTheme.sizes[16],
+          height: splitAppTheme.sizes[16],
+          borderRadius: splitAppTheme.radii.full,
+          backgroundColor: getNotificationIconBgColor(item),
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        {getNotificationIcon(item)}
+      </View>
+    </View>
 
-    <VStack ml={5}>
-      <Text fontSize={"md"} fontFamily={"Roboto-Bold"}>
+    <View
+      style={{
+        marginLeft: splitAppTheme.space[5],
+      }}>
+      <Text
+        style={{
+          fontSize: splitAppTheme.fontSizes.md,
+          fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+        }}>
         {truncate(item.title, {
           length: 22,
         })}
       </Text>
-      <Text ml={1} numberOfLines={3} fontSize={"sm"}>
+      <Text
+        numberOfLines={3}
+        style={{
+          marginLeft: splitAppTheme.space[1],
+          fontSize: splitAppTheme.fontSizes.sm,
+        }}>
         {item.message}
       </Text>
-    </VStack>
-  </HStack>
+    </View>
+  </View>
 );
 
 export default function NotificationListScreen({}: Props) {
@@ -98,7 +114,7 @@ export default function NotificationListScreen({}: Props) {
 
   if (isLoading) {
     return (
-      <Box safeArea>
+      <View>
         <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
         {/* <ScrollView
@@ -134,12 +150,12 @@ export default function NotificationListScreen({}: Props) {
             </Center>
           ))}
         </ScrollView> */}
-      </Box>
+      </View>
     );
   }
 
   return (
-    <Box safeArea>
+    <View>
       <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
       <FlatList
@@ -154,14 +170,14 @@ export default function NotificationListScreen({}: Props) {
         }}
         ListFooterComponent={
           isFetchingNextPage ? (
-            <Box>
-              <Spinner />
-            </Box>
+            <View>
+              <ActivityIndicator size={"small"} />
+            </View>
           ) : null
         }
         ListEmptyComponent={<GenericListEmpty />}
       />
-    </Box>
+    </View>
   );
 }
 

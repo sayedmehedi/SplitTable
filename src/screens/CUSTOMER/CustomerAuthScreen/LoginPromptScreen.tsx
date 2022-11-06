@@ -1,26 +1,26 @@
-import React from "react";
-import {useTheme} from "styled-components";
-import {StatusBar, StyleSheet} from "react-native";
-import Feather from "react-native-vector-icons/Feather";
-import LinearGradient from "react-native-linear-gradient";
-import {StackScreenProps} from "@react-navigation/stack";
 import {CustomerAuthStackRoutes} from "@constants/routes";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import {CompositeScreenProps} from "@react-navigation/native";
 import {useDimensions} from "@react-native-community/hooks";
+import {CompositeScreenProps} from "@react-navigation/native";
+import {StackScreenProps} from "@react-navigation/stack";
+import React from "react";
 import {
-  Box,
-  Text,
   Image,
-  HStack,
-  VStack,
+  Text,
+  View,
+  StatusBar,
+  StyleSheet,
   TouchableOpacity,
-} from "@components/ui";
+} from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Feather from "react-native-vector-icons/Feather";
+
 import {
-  RootStackParamList,
-  CustomerStackParamList,
   CustomerAuthStackParamList,
+  CustomerStackParamList,
+  RootStackParamList,
 } from "@src/navigation";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -37,158 +37,227 @@ const LoginPromptScreen = ({navigation}: Props) => {
   const {
     window: {width},
   } = useDimensions();
-  const theme = useTheme();
 
   const handleEmailLogin = () => {
     navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
   };
 
   return (
-    <Box flex={1}>
+    <View
+      style={{
+        flex: 1,
+      }}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" />
 
       <LinearGradient
-        // @ts-ignore
-        flex={1}
-        paddingBottom={20}
+        style={{
+          flex: 1,
+          alignItems: "center",
+          paddingBottom: splitAppTheme.space[20],
+        }}
         end={{x: 0, y: 0}}
         start={{x: 0, y: 1}}
-        // @ts-ignore
-        alignItems={"center"}
         colors={["#DF3BC0", "#472BBE"]}>
-        <Box flex={1} justifyContent={"center"}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+          }}>
           <Image
-            width={160}
-            height={100}
-            alt={"logo"}
+            style={{
+              width: 160,
+              height: 100,
+            }}
             source={require("@assets/logo-white.png")}
           />
-        </Box>
+        </View>
 
-        <Box
-          px={6}
-          width={"full"}
-          alignItems={"center"}
-          justifyContent={"space-around"}>
-          <Box mb={5}>
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "space-around",
+            width: splitAppTheme.sizes.full,
+            paddingHorizontal: splitAppTheme.space[6],
+          }}>
+          <View
+            style={{
+              marginBottom: splitAppTheme.space[5],
+            }}>
             <Text
-              fontSize={22}
-              color={"white"}
-              fontFamily={"SatoshiVariable-Bold"}>
+              style={{
+                fontSize: 22,
+                color: splitAppTheme.colors.white,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
               Welcome!
             </Text>
-          </Box>
+          </View>
 
-          <VStack width={"full"}>
-            <Box>
+          <View
+            style={{
+              width: splitAppTheme.sizes.full,
+            }}>
+            <View>
               <TouchableOpacity
-                p={4}
-                width={"full"}
-                borderWidth={1}
-                borderRadius={"lg"}
-                borderColor={"white"}
+                style={{
+                  padding: splitAppTheme.space[4],
+                  width: splitAppTheme.sizes.full,
+                  borderWidth: splitAppTheme.sizes[1],
+                  borderRadius: splitAppTheme.radii.lg,
+                  borderColor: splitAppTheme.colors.white,
+                }}
                 onPress={handleEmailLogin}>
                 <Text
-                  fontSize={"lg"}
-                  color={"white"}
-                  textAlign={"center"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    textAlign: "center",
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   Continue with email
                 </Text>
               </TouchableOpacity>
-            </Box>
+            </View>
 
-            <Box mt={4}>
+            <View
+              style={{
+                marginTop: splitAppTheme.space[4],
+              }}>
               <TouchableOpacity
-                p={4}
-                width={"full"}
-                variant={"subtle"}
-                borderRadius={"lg"}
-                // colorScheme={"white"}
-                bg={"rgba(255,255,255, 0.3)"}>
+                style={{
+                  padding: splitAppTheme.space[4],
+                  width: splitAppTheme.sizes.full,
+                  borderRadius: splitAppTheme.radii.lg,
+                  backgroundColor: "rgba(255,255,255, 0.3)",
+                }}>
                 <Text
-                  fontSize={"lg"}
-                  color={"white"}
-                  textAlign={"center"}
-                  fontFamily={"SatoshiVariable-Bold"}>
+                  style={{
+                    textAlign: "center",
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    color: splitAppTheme.colors.white,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   Continue with Phone Number
                 </Text>
               </TouchableOpacity>
-            </Box>
-          </VStack>
+            </View>
+          </View>
 
-          <HStack alignItems={"center"} my={5}>
-            <Box height={"1px"} width={100} bg={"white"} />
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              marginVertical: splitAppTheme.space[5],
+            }}>
+            <View
+              style={{
+                height: 1,
+                width: 100,
+                backgroundColor: splitAppTheme.colors.white,
+              }}
+            />
 
-            <Text mx={5} color={"white"}>
+            <Text
+              style={{
+                color: splitAppTheme.colors.white,
+                marginHorizontal: splitAppTheme.space[5],
+              }}>
               OR
             </Text>
 
-            <Box height={"1px"} width={100} bg={"white"} />
-          </HStack>
+            <View
+              style={{
+                height: 1,
+                width: 100,
+                backgroundColor: splitAppTheme.colors.white,
+              }}
+            />
+          </View>
 
-          <VStack alignItems={"center"}>
-            <HStack>
+          <View
+            style={{
+              alignItems: "center",
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+              }}>
               <TouchableOpacity
-                size={50}
-                bg={"white"}
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+                style={{
+                  width: 50,
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                  backgroundColor: splitAppTheme.colors.white,
+                }}>
                 <Feather
                   size={30}
                   name={"facebook"}
-                  color={theme.colors.primary[300]}
+                  color={splitAppTheme.colors.primary[300]}
                 />
               </TouchableOpacity>
 
               <TouchableOpacity
-                mx={5}
-                size={50}
-                bg={"white"}
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+                style={{
+                  width: 50,
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                  marginHorizontal: splitAppTheme.space[5],
+                  backgroundColor: splitAppTheme.colors.white,
+                }}>
                 <AntDesign
                   size={30}
                   name={"google"}
-                  color={theme.colors.primary[300]}
+                  color={splitAppTheme.colors.primary[300]}
                 />
               </TouchableOpacity>
 
               <TouchableOpacity
-                size={50}
-                bg={"white"}
-                borderRadius={"full"}
-                alignItems={"center"}
-                justifyContent={"center"}>
+                style={{
+                  width: 50,
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: splitAppTheme.radii.full,
+                  backgroundColor: splitAppTheme.colors.white,
+                }}>
                 <Feather
                   size={30}
                   name={"instagram"}
-                  color={theme.colors.primary[300]}
+                  color={splitAppTheme.colors.primary[300]}
                 />
               </TouchableOpacity>
-            </HStack>
+            </View>
 
-            <Box mt={10}>
+            <View
+              style={{
+                marginTop: splitAppTheme.space[10],
+              }}>
               <Text
-                fontSize={"lg"}
-                color={"white"}
-                fontFamily={"Satoshi-Regular"}>
+                style={{
+                  color: splitAppTheme.colors.white,
+                  fontSize: splitAppTheme.fontSizes.lg,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+                }}>
                 Don't have an account?{" "}
                 <Text
-                  fontSize={"lg"}
-                  color={"white"}
-                  fontFamily={"SatoshiVariable-Bold"}
-                  textDecorationLine={"underline"}>
+                  style={{
+                    textDecorationLine: "underline",
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                  }}>
                   Sign Up
                 </Text>
               </Text>
-            </Box>
-          </VStack>
-        </Box>
+            </View>
+          </View>
+        </View>
       </LinearGradient>
-    </Box>
+    </View>
   );
 };
 

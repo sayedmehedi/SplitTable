@@ -1,5 +1,4 @@
 import React from "react";
-import {useTheme} from "styled-components";
 import {View, Text} from "react-native";
 import BookingIcon from "@assets/icons/booking.svg";
 import {OwnerBottomTabParamList} from "@src/navigation";
@@ -19,12 +18,11 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
+import {splitAppTheme} from "@src/theme";
 
 const OwnerMainBotoomTab = createBottomTabNavigator<OwnerBottomTabParamList>();
 
 const OwnerBottomTabNavigator = () => {
-  const theme = useTheme();
-
   const ownerAccountScreenOptions:
     | BottomTabNavigationOptions
     | ((props: {
@@ -46,7 +44,9 @@ const OwnerBottomTabNavigator = () => {
             height={30}
             width={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -54,15 +54,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Account
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const menuScreenOptions:
     | BottomTabNavigationOptions
@@ -88,7 +88,9 @@ const OwnerBottomTabNavigator = () => {
             width={30}
             height={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -96,15 +98,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Menu
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const tableAddScreenOptions:
     | BottomTabNavigationOptions
@@ -163,7 +165,9 @@ const OwnerBottomTabNavigator = () => {
             width={30}
             height={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -171,15 +175,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Home
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const ownerBookingScreenOptions:
     | BottomTabNavigationOptions
@@ -205,7 +209,9 @@ const OwnerBottomTabNavigator = () => {
             height={30}
             width={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -213,15 +219,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Booking
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const globalScreenOptions:
     | BottomTabNavigationOptions

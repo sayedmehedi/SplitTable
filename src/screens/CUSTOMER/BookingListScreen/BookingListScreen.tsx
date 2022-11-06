@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./styles";
-import {useTheme} from "styled-components";
+import {splitAppTheme} from "@src/theme";
 import EachBookingItem from "./EachBookingItem";
 import LinearGradient from "react-native-linear-gradient";
 import {
@@ -11,7 +11,6 @@ import {
   View,
 } from "react-native";
 import {SceneMap, SceneRendererProps, TabView} from "react-native-tab-view";
-import {splitAppTheme} from "@src/theme";
 
 const bookingList = [
   {
@@ -91,19 +90,17 @@ const bookingList = [
 const renderBookingItem = ({item}: any) => <EachBookingItem item={item} />;
 
 const UpcomingBookingRoute = (props: SceneRendererProps) => {
-  const theme = useTheme();
-
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
-      padding: theme.space[6],
+      padding: splitAppTheme.space[6],
     };
-  }, [theme.space[6]]);
+  }, [splitAppTheme.space[6]]);
 
   const flatlistListheadercomponentStyle = React.useMemo(() => {
     return {
-      marginBottom: theme.space[4],
+      marginBottom: splitAppTheme.space[4],
     };
-  }, [theme.space[4]]);
+  }, [splitAppTheme.space[4]]);
 
   return (
     <FlatList
@@ -180,19 +177,17 @@ const UpcomingBookingRoute = (props: SceneRendererProps) => {
 };
 
 const HistoryBookingRoute = (props: SceneRendererProps) => {
-  const theme = useTheme();
-
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
-      padding: theme.space[6],
+      padding: splitAppTheme.space[6],
     };
-  }, [theme.space[6]]);
+  }, [splitAppTheme.space[6]]);
 
   const flatlistListheadercomponentStyle = React.useMemo(() => {
     return {
-      marginBottom: theme.space[4],
+      marginBottom: splitAppTheme.space[4],
     };
-  }, [theme.space[4]]);
+  }, [splitAppTheme.space[4]]);
 
   return (
     <FlatList

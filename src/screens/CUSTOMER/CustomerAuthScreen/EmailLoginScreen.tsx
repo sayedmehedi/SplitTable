@@ -9,7 +9,6 @@ import {CustomerAuthStackRoutes} from "@constants/routes";
 import useLoginMutation from "@hooks/auth/useLoginMutation";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {Box, Text, Input, VStack, HStack, Center} from "@components/ui";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
@@ -19,6 +18,8 @@ import {
   CustomerStackParamList,
   CustomerAuthStackParamList,
 } from "@src/navigation";
+import {splitAppTheme} from "@src/theme";
+import {Text, TextInput, View} from "react-native";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -72,32 +73,48 @@ const EmailLoginScreen = ({navigation}: Props) => {
   });
 
   return (
-    <Box height={"full"}>
-      <Box flex={1} />
+    <View
+      style={{
+        height: splitAppTheme.sizes.full,
+      }}>
+      <View style={{flex: 1}} />
 
-      <Box px={6}>
-        <VStack>
-          <Box>
-            <Box mb={3.5}>
+      <View
+        style={{
+          paddingHorizontal: splitAppTheme.space[6],
+        }}>
+        <View>
+          <View>
+            <View
+              style={{
+                marginBottom: splitAppTheme.space["3.5"],
+              }}>
               <Text
-                fontSize={"2xl"}
-                color={"blue.300"}
-                textAlign={"center"}
-                fontFamily={"SatoshiVariable-Bold"}>
+                style={{
+                  textAlign: "center",
+                  color: splitAppTheme.colors.blue[300],
+                  fontSize: splitAppTheme.fontSizes["2xl"],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
                 Login
               </Text>
 
               <Text
-                my={1}
-                fontSize={"lg"}
-                color={"#262B2E"}
-                textAlign={"center"}
-                fontFamily={"Roboto-Regular"}>
+                style={{
+                  color: "#262B2E",
+                  textAlign: "center",
+                  fontSize: splitAppTheme.fontSizes.lg,
+                  marginVertical: splitAppTheme.space[1],
+                  fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                }}>
                 With your email address
               </Text>
-            </Box>
+            </View>
 
-            <VStack width={"full"}>
+            <View
+              style={{
+                width: splitAppTheme.sizes.full,
+              }}>
               <Controller
                 name={"email"}
                 rules={{
@@ -105,47 +122,65 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 }}
                 control={control}
                 render={({field, formState: {errors}}) => (
-                  <Box>
-                    <HStack
-                      width={"full"}
-                      borderWidth={!!errors.email ? 1 : 0}
-                      borderRadius={"lg"}
-                      borderColor={"red.300"}>
-                      <Center
-                        bg={"gray.100"}
-                        pl={2}
-                        borderTopLeftRadius={"lg"}
-                        borderBottomLeftRadius={"lg"}>
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: splitAppTheme.sizes.full,
+                        borderRadius: splitAppTheme.radii.lg,
+                        borderColor: splitAppTheme.colors.red[300],
+                        borderWidth: !!errors.email
+                          ? splitAppTheme.sizes[1]
+                          : 0,
+                      }}>
+                      <View
+                        style={{
+                          paddingLeft: splitAppTheme.space[2],
+                          borderTopLeftRadius: splitAppTheme.radii.lg,
+                          borderBottomLeftRadius: splitAppTheme.radii.lg,
+                          backgroundColor: splitAppTheme.colors.gray[100],
+                        }}>
                         <Entypo size={30} name={"mail"} color={"black"} />
-                      </Center>
+                      </View>
 
-                      <Box flex={1}>
-                        <Input
-                          p={4}
-                          width={"full"}
-                          bg={"gray.100"}
-                          borderTopRightRadius={"lg"}
-                          borderBottomRightRadius={"lg"}
+                      <View
+                        style={{
+                          flex: 1,
+                        }}>
+                        <TextInput
+                          onBlur={field.onBlur}
+                          style={{
+                            padding: splitAppTheme.space[4],
+                            width: splitAppTheme.sizes.full,
+                            borderTopRightRadius: splitAppTheme.radii.lg,
+                            backgroundColor: splitAppTheme.colors.gray[100],
+                            borderBottomRightRadius: splitAppTheme.radii.lg,
+                          }}
                           value={field.value}
                           onChangeText={field.onChange}
                           keyboardType={"email-address"}
                           placeholder={"Enter Your Name Here"}
                         />
-                      </Box>
-                    </HStack>
+                      </View>
+                    </View>
 
                     <ErrorMessage
                       errors={errors}
                       name={"email"}
                       render={({message}) => {
                         return (
-                          <Text color={"red.300"} py={1}>
+                          <Text
+                            style={{
+                              color: splitAppTheme.colors.red[300],
+                              paddingVertical: splitAppTheme.space[1],
+                            }}>
                             {message}
                           </Text>
                         );
                       }}
                     />
-                  </Box>
+                  </View>
                 )}
               />
 
@@ -156,66 +191,94 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 }}
                 control={control}
                 render={({field, formState: {errors}}) => (
-                  <Box mt={4}>
-                    <HStack
-                      width={"full"}
-                      borderWidth={!!errors.password ? 1 : 0}
-                      borderRadius={"lg"}
-                      borderColor={"red.300"}>
-                      <Center
-                        pl={2}
-                        bg={"gray.100"}
-                        borderTopLeftRadius={"lg"}
-                        borderBottomLeftRadius={"lg"}>
+                  <View
+                    style={{
+                      marginTop: splitAppTheme.space[4],
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: splitAppTheme.sizes.full,
+                        borderRadius: splitAppTheme.radii.lg,
+                        borderColor: splitAppTheme.colors.red[300],
+                        borderWidth: !!errors.password
+                          ? splitAppTheme.sizes[1]
+                          : 0,
+                      }}>
+                      <View
+                        style={{
+                          paddingLeft: splitAppTheme.space[2],
+                          borderTopLeftRadius: splitAppTheme.radii.lg,
+                          borderBottomLeftRadius: splitAppTheme.radii.lg,
+                          backgroundColor: splitAppTheme.colors.gray[100],
+                        }}>
                         <FontAwesome5 size={30} name={"lock"} color={"black"} />
-                      </Center>
+                      </View>
 
-                      <Box flex={1}>
-                        <Input
-                          p={4}
-                          width={"full"}
-                          bg={"gray.100"}
+                      <View
+                        style={{
+                          flex: 1,
+                        }}>
+                        <TextInput
+                          onBlur={field.onBlur}
+                          style={{
+                            padding: splitAppTheme.space[4],
+                            width: splitAppTheme.sizes.full,
+                            borderTopRightRadius: splitAppTheme.radii.lg,
+                            borderBottomRightRadius: splitAppTheme.radii.lg,
+                            backgroundColor: splitAppTheme.colors.gray[100],
+                          }}
                           secureTextEntry
                           value={field.value}
                           placeholder={"Password"}
-                          borderTopRightRadius={"lg"}
-                          borderBottomRightRadius={"lg"}
                           onChangeText={field.onChange}
                           underlineColorAndroid={"transparent"}
                         />
-                      </Box>
-                    </HStack>
+                      </View>
+                    </View>
 
                     <ErrorMessage
                       errors={errors}
                       name={"password"}
                       render={({message}) => {
                         return (
-                          <Text color={"red.300"} py={1}>
+                          <Text
+                            style={{
+                              color: splitAppTheme.colors.red[300],
+                              paddingVertical: splitAppTheme.space[1],
+                            }}>
                             {message}
                           </Text>
                         );
                       }}
                     />
-                  </Box>
+                  </View>
                 )}
               />
-            </VStack>
+            </View>
 
-            <HStack
-              px={2}
-              my={4}
-              width={"full"}
-              alignItems={"center"}
-              justifyContent={"space-between"}>
-              {/* <Checkbox value={"one"} fontFamily={"Satoshi-Regular"}>
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                marginVertical: splitAppTheme.space[4],
+                paddingHorizontal: splitAppTheme.space[2],
+              }}>
+              {/* <CheckView value={"one"} fontFamily={"Satoshi-Regular"}>
                 Remember me
-              </Checkbox> */}
+              </CheckView> */}
 
-              <Text fontSize={"md"} color={"primary.300"}>
+              <Text
+                style={{
+                  fontSize: splitAppTheme.fontSizes.md,
+                  color: splitAppTheme.colors.primary[300],
+                }}>
                 Forget password?
               </Text>
-            </HStack>
+            </View>
 
             <AppGradientButton
               width={"100%"}
@@ -227,16 +290,32 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 disabled: isLoggingIn,
               }}
             />
-          </Box>
-        </VStack>
-      </Box>
+          </View>
+        </View>
+      </View>
 
-      <Box flex={1} />
+      <View
+        style={{
+          flex: 1,
+        }}
+      />
 
-      <Text fontSize={"md"} mb={5} textAlign={"center"}>
-        Don't have an account? <Text color={"primary.300"}>Sign Up</Text>
+      <Text
+        style={{
+          textAlign: "center",
+          marginBottom: splitAppTheme.space[5],
+          fontSize: splitAppTheme.fontSizes.md,
+          color: splitAppTheme.colors.primary[300],
+        }}>
+        Don't have an account?{" "}
+        <Text
+          style={{
+            color: splitAppTheme.colors.primary[300],
+          }}>
+          Sign Up
+        </Text>
       </Text>
-    </Box>
+    </View>
   );
 };
 

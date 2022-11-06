@@ -21,13 +21,12 @@ import {
 import CustomerTableScreen from "@screens/CUSTOMER/CustomerTableScreen";
 import CustomerProfileStackNavigator from "./CustomerProfileStackNavigator";
 import {CUSTOMER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
+import {splitAppTheme} from "@src/theme";
 
 const CustomerBottomTab =
   createBottomTabNavigator<CustomerBottomTabParamList>();
 
 const CustomerBottomTabNavigator = () => {
-  const theme = useTheme();
-
   const homeScreenOptions:
     | BottomTabNavigationOptions
     | ((props: {
@@ -49,7 +48,9 @@ const CustomerBottomTabNavigator = () => {
             width={30}
             height={30}
             fill={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -57,15 +58,15 @@ const CustomerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Home
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const bookingScreenOptions:
     | BottomTabNavigationOptions
@@ -91,7 +92,9 @@ const CustomerBottomTabNavigator = () => {
             width={30}
             height={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -99,8 +102,8 @@ const CustomerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Booking
           </Text>
@@ -141,7 +144,7 @@ const CustomerBottomTabNavigator = () => {
             <TableIcon
               height={30}
               width={30}
-              fill={focused ? theme.colors.primary[900] : "none"}
+              fill={focused ? splitAppTheme.colors.primary[900] : "none"}
             />
           </LinearGradient>
 
@@ -149,15 +152,15 @@ const CustomerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Table
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const chatScreenOptions:
     | BottomTabNavigationOptions
@@ -180,7 +183,9 @@ const CustomerBottomTabNavigator = () => {
             height={30}
             width={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
@@ -188,15 +193,15 @@ const CustomerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
             }}>
             Chat
           </Text>
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   const profileStackScreenOptions:
     | BottomTabNavigationOptions
@@ -219,15 +224,17 @@ const CustomerBottomTabNavigator = () => {
             height={30}
             width={30}
             color={
-              focused ? theme.colors.primary[900] : theme.colors.secondary[900]
+              focused
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900]
             }
           />
 
           <Text
             style={{
               color: focused
-                ? theme.colors.primary[900]
-                : theme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[900]
+                : splitAppTheme.colors.secondary[900],
               fontSize: 10,
             }}>
             Account
@@ -235,7 +242,7 @@ const CustomerBottomTabNavigator = () => {
         </View>
       ),
     };
-  }, [theme.colors.primary[900], theme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
 
   return (
     <CustomerBottomTab.Navigator

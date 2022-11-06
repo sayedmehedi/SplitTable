@@ -1,9 +1,8 @@
 import React from "react";
 import {TClubItem} from "./shared";
 import ClubListItem from "./ClubListItem";
-import {ListRenderItem} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {Box, FlatList, Spinner, VStack} from "@components/ui";
+import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
 import useInfiniteGetPopularClubsQuery from "@hooks/clubs/useInfiniteGetPopularClubsQuery";
 
 type Props = {
@@ -102,9 +101,9 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
       }}
       ListFooterComponent={
         isFetchingNextPage ? (
-          <Box>
-            <Spinner />
-          </Box>
+          <View>
+            <ActivityIndicator size={"small"} />
+          </View>
         ) : null
       }
       ListEmptyComponent={<GenericListEmpty />}

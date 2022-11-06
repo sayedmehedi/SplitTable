@@ -1,8 +1,9 @@
 import React from "react";
 import {ClubListItem} from "@src/models";
-import {Box, Center, ScrollView, VStack} from "@components/ui";
 import EachPopularClubItem from "@components/EachPopularClubItem";
 import useGetPopularClubsQuery from "@hooks/clubs/useGetPopularClubsQuery";
+import {ScrollView, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   onItemPress: (club: ClubListItem) => void;
@@ -22,28 +23,39 @@ export default function PopularClubsSwiper({onItemPress}: Props) {
       showsHorizontalScrollIndicator={false}>
       {isPopularClubsLoading
         ? new Array(7).fill(1).map((_, index) => (
-            <Center width={"72"} key={index} mr={index === 6 ? 0 : 5}>
-              <VStack
-                space={8}
-                width={"72"}
-                borderRadius={"md"}
-                borderWidth={"1"}
-                overflow={"hidden"}>
+            <View
+              style={{
+                width: splitAppTheme.sizes[72],
+                marginRight: splitAppTheme.space[index === 6 ? 0 : 5],
+              }}
+              key={index}>
+              <View
+                style={{
+                  overflow: "hidden",
+                  width: splitAppTheme.sizes[72],
+                  borderWidth: splitAppTheme.sizes[1],
+                  borderRadius: splitAppTheme.radii.md,
+                }}>
                 {/* <Skeleton height={"32"} />
                 <Skeleton.Text px={"2"} my={"4"} /> */}
-              </VStack>
-            </Center>
+              </View>
+            </View>
           ))
         : popularClubsResponse?.clubs.data.map((item, index) => {
             return (
-              <Box
-                width={"72"}
-                key={item.id}
-                mr={
-                  index === popularClubsResponse.clubs.data.length - 1 ? 0 : 5
-                }>
+              <View
+                style={{
+                  width: splitAppTheme.sizes[72],
+                  marginRight:
+                    splitAppTheme.space[
+                      index === popularClubsResponse.clubs.data.length - 1
+                        ? 0
+                        : 5
+                    ],
+                }}
+                key={item.id}>
                 <EachPopularClubItem item={item} onPress={onItemPress} />
-              </Box>
+              </View>
             );
           })}
     </ScrollView>

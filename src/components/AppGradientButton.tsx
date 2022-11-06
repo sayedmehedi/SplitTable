@@ -1,5 +1,4 @@
 import React from "react";
-import {useTheme} from "styled-components";
 import {
   View,
   Text,
@@ -10,6 +9,7 @@ import {
 import LinearGradient, {
   LinearGradientProps,
 } from "react-native-linear-gradient";
+import {splitAppTheme} from "@src/theme";
 
 type SolidBtnProps = {
   title: string;
@@ -48,7 +48,6 @@ const SecondaryButton = ({
   linearGradientProps,
   touchableOpacityProps = {},
 }: SolidBtnProps) => {
-  const theme = useTheme();
   let defaultStyles: LinearGradientProps["style"] = {
     height: 50,
     borderRadius: 8,
@@ -81,7 +80,11 @@ const SecondaryButton = ({
         {...(linearGradientProps ?? {})}
         style={defaultStyles}>
         <Text
-          style={{color: theme.colors.white, fontSize: 16, fontWeight: "500"}}
+          style={{
+            color: splitAppTheme.colors.white,
+            fontSize: 16,
+            fontWeight: "500",
+          }}
           {...textProps}>
           {title}
         </Text>
@@ -98,8 +101,6 @@ const PrimaryButton = ({
   linearGradientProps,
   touchableOpacityProps = {},
 }: SolidBtnProps) => {
-  const theme = useTheme();
-
   let defaultStyles: LinearGradientProps["style"] = {
     height: 50,
     borderRadius: 8,
@@ -132,7 +133,11 @@ const PrimaryButton = ({
         colors={["#402B8C", "#FF3FCB"]}
         style={defaultStyles}>
         <Text
-          style={{color: theme.colors.white, fontSize: 16, fontWeight: "500"}}
+          style={{
+            color: splitAppTheme.colors.white,
+            fontSize: 16,
+            fontWeight: "500",
+          }}
           {...textProps}>
           {title}
         </Text>
@@ -148,15 +153,14 @@ const OutlinedButton = ({
   color: propColor = "",
   touchableOpacityProps = {},
 }: OutlinedBtnProps) => {
-  const theme = useTheme();
   let color, borderColor;
 
   if (propColor === "primary") {
-    color = theme.colors.primary[300];
-    borderColor = theme.colors.primary[300];
+    color = splitAppTheme.colors.primary[300];
+    borderColor = splitAppTheme.colors.primary[300];
   } else if (propColor === "primary") {
-    color = theme.colors.secondary[300];
-    borderColor = theme.colors.secondary[300];
+    color = splitAppTheme.colors.secondary[300];
+    borderColor = splitAppTheme.colors.secondary[300];
   } else {
     color = propColor;
     borderColor = propColor;

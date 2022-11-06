@@ -1,7 +1,8 @@
 import React from "react";
 import truncate from "lodash.truncate";
 import {ClubMenuItem} from "@src/models";
-import {View, Text, Image, HStack, VStack, Box} from "@components/ui";
+import {Image, Text, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   item: ClubMenuItem;
@@ -9,31 +10,53 @@ type Props = {
 
 const EachOfferMenuItem = ({item}: Props) => {
   return (
-    <HStack height={"32"} alignItems={"center"} bg={"white"}>
-      <Box width={"2/6"} height={"full"}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        height: splitAppTheme.sizes[32],
+        backgroundColor: splitAppTheme.colors.white,
+      }}>
+      <View
+        style={{
+          width: splitAppTheme.sizes["2/6"],
+          height: splitAppTheme.sizes["full"],
+        }}>
         <Image
-          width={"full"}
-          height={"full"}
-          alt={"offer-menu"}
+          style={{
+            width: splitAppTheme.sizes["full"],
+            height: splitAppTheme.sizes["full"],
+          }}
           source={{uri: item.image}}
         />
-      </Box>
+      </View>
 
-      <VStack flex={1} justifyContent={"space-between"} ml={4}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-between",
+          marginLeft: splitAppTheme.space[4],
+        }}>
         <Text
-          fontSize={"lg"}
-          color={"#262B2E"}
-          fontWeight={"medium"}
-          fontFamily={"Satoshi-Regular"}>
+          style={{
+            color: "#262B2E",
+            fontSize: splitAppTheme.fontSizes.lg,
+            fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+          }}>
           {item.name}
         </Text>
 
-        <View maxWidth={"80%"}>
+        <View
+          style={{
+            maxWidth: "80%",
+          }}>
           <Text
-            fontSize={"sm"}
-            color={"#8A8D9F"}
             numberOfLines={3}
-            fontFamily={"Satoshi-Regular"}>
+            style={{
+              color: "#8A8D9F",
+              fontSize: splitAppTheme.fontSizes.sm,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+            }}>
             {truncate(item.details, {
               length: 30,
             })}
@@ -41,14 +64,16 @@ const EachOfferMenuItem = ({item}: Props) => {
         </View>
 
         <Text
-          pb={"1.5"}
-          fontSize={"sm"}
-          color={"blue.300"}
-          fontFamily={"SatoshiVariable-Bold"}>
+          style={{
+            color: splitAppTheme.colors.blue[300],
+            fontSize: splitAppTheme.fontSizes.sm,
+            paddingBottom: splitAppTheme.space["1.5"],
+            fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+          }}>
           Price: ${item.price}
         </Text>
-      </VStack>
-    </HStack>
+      </View>
+    </View>
   );
 };
 

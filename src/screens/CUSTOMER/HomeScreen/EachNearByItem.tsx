@@ -3,7 +3,8 @@ import truncate from "lodash.truncate";
 import {MapIcon} from "@constants/iconPath";
 import {NearbyClubListItem} from "@src/models";
 import Fontisto from "react-native-vector-icons/Fontisto";
-import {Box, HStack, Image, Pressable, Text} from "@components/ui";
+import {Image, Pressable, Text, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   item: NearbyClubListItem;
@@ -17,47 +18,67 @@ const EachNearByItem = ({item, onPress}: Props) => {
 
   return (
     <Pressable onPress={handlePress}>
-      <HStack my={2} height={"24"} width={"full"}>
+      <View
+        style={{
+          flexDirection: "row",
+          height: splitAppTheme.sizes[24],
+          width: splitAppTheme.sizes.full,
+          marginVertical: splitAppTheme.space[2],
+        }}>
         <Image
-          height={"24"}
-          width={"24"}
-          borderRadius={"sm"}
-          alt={"recent-club"}
+          style={{
+            width: splitAppTheme.sizes["24"],
+            height: splitAppTheme.sizes["24"],
+            borderRadius: splitAppTheme.radii.sm,
+          }}
           source={{uri: item.image}}
         />
-        <Box justifyContent={"space-between"} ml={5}>
-          <Text fontSize={"lg"} color={"#262B2E"} fontFamily={"Roboto-Medium"}>
+        <View
+          style={{
+            justifyContent: "space-between",
+            marginLeft: splitAppTheme.space[5],
+          }}>
+          <Text
+            style={{
+              color: "#262B2E",
+              fontSize: splitAppTheme.fontSizes.lg,
+              fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+            }}>
             {truncate(item.name)}
           </Text>
-          <HStack alignItems={"center"}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
             <MapIcon height={10} width={10} color={"#402B8C"} />
             <Text
-              ml={1}
-              fontSize={"sm"}
-              color={"#8A8D9F"}
-              fontFamily={"Satoshi-Regular"}>
+              style={{
+                color: "#8A8D9F",
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+              }}>
               {truncate(item.location)}
             </Text>
-          </HStack>
+          </View>
 
-          <HStack alignItems={"center"}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
             <MapIcon height={10} width={10} color={"#402B8C"} />
             <Text
-              ml={1}
-              fontSize={"sm"}
-              color={"#8A8D9F"}
-              fontFamily={"Satoshi-Regular"}>
+              style={{
+                color: "#8A8D9F",
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+              }}>
               {item.distance}
             </Text>
-          </HStack>
+          </View>
 
-          <HStack>
-            <Text color={"black"}>{item.avg_rating}</Text>
+          <View style={{flexDirection: "row"}}>
+            <Text style={{color: "black"}}>{item.avg_rating}</Text>
             <Fontisto name="star" color={"#FFC529"} size={16} />
-            <Text color={"black"}>({item.total_reviews})</Text>
-          </HStack>
-        </Box>
-      </HStack>
+            <Text style={{color: "black"}}>({item.total_reviews})</Text>
+          </View>
+        </View>
+      </View>
     </Pressable>
   );
 };

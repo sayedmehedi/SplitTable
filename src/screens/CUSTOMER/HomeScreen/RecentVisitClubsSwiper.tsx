@@ -2,15 +2,8 @@ import React from "react";
 import {ClubListItem} from "@src/models";
 import EachRecentVisitsItem from "./EachRecentVisitsItem";
 import useGetRecentViewedClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
-import {
-  Box,
-  Text,
-  VStack,
-  Center,
-  HStack,
-  ScrollView,
-  TouchableOpacity,
-} from "@components/ui";
+import {ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   onSeeAll: () => void;
@@ -23,72 +16,106 @@ export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
 
   return !isRecentVisitClubsLoading &&
     recentVisitClubsResponse?.clubs.data.length === 0 ? (
-    <Box my={1} />
+    <View
+      style={{
+        marginVertical: splitAppTheme.space[1],
+      }}
+    />
   ) : (
-    <Box>
-      <Center width={"full"}>
-        <Box px={6} width={"full"} my={1}>
-          <HStack
-            my={2}
-            width={"full"}
-            alignItems={"center"}
-            justifyContent={"space-between"}>
+    <View>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          width: splitAppTheme.sizes.full,
+        }}>
+        <View
+          style={{
+            width: splitAppTheme.sizes.full,
+            marginVertical: splitAppTheme.space[1],
+            paddingHorizontal: splitAppTheme.space[6],
+          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginVertical: splitAppTheme.space[2],
+              width: splitAppTheme.sizes.full,
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
             <Text
-              fontSize={"xl"}
-              color={"#030819"}
-              fontFamily={"SatoshiVariable-Bold"}>
+              style={{
+                color: "#030819",
+                fontSize: splitAppTheme.fontSizes.xl,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
               Your Recent Visits
             </Text>
 
             <TouchableOpacity onPress={onSeeAll}>
               <Text
-                fontSize={"sm"}
-                color={"#262B2E"}
-                fontFamily={"Roboto-Regular"}>
+                style={{
+                  color: "#030819",
+                  fontSize: splitAppTheme.fontSizes.sm,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                }}>
                 See all
               </Text>
             </TouchableOpacity>
-          </HStack>
-        </Box>
-      </Center>
+          </View>
+        </View>
+      </View>
 
       <ScrollView
-        mb={5}
+        style={{
+          marginBottom: splitAppTheme.space[5],
+        }}
         horizontal
         contentContainerStyle={{
           paddingBottom: 8,
-          paddingHorizontal: 24,
+          paddingHorizontal: splitAppTheme.space[6],
         }}
         showsHorizontalScrollIndicator={false}>
         {isRecentVisitClubsLoading
           ? new Array(7).fill(1).map((_, index) => (
-              <Center width={"56"} key={index} mr={index === 6 ? 0 : 5}>
-                <VStack
-                  space={8}
-                  width={"56"}
-                  borderRadius={"md"}
-                  borderWidth={"1"}
-                  overflow={"hidden"}>
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: splitAppTheme.sizes[56],
+                  marginRight: splitAppTheme.space[index === 6 ? 0 : 5],
+                }}
+                key={index}>
+                <View
+                  style={{
+                    overflow: "hidden",
+                    width: splitAppTheme.sizes[56],
+                    borderWidth: splitAppTheme.sizes[1],
+                    borderRadius: splitAppTheme.radii.md,
+                  }}>
                   {/* <Skeleton height={"32"} />
                   <Skeleton.Text px={"2"} my={"4"} /> */}
-                </VStack>
-              </Center>
+                </View>
+              </View>
             ))
           : recentVisitClubsResponse?.clubs.data.map((item, index) => {
               return (
-                <Box
-                  width={"56"}
-                  key={item.id}
-                  mr={
-                    index === recentVisitClubsResponse.clubs.data.length - 1
-                      ? 0
-                      : 5
-                  }>
+                <View
+                  style={{
+                    width: splitAppTheme.sizes[56],
+                    marginRight:
+                      splitAppTheme.space[
+                        index === recentVisitClubsResponse.clubs.data.length - 1
+                          ? 0
+                          : 5
+                      ],
+                  }}
+                  key={item.id}>
                   <EachRecentVisitsItem item={item} onPress={onItemPress} />
-                </Box>
+                </View>
               );
             })}
       </ScrollView>
-    </Box>
+    </View>
   );
 }

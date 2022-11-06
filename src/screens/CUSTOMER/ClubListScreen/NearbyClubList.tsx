@@ -1,10 +1,10 @@
 import React from "react";
 import {TClubItem} from "./shared";
 import ClubListItem from "./ClubListItem";
-import {ListRenderItem} from "react-native";
+import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {Box, FlatList, Spinner, VStack} from "@components/ui";
 import useInfiniteGetNearByClubsQuery from "@hooks/clubs/useInfiniteGetNearByClubsQuery";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   searchTerm?: string;
@@ -98,13 +98,13 @@ const NearbyClubList = ({onItemPress, searchTerm}: Props) => {
       onEndReached={handleFetchNextPage}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: 24,
+        padding: splitAppTheme.space[6],
       }}
       ListFooterComponent={
         isFetchingNextPage ? (
-          <Box>
-            <Spinner />
-          </Box>
+          <View>
+            <ActivityIndicator size={"small"} />
+          </View>
         ) : null
       }
       ListEmptyComponent={<GenericListEmpty />}
