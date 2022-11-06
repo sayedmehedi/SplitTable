@@ -1,5 +1,5 @@
 import React from "react";
-import {StatusBar, useWindowDimensions, View} from "react-native";
+import {StatusBar, Text, useWindowDimensions, View} from "react-native";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";

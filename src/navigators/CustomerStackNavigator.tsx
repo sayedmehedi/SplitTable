@@ -1,13 +1,14 @@
 import React from "react";
 import CustomerAuthStack from "./CustomerAuthStack";
 import {RouteProp} from "@react-navigation/native";
-import useAuthContext from "@hooks/useAuthContext";
 import {CustomerStackParamList} from "@src/navigation";
 import {CustomerStackRoutes} from "@constants/routes";
 import BookingStackNavigator from "./BookingStackNavigator";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
 import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
+import ClubSearchScreen from "@screens/CUSTOMER/ClubSearchScreen";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
 import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
@@ -16,18 +17,17 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import ClubSearchScreen from "@screens/CUSTOMER/ClubSearchScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
 const CustomerStackNavigator = () => {
-  const {isAuthenticated} = useAuthContext();
+  const {data: authData} = useGetAuthDataQuery();
 
   return (
     <CustomerStack.Navigator
       id={CUSTOMER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!isAuthenticated ? (
+      {!authData ? (
         <React.Fragment>
           <CustomerStack.Screen
             component={OnboardingScreen}

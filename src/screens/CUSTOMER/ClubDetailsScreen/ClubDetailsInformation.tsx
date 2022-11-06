@@ -242,34 +242,42 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
               </TouchableOpacity>
 
               <View style={{flexDirection: "row"}}>
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: splitAppTheme.space[2],
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    borderRadius: splitAppTheme.radii.full,
-                  }}>
-                  <AntDesign size={22} name={"sharealt"} color={"white"} />
-                </TouchableOpacity>
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: splitAppTheme.space[2],
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      borderRadius: splitAppTheme.radii.full,
+                    }}>
+                    <AntDesign size={22} name={"sharealt"} color={"white"} />
+                  </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity
+                <View
                   style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: splitAppTheme.space[4],
-                    padding: splitAppTheme.space[2],
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    borderRadius: splitAppTheme.radii.full,
+                    marginLeft: splitAppTheme.space[4],
                   }}>
-                  <AntDesign
-                    size={22}
-                    name={
-                      clubDetailsResponse.club.is_favourite ? "heart" : "hearto"
-                    }
-                    color={"white"}
-                  />
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: splitAppTheme.space[2],
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      borderRadius: splitAppTheme.radii.full,
+                    }}>
+                    <AntDesign
+                      size={22}
+                      name={
+                        clubDetailsResponse.club.is_favourite
+                          ? "heart"
+                          : "hearto"
+                      }
+                      color={"white"}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </SafeAreaView>
@@ -356,6 +364,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
 
           <View
             style={{
+              flexDirection: "row",
               marginVertical: splitAppTheme.space[2],
             }}>
             <MapIcon height={20} width={20} color={"#402B8C"} />
@@ -432,7 +441,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
           <TouchableOpacity
             style={{
               padding: splitAppTheme.space[4],
-              borderWidth: splitAppTheme.sizes[2],
+              borderWidth: splitAppTheme.borderWidths[2],
               marginVertical: splitAppTheme.space[5],
               borderRadius: splitAppTheme.radii["2xl"],
               borderColor: splitAppTheme.colors.primary[300],
@@ -456,7 +465,10 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
               justifyContent: "space-between",
             }}>
             <TouchableOpacity
-              style={{flex: 1, width: "100%"}}
+              style={{
+                flex: 1,
+                width: splitAppTheme.sizes.full,
+              }}
               onPress={() => jumpTo("menus")}>
               <LinearGradient
                 end={{x: 1, y: 0}}
@@ -465,8 +477,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                 style={styles.linearGradientButtons}>
                 <Text
                   style={{
-                    color: splitAppTheme.colors.white,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                    color: "white",
                   }}>
                   Offer Menu
                 </Text>
@@ -474,12 +485,12 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => jumpTo("reviews")}
               style={{
                 flex: 1,
-                width: "100%",
-                marginVertical: splitAppTheme.space[2],
-              }}>
+                marginHorizontal: splitAppTheme.space[2],
+                width: splitAppTheme.sizes.full,
+              }}
+              onPress={() => jumpTo("reviews")}>
               <LinearGradient
                 end={{x: 0, y: 0}}
                 start={{x: 0, y: 1}}
@@ -487,8 +498,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                 style={styles.linearGradientButtons}>
                 <Text
                   style={{
-                    color: splitAppTheme.colors.white,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                    color: "white",
                   }}>
                   Reviews
                 </Text>
@@ -496,7 +506,10 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{flex: 1, width: "100%"}}
+              style={{
+                flex: 1,
+                width: splitAppTheme.sizes.full,
+              }}
               onPress={() => jumpTo("information")}>
               <LinearGradient
                 end={{x: 1, y: 0}}
@@ -505,8 +518,7 @@ const ClubDetailsInformation = ({clubId, jumpTo}: Props) => {
                 style={styles.linearGradientButtons}>
                 <Text
                   style={{
-                    color: splitAppTheme.colors.white,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                    color: "white",
                   }}>
                   Information
                 </Text>

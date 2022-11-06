@@ -1,6 +1,5 @@
 import React from "react";
 import {OwnerStackRoutes} from "@constants/routes";
-import useAuthContext from "@hooks/useAuthContext";
 import {RouteProp} from "@react-navigation/native";
 import {OwnerStackParamList} from "@src/navigation";
 import SignUpScreen from "@screens/OWNER/SignUpScreen";
@@ -12,6 +11,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -53,13 +53,13 @@ const signupScreenOptions:
 };
 
 const OwnerStackNavigator = () => {
-  const {isAuthenticated} = useAuthContext();
+  const {data: authData} = useGetAuthDataQuery();
 
   return (
     <OwnerStack.Navigator
       id={OWNER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!isAuthenticated ? (
+      {!authData ? (
         <OwnerStack.Screen
           component={SignUpScreen}
           options={signupScreenOptions}

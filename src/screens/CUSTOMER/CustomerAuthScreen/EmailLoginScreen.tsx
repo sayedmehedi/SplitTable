@@ -1,6 +1,5 @@
 import React from "react";
 import useAppToast from "@hooks/useAppToast";
-import useAuthContext from "@hooks/useAuthContext";
 import {ErrorMessage} from "@hookform/error-message";
 import {Controller, useForm} from "react-hook-form";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -20,6 +19,7 @@ import {
 } from "@src/navigation";
 import {splitAppTheme} from "@src/theme";
 import {Text, TextInput, View} from "react-native";
+import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -34,7 +34,7 @@ type Props = CompositeScreenProps<
 
 const EmailLoginScreen = ({navigation}: Props) => {
   const toast = useAppToast();
-  const {setAuthData} = useAuthContext();
+  const {mutate: setAuthData} = useAddAuthDataMutation();
 
   const {control, handleSubmit, setError} = useForm({
     defaultValues: {
@@ -64,9 +64,11 @@ const EmailLoginScreen = ({navigation}: Props) => {
     login(values, {
       onSuccess(data) {
         if (!isResponseResultError(data)) {
-          toast.success(data.success);
-
-          setAuthData(data.user);
+          setAuthData(data.user, {
+            onSuccess() {
+              toast.success(data.success);
+            },
+          });
         }
       },
     });

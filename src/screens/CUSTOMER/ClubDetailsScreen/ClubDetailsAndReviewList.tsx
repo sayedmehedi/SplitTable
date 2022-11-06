@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 import {ReviewItem} from "@src/models";
 import truncate from "lodash.truncate";
+import {splitAppTheme} from "@src/theme";
 import {Rating} from "react-native-ratings";
 import EachReviewItem from "./EachReviewItem";
 import {Clock, MapIcon} from "@constants/iconPath";
@@ -18,19 +19,18 @@ import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import useInfiniteGetClubReviewsQuery from "@hooks/review/useInfiniteGetClubReviewsQuery";
 import {
+  View,
+  Text,
   FlatList,
   Dimensions,
   StyleSheet,
+  ScrollView,
   ListRenderItem,
   ImageBackground,
-  ScrollView as RNScrollView,
-  View,
-  ScrollView,
   TouchableOpacity,
-  Text,
   ActivityIndicator,
+  ScrollView as RNScrollView,
 } from "react-native";
-import {splitAppTheme} from "@src/theme";
 
 dayjs.extend(relativeTime);
 
@@ -50,8 +50,8 @@ const renderEachReview: ListRenderItem<ReviewItem> = ({item}) => (
     <View
       style={{
         borderStyle: "dashed",
-        borderBottomWidth: splitAppTheme.space[2],
         borderColor: splitAppTheme.colors.coolGray[300],
+        borderBottomWidth: splitAppTheme.borderWidths[2],
       }}
     />
   </View>
@@ -108,7 +108,8 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
         return (
           eachPage?.reviews?.data?.map(eachReview => ({
             ...eachReview,
-            date: dayjs(eachReview.date, "DD MMM YYYY").fromNow(),
+            // date: dayjs(eachReview.date, "DD MMM YYYY").fromNow(),
+            date: eachReview.date,
           })) ?? []
         );
       }) ?? []
@@ -319,34 +320,42 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
               </TouchableOpacity>
 
               <View style={{flexDirection: "row"}}>
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: splitAppTheme.space[2],
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    borderRadius: splitAppTheme.radii.full,
-                  }}>
-                  <AntDesign size={22} name={"sharealt"} color={"white"} />
-                </TouchableOpacity>
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: splitAppTheme.space[2],
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      borderRadius: splitAppTheme.radii.full,
+                    }}>
+                    <AntDesign size={22} name={"sharealt"} color={"white"} />
+                  </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity
+                <View
                   style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: splitAppTheme.space[4],
-                    padding: splitAppTheme.space[2],
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    borderRadius: splitAppTheme.radii.full,
+                    marginLeft: splitAppTheme.space[4],
                   }}>
-                  <AntDesign
-                    size={22}
-                    name={
-                      clubDetailsResponse.club.is_favourite ? "heart" : "hearto"
-                    }
-                    color={"white"}
-                  />
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: splitAppTheme.space[2],
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      borderRadius: splitAppTheme.radii.full,
+                    }}>
+                    <AntDesign
+                      size={22}
+                      name={
+                        clubDetailsResponse.club.is_favourite
+                          ? "heart"
+                          : "hearto"
+                      }
+                      color={"white"}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </SafeAreaView>
@@ -433,6 +442,7 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
 
           <View
             style={{
+              flexDirection: "row",
               marginVertical: splitAppTheme.space[2],
             }}>
             <MapIcon height={20} width={20} color={"#402B8C"} />
@@ -511,7 +521,7 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
               padding: splitAppTheme.space[4],
               marginVertical: splitAppTheme.space[5],
               borderRadius: splitAppTheme.radii["2xl"],
-              borderWidth: splitAppTheme.sizes[2],
+              borderWidth: splitAppTheme.borderWidths[2],
               borderColor: splitAppTheme.colors.primary[300],
             }}>
             <Text
@@ -527,69 +537,66 @@ const ClubDetailsAndReviewList = ({clubId, jumpTo}: Props) => {
         </View>
 
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-          <View
+          <TouchableOpacity
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}>
-            <TouchableOpacity
-              style={{flex: 1, width: "100%"}}
-              onPress={() => jumpTo("menus")}>
-              <LinearGradient
-                end={{x: 1, y: 0}}
-                start={{x: 0, y: 0}}
-                colors={["#472BBE", "#DF3BC0"]}
-                style={styles.linearGradientButtons}>
-                <Text
-                  style={{
-                    color: splitAppTheme.colors.white,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                  }}>
-                  Offer Menu
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+              flex: 1,
+              width: splitAppTheme.sizes.full,
+            }}
+            onPress={() => jumpTo("menus")}>
+            <LinearGradient
+              end={{x: 1, y: 0}}
+              start={{x: 0, y: 0}}
+              colors={["#472BBE", "#DF3BC0"]}
+              style={styles.linearGradientButtons}>
+              <Text
+                style={{
+                  color: "white",
+                }}>
+                Offer Menu
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => jumpTo("reviews")}
-              style={{
-                flex: 1,
-                width: "100%",
-                marginVertical: splitAppTheme.space[2],
-              }}>
-              <LinearGradient
-                end={{x: 0, y: 0}}
-                start={{x: 0, y: 1}}
-                colors={["#402BBC", "#00C1FF"]}
-                style={styles.linearGradientButtons}>
-                <Text
-                  style={{
-                    color: splitAppTheme.colors.white,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                  }}>
-                  Reviews
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              marginHorizontal: splitAppTheme.space[2],
+              width: splitAppTheme.sizes.full,
+            }}
+            onPress={() => jumpTo("reviews")}>
+            <LinearGradient
+              end={{x: 0, y: 0}}
+              start={{x: 0, y: 1}}
+              colors={["#402BBC", "#00C1FF"]}
+              style={styles.linearGradientButtons}>
+              <Text
+                style={{
+                  color: "white",
+                }}>
+                Reviews
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={{flex: 1, width: "100%"}}
-              onPress={() => jumpTo("information")}>
-              <LinearGradient
-                end={{x: 1, y: 0}}
-                start={{x: 0, y: 0}}
-                colors={["#201648", "#7359D1"]}
-                style={styles.linearGradientButtons}>
-                <Text
-                  style={{
-                    color: splitAppTheme.colors.white,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                  }}>
-                  Information
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              width: splitAppTheme.sizes.full,
+            }}
+            onPress={() => jumpTo("information")}>
+            <LinearGradient
+              end={{x: 1, y: 0}}
+              start={{x: 0, y: 0}}
+              colors={["#201648", "#7359D1"]}
+              style={styles.linearGradientButtons}>
+              <Text
+                style={{
+                  color: "white",
+                }}>
+                Information
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         {infiniteGetResourcesResponse !== undefined &&

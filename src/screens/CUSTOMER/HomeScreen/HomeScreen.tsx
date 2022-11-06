@@ -11,7 +11,6 @@ import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
 import {ClubListTypes} from "@constants/club";
 import NearbyClubsList from "./NearbyClubsList";
-import useAuthContext from "@hooks/useAuthContext";
 import {useDisclosure} from "react-use-disclosure";
 import PopularClubsSwiper from "./PopularClubsSwiper";
 import Feather from "react-native-vector-icons/Feather";
@@ -36,6 +35,7 @@ import {
   CustomerBottomTabParamList,
 } from "@src/navigation";
 import {splitAppTheme} from "@src/theme";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -49,7 +49,7 @@ type Props = CompositeScreenProps<
 >;
 
 const HomeScreen = ({navigation}: Props) => {
-  const {authData} = useAuthContext();
+  const {data: authData} = useGetAuthDataQuery();
   const {hours} = useTime({format: "12-hour"});
 
   const {

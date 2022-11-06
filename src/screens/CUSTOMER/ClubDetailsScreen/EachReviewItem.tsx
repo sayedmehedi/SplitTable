@@ -11,7 +11,7 @@ type Props = {
 
 const EachReviewItem = ({item}: Props) => {
   return (
-    <View style={{height: "32"}}>
+    <View style={{height: splitAppTheme.sizes[32]}}>
       <View style={{alignItems: "center", flexDirection: "row"}}>
         <Image
           source={{uri: item.user_image}}
@@ -39,14 +39,14 @@ const EachReviewItem = ({item}: Props) => {
             }}>
             <Text
               style={{
-                fontSize: splitAppTheme.sizes.md,
+                fontSize: splitAppTheme.fontSizes.md,
               }}>
               {item.user_name}
             </Text>
 
             <Text
               style={{
-                fontSize: splitAppTheme.sizes.md,
+                fontSize: splitAppTheme.fontSizes.md,
               }}>
               {item.date}
             </Text>
@@ -64,7 +64,7 @@ const EachReviewItem = ({item}: Props) => {
 
       <Text
         style={{
-          fontSize: splitAppTheme.sizes.md,
+          fontSize: splitAppTheme.fontSizes.md,
           marginTop: splitAppTheme.space[4],
         }}>
         {truncate(item.review)}

@@ -46,7 +46,3 @@ export const themePropertyMap: any = {
 
 // 2. Get the type of the CustomTheme
 type CustomThemeType = typeof splitAppTheme;
-
-declare module "styled-components/native" {
-  export interface DefaultTheme extends CustomThemeType {}
-}

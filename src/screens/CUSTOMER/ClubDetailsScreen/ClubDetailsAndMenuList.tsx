@@ -146,94 +146,95 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
     };
   }, []);
 
-  // if (isClubDetailsLoading) {
-  //   return (
-  //     <ScrollView>
-  //       <Skeleton height={300} />
+  if (isClubDetailsLoading) {
+    return <Text>Loading...</Text>;
+    // return (
+    //   <ScrollView>
+    //     <Skeleton height={300} />
 
-  //       <Box mx={"6"}>
-  //         <Skeleton
-  //           width={"full"}
-  //           borderRadius={"xl"}
-  //           height={CARD_HEIGHT}
-  //           bg={"tomato"}
-  //           marginTop={CARD_NEGATIVE_MARGIN}
-  //         />
+    //     <Box mx={"6"}>
+    //       <Skeleton
+    //         width={"full"}
+    //         borderRadius={"xl"}
+    //         height={CARD_HEIGHT}
+    //         bg={"tomato"}
+    //         marginTop={CARD_NEGATIVE_MARGIN}
+    //       />
 
-  //         <Skeleton
-  //           height={"12"}
-  //           my={"5"}
-  //           width={"full"}
-  //           borderRadius={"lg"}
-  //           borderWidth={"2"}
-  //           borderColor={"primary.300"}
-  //         />
+    //       <Skeleton
+    //         height={"12"}
+    //         my={"5"}
+    //         width={"full"}
+    //         borderRadius={"lg"}
+    //         borderWidth={"2"}
+    //         borderColor={"primary.300"}
+    //       />
 
-  //         <HStack space={"2"}>
-  //           <Box flex={1}>
-  //             <Skeleton
-  //               height={"12"}
-  //               my={"5"}
-  //               width={"full"}
-  //               borderRadius={"lg"}
-  //               bg={"secondary.300"}
-  //             />
-  //           </Box>
+    //       <HStack space={"2"}>
+    //         <Box flex={1}>
+    //           <Skeleton
+    //             height={"12"}
+    //             my={"5"}
+    //             width={"full"}
+    //             borderRadius={"lg"}
+    //             bg={"secondary.300"}
+    //           />
+    //         </Box>
 
-  //           <Box flex={1}>
-  //             <Skeleton
-  //               height={"12"}
-  //               my={"5"}
-  //               width={"full"}
-  //               borderRadius={"lg"}
-  //               bg={"blue.300"}
-  //             />
-  //           </Box>
+    //         <Box flex={1}>
+    //           <Skeleton
+    //             height={"12"}
+    //             my={"5"}
+    //             width={"full"}
+    //             borderRadius={"lg"}
+    //             bg={"blue.300"}
+    //           />
+    //         </Box>
 
-  //           <Box flex={1}>
-  //             <Skeleton
-  //               height={"12"}
-  //               my={"5"}
-  //               width={"full"}
-  //               borderRadius={"lg"}
-  //               bg={"secondary.100"}
-  //             />
-  //           </Box>
-  //         </HStack>
-  //       </Box>
+    //         <Box flex={1}>
+    //           <Skeleton
+    //             height={"12"}
+    //             my={"5"}
+    //             width={"full"}
+    //             borderRadius={"lg"}
+    //             bg={"secondary.100"}
+    //           />
+    //         </Box>
+    //       </HStack>
+    //     </Box>
 
-  //       <Box p={6}>
-  //         {new Array(5).fill(1).map((_, i) => (
-  //           <Center width={"full"} key={i}>
-  //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-  //               <Skeleton
-  //                 height={"24"}
-  //                 width={"24"}
-  //                 borderRadius={"sm"}
-  //                 startColor="coolGray.100"
-  //               />
-  //               <VStack flex={"3"} space={"2.5"}>
-  //                 <Skeleton height={"5"} startColor="amber.300" />
-  //                 <Skeleton.Text lines={2} />
+    //     <Box p={6}>
+    //       {new Array(5).fill(1).map((_, i) => (
+    //         <Center width={"full"} key={i}>
+    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+    //             <Skeleton
+    //               height={"24"}
+    //               width={"24"}
+    //               borderRadius={"sm"}
+    //               startColor="coolGray.100"
+    //             />
+    //             <VStack flex={"3"} space={"2.5"}>
+    //               <Skeleton height={"5"} startColor="amber.300" />
+    //               <Skeleton.Text lines={2} />
 
-  //                 <HStack space="2" alignItems="center">
-  //                   <Skeleton size={"5"} borderRadius={"full"} />
-  //                   <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-  //                   <Skeleton
-  //                     height={"3"}
-  //                     flex={"1"}
-  //                     borderRadius={"full"}
-  //                     startColor={"indigo.300"}
-  //                   />
-  //                 </HStack>
-  //               </VStack>
-  //             </HStack>
-  //           </Center>
-  //         ))}
-  //       </Box>
-  //     </ScrollView>
-  //   );
-  // }
+    //               <HStack space="2" alignItems="center">
+    //                 <Skeleton size={"5"} borderRadius={"full"} />
+    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+    //                 <Skeleton
+    //                   height={"3"}
+    //                   flex={"1"}
+    //                   borderRadius={"full"}
+    //                   startColor={"indigo.300"}
+    //                 />
+    //               </HStack>
+    //             </VStack>
+    //           </HStack>
+    //         </Center>
+    //       ))}
+    //     </Box>
+    //   </ScrollView>
+    // );
+  }
 
   if (!clubDetailsResponse) {
     return (
@@ -299,35 +300,43 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
                 <FontAwesome5 size={22} name={"chevron-left"} color={"white"} />
               </TouchableOpacity>
 
-              <View>
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: splitAppTheme.space[2],
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    borderRadius: splitAppTheme.radii.full,
-                  }}>
-                  <AntDesign size={22} name={"sharealt"} color={"white"} />
-                </TouchableOpacity>
+              <View style={{flexDirection: "row"}}>
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: splitAppTheme.space[2],
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      borderRadius: splitAppTheme.radii.full,
+                    }}>
+                    <AntDesign size={22} name={"sharealt"} color={"white"} />
+                  </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity
+                <View
                   style={{
-                    padding: splitAppTheme.space[2],
                     marginLeft: splitAppTheme.space[4],
-                    borderRadius: splitAppTheme.radii.full,
-                    alignItems: "center",
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    justifyContent: "center",
                   }}>
-                  <AntDesign
-                    size={22}
-                    name={
-                      clubDetailsResponse.club.is_favourite ? "heart" : "hearto"
-                    }
-                    color={"white"}
-                  />
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: splitAppTheme.space[2],
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      borderRadius: splitAppTheme.radii.full,
+                    }}>
+                    <AntDesign
+                      size={22}
+                      name={
+                        clubDetailsResponse.club.is_favourite
+                          ? "heart"
+                          : "hearto"
+                      }
+                      color={"white"}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </SafeAreaView>
@@ -431,7 +440,13 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
             </Text>
           </View>
 
-          {/* <Divider my={"3"} /> */}
+          <View
+            style={{
+              height: 1,
+              backgroundColor: "black",
+              marginVertical: splitAppTheme.space[3],
+            }}
+          />
 
           <View
             style={{
@@ -482,9 +497,9 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
           <TouchableOpacity
             style={{
               padding: splitAppTheme.space[4],
-              borderWidth: splitAppTheme.sizes[2],
               marginVertical: splitAppTheme.space[5],
               borderRadius: splitAppTheme.radii["2xl"],
+              borderWidth: splitAppTheme.borderWidths[2],
               borderColor: splitAppTheme.colors.primary[300],
             }}>
             <Text
@@ -569,43 +584,44 @@ const ClubDetailsAndMenuListScreen = ({clubId, jumpTo}: Props) => {
     </View>
   );
 
-  // if (isLoadingInfiniteResources) {
-  //   return (
-  //     <ScrollView>
-  //       {ListHeaderComponent}
+  if (isLoadingInfiniteResources) {
+    return <Text>Loading..</Text>;
+    // return (
+    //   <ScrollView>
+    //     {ListHeaderComponent}
 
-  //       <Box p={6}>
-  //         {new Array(5).fill(1).map((_, i) => (
-  //           <Box width={"full"} key={i}>
-  //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-  //               <Skeleton
-  //                 height={"24"}
-  //                 width={"24"}
-  //                 borderRadius={"sm"}
-  //                 startColor="coolGray.100"
-  //               />
-  //               <VStack flex={"3"} space={"2.5"}>
-  //                 <Skeleton height={"5"} startColor="amber.300" />
-  //                 <Skeleton.Text lines={2} />
+    //     <Box p={6}>
+    //       {new Array(5).fill(1).map((_, i) => (
+    //         <Box width={"full"} key={i}>
+    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+    //             <Skeleton
+    //               height={"24"}
+    //               width={"24"}
+    //               borderRadius={"sm"}
+    //               startColor="coolGray.100"
+    //             />
+    //             <VStack flex={"3"} space={"2.5"}>
+    //               <Skeleton height={"5"} startColor="amber.300" />
+    //               <Skeleton.Text lines={2} />
 
-  //                 <HStack space="2" alignItems="center">
-  //                   <Skeleton size={"5"} borderRadius={"full"} />
-  //                   <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-  //                   <Skeleton
-  //                     height={"3"}
-  //                     flex={"1"}
-  //                     borderRadius={"full"}
-  //                     startColor={"indigo.300"}
-  //                   />
-  //                 </HStack>
-  //               </VStack>
-  //             </HStack>
-  //           </Box>
-  //         ))}
-  //       </Box>
-  //     </ScrollView>
-  //   );
-  // }
+    //               <HStack space="2" alignItems="center">
+    //                 <Skeleton size={"5"} borderRadius={"full"} />
+    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+    //                 <Skeleton
+    //                   height={"3"}
+    //                   flex={"1"}
+    //                   borderRadius={"full"}
+    //                   startColor={"indigo.300"}
+    //                 />
+    //               </HStack>
+    //             </VStack>
+    //           </HStack>
+    //         </Box>
+    //       ))}
+    //     </Box>
+    //   </ScrollView>
+    // );
+  }
 
   return (
     <FlatList

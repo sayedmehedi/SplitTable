@@ -4,7 +4,6 @@ import {RootStackParamList} from "@src/navigation";
 import {RootStackRoutes} from "@constants/routes";
 import InitialScreen from "@screens/InitialScreen";
 import {RouteProp} from "@react-navigation/native";
-import useAuthContext from "@hooks/useAuthContext";
 import OwnerStackNavigator from "./OwnerStackNavigator";
 import CustomerStackNavigator from "./CustomerStackNavigator";
 import {ROOT_STACK_NAVIGATOR_ID} from "@constants/navigators";
@@ -12,6 +11,8 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
+import useGetAuthTypeQuery from "@hooks/useGetAuthTypeQuery";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -25,7 +26,8 @@ const globalScreenOptions:
 };
 
 const RootStackNavigator = () => {
-  const {authType, isAuthenticated} = useAuthContext();
+  const {data: authData} = useGetAuthDataQuery();
+  const {data: authType} = useGetAuthTypeQuery();
 
   const authenticatedScreens = (
     <React.Fragment>
@@ -68,7 +70,7 @@ const RootStackNavigator = () => {
     <RootStack.Navigator
       id={ROOT_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {isAuthenticated ? authenticatedScreens : unauthenticatedScreens}
+      {!!authData ? authenticatedScreens : unauthenticatedScreens}
     </RootStack.Navigator>
   );
 };

@@ -8,6 +8,7 @@ const EachBookingItem = ({item}: any) => {
       style={{
         borderWidth: 1,
         alignItems: "center",
+        flexDirection: "row",
         borderColor: "#F1F1F1",
         backgroundColor: "white",
         width: splitAppTheme.sizes.full,

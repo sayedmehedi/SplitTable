@@ -1,24 +1,24 @@
 import React from "react";
 import {AuthType} from "@src/models";
 import {AuthTypes} from "@constants/auth";
-import {RootStackParamList} from "@src/navigation";
+import {splitAppTheme} from "@src/theme";
 import {RootStackRoutes} from "@constants/routes";
-import useAuthContext from "@hooks/useAuthContext";
+import {RootStackParamList} from "@src/navigation";
 import {useDimensions} from "@react-native-community/hooks";
 import AppGradientButton from "@components/AppGradientButton";
 import type {StackScreenProps} from "@react-navigation/stack";
+import useAddAuthTypeMutation from "@hooks/useAddAuthTypeMutation";
 import {
   View,
+  Text,
+  Image,
   StatusBar,
   ScrollView,
   ImageBackground,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView as RNScrollView,
-  Text,
-  Image,
 } from "react-native";
-import {splitAppTheme} from "@src/theme";
 
 const sliderImage = [
   {
@@ -41,9 +41,9 @@ type Props = StackScreenProps<
 >;
 
 const InitialScreen = ({navigation}: Props) => {
-  const {setAuthType} = useAuthContext();
   const scrollRef = React.useRef<RNScrollView>(null!);
   const {screen: windowDimension} = useDimensions();
+  const {mutate: setAuthType} = useAddAuthTypeMutation();
   const intervalIdRef = React.useRef<number | null>(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -88,7 +88,17 @@ const InitialScreen = ({navigation}: Props) => {
   };
 
   const handleSetAuthType = (type: AuthType) => {
-    setAuthType(type);
+    setAuthType(type, {
+      onSuccess(_data, authType) {
+        if (authType === AuthTypes.CUSTOMER) {
+          //@ts-ignore
+          navigation.navigate(RootStackRoutes.CUSTOMER, {});
+        } else {
+          //@ts-ignore
+          navigation.navigate(RootStackRoutes.OWNER, {});
+        }
+      },
+    });
   };
 
   return (
@@ -195,8 +205,6 @@ const InitialScreen = ({navigation}: Props) => {
             color={"secondary"}
             onPress={() => {
               handleSetAuthType(AuthTypes.CUSTOMER);
-              // @ts-ignore
-              navigation.navigate(RootStackRoutes.CUSTOMER, {});
             }}
           />
           <AppGradientButton
@@ -206,8 +214,6 @@ const InitialScreen = ({navigation}: Props) => {
             title={"Club/Bar Owner"}
             onPress={() => {
               handleSetAuthType(AuthTypes.OWNER);
-              // @ts-ignore
-              navigation.navigate(RootStackRoutes.OWNER, {});
             }}
           />
         </View>

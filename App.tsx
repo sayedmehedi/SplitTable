@@ -13,7 +13,6 @@ const App = () => {
     <AllTheProviders>
       <FlipperAsyncStorage />
       <RootStackNavigator />
-
       <Toast />
     </AllTheProviders>
   );
