@@ -1,5 +1,6 @@
 import {AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
+import {AxiosRequestConfig} from "axios";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -217,7 +218,7 @@ export interface ClubItemBySearchTerm {
   distance: string;
   location: string;
   avg_rating: number;
-  opening_time: string;
+  opening_time: s;
   closing_time: string;
   total_reviews: number;
   is_favourite: boolean;
@@ -300,3 +301,67 @@ export interface GetClubReviewsResponse {
 export type GetClubReviewsQueryParams = PaginationQueryParams & {
   ownerId?: number;
 };
+export interface OwnerProfileData {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  location: string;
+  latitude: string;
+  longitude: string;
+
+  club: string;
+  job_role: string;
+}
+export interface CustomerProfileData {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  location: string;
+  latitude: string;
+  longitude: string;
+
+  bookings: number;
+  reviews: number;
+  photos: number;
+}
+
+export type GetProfileDataResponse = OwnerProfileData | CustomerProfileData;
+
+export interface CustomerImageItem {
+  id: number;
+  image: string;
+  total_likes: number;
+  total_dislikes: number;
+}
+
+export type GetCustomerImagesResponse = {
+  images: SimplePaginatedResponse<CustomerImageItem>;
+};
+
+export interface UserImage {
+  id: number;
+  image: string;
+  total_likes: number;
+  total_dislikes: number;
+}
+export interface GetUserImagesResponse {
+  images: SimplePaginatedResponse<UserImage>;
+}
+export interface GetUserImageQueryParams extends PaginationQueryParams {
+  userId?: number;
+}
+
+export type AddUserImageResponse = ResponseResult;
+
+export type OnUploadProgress = (written: number, total: number) => void;
+
+export interface AddUserImageRequest {
+  image: {
+    name: string;
+    type: string;
+    uri: string;
+  };
+  onUploadProgress?: OnUploadProgress;
+}

@@ -11,12 +11,14 @@ type Props = {
 const EachOfferMenuItem = ({item}: Props) => {
   return (
     <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        height: splitAppTheme.sizes[32],
-        backgroundColor: splitAppTheme.colors.white,
-      }}>
+      style={[
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          height: splitAppTheme.sizes[32],
+          backgroundColor: splitAppTheme.colors.white,
+        },
+      ]}>
       <View
         style={{
           width: splitAppTheme.sizes["2/6"],

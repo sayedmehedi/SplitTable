@@ -1,9 +1,10 @@
 import React from "react";
 import {SvgUri} from "react-native-svg";
 import {LocationItem} from "@src/models";
-import {ScrollView} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import {useDisclosure} from "react-use-disclosure";
+import {Pressable, ScrollView, Text, View} from "react-native";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 
 type Props = {
@@ -22,7 +23,19 @@ function EachSvg({uri}: {uri: string}) {
 
   return (
     <>
-      {/* {loading && <Skeleton size={"20"} borderRadius={"full"} />} */}
+      {loading && (
+        <SkeletonPlaceholder>
+          <View>
+            <View
+              style={{
+                width: splitAppTheme.sizes["20"],
+                height: splitAppTheme.sizes["20"],
+                borderRadius: splitAppTheme.radii.full,
+              }}
+            />
+          </View>
+        </SkeletonPlaceholder>
+      )}
       <SvgUri uri={uri} onError={onError} onLoad={onLoad} />
     </>
   );
@@ -43,35 +56,71 @@ const LocationSwiper = ({onItemPress}: Props) => {
       contentContainerStyle={{
         paddingHorizontal: splitAppTheme.space[6],
       }}>
-      {/* {isLocationLoading
+      {isLocationLoading
         ? new Array(6).fill(1).map((_, index) => {
             return (
-              <Center width={"24"} key={index}>
-                <Skeleton size={"20"} borderRadius={"full"} />
-                <Skeleton size={"2"} width={"1/2"} mt={"3"} />
-              </Center>
+              <View
+                style={{
+                  width: splitAppTheme.sizes[24],
+                }}
+                key={index}>
+                <SkeletonPlaceholder>
+                  <View>
+                    <View
+                      style={{
+                        width: splitAppTheme.sizes["20"],
+                        height: splitAppTheme.sizes["20"],
+                        borderRadius: splitAppTheme.radii.full,
+                      }}
+                    />
+
+                    <View
+                      style={{
+                        marginTop: splitAppTheme.space["3"],
+                      }}>
+                      <View
+                        style={{
+                          width: splitAppTheme.space["2/3"],
+                          height: splitAppTheme.sizes["1.5"],
+                        }}
+                      />
+                    </View>
+                  </View>
+                </SkeletonPlaceholder>
+              </View>
             );
           })
-        : locationsResponse?.items.data.map((item, index) => {
+        : locationsResponse?.items?.data?.map((item, index) => {
             return (
               <Pressable
+                style={{
+                  marginRight:
+                    splitAppTheme.space[
+                      index === locationsResponse.items.data.length - 1 ? 0 : 3
+                    ],
+                }}
                 key={item.id}
-                mr={index === locationsResponse.items.data.length - 1 ? 0 : 3}
                 onPress={handleItemPress.bind(null, item)}>
-                <Box m={1} alignItems={"center"}>
+                <View
+                  style={{
+                    margin: splitAppTheme.space[1],
+                    alignItems: "center",
+                  }}>
                   <EachSvg uri={item.image} />
 
                   <Text
-                    mt={2}
-                    color={"black"}
-                    fontWeight={"600"}
-                    fontFamily={"roboto"}>
+                    style={{
+                      fontWeight: "600",
+                      marginTop: splitAppTheme.space[2],
+                      color: splitAppTheme.colors.black,
+                      fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                    }}>
                     {item.location}
                   </Text>
-                </Box>
+                </View>
               </Pressable>
             );
-          })} */}
+          })}
     </ScrollView>
   );
 };

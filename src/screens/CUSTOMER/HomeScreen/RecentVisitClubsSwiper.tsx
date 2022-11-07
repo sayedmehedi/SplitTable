@@ -15,7 +15,7 @@ export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
     useGetRecentViewedClubsQuery();
 
   return !isRecentVisitClubsLoading &&
-    recentVisitClubsResponse?.clubs.data.length === 0 ? (
+    recentVisitClubsResponse?.clubs?.data?.length === 0 ? (
     <View
       style={{
         marginVertical: splitAppTheme.space[1],
@@ -98,7 +98,7 @@ export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
                 </View>
               </View>
             ))
-          : recentVisitClubsResponse?.clubs.data.map((item, index) => {
+          : recentVisitClubsResponse?.clubs?.data?.map((item, index) => {
               return (
                 <View
                   style={{

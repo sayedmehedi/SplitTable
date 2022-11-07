@@ -102,9 +102,9 @@ const LoginPromptScreen = ({navigation}: Props) => {
                 style={{
                   padding: splitAppTheme.space[4],
                   width: splitAppTheme.sizes.full,
-                  borderWidth: splitAppTheme.sizes[1],
                   borderRadius: splitAppTheme.radii.lg,
                   borderColor: splitAppTheme.colors.white,
+                  borderWidth: splitAppTheme.borderWidths[2],
                 }}
                 onPress={handleEmailLogin}>
                 <Text

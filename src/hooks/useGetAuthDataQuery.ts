@@ -23,7 +23,10 @@ function useGetAuthDataQuery() {
       networkMode: "always",
       onSuccess(authData) {
         if (!!authData?.token) {
-          console.log("setting auth token to http client header");
+          console.log(
+            "setting auth token to http client header",
+            authData.token,
+          );
 
           httpClient.defaults.headers.common.Authorization = `Bearer ${authData.token}`;
         }

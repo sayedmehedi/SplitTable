@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./styles";
 import {
-  ScrollView,
-  StatusBar,
   Text,
-  TouchableOpacity,
   View,
+  StatusBar,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
+import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
 import {ClubListTypes} from "@constants/club";
@@ -20,6 +21,7 @@ import LinearGradient from "react-native-linear-gradient";
 import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import RecentVisitClubsSwiper from "./RecentVisitClubsSwiper";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
@@ -34,8 +36,6 @@ import {
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
-import {splitAppTheme} from "@src/theme";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -267,7 +267,7 @@ const HomeScreen = ({navigation}: Props) => {
           style={{
             paddingVertical: splitAppTheme.space[2],
           }}>
-          <LocationSwiper onItemPress={handleLocationItemPress} />
+          {/* <LocationSwiper onItemPress={handleLocationItemPress} /> */}
         </View>
 
         <View
@@ -310,7 +310,7 @@ const HomeScreen = ({navigation}: Props) => {
           </View>
         </View>
 
-        <PopularClubsSwiper onItemPress={handlePopularClubItemPress} />
+        {/* <PopularClubsSwiper onItemPress={handlePopularClubItemPress} /> */}
 
         <View
           style={{
@@ -350,14 +350,14 @@ const HomeScreen = ({navigation}: Props) => {
               </TouchableOpacity>
             </View>
 
-            <NearbyClubsList onItemPress={handleNearbyClubPress} />
+            {/* <NearbyClubsList onItemPress={handleNearbyClubPress} /> */}
           </View>
         </View>
 
-        <RecentVisitClubsSwiper
+        {/* <RecentVisitClubsSwiper
           onSeeAll={handleRecentVisitClubSeeAll}
           onItemPress={handleRecentVisitClubPress}
-        />
+        /> */}
 
         <View
           style={{

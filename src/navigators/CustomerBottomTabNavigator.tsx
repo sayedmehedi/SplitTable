@@ -1,6 +1,6 @@
 import React from "react";
 import {View, Text} from "react-native";
-import {useTheme} from "styled-components";
+import {splitAppTheme} from "@src/theme";
 import ChatIcon from "@assets/icons/chat.svg";
 import TableIcon from "@assets/icons/table.svg";
 import {RouteProp} from "@react-navigation/native";
@@ -21,7 +21,6 @@ import {
 import CustomerTableScreen from "@screens/CUSTOMER/CustomerTableScreen";
 import CustomerProfileStackNavigator from "./CustomerProfileStackNavigator";
 import {CUSTOMER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
-import {splitAppTheme} from "@src/theme";
 
 const CustomerBottomTab =
   createBottomTabNavigator<CustomerBottomTabParamList>();

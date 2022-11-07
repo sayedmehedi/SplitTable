@@ -14,13 +14,10 @@ const authService = container.get<IAuthService>(
   ServiceProviderTypes.AuthService,
 );
 
-const loginMutationFunction: MutationFunction<LogoutResponse> = async data => {
-  const response = await authService.logout();
+const mutationFunction: MutationFunction<LogoutResponse> = () =>
+  authService.logout().then(response => response.data);
 
-  return response.data;
-};
-
-export default function useLoginMutation(
+export default function useLogoutMutation(
   options?: UseMutationOptions<LogoutResponse, ApplicationError>,
 ) {
   const optionsRef = React.useRef(options);
@@ -30,7 +27,7 @@ export default function useLoginMutation(
   }, [options]);
 
   return useMutation<LogoutResponse, ApplicationError>(
-    loginMutationFunction,
+    mutationFunction,
     optionsRef.current,
   );
 }

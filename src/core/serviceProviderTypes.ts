@@ -4,6 +4,7 @@
  */
 export const ServiceProviderTypes = {
   HttpClient: Symbol("HttpClient"),
+  UserService: Symbol("UserService"),
   AuthService: Symbol("AuthService"),
   MenuService: Symbol("MenuService"),
   ClubService: Symbol("ClubService"),

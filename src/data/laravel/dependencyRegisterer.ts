@@ -12,6 +12,8 @@ import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {ILocationService} from "@core/services/ILocationService";
 import {NotificationService} from "./services/NotificationService";
 import {INotificationService} from "@core/services/INotificationService";
+import {UserService} from "./services/UserService";
+import {IUserService} from "@core/services/IUserService";
 
 export const registerLaravelServices = (container: Container) => {
   container
@@ -37,4 +39,8 @@ export const registerLaravelServices = (container: Container) => {
   container
     .bind<IReviewService>(ServiceProviderTypes.ReviewService)
     .to(ReviewService);
+
+  container
+    .bind<IUserService>(ServiceProviderTypes.UserService)
+    .to(UserService);
 };

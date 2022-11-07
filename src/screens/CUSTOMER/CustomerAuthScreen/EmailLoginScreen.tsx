@@ -133,7 +133,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                         borderRadius: splitAppTheme.radii.lg,
                         borderColor: splitAppTheme.colors.red[300],
                         borderWidth: !!errors.email
-                          ? splitAppTheme.sizes[1]
+                          ? splitAppTheme.borderWidths[2]
                           : 0,
                       }}>
                       <View
@@ -142,6 +142,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                           borderTopLeftRadius: splitAppTheme.radii.lg,
                           borderBottomLeftRadius: splitAppTheme.radii.lg,
                           backgroundColor: splitAppTheme.colors.gray[100],
+                          paddingVertical: splitAppTheme.space[4],
                         }}>
                         <Entypo size={30} name={"mail"} color={"black"} />
                       </View>
@@ -205,7 +206,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                         borderRadius: splitAppTheme.radii.lg,
                         borderColor: splitAppTheme.colors.red[300],
                         borderWidth: !!errors.password
-                          ? splitAppTheme.sizes[1]
+                          ? splitAppTheme.borderWidths[2]
                           : 0,
                       }}>
                       <View
@@ -214,6 +215,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                           borderTopLeftRadius: splitAppTheme.radii.lg,
                           borderBottomLeftRadius: splitAppTheme.radii.lg,
                           backgroundColor: splitAppTheme.colors.gray[100],
+                          paddingVertical: splitAppTheme.space[4],
                         }}>
                         <FontAwesome5 size={30} name={"lock"} color={"black"} />
                       </View>

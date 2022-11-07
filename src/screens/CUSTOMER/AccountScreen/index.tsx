@@ -1,31 +1,99 @@
-import {View, Text, Image, StyleSheet} from "react-native";
 import React from "react";
+import Feather from "react-native-vector-icons/Feather";
+import {StackScreenProps} from "@react-navigation/stack";
+import {CustomerProfileStackRoutes} from "@constants/routes";
+import {CompositeScreenProps} from "@react-navigation/native";
+import useLogoutMutation from "@hooks/auth/useLogoutMutation";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {
-  ProfileIcon,
-  AccountSettingIcon,
-  FavouriteIcon,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import {
   FaqIcon,
   LegalIcon,
   LogoutIcon,
+  ProfileIcon,
+  FavouriteIcon,
   TransactionIcon,
+  AccountSettingIcon,
 } from "@constants/iconPath";
-import {TouchableOpacity} from "react-native-gesture-handler";
-import Feather from "react-native-vector-icons/Feather";
+import {
+  RootStackParamList,
+  CustomerStackParamList,
+  CustomerBottomTabParamList,
+  CustomerProfileStackParamList,
+} from "@src/navigation";
+import useDeleteAuthDataMutation from "@hooks/useDeleteAuthDataMutation";
+import useAppToast from "@hooks/useAppToast";
+import {useQueryClient} from "@tanstack/react-query";
 
-const AccountScreen = ({navigation}) => {
+type Props = CompositeScreenProps<
+  CompositeScreenProps<
+    CompositeScreenProps<
+      StackScreenProps<
+        CustomerProfileStackParamList,
+        typeof CustomerProfileStackRoutes.ACCOUNT
+      >,
+      BottomTabScreenProps<CustomerBottomTabParamList>
+    >,
+    StackScreenProps<CustomerStackParamList>
+  >,
+  StackScreenProps<RootStackParamList>
+>;
+
+const AccountScreen = ({navigation}: Props) => {
+  const toast = useAppToast();
+  const queryClient = useQueryClient();
+
+  const {data: profileData, error, isLoading} = useGetProfileQuery();
+  useHandleNonFieldError(error);
+
+  const {mutate: deleteAuthData} = useDeleteAuthDataMutation({
+    onError(error) {
+      toast.error(error.message);
+    },
+    onSuccess() {
+      queryClient.removeQueries();
+    },
+  });
+
+  const {mutate: logout, error: logoutError} = useLogoutMutation({
+    onMutate() {
+      deleteAuthData();
+    },
+  });
+  useHandleNonFieldError(logoutError);
+
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
+  }
+
   return (
-    <View style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
+    <ScrollView
+      style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
       <View
         style={{
           height: 90,
+          padding: 10,
           width: "100%",
           borderWidth: 1,
-          borderColor: "#DBDBDB",
           borderRadius: 5,
           marginVertical: 20,
-          flexDirection: "row",
           alignItems: "center",
-          padding: 10,
+          flexDirection: "row",
+          borderColor: "#DBDBDB",
         }}>
         <Image
           style={{
@@ -41,19 +109,19 @@ const AccountScreen = ({navigation}) => {
         <View style={{marginLeft: 10}}>
           <Text
             style={{
-              fontFamily: "SatoshiVariable-Bold",
               fontSize: 16,
               color: "#FF3FCB",
+              fontFamily: "SatoshiVariable-Bold",
             }}>
-            Jhon Smith
+            {profileData?.name}
           </Text>
           <Text
             style={{
-              fontFamily: "Satoshi-Regular",
               fontSize: 12,
               color: "#8A8D9F",
+              fontFamily: "Satoshi-Regular",
             }}>
-            Las Vegas, NV 98109
+            {profileData?.location}
           </Text>
           <Text
             style={{
@@ -68,16 +136,18 @@ const AccountScreen = ({navigation}) => {
 
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("profile")}
+          onPress={() =>
+            navigation.navigate(CustomerProfileStackRoutes.PROFILE)
+          }
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <ProfileIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Profile
             </Text>
@@ -87,16 +157,18 @@ const AccountScreen = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("accountSetting")}
+          onPress={() =>
+            navigation.navigate(CustomerProfileStackRoutes.ACCOUNT_SETTING)
+          }
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <AccountSettingIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Account Setting
             </Text>
@@ -106,16 +178,18 @@ const AccountScreen = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("transection")}
+          onPress={() =>
+            navigation.navigate(CustomerProfileStackRoutes.TRANSACTION)
+          }
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <TransactionIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Transaction
             </Text>
@@ -125,16 +199,18 @@ const AccountScreen = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("favorite")}
+          onPress={() =>
+            navigation.navigate(CustomerProfileStackRoutes.FAVORITE)
+          }
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <FavouriteIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Favorite
             </Text>
@@ -144,16 +220,16 @@ const AccountScreen = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("faq")}
+          onPress={() => navigation.navigate(CustomerProfileStackRoutes.FAQ)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <FaqIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Faq's
             </Text>
@@ -163,16 +239,16 @@ const AccountScreen = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("legal")}
+          onPress={() => navigation.navigate(CustomerProfileStackRoutes.LEGAL)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <LegalIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Legal
             </Text>
@@ -181,15 +257,17 @@ const AccountScreen = ({navigation}) => {
           <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity
+          style={styles.sectionContainer}
+          onPress={() => logout()}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <LogoutIcon />
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Logout
             </Text>
@@ -205,18 +283,18 @@ const AccountScreen = ({navigation}) => {
           App Version V1.0
         </Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    flexDirection: "row",
     width: "100%",
+    paddingVertical: 15,
+    flexDirection: "row",
     borderBottomWidth: 1,
     borderStyle: "dashed",
     borderColor: "#C8C8D3",
-    paddingVertical: 15,
     justifyContent: "space-between",
   },
 });

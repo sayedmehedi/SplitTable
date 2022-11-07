@@ -4,11 +4,11 @@ import {splitAppTheme} from "@src/theme";
 import EachBookingItem from "./EachBookingItem";
 import LinearGradient from "react-native-linear-gradient";
 import {
-  FlatList,
+  View,
   Text,
+  FlatList,
   TouchableOpacity,
   useWindowDimensions,
-  View,
 } from "react-native";
 import {SceneMap, SceneRendererProps, TabView} from "react-native-tab-view";
 
