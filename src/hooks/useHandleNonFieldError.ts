@@ -2,14 +2,18 @@ import React from "react";
 import useAppToast from "./useAppToast";
 import {ApplicationError} from "@core/domain/ApplicationError";
 
-function useHandleNonFieldError(error: ApplicationError | undefined | null) {
+function useHandleNonFieldError(
+  error: ApplicationError | Error | undefined | null,
+) {
   const toast = useAppToast();
 
   React.useEffect(() => {
-    if (error) {
+    if (!!error && error instanceof ApplicationError) {
       toast.error(error.non_field_error);
+    } else if (!!error) {
+      toast.error(error.message);
     }
-  }, [error?.non_field_error]);
+  }, [error]);
 
   return null;
 }

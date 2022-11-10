@@ -6,7 +6,6 @@ import Toast from "react-native-toast-message";
 import {QueryKeys} from "@constants/query-keys";
 import {useDisclosure} from "react-use-disclosure";
 import {useQueryClient} from "@tanstack/react-query";
-import LinearGradient from "react-native-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
@@ -26,6 +25,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import useDeleteUserPhotoMutation from "@hooks/user/useDeleteUserPhotoMutation";
+import AddUserPhotoBtn from "./AddUserPhotoBtn";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
@@ -100,6 +100,7 @@ export default function PhotoList() {
         return;
       }
 
+      toggle();
       toast.success(data.success);
       queryClient.invalidateQueries([QueryKeys.IMAGE]);
     },
@@ -158,6 +159,133 @@ export default function PhotoList() {
       />
     ),
     [toggle],
+  );
+
+  const renderGalleryImage: ListRenderItem<UserImage> = React.useCallback(
+    ({item}) => {
+      return (
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginVertical: splitAppTheme.space[6],
+            }}>
+            <TouchableOpacity
+              disabled={isToggling}
+              onPress={() => {
+                const imageId = item.id;
+
+                toggleLike({
+                  imageId,
+                  like: true,
+                });
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                {isToggling ? (
+                  <ActivityIndicator size={"small"} />
+                ) : (
+                  <AntDesign
+                    size={22}
+                    name={"like2"}
+                    color={splitAppTheme.colors.green[600]}
+                  />
+                )}
+
+                <Text
+                  style={{
+                    marginLeft: splitAppTheme.space[2],
+                    color: splitAppTheme.colors.green[600],
+                    fontSize: splitAppTheme.fontSizes["xl"],
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  {item.total_likes}
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={isToggling}
+              style={{marginLeft: splitAppTheme.space[6]}}
+              onPress={() => {
+                const imageId = item.id;
+
+                toggleLike({
+                  imageId,
+                  like: false,
+                });
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                {isToggling ? (
+                  <ActivityIndicator size={"small"} />
+                ) : (
+                  <AntDesign
+                    size={22}
+                    name={"dislike2"}
+                    color={splitAppTheme.colors.red[600]}
+                  />
+                )}
+
+                <Text
+                  style={{
+                    marginLeft: splitAppTheme.space[2],
+                    color: splitAppTheme.colors.red[600],
+                    fontSize: splitAppTheme.fontSizes["xl"],
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  {item.total_dislikes}
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={isDeletingUserPhoto}
+              style={{marginLeft: splitAppTheme.space[6]}}
+              onPress={() => {
+                const imageId = item.id;
+
+                deleteUserPhoto({
+                  imageId,
+                });
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                {isDeletingUserPhoto ? (
+                  <ActivityIndicator size={"small"} />
+                ) : (
+                  <FontAwesome5Icon
+                    size={22}
+                    name={"trash"}
+                    color={splitAppTheme.colors.red[600]}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <Image
+            source={{uri: item.image}}
+            style={{
+              width: WINDOW_WIDTH,
+              height: WINDOW_HEIGHT * 0.5,
+            }}
+          />
+        </View>
+      );
+    },
+    [toggleLike, deleteUserPhoto, isDeletingUserPhoto, isToggling],
   );
 
   if (isLoadingInfiniteResources) {
@@ -257,123 +385,15 @@ export default function PhotoList() {
           </View>
 
           <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                marginVertical: splitAppTheme.space[6],
-              }}>
-              <TouchableOpacity
-                disabled={isToggling}
-                onPress={() => {
-                  const imageId = resourceListData[selectedImageIndex].id;
-
-                  toggleLike({
-                    imageId,
-                    like: true,
-                  });
-                }}>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
-                  {isToggling ? (
-                    <ActivityIndicator size={"small"} />
-                  ) : (
-                    <AntDesign
-                      size={22}
-                      name={"like2"}
-                      color={splitAppTheme.colors.green[600]}
-                    />
-                  )}
-
-                  <Text
-                    style={{
-                      marginLeft: splitAppTheme.space[2],
-                      color: splitAppTheme.colors.green[600],
-                      fontSize: splitAppTheme.fontSizes["xl"],
-                      fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                    }}>
-                    {resourceListData[selectedImageIndex].total_likes}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                disabled={isToggling}
-                style={{marginLeft: splitAppTheme.space[6]}}
-                onPress={() => {
-                  const imageId = resourceListData[selectedImageIndex].id;
-
-                  toggleLike({
-                    imageId,
-                    like: false,
-                  });
-                }}>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
-                  {isToggling ? (
-                    <ActivityIndicator size={"small"} />
-                  ) : (
-                    <AntDesign
-                      size={22}
-                      name={"dislike2"}
-                      color={splitAppTheme.colors.red[600]}
-                    />
-                  )}
-
-                  <Text
-                    style={{
-                      marginLeft: splitAppTheme.space[2],
-                      color: splitAppTheme.colors.red[600],
-                      fontSize: splitAppTheme.fontSizes["xl"],
-                      fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                    }}>
-                    {resourceListData[selectedImageIndex].total_dislikes}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                disabled={isDeletingUserPhoto}
-                style={{marginLeft: splitAppTheme.space[6]}}
-                onPress={() => {
-                  const imageId = resourceListData[selectedImageIndex].id;
-
-                  deleteUserPhoto({
-                    imageId,
-                  });
-                }}>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
-                  {isDeletingUserPhoto ? (
-                    <ActivityIndicator size={"small"} />
-                  ) : (
-                    <FontAwesome5Icon
-                      size={22}
-                      name={"trash"}
-                      color={splitAppTheme.colors.red[600]}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-            </View>
-
             <View style={{height: 420}}>
-              <FlatList
+              <FlatList<typeof resourceListData[0]>
                 horizontal
                 pagingEnabled
                 ref={galleryListRef}
                 listKey="image-gallery"
                 data={resourceListData}
+                renderItem={renderGalleryImage}
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
-                  return (
-                    <Image
-                      source={{uri: item.image}}
-                      style={{
-                        width: WINDOW_WIDTH,
-                        height: WINDOW_HEIGHT * 0.5,
-                      }}
-                    />
-                  );
-                }}
               />
             </View>
           </View>
@@ -381,41 +401,7 @@ export default function PhotoList() {
         <Toast />
       </Modal>
 
-      <View>
-        <TouchableOpacity>
-          <LinearGradient
-            end={{x: 0, y: 0}}
-            start={{x: 0, y: 1}}
-            colors={["#402BBC", "#00C1FF"]}>
-            <View
-              style={{
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "center",
-                paddingVertical: splitAppTheme.space[3],
-              }}>
-              <View>
-                <FontAwesome5Icon
-                  size={30}
-                  color={"white"}
-                  name={"camera-retro"}
-                />
-              </View>
-
-              <View style={{marginLeft: splitAppTheme.space[3]}}>
-                <Text
-                  style={{
-                    color: splitAppTheme.colors.white,
-                    fontSize: splitAppTheme.fontSizes.lg,
-                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                  }}>
-                  Add Your Photo
-                </Text>
-              </View>
-            </View>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
+      <AddUserPhotoBtn />
     </View>
   );
 }

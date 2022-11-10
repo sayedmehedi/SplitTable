@@ -22,9 +22,9 @@ function useGetAuthDataQuery() {
     {
       networkMode: "always",
       onSuccess(authData) {
-        // if (!!authData?.token) {
-        //   httpClient.defaults.headers.common.Authorization = `Bearer ${authData.token}`;
-        // }
+        if (!!authData?.token) {
+          httpClient.defaults.headers.common.Authorization = `Bearer ${authData.token}`;
+        }
       },
     },
   );

@@ -2,14 +2,16 @@ import {AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {
   AddUserImageRequest,
+  AddUserImageResponse,
+  UpdateProfileRequest,
+  UpdateProfileResponse,
   GetUserImagesResponse,
+  DeleteUserImageRequest,
+  DeleteUserImageResponse,
   GetUserImageQueryParams,
   GlobalAxiosRequestConfig,
-  AddUserImageResponse,
-  DeleteUserImageResponse,
-  DeleteUserImageRequest,
-  ToggleUserImageLikeResponse,
   ToggleUserImageLikeRequest,
+  ToggleUserImageLikeResponse,
 } from "@src/models";
 
 export interface IUserService {
@@ -19,7 +21,7 @@ export interface IUserService {
     AxiosResponse<GetUserImagesResponse, GlobalAxiosRequestConfig>
   >;
 
-  addImage(data: AddUserImageRequest): CancelablePromise<AddUserImageResponse>;
+  addImage(data: AddUserImageRequest): Promise<AddUserImageResponse>;
 
   deleteImage(
     data: DeleteUserImageRequest,
@@ -30,4 +32,6 @@ export interface IUserService {
   ): Promise<
     AxiosResponse<ToggleUserImageLikeResponse, GlobalAxiosRequestConfig>
   >;
+
+  updateProfile(data: UpdateProfileRequest): Promise<UpdateProfileResponse>;
 }

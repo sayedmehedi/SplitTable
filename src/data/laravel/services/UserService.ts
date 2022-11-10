@@ -10,11 +10,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   AuthData,
   AddUserImageRequest,
-  GetUserImagesResponse,
-  GlobalAxiosRequestConfig,
-  GetUserImageQueryParams,
   AddUserImageResponse,
+  GetUserImagesResponse,
+  UpdateProfilePayload,
+  UpdateProfileResponse,
   DeleteUserImageRequest,
+  GetUserImageQueryParams,
+  GlobalAxiosRequestConfig,
   DeleteUserImageResponse,
   ToggleUserImageLikeRequest,
   ToggleUserImageLikeResponse,
@@ -29,6 +31,62 @@ export class UserService implements IUserService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+  async updateProfile({
+    onUploadProgress,
+    ...data
+  }: Partial<UpdateProfilePayload>): Promise<UpdateProfileResponse> {
+    const authDataString = await AsyncStorage.getItem(StorageKeys.AUTH_DATA);
+
+    if (!authDataString) {
+      throw new Error("Unauthenticated");
+    }
+
+    const {token: authToken} = JSON.parse(authDataString) as AuthData;
+
+    const formattedPayload = Object.entries(data).reduce((acc, curr) => {
+      const [fieldName, payload] = curr as [
+        keyof typeof data,
+        typeof data[keyof typeof data],
+      ];
+
+      if (fieldName === "image" && typeof payload !== "string" && !!payload) {
+        acc.push({
+          name: fieldName,
+          type: payload.type,
+          filename: payload.name,
+          data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+        });
+      } else if (typeof payload !== "object" && !!payload) {
+        acc.push({
+          name: fieldName,
+          data: payload,
+        });
+      }
+
+      return acc;
+    }, [] as {name: keyof typeof data; type?: string; filename?: string; data: string}[]);
+
+    const response = await RNFetchBlob.config({
+      trusty: true,
+      timeout: 5000,
+    })
+      .fetch(
+        "POST",
+        `${this._config.apiBaseURL}/update-profile`,
+
+        {
+          Accept: "application/json",
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+        formattedPayload,
+      )
+      .uploadProgress((sent, total) => {
+        onUploadProgress?.(sent, total);
+      });
+
+    return response.json();
+  }
 
   toggleImageLike(
     data: ToggleUserImageLikeRequest,
@@ -82,58 +140,39 @@ export class UserService implements IUserService {
     });
   }
 
-  addImage(data: AddUserImageRequest): CancelablePromise<AddUserImageResponse> {
-    return new CancelablePromise<AddUserImageResponse>(
-      (resolve, reject, onCancel) => {
-        AsyncStorage.getItem(StorageKeys.AUTH_DATA)
-          .then(authDataString => {
-            if (!authDataString) {
-              throw new Error("Unauthenticated");
-            }
+  async addImage(data: AddUserImageRequest): Promise<AddUserImageResponse> {
+    const authDataString = await AsyncStorage.getItem(StorageKeys.AUTH_DATA);
+    if (!authDataString) {
+      throw new Error("Unauthenticated");
+    }
+    const {token: authToken} = JSON.parse(authDataString) as AuthData;
 
-            return authDataString;
-          })
-          .then(authDataString => JSON.parse(authDataString) as AuthData)
-          .then(({token: authToken}) => {
-            const task = RNFetchBlob.config({
-              trusty: true,
-              timeout: 5000,
-            }).fetch(
-              "POST",
-              `${this._config.apiBaseURL}/image-upload`,
+    const response = await RNFetchBlob.config({
+      trusty: true,
+      timeout: 5000,
+    })
+      .fetch(
+        "POST",
+        `${this._config.apiBaseURL}/images`,
 
-              {
-                Accept: "application/json",
-                Authorization: `Bearer ${authToken}`,
-                "Content-Type": "multipart/form-data",
-              },
-              [
-                // element with property `filename` will be transformed into `file` in form data
-                {
-                  name: "image",
-                  type: data.image.type,
-                  filename: data.image.name,
-                  data: RNFetchBlob.wrap(data.image.uri.replace("file://", "")),
-                },
-              ],
-            );
-
-            onCancel(() => {
-              task.cancel();
-            });
-
-            return task
-              .uploadProgress((sent, total) => {
-                data.onUploadProgress?.(sent, total);
-              })
-              .then(
-                response => response.json() as Promise<AddUserImageResponse>,
-              )
-              .then(resolve)
-              .catch(reject);
-          })
-          .catch(reject);
-      },
-    );
+        {
+          Accept: "application/json",
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+        [
+          // element with property `filename` will be transformed into `file` in form data
+          {
+            name: "image",
+            type: data.image.type,
+            filename: data.image.name,
+            data: RNFetchBlob.wrap(data.image.uri.replace("file://", "")),
+          },
+        ],
+      )
+      .uploadProgress({interval: 100}, (written, total) => {
+        data.onUploadProgress?.(written, total);
+      });
+    return response.json();
   }
 }

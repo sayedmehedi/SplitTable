@@ -16,7 +16,7 @@ export default function BearerTokenAttacher(props: React.PropsWithChildren) {
   React.useEffect(() => {
     const authData = queryClient.getQueryData<AuthData>(queryKey);
 
-    if (authData !== undefined) {
+    if (!!authData) {
       console.log("setting auth token to http client header", authData.token);
 
       httpClient.defaults.headers.common.Authorization = `Bearer ${authData.token}`;

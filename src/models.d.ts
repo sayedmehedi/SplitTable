@@ -377,3 +377,28 @@ export interface ToggleUserImageLikeRequest {
 }
 
 export type ToggleUserImageLikeResponse = ResponseResult;
+
+export interface UpdateProfilePayload {
+  first_name: string;
+  last_name: string;
+  club: string;
+  email: string;
+  old_password: string;
+  password: string;
+  password_confirmation: string;
+  location: string;
+  latitude: string;
+  longitude: string;
+  job_role: string;
+  phone: string;
+  onUploadProgress?: OnUploadProgress;
+  image: {
+    name: string;
+    type: string;
+    uri: string;
+  };
+}
+
+export type UpdateProfileRequest = Partial<UpdateProfilePayload>;
+
+export type UpdateProfileResponse = ResponseResult;

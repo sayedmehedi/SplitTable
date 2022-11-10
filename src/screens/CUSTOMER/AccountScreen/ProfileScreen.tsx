@@ -18,6 +18,7 @@ import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 import {View, Text, Image, FlatList, TouchableOpacity} from "react-native";
 import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import ProfileImageUploader from "./ProfileImageUploader";
 
 type ProfileScreenProps = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.PROFILE>,
@@ -80,25 +81,12 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
         </SafeAreaView>
       </LinearGradient>
 
-      <TouchableOpacity
+      <View
         style={{
-          padding: 5,
-          width: 155,
-          height: 155,
           marginTop: -75,
-          borderRadius: 78,
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "white",
         }}>
-        <Image
-          style={{height: 150, width: 150, borderRadius: 75}}
-          source={{
-            uri: "https://images.pexels.com/photos/1391495/pexels-photo-1391495.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-          }}
-        />
-      </TouchableOpacity>
+        <ProfileImageUploader />
+      </View>
 
       <View style={{alignSelf: "center", alignItems: "center"}}>
         <Text
