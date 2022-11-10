@@ -6,39 +6,25 @@ import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {isCustomerProfile} from "@utils/profile";
+import {CustomerStackRoutes} from "@constants/routes";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {CustomerProfileStackRoutes} from "@constants/routes";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
-import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 import {View, Text, Image, FlatList, TouchableOpacity} from "react-native";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerBottomTabParamList,
-  CustomerProfileStackParamList,
-} from "@src/navigation";
+import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 type ProfileScreenProps = CompositeScreenProps<
-  CompositeScreenProps<
-    CompositeScreenProps<
-      StackScreenProps<
-        CustomerProfileStackParamList,
-        typeof CustomerProfileStackRoutes.PROFILE
-      >,
-      BottomTabScreenProps<CustomerBottomTabParamList>
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
+  StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.PROFILE>,
   StackScreenProps<RootStackParamList>
 >;
 
-const ProfileScreen = ({}: ProfileScreenProps) => {
+const ProfileScreen = ({navigation}: ProfileScreenProps) => {
   const toast = useAppToast();
   const queryClient = useQueryClient();
   const pagerRef = React.useRef<FlatList>(null!);
@@ -87,7 +73,8 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
             style={{
               width: 50,
               padding: 15,
-            }}>
+            }}
+            onPress={() => navigation.goBack()}>
             <Feather name="chevron-left" size={25} color={"white"} />
           </TouchableOpacity>
         </SafeAreaView>
@@ -153,7 +140,13 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
             }}>
             <Text style={{color: "white"}}>{profileData.bookings}</Text>
           </LinearGradient>
-          <Text>Books</Text>
+          <Text
+            style={{
+              fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            Books
+          </Text>
         </View>
 
         <View style={{alignItems: "center"}}>
@@ -170,7 +163,13 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
             }}>
             <Text style={{color: "white"}}>{profileData.reviews}</Text>
           </LinearGradient>
-          <Text>Reviews</Text>
+          <Text
+            style={{
+              fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            Reviews
+          </Text>
         </View>
 
         <View style={{alignItems: "center"}}>
@@ -187,7 +186,13 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
             }}>
             <Text style={{color: "white"}}>{profileData.photos}</Text>
           </LinearGradient>
-          <Text>Photos</Text>
+          <Text
+            style={{
+              fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            Photos
+          </Text>
         </View>
       </View>
 
@@ -200,9 +205,9 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
         }}>
         <TouchableOpacity onPress={() => handlePager(0)}>
           <LinearGradient
-            colors={["#472BBE", "#DF3BC0"]}
-            start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
+            start={{x: 0, y: 0}}
+            colors={["#472BBE", "#DF3BC0"]}
             style={{
               height: 40,
               borderRadius: 5,
@@ -213,7 +218,7 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
                 splitAppTheme.space["6"] * 0.3 -
                 splitAppTheme.space["3"] * 0.3,
             }}>
-            <Text style={{color: "white"}}>Photo Store</Text>
+            <Text style={{color: "white"}}>Photo Story</Text>
           </LinearGradient>
         </TouchableOpacity>
 
@@ -263,8 +268,8 @@ const ProfileScreen = ({}: ProfileScreenProps) => {
       horizontal
       pagingEnabled
       ref={pagerRef}
-      showsHorizontalScrollIndicator={false}
       listKey={"pager"}
+      showsHorizontalScrollIndicator={false}
       data={[{key: "photos"}, {key: "reviews"}, {key: "chat"}]}
       renderItem={({item}) => {
         switch (item.key) {

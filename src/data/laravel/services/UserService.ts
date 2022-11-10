@@ -14,6 +14,10 @@ import {
   GlobalAxiosRequestConfig,
   GetUserImageQueryParams,
   AddUserImageResponse,
+  DeleteUserImageRequest,
+  DeleteUserImageResponse,
+  ToggleUserImageLikeRequest,
+  ToggleUserImageLikeResponse,
 } from "@src/models";
 
 @injectable()
@@ -25,6 +29,23 @@ export class UserService implements IUserService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  toggleImageLike(
+    data: ToggleUserImageLikeRequest,
+  ): Promise<
+    AxiosResponse<ToggleUserImageLikeResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.post(`like-dislike`, {
+      image_id: data.imageId,
+      type: data.like ? 1 : 0,
+    });
+  }
+
+  deleteImage(
+    data: DeleteUserImageRequest,
+  ): Promise<AxiosResponse<DeleteUserImageResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.delete(`images/${data.imageId}`);
+  }
 
   getImages(
     params?: GetUserImageQueryParams | undefined,

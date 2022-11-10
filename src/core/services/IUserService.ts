@@ -6,6 +6,10 @@ import {
   GetUserImageQueryParams,
   GlobalAxiosRequestConfig,
   AddUserImageResponse,
+  DeleteUserImageResponse,
+  DeleteUserImageRequest,
+  ToggleUserImageLikeResponse,
+  ToggleUserImageLikeRequest,
 } from "@src/models";
 
 export interface IUserService {
@@ -16,4 +20,14 @@ export interface IUserService {
   >;
 
   addImage(data: AddUserImageRequest): CancelablePromise<AddUserImageResponse>;
+
+  deleteImage(
+    data: DeleteUserImageRequest,
+  ): Promise<AxiosResponse<DeleteUserImageResponse, GlobalAxiosRequestConfig>>;
+
+  toggleImageLike(
+    data: ToggleUserImageLikeRequest,
+  ): Promise<
+    AxiosResponse<ToggleUserImageLikeResponse, GlobalAxiosRequestConfig>
+  >;
 }

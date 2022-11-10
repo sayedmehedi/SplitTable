@@ -354,6 +354,7 @@ export interface GetUserImageQueryParams extends PaginationQueryParams {
 }
 
 export type AddUserImageResponse = ResponseResult;
+export type DeleteUserImageResponse = ResponseResult;
 
 export type OnUploadProgress = (written: number, total: number) => void;
 
@@ -365,3 +366,14 @@ export interface AddUserImageRequest {
   };
   onUploadProgress?: OnUploadProgress;
 }
+
+export interface DeleteUserImageRequest {
+  imageId: number;
+}
+
+export interface ToggleUserImageLikeRequest {
+  like: boolean;
+  imageId: number;
+}
+
+export type ToggleUserImageLikeResponse = ResponseResult;

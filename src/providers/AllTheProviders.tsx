@@ -16,6 +16,7 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
+import BearerTokenAttacher from "@components/BearerTokenAttacher";
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -66,7 +67,9 @@ function AllTheProviders({children}: React.PropsWithChildren) {
       }}>
       <NavigationContainer theme={splitAppNavigationTheme}>
         <AuthTypeIsLoaded>
-          <AuthDataIsLoaded>{children}</AuthDataIsLoaded>
+          <AuthDataIsLoaded>
+            <BearerTokenAttacher>{children}</BearerTokenAttacher>
+          </AuthDataIsLoaded>
         </AuthTypeIsLoaded>
       </NavigationContainer>
     </PersistQueryClientProvider>

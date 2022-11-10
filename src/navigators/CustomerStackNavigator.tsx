@@ -17,6 +17,12 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
+import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
+import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
+import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
+import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
+import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -73,6 +79,42 @@ const CustomerStackNavigator = () => {
             options={clubSearchScreenOptions}
             name={CustomerStackRoutes.CLUB_SEARCH}
           />
+
+          <CustomerStack.Screen
+            component={ProfileScreen}
+            options={profileScreenOptions}
+            name={CustomerStackRoutes.PROFILE}
+          />
+
+          <CustomerStack.Screen
+            component={TransactionScreen}
+            options={transactionScreenOptions}
+            name={CustomerStackRoutes.TRANSACTION}
+          />
+
+          <CustomerStack.Screen
+            component={AccountSettingScreen}
+            options={accountSettingScreenOptions}
+            name={CustomerStackRoutes.ACCOUNT_SETTING}
+          />
+
+          <CustomerStack.Screen
+            component={FavoriteScreen}
+            options={favoriteScreenOptions}
+            name={CustomerStackRoutes.FAVORITE}
+          />
+
+          <CustomerStack.Screen
+            component={LegalScreen}
+            options={legalScreenOptions}
+            name={CustomerStackRoutes.LEGAL}
+          />
+
+          <CustomerStack.Screen
+            component={FaqScreen}
+            options={faqScreenOptions}
+            name={CustomerStackRoutes.FAQ}
+          />
         </React.Fragment>
       )}
     </CustomerStack.Navigator>
@@ -128,4 +170,68 @@ const globalScreenOptions:
       navigation: any;
     }) => StackNavigationOptions) = {
   headerShown: false,
+};
+
+const profileScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.PROFILE
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: false,
+};
+const transactionScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.TRANSACTION
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Transaction",
+};
+const accountSettingScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.ACCOUNT_SETTING
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Account Settings",
+};
+const favoriteScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.FAVORITE
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Favorite",
+};
+const legalScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.LEGAL
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Legal",
+};
+const faqScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<CustomerStackParamList, typeof CustomerStackRoutes.FAQ>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "FAQ",
 };

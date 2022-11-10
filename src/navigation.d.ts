@@ -30,13 +30,7 @@ type CustomerBookingStackParamList = {
 };
 
 type CustomerProfileStackParamList = {
-  [CustomerProfileStackRoutes.FAQ]: undefined;
-  [CustomerProfileStackRoutes.LEGAL]: undefined;
   [CustomerProfileStackRoutes.ACCOUNT]: undefined;
-  [CustomerProfileStackRoutes.PROFILE]: undefined;
-  [CustomerProfileStackRoutes.FAVORITE]: undefined;
-  [CustomerProfileStackRoutes.TRANSACTION]: undefined;
-  [CustomerProfileStackRoutes.ACCOUNT_SETTING]: undefined;
 };
 
 type CustomerBottomTabParamList = {
@@ -83,6 +77,13 @@ type CustomerStackParamList = {
   [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
   [CustomerStackRoutes.CLUB_SEARCH]: undefined;
+
+  [CustomerStackRoutes.FAQ]: undefined;
+  [CustomerStackRoutes.LEGAL]: undefined;
+  [CustomerStackRoutes.PROFILE]: undefined;
+  [CustomerStackRoutes.FAVORITE]: undefined;
+  [CustomerStackRoutes.TRANSACTION]: undefined;
+  [CustomerStackRoutes.ACCOUNT_SETTING]: undefined;
 };
 
 type OwnerAccountStackParamList = {

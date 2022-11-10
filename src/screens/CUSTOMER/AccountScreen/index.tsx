@@ -1,7 +1,10 @@
 import React from "react";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerProfileStackRoutes} from "@constants/routes";
+import {
+  CustomerProfileStackRoutes,
+  CustomerStackRoutes,
+} from "@constants/routes";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useLogoutMutation from "@hooks/auth/useLogoutMutation";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
@@ -31,9 +34,9 @@ import {
   CustomerBottomTabParamList,
   CustomerProfileStackParamList,
 } from "@src/navigation";
-import useDeleteAuthDataMutation from "@hooks/useDeleteAuthDataMutation";
 import useAppToast from "@hooks/useAppToast";
 import {useQueryClient} from "@tanstack/react-query";
+import useDeleteAuthDataMutation from "@hooks/useDeleteAuthDataMutation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -136,9 +139,7 @@ const AccountScreen = ({navigation}: Props) => {
 
       <View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(CustomerProfileStackRoutes.PROFILE)
-          }
+          onPress={() => navigation.navigate(CustomerStackRoutes.PROFILE)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <ProfileIcon />
@@ -158,7 +159,7 @@ const AccountScreen = ({navigation}: Props) => {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(CustomerProfileStackRoutes.ACCOUNT_SETTING)
+            navigation.navigate(CustomerStackRoutes.ACCOUNT_SETTING)
           }
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
@@ -178,9 +179,7 @@ const AccountScreen = ({navigation}: Props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(CustomerProfileStackRoutes.TRANSACTION)
-          }
+          onPress={() => navigation.navigate(CustomerStackRoutes.TRANSACTION)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <TransactionIcon />
@@ -199,9 +198,7 @@ const AccountScreen = ({navigation}: Props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(CustomerProfileStackRoutes.FAVORITE)
-          }
+          onPress={() => navigation.navigate(CustomerStackRoutes.FAVORITE)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <FavouriteIcon />
@@ -220,7 +217,7 @@ const AccountScreen = ({navigation}: Props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(CustomerProfileStackRoutes.FAQ)}
+          onPress={() => navigation.navigate(CustomerStackRoutes.FAQ)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <FaqIcon />
@@ -239,7 +236,7 @@ const AccountScreen = ({navigation}: Props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(CustomerProfileStackRoutes.LEGAL)}
+          onPress={() => navigation.navigate(CustomerStackRoutes.LEGAL)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <LegalIcon />

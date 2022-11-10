@@ -13,6 +13,13 @@ export const CustomerStackRoutes = {
   CUSTOMER_AUTH: "CustomerAuth",
   NOTIFICATIONS: "Notifications",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
+
+  FAQ: "Faq",
+  LEGAL: "Legal",
+  PROFILE: "Profile",
+  FAVORITE: "Favorite",
+  TRANSACTION: "Transaction",
+  ACCOUNT_SETTING: "AccountSetting",
 } as const;
 
 export const CustomerAuthStackRoutes = {
@@ -55,13 +62,7 @@ export const OwnerProfileStackRoutes = {
 } as const;
 
 export const CustomerProfileStackRoutes = {
-  FAQ: "Faq",
-  LEGAL: "Legal",
   ACCOUNT: "Account",
-  PROFILE: "Profile",
-  FAVORITE: "Favorite",
-  TRANSACTION: "Transaction",
-  ACCOUNT_SETTING: "AccountSetting",
 } as const;
 
 export const CustomerBookingStackRoutes = {

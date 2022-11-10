@@ -78,7 +78,11 @@ export default function ReviewList() {
   }, [fetchNextPage]);
 
   if (isLoadingInfiniteResources) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{width: WINDOW_WIDTH}}>
+        <Text>Loading..</Text>
+      </View>
+    );
     // return (
     //   <ScrollView>
     //     {ListHeaderComponent}
@@ -118,8 +122,9 @@ export default function ReviewList() {
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
-      {infiniteGetResourcesResponse !== undefined &&
-        infiniteGetResourcesResponse?.pages?.length > 0 && (
+      {!isLoadingInfiniteResources &&
+        infiniteGetResourcesResponse !== undefined &&
+        resourceListData.length > 0 && (
           <View
             style={{
               flexDirection: "row",
@@ -267,7 +272,7 @@ export default function ReviewList() {
             </View>
           ) : resourceListData.length === 0 ? (
             <View style={{alignItems: "center", justifyContent: "center"}}>
-              <GenericListEmpty />
+              <Text>No Data</Text>
             </View>
           ) : null
         }
