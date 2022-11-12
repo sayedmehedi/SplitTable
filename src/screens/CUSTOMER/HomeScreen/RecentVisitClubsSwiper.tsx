@@ -1,21 +1,21 @@
 import React from "react";
-import {TableNEvent} from "@src/models";
+import {BookedTable} from "@src/models";
 import EachRecentVisitsItem from "./EachRecentVisitsItem";
-import useGetRecentViewedClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
+import useGetRecentViewsClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
 import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
 
 type Props = {
   onSeeAll: () => void;
-  onItemPress: (club: TableNEvent) => void;
+  onItemPress: (club: BookedTable) => void;
 };
 
-export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
+export default function RecentVisitsSwiper({onItemPress, onSeeAll}: Props) {
   const {data: recentVisitClubsResponse, isLoading: isRecentVisitClubsLoading} =
-    useGetRecentViewedClubsQuery();
+    useGetRecentViewsClubsQuery();
 
   return !isRecentVisitClubsLoading &&
-    recentVisitClubsResponse?.clubs?.data?.length === 0 ? (
+    recentVisitClubsResponse?.tables?.data?.length === 0 ? (
     <View
       style={{
         marginVertical: splitAppTheme.space[1],
@@ -98,14 +98,15 @@ export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
                 </View>
               </View>
             ))
-          : recentVisitClubsResponse?.clubs?.data?.map((item, index) => {
+          : recentVisitClubsResponse?.tables?.data?.map((item, index) => {
               return (
                 <View
                   style={{
                     width: splitAppTheme.sizes[56],
                     marginRight:
                       splitAppTheme.space[
-                        index === recentVisitClubsResponse.clubs.data.length - 1
+                        index ===
+                        recentVisitClubsResponse.tables.data.length - 1
                           ? 0
                           : 5
                       ],

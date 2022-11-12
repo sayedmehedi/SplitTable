@@ -1,17 +1,17 @@
 import React from "react";
-import {TClubItem} from "./shared";
-import ClubListItem from "./ClubListItem";
+import {TTableItem} from "./shared";
+import TableListItem from "./TableListItem";
 import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
-import useInfiniteGetRecentViewedClubsQuery from "@hooks/clubs/useInfiniteGetRecentViewedClubsQuery";
+import useInfiniteGetRecentViewsQuery from "@hooks/clubs/useInfiniteGetRecentViewsQuery";
 import {splitAppTheme} from "@src/theme";
 
 type Props = {
   searchTerm?: string;
-  onItemPress: (item: TClubItem) => void;
+  onItemPress: (item: TTableItem) => void;
 };
 
-const RecentVisitClubList = ({onItemPress, searchTerm}: Props) => {
+const RecentVisits = ({onItemPress, searchTerm}: Props) => {
   const {
     refetch,
     isLoading,
@@ -19,17 +19,17 @@ const RecentVisitClubList = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage,
     isFetchingNextPage,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetRecentViewedClubsQuery(
+  } = useInfiniteGetRecentViewsQuery(
     {
       page: 1,
       search: searchTerm,
     },
     {
       getNextPageParam(lastPage) {
-        if (lastPage.clubs.has_more_data) {
+        if (lastPage.tables.has_more_data) {
           return {
             search: searchTerm,
-            page: lastPage.clubs.current_page + 1,
+            page: lastPage.tables.current_page + 1,
           };
         }
       },
@@ -39,7 +39,7 @@ const RecentVisitClubList = ({onItemPress, searchTerm}: Props) => {
   const clubListData = React.useMemo(() => {
     return (
       infiniteGetClubsByLocationsResponse?.pages.flatMap(eachPage => {
-        return eachPage.clubs.data;
+        return eachPage.tables.data;
       }) ?? []
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
@@ -47,17 +47,16 @@ const RecentVisitClubList = ({onItemPress, searchTerm}: Props) => {
   const renderClubList: ListRenderItem<typeof clubListData[0]> =
     React.useCallback(
       ({item}) => (
-        <ClubListItem
+        <TableListItem
           item={{
             id: item.id,
+            date: item.date,
             name: item.name,
             image: item.image,
             location: item.location,
-            avgRating: item.avg_rating,
-            isFavorite: item.is_favourite,
-            closingTime: item.closing_time,
-            openingTime: item.opening_time,
-            totalReviews: item.total_reviews,
+            distance: item.distance,
+            total_joined:
+              "total_joined" in item ? item.total_joined : undefined,
           }}
           onPress={onItemPress}
         />
@@ -112,4 +111,4 @@ const RecentVisitClubList = ({onItemPress, searchTerm}: Props) => {
   );
 };
 
-export default RecentVisitClubList;
+export default RecentVisits;

@@ -104,7 +104,7 @@ export type ClubListItemMenu = {
   price: string;
 };
 
-export type TableNEvent = {
+export type BookedTable = {
   id: number;
   name: string;
   date: string;
@@ -113,15 +113,15 @@ export type TableNEvent = {
   image: string;
 };
 
-export type GetTableNEventsReposne = {
-  tables: SimplePaginatedResponse<TableNEvent>;
+export type GetBookedTablesReponse = {
+  tables: SimplePaginatedResponse<BookedTable>;
 };
 
-export type GetRecentViewedClubsReposne = {
-  clubs: SimplePaginatedResponse<TableNEvent>;
+export type GetRecentViewsReponse = {
+  tables: SimplePaginatedResponse<BookedTable | SplitTable>;
 };
 
-export type SplitTableNEvent = {
+export type SplitTable = {
   id: number;
   name: string;
   date: string;
@@ -131,8 +131,8 @@ export type SplitTableNEvent = {
   total_joined: number;
 };
 
-export type GetSplitTableNEventsReposne = {
-  tables: SimplePaginatedResponse<SplitTableNEvent>;
+export type GetSplitTablesReponse = {
+  tables: SimplePaginatedResponse<SplitTable>;
 };
 
 export type PaginationQueryParams =
@@ -148,33 +148,31 @@ export type PaginationQueryParams =
 export interface ClubByLocationItem {
   id: number;
   name: string;
+  date: string;
   image: string;
-  distance: string;
   location: string;
-  avg_rating: number;
-  opening_time: string;
-  closing_time: string;
-  total_reviews: number;
-  is_favourite: boolean;
+  distance: string;
+  total_joined: number;
 }
 
-export type GetClubsByLocationResponse = {
-  clubs: SimplePaginatedResponse<ClubByLocationItem>;
+export type GetTablesByLocationResponse = {
+  tables: SimplePaginatedResponse<ClubByLocationItem>;
 };
 
-export type GetClubsByLocationQueryParams = PaginationQueryParams & {
+export type GetTablesByLocationQueryParams = PaginationQueryParams & {
   locationId: number;
+  tableType: TableType;
 };
 
-export type GetTableNEventsQueryParams = PaginationQueryParams & {
+export type GetBookedTablesQueryParams = PaginationQueryParams & {
   search?: string;
 };
 
-export type GetSplitTableNEventsQueryParams = PaginationQueryParams & {
+export type GetSplitTablesQueryParams = PaginationQueryParams & {
   search?: string;
 };
 
-export type GetRecentViewedClubsQueryParams = PaginationQueryParams & {
+export type GetRecentViewsQueryParams = PaginationQueryParams & {
   search?: string;
 };
 
@@ -470,3 +468,5 @@ export type GeolocationError = {
   POSITION_UNAVAILABLE: number;
   TIMEOUT: number;
 };
+
+export type TableType = "booked" | "split";

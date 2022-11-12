@@ -1,15 +1,16 @@
 import React from "react";
-import {TClubItem} from "./shared";
+import {TTableItem} from "./shared";
 import truncate from "lodash.truncate";
 import {
-  ActivityIndicator,
-  ImageBackground,
+  View,
+  Text,
   Pressable,
   StyleSheet,
-  Text,
+  ImageBackground,
+  ActivityIndicator,
   TouchableOpacity,
-  View,
 } from "react-native";
+import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {Clock, MapIcon} from "@constants/iconPath";
@@ -18,17 +19,15 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
-import {splitAppTheme} from "@src/theme";
 
 type Props = {
-  item: TClubItem;
-  onPress: (item: TClubItem) => void;
+  item: TTableItem;
+  onPress: (item: TTableItem) => void;
 };
 
-const ClubListItem = ({item, onPress}: Props) => {
+const TableListItem = ({item, onPress}: Props) => {
   const toast = useAppToast();
   const queryClient = useQueryClient();
   const handlePress = React.useCallback(() => {
@@ -52,7 +51,7 @@ const ClubListItem = ({item, onPress}: Props) => {
         onSuccess(data) {
           if (!isResponseResultError(data)) {
             toast.success(data.message);
-            queryClient.invalidateQueries([QueryKeys.CLUB, "LIST"]);
+            queryClient.invalidateQueries([QueryKeys.TABLE, "LIST"]);
           }
         },
       },
@@ -88,7 +87,7 @@ const ClubListItem = ({item, onPress}: Props) => {
                 justifyContent: "space-between",
                 padding: splitAppTheme.space[2],
               }}>
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -103,9 +102,9 @@ const ClubListItem = ({item, onPress}: Props) => {
                   <Fontisto name="star" color={"#FFC529"} size={16} />
                 </View>
                 <Text style={{color: "black"}}>({item.totalReviews})</Text>
-              </View>
+              </View> */}
 
-              {isTogglingFavorite ? (
+              {/* {isTogglingFavorite ? (
                 <View style={{padding: splitAppTheme.space["3"]}}>
                   <ActivityIndicator color={"white"} size={"small"} />
                 </View>
@@ -125,7 +124,7 @@ const ClubListItem = ({item, onPress}: Props) => {
                     name={item.isFavorite ? "heart" : "hearto"}
                   />
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           </ImageBackground>
         </View>
@@ -186,7 +185,7 @@ const ClubListItem = ({item, onPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.sm,
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
                 }}>
-                Open: {item.openingTime} - {item.closingTime}
+                {item.date}
               </Text>
             </View>
           </View>
@@ -207,4 +206,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClubListItem;
+export default TableListItem;

@@ -19,7 +19,7 @@ import {
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
   "infinite",
   "by-search",
@@ -66,7 +66,7 @@ export default function useInfiniteGetClubsBySearchTermQuery(
     GetClubsBySearchTermResponse,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "infinite", "by-search", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "by-search", queryParams],
     queryFn,
     optionsRef.current,
   );

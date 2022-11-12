@@ -1,18 +1,16 @@
 import React from "react";
-import {TClubItem} from "./shared";
-import ClubListItem from "./ClubListItem";
-import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
-import {ClubByLocationItem} from "@src/models";
+import {TTableItem} from "./shared";
+import TableListItem from "./TableListItem";
 import GenericListEmpty from "@components/GenericListEmpty";
-import useInfiniteGetClubsByLocationQuery from "@hooks/clubs/useInfiniteGetClubsByLocationQuery";
-import {splitAppTheme} from "@src/theme";
+import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
+import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
 
 type Props = {
-  locationId: number;
-  onItemPress: (item: TClubItem) => void;
+  searchTerm?: string;
+  onItemPress: (item: TTableItem) => void;
 };
 
-const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
+const BookedTableList = ({onItemPress, searchTerm}: Props) => {
   const {
     refetch,
     isLoading,
@@ -20,17 +18,17 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
     fetchNextPage,
     isFetchingNextPage,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetClubsByLocationQuery(
+  } = useInfiniteGetBookedTablesQuery(
     {
-      locationId,
       page: 1,
+      search: searchTerm,
     },
     {
       getNextPageParam(lastPage) {
-        if (lastPage.clubs.has_more_data) {
+        if (lastPage.tables.has_more_data) {
           return {
-            locationId,
-            page: lastPage.clubs.current_page + 1,
+            search: searchTerm,
+            page: lastPage.tables.current_page + 1,
           };
         }
       },
@@ -40,30 +38,28 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
   const clubListData = React.useMemo(() => {
     return (
       infiniteGetClubsByLocationsResponse?.pages.flatMap(eachPage => {
-        return eachPage.clubs.data;
+        return eachPage.tables.data;
       }) ?? []
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
 
-  const renderClubList: ListRenderItem<ClubByLocationItem> = React.useCallback(
-    ({item}) => (
-      <ClubListItem
-        item={{
-          id: item.id,
-          name: item.name,
-          image: item.image,
-          location: item.location,
-          avgRating: item.avg_rating,
-          isFavorite: item.is_favourite,
-          closingTime: item.closing_time,
-          openingTime: item.opening_time,
-          totalReviews: item.total_reviews,
-        }}
-        onPress={onItemPress}
-      />
-    ),
-    [onItemPress],
-  );
+  const renderClubList: ListRenderItem<typeof clubListData[0]> =
+    React.useCallback(
+      ({item}) => (
+        <TableListItem
+          item={{
+            id: item.id,
+            date: item.date,
+            name: item.name,
+            image: item.image,
+            location: item.location,
+            distance: item.distance,
+          }}
+          onPress={onItemPress}
+        />
+      ),
+      [onItemPress],
+    );
 
   const handleFetchNextPage = React.useCallback(() => {
     fetchNextPage();
@@ -73,7 +69,7 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
   //   return (
   //     <Box p={6}>
   //       {new Array(7).fill(1).map((_, index) => (
-  //         <Box width={"full"} key={index} mb={index === 6 ? 0 : 5}>
+  //         <Center width={"full"} key={index} mb={index === 6 ? 0 : 5}>
   //           <VStack
   //             space={8}
   //             width={"full"}
@@ -83,7 +79,7 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
   //             <Skeleton height={"32"} />
   //             <Skeleton.Text px={"2"} my={"4"} />
   //           </VStack>
-  //         </Box>
+  //         </Center>
   //       ))}
   //     </Box>
   //   );
@@ -98,7 +94,7 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
       onEndReached={handleFetchNextPage}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: splitAppTheme.space[6],
+        padding: 24,
       }}
       ListFooterComponent={
         isFetchingNextPage ? (
@@ -112,4 +108,4 @@ const ClubsByLocationList = ({locationId, onItemPress}: Props) => {
   );
 };
 
-export default ClubsByLocationList;
+export default BookedTableList;

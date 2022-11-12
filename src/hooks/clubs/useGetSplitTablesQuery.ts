@@ -5,22 +5,19 @@ import {handleCancelableAxiosPromise} from "@utils/http";
 import {IClubService} from "@core/services/IClubService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {
-  GetSplitTableNEventsReposne,
-  GetSplitTableNEventsQueryParams,
-} from "@src/models";
+import {GetSplitTablesReponse, GetSplitTablesQueryParams} from "@src/models";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
   "nearby",
-  GetSplitTableNEventsQueryParams,
+  GetSplitTablesQueryParams,
 ];
 
-const queryFn: QueryFunction<GetSplitTableNEventsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetSplitTablesReponse, QueryKey> = ({
   signal,
   queryKey,
 }) => {
@@ -34,12 +31,12 @@ const queryFn: QueryFunction<GetSplitTableNEventsReposne, QueryKey> = ({
   );
 };
 
-export default function useGetSplitTableNEventsQuery(
-  queryParams: GetSplitTableNEventsQueryParams = {},
+export default function useGetSplitTablesQuery(
+  queryParams: GetSplitTablesQueryParams = {},
   options?: UseQueryOptions<
-    GetSplitTableNEventsReposne,
+    GetSplitTablesReponse,
     ApplicationError,
-    GetSplitTableNEventsReposne,
+    GetSplitTablesReponse,
     QueryKey
   >,
 ) {
@@ -50,12 +47,12 @@ export default function useGetSplitTableNEventsQuery(
   }, [options]);
 
   return useQuery<
-    GetSplitTableNEventsReposne,
+    GetSplitTablesReponse,
     ApplicationError,
-    GetSplitTableNEventsReposne,
+    GetSplitTablesReponse,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "nearby", queryParams],
+    [QueryKeys.TABLE, "LIST", "nearby", queryParams],
     queryFn,
     optionsRef.current,
   );

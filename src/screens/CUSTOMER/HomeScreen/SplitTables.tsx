@@ -1,17 +1,17 @@
 import React from "react";
 import {Text, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
-import {SplitTableNEvent} from "@src/models";
+import {SplitTable} from "@src/models";
 import EachSplitTableNEventItem from "./EachSplitTableNEventItem";
-import useGetSplitTableNEventsQuery from "@hooks/clubs/useGetSplitTableNEventsQuery";
+import useGetSplitTablesQuery from "@hooks/clubs/useGetSplitTablesQuery";
 
 type Props = {
-  onItemPress: (item: SplitTableNEvent) => void;
+  onItemPress: (item: SplitTable) => void;
 };
 
-export default function SplitTableNEvents({onItemPress}: Props) {
+export default function SplitTables({onItemPress}: Props) {
   const {data: splitTableNEventsResponse, isLoading: isNearbyClubsLoading} =
-    useGetSplitTableNEventsQuery();
+    useGetSplitTablesQuery();
 
   return (
     <View>

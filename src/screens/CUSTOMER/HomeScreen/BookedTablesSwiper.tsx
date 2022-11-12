@@ -1,18 +1,18 @@
 import React from "react";
-import {TableNEvent} from "@src/models";
+import {BookedTable} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import {ScrollView, View} from "react-native";
 import EachTableNEventItem from "@components/EachTableNEventItem";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import useGetTableNEventsQuery from "@hooks/clubs/useGetTableNEventsQuery";
+import useGetBookedTablesQuery from "@hooks/clubs/useGetBookedTablesQuery";
 
 type Props = {
-  onItemPress: (club: TableNEvent) => void;
+  onItemPress: (club: BookedTable) => void;
 };
 
-export default function TableNEventsSwiper({onItemPress}: Props) {
+export default function BookedTablesSwiper({onItemPress}: Props) {
   const {data: tableNEventsResponse, isLoading: isPopularClubsLoading} =
-    useGetTableNEventsQuery();
+    useGetBookedTablesQuery();
 
   return (
     <ScrollView

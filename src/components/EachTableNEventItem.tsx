@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
-import {TableNEvent} from "@src/models";
+import {BookedTable} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {RedMap, MapIcon, Clock} from "@constants/iconPath";
@@ -23,8 +23,8 @@ import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 
 type Props = {
-  item: TableNEvent;
-  onPress: (club: TableNEvent) => void;
+  item: BookedTable;
+  onPress: (club: BookedTable) => void;
 };
 
 const EachTableNEventItem = ({item, onPress}: Props) => {
@@ -51,7 +51,7 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
         onSuccess(data) {
           if (!isResponseResultError(data)) {
             toast.success(data.message);
-            queryClient.invalidateQueries([QueryKeys.CLUB, "LIST"]);
+            queryClient.invalidateQueries([QueryKeys.TABLE, "LIST"]);
           }
         },
       },

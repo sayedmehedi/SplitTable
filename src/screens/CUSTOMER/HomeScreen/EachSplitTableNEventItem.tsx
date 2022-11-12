@@ -2,13 +2,13 @@ import React from "react";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import {Clock, MapIcon} from "@constants/iconPath";
-import {SplitTableNEvent} from "@src/models";
+import {SplitTable} from "@src/models";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import {Image, Pressable, Text, View} from "react-native";
 
 type Props = {
-  item: SplitTableNEvent;
-  onPress: (item: SplitTableNEvent) => void;
+  item: SplitTable;
+  onPress: (item: SplitTable) => void;
 };
 
 const EachSplitTableNEventItem = ({item, onPress}: Props) => {

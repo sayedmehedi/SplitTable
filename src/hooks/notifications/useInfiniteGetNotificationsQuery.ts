@@ -21,7 +21,7 @@ const service = container.get<INotificationService>(
 );
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
   "infinite",
   "notifications",
@@ -65,7 +65,7 @@ export default function useInfiniteGetNotificationsQuery(
     GetNotificationsResponse,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "infinite", "notifications", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "notifications", queryParams],
     queryFn,
     optionsRef.current,
   );

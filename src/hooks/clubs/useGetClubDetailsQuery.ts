@@ -10,7 +10,7 @@ import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
-type QueryKey = [typeof QueryKeys.CLUB, "DETAILS", number];
+type QueryKey = [typeof QueryKeys.TABLE, "DETAILS", number];
 
 const queryFn: QueryFunction<GetClubDetailsResponse, QueryKey> = ({
   signal,
@@ -43,5 +43,5 @@ export default function useGetClubDetailsQuery(
     ApplicationError,
     GetClubDetailsResponse,
     QueryKey
-  >([QueryKeys.CLUB, "DETAILS", clubId], queryFn, optionsRef.current);
+  >([QueryKeys.TABLE, "DETAILS", clubId], queryFn, optionsRef.current);
 }

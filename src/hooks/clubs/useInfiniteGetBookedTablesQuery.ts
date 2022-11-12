@@ -5,10 +5,7 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {
-  GetSplitTableNEventsReposne,
-  GetSplitTableNEventsQueryParams,
-} from "@src/models";
+import {GetBookedTablesReponse, GetBookedTablesQueryParams} from "@src/models";
 import {
   QueryFunction,
   useInfiniteQuery,
@@ -19,38 +16,35 @@ import {
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
   "infinite",
-  "near-by",
-  GetSplitTableNEventsQueryParams,
+  "popular",
+  GetBookedTablesQueryParams,
 ];
 
-const queryFn: QueryFunction<GetSplitTableNEventsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetBookedTablesReponse, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetSplitTableNEventsQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetBookedTablesQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(
-    service.getSplitTableNEvents(queryParams),
-    {
-      signal,
-    },
-  );
+  return handleCancelableAxiosPromise(service.getBookedTables(queryParams), {
+    signal,
+  });
 };
 
-export default function useInfiniteGetNearByClubsQuery(
-  queryParams: GetSplitTableNEventsQueryParams = {},
+export default function useInfiniteGetBookedTablesQuery(
+  queryParams: GetBookedTablesQueryParams = {},
   options?: UseInfiniteQueryOptions<
-    GetSplitTableNEventsReposne,
+    GetBookedTablesReponse,
     ApplicationError,
-    GetSplitTableNEventsReposne,
-    GetSplitTableNEventsReposne,
+    GetBookedTablesReponse,
+    GetBookedTablesReponse,
     QueryKey
   >,
 ) {
@@ -61,12 +55,12 @@ export default function useInfiniteGetNearByClubsQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetSplitTableNEventsReposne,
+    GetBookedTablesReponse,
     ApplicationError,
-    GetSplitTableNEventsReposne,
+    GetBookedTablesReponse,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "infinite", "near-by", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "popular", queryParams],
     queryFn,
     optionsRef.current,
   );

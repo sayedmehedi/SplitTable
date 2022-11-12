@@ -1,6 +1,6 @@
 import React from "react";
-import {TClubItem} from "./shared";
-import ClubListItem from "./ClubListItem";
+import {TTableItem} from "./shared";
+import TableListItem from "./TableListItem";
 import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useInfiniteGetClubsBySearchTermQuery from "@hooks/clubs/useInfiniteGetClubsBySearchTermQuery";
@@ -8,7 +8,7 @@ import {splitAppTheme} from "@src/theme";
 
 type Props = {
   searchTerm?: string;
-  onItemPress: (item: TClubItem) => void;
+  onItemPress: (item: TTableItem) => void;
 };
 
 const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
@@ -47,7 +47,7 @@ const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
   const renderClubList: ListRenderItem<typeof clubListData[0]> =
     React.useCallback(
       ({item}) => (
-        <ClubListItem
+        <TableListItem
           item={{
             id: item.id,
             name: item.name,

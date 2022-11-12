@@ -1,6 +1,6 @@
 import React from "react";
 import truncate from "lodash.truncate";
-import {TableNEvent} from "@src/models";
+import {BookedTable} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {MapIcon, Clock} from "@constants/iconPath";
@@ -24,8 +24,8 @@ import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMut
 import {splitAppTheme} from "@src/theme";
 
 type Props = {
-  item: TableNEvent;
-  onPress: (item: TableNEvent) => void;
+  item: BookedTable;
+  onPress: (item: BookedTable) => void;
 };
 
 const EachRecentVisitsItem = ({item, onPress}: Props) => {
@@ -52,7 +52,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
         onSuccess(data) {
           if (!isResponseResultError(data)) {
             toast.success(data.message);
-            queryClient.invalidateQueries([QueryKeys.CLUB, "LIST"]);
+            queryClient.invalidateQueries([QueryKeys.TABLE, "LIST"]);
           }
         },
       },

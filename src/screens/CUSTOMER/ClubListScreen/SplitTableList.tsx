@@ -1,16 +1,17 @@
 import React from "react";
-import {TClubItem} from "./shared";
-import ClubListItem from "./ClubListItem";
-import GenericListEmpty from "@components/GenericListEmpty";
+import {TTableItem} from "./shared";
+import TableListItem from "./TableListItem";
 import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
-import useInfiniteGetPopularClubsQuery from "@hooks/clubs/useInfiniteGetPopularClubsQuery";
+import GenericListEmpty from "@components/GenericListEmpty";
+import useInfiniteGetSplitTablesQuery from "@hooks/clubs/useInfiniteGetSplitTablesQuery";
+import {splitAppTheme} from "@src/theme";
 
 type Props = {
   searchTerm?: string;
-  onItemPress: (item: TClubItem) => void;
+  onItemPress: (item: TTableItem) => void;
 };
 
-const PopularClubList = ({onItemPress, searchTerm}: Props) => {
+const SplitTableList = ({onItemPress, searchTerm}: Props) => {
   const {
     refetch,
     isLoading,
@@ -18,17 +19,17 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage,
     isFetchingNextPage,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetPopularClubsQuery(
+  } = useInfiniteGetSplitTablesQuery(
     {
       page: 1,
       search: searchTerm,
     },
     {
       getNextPageParam(lastPage) {
-        if (lastPage.clubs.has_more_data) {
+        if (lastPage.tables.has_more_data) {
           return {
             search: searchTerm,
-            page: lastPage.clubs.current_page + 1,
+            page: lastPage.tables.current_page + 1,
           };
         }
       },
@@ -38,7 +39,7 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
   const clubListData = React.useMemo(() => {
     return (
       infiniteGetClubsByLocationsResponse?.pages.flatMap(eachPage => {
-        return eachPage.clubs.data;
+        return eachPage.tables.data;
       }) ?? []
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
@@ -46,17 +47,15 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
   const renderClubList: ListRenderItem<typeof clubListData[0]> =
     React.useCallback(
       ({item}) => (
-        <ClubListItem
+        <TableListItem
           item={{
             id: item.id,
+            date: item.date,
             name: item.name,
             image: item.image,
             location: item.location,
-            avgRating: item.avg_rating,
-            isFavorite: item.is_favourite,
-            closingTime: item.closing_time,
-            openingTime: item.opening_time,
-            totalReviews: item.total_reviews,
+            distance: item.distance,
+            total_joined: item.total_joined,
           }}
           onPress={onItemPress}
         />
@@ -72,7 +71,7 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
   //   return (
   //     <Box p={6}>
   //       {new Array(7).fill(1).map((_, index) => (
-  //         <Center width={"full"} key={index} mb={index === 6 ? 0 : 5}>
+  //         <Box width={"full"} key={index} mb={index === 6 ? 0 : 5}>
   //           <VStack
   //             space={8}
   //             width={"full"}
@@ -82,7 +81,7 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
   //             <Skeleton height={"32"} />
   //             <Skeleton.Text px={"2"} my={"4"} />
   //           </VStack>
-  //         </Center>
+  //         </Box>
   //       ))}
   //     </Box>
   //   );
@@ -97,7 +96,7 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
       onEndReached={handleFetchNextPage}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: 24,
+        padding: splitAppTheme.space[6],
       }}
       ListFooterComponent={
         isFetchingNextPage ? (
@@ -111,4 +110,4 @@ const PopularClubList = ({onItemPress, searchTerm}: Props) => {
   );
 };
 
-export default PopularClubList;
+export default SplitTableList;

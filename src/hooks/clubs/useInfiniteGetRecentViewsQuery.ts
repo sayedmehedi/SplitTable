@@ -5,49 +5,46 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {
-  GetClubsByLocationResponse,
-  GetClubsByLocationQueryParams,
-} from "@src/models";
+import {GetRecentViewsReponse, GetRecentViewsQueryParams} from "@src/models";
 import {
   QueryFunction,
-  QueryFunctionContext,
   useInfiniteQuery,
+  QueryFunctionContext,
   UseInfiniteQueryOptions,
 } from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
-  "INFINITE",
-  "by-location",
-  GetClubsByLocationQueryParams,
+  "infinite",
+  "recent-viewed",
+  GetRecentViewsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetClubsByLocationResponse, QueryKey> = ({
+const queryFn: QueryFunction<GetRecentViewsReponse, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetClubsByLocationQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetRecentViewsQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(service.getClubsByLocation(queryParams), {
+  return handleCancelableAxiosPromise(service.getRecentViews(queryParams), {
     signal,
   });
 };
 
-export default function useInfiniteGetClubsByLocationQuery(
-  queryParams: GetClubsByLocationQueryParams,
+export default function useInfiniteGetRecentViewsQuery(
+  queryParams: GetRecentViewsQueryParams = {},
   options?: UseInfiniteQueryOptions<
-    GetClubsByLocationResponse,
+    GetRecentViewsReponse,
     ApplicationError,
-    GetClubsByLocationResponse,
-    GetClubsByLocationResponse,
+    GetRecentViewsReponse,
+    GetRecentViewsReponse,
     QueryKey
   >,
 ) {
@@ -58,18 +55,12 @@ export default function useInfiniteGetClubsByLocationQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetClubsByLocationResponse,
+    GetRecentViewsReponse,
     ApplicationError,
-    GetClubsByLocationResponse,
-    [
-      typeof QueryKeys.CLUB,
-      "LIST",
-      "INFINITE",
-      "by-location",
-      GetClubsByLocationQueryParams,
-    ]
+    GetRecentViewsReponse,
+    QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "INFINITE", "by-location", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "recent-viewed", queryParams],
     queryFn,
     optionsRef.current,
   );

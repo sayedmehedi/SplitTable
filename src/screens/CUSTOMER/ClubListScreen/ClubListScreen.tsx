@@ -1,13 +1,13 @@
 import React from "react";
-import {TClubItem} from "./shared";
+import {TTableItem} from "./shared";
 import {ClubListTypes} from "@constants/club";
-import PopularClubList from "./PopularClubList";
-import NearbyClubList from "./NearbyClubList";
+import BookedTableList from "./BookedTableList";
+import SplitTableList from "./SplitTableList";
 import {useDisclosure} from "react-use-disclosure";
 import {CustomerStackRoutes} from "@constants/routes";
-import ClubsByLocationList from "./ClubsByLocationList";
+import TablesByLocationList from "./TablesByLocationList";
 import {StackScreenProps} from "@react-navigation/stack";
-import RecentVisitClubList from "./RecentVisitClubList";
+import RecentVisits from "./RecentVisitClubList";
 import ClubListBySearchTerm from "./ClubListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -51,7 +51,7 @@ const ClubListScreen = ({route}: Props) => {
     setClubSearchTermDraft("");
   };
 
-  const handleItemPresss = React.useCallback((item: TClubItem) => {}, []);
+  const handleItemPresss = React.useCallback((item: TTableItem) => {}, []);
 
   return (
     <View
@@ -61,28 +61,28 @@ const ClubListScreen = ({route}: Props) => {
       }}>
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
       {route.params.listType === ClubListTypes.BY_LOCATION && (
-        <ClubsByLocationList
+        <TablesByLocationList
           onItemPress={handleItemPresss}
           locationId={route.params.locationId}
         />
       )}
 
       {route.params.listType === ClubListTypes.POPULAR && (
-        <PopularClubList
+        <BookedTableList
           searchTerm={clubSearchTerm}
           onItemPress={handleItemPresss}
         />
       )}
 
       {route.params.listType === ClubListTypes.NEAR && (
-        <NearbyClubList
+        <SplitTableList
           searchTerm={clubSearchTerm}
           onItemPress={handleItemPresss}
         />
       )}
 
       {route.params.listType === ClubListTypes.RECENT_VISIT && (
-        <RecentVisitClubList
+        <RecentVisits
           searchTerm={clubSearchTerm}
           onItemPress={handleItemPresss}
         />

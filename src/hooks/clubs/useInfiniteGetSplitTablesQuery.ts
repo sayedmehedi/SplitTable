@@ -5,10 +5,7 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {
-  GetRecentViewedClubsReposne,
-  GetRecentViewedClubsQueryParams,
-} from "@src/models";
+import {GetSplitTablesReponse, GetSplitTablesQueryParams} from "@src/models";
 import {
   QueryFunction,
   useInfiniteQuery,
@@ -19,38 +16,38 @@ import {
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
   "infinite",
-  "recent-viewed",
-  GetRecentViewedClubsQueryParams,
+  "near-by",
+  GetSplitTablesQueryParams,
 ];
 
-const queryFn: QueryFunction<GetRecentViewedClubsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetSplitTablesReponse, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetRecentViewedClubsQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetSplitTablesQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
   return handleCancelableAxiosPromise(
-    service.getRecentViewedClubs(queryParams),
+    service.getSplitTableNEvents(queryParams),
     {
       signal,
     },
   );
 };
 
-export default function useInfiniteGetRecentViewedClubsQuery(
-  queryParams: GetRecentViewedClubsQueryParams = {},
+export default function useInfiniteGetSplitTablesQuery(
+  queryParams: GetSplitTablesQueryParams = {},
   options?: UseInfiniteQueryOptions<
-    GetRecentViewedClubsReposne,
+    GetSplitTablesReponse,
     ApplicationError,
-    GetRecentViewedClubsReposne,
-    GetRecentViewedClubsReposne,
+    GetSplitTablesReponse,
+    GetSplitTablesReponse,
     QueryKey
   >,
 ) {
@@ -61,12 +58,12 @@ export default function useInfiniteGetRecentViewedClubsQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetRecentViewedClubsReposne,
+    GetSplitTablesReponse,
     ApplicationError,
-    GetRecentViewedClubsReposne,
+    GetSplitTablesReponse,
     QueryKey
   >(
-    [QueryKeys.CLUB, "LIST", "infinite", "recent-viewed", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "near-by", queryParams],
     queryFn,
     optionsRef.current,
   );

@@ -1,11 +1,9 @@
-export type TClubItem = {
+export type TTableItem = {
   id: number;
   name: string;
-  image: string;
+  date: string;
   location: string;
-  avgRating: number;
-  isFavorite: boolean;
-  openingTime: string;
-  closingTime: string;
-  totalReviews: number;
+  distance: string;
+  image: string;
+  total_joined?: number;
 };

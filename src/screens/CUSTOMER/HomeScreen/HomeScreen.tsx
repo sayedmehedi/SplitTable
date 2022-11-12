@@ -11,9 +11,9 @@ import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
 import {ClubListTypes} from "@constants/club";
-import SplitTableNEvents from "./SplitTableNEvents";
+import SplitTables from "./SplitTables";
 import {useDisclosure} from "react-use-disclosure";
-import TableNEventsSwiper from "./TableNEventsSwiper";
+import BookedTablesSwiper from "./BookedTablesSwiper";
 import Feather from "react-native-vector-icons/Feather";
 import LocationSwiper from "@components/LocationSwiper";
 import RestaurantSearchBtn from "./RestaurantSearchBtn";
@@ -22,11 +22,11 @@ import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
-import RecentVisitClubsSwiper from "./RecentVisitClubsSwiper";
+import RecentVisitsSwiper from "./RecentVisitClubsSwiper";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {TableNEvent, LocationItem, SplitTableNEvent} from "@src/models";
+import {BookedTable, LocationItem, SplitTable} from "@src/models";
 import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
@@ -56,8 +56,8 @@ const HomeScreen = ({navigation}: Props) => {
     window: {height: windowHeight},
   } = useDimensions();
 
-  const handlePopularClubItemPress = React.useCallback(
-    (item: TableNEvent) => {
+  const handleBookedTableItemPress = React.useCallback(
+    (item: BookedTable) => {
       navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
         clubId: item.id,
       });
@@ -66,7 +66,7 @@ const HomeScreen = ({navigation}: Props) => {
   );
 
   const handleRecentVisitClubPress = React.useCallback(
-    (item: TableNEvent) => {
+    (item: BookedTable) => {
       navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
         clubId: item.id,
       });
@@ -74,8 +74,8 @@ const HomeScreen = ({navigation}: Props) => {
     [navigation],
   );
 
-  const handleNearbyClubPress = React.useCallback(
-    (item: SplitTableNEvent) => {
+  const handleSpiltTablePress = React.useCallback(
+    (item: SplitTable) => {
       navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
         clubId: item.id,
       });
@@ -94,23 +94,23 @@ const HomeScreen = ({navigation}: Props) => {
     [navigation],
   );
 
-  const handlePopularClubSeeAll = React.useCallback(() => {
+  const handleBookedTableSeeAll = React.useCallback(() => {
     navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
-      headerTitle: "Popular Clubs/Bars",
+      headerTitle: "Book Table",
       listType: ClubListTypes.POPULAR,
     });
   }, [navigation]);
 
-  const handleRecentVisitClubSeeAll = React.useCallback(() => {
+  const handleRecentVisitSeeAll = React.useCallback(() => {
     navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
       headerTitle: "Your Recent Visits",
       listType: ClubListTypes.RECENT_VISIT,
     });
   }, [navigation]);
 
-  const handleNearbyClubSeeAll = React.useCallback(() => {
+  const handleSplitTableSeeAll = React.useCallback(() => {
     navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
-      headerTitle: "Near by You",
+      headerTitle: "Split Table",
       listType: ClubListTypes.NEAR,
     });
   }, [navigation]);
@@ -296,7 +296,7 @@ const HomeScreen = ({navigation}: Props) => {
                 }}>
                 Table & Events
               </Text>
-              <TouchableOpacity onPress={handlePopularClubSeeAll}>
+              <TouchableOpacity onPress={handleBookedTableSeeAll}>
                 <Text
                   style={{
                     fontSize: splitAppTheme.fontSizes.sm,
@@ -310,7 +310,7 @@ const HomeScreen = ({navigation}: Props) => {
           </View>
         </View>
 
-        <TableNEventsSwiper onItemPress={handlePopularClubItemPress} />
+        <BookedTablesSwiper onItemPress={handleBookedTableItemPress} />
 
         <View
           style={{
@@ -338,7 +338,7 @@ const HomeScreen = ({navigation}: Props) => {
                 Split Table & Events
               </Text>
 
-              <TouchableOpacity onPress={handleNearbyClubSeeAll}>
+              <TouchableOpacity onPress={handleSplitTableSeeAll}>
                 <Text
                   style={{
                     fontSize: splitAppTheme.fontSizes.sm,
@@ -350,14 +350,14 @@ const HomeScreen = ({navigation}: Props) => {
               </TouchableOpacity>
             </View>
 
-            <SplitTableNEvents onItemPress={handleNearbyClubPress} />
+            <SplitTables onItemPress={handleSpiltTablePress} />
           </View>
         </View>
 
-        {/* <RecentVisitClubsSwiper
-          onSeeAll={handleRecentVisitClubSeeAll}
+        <RecentVisitsSwiper
+          onSeeAll={handleRecentVisitSeeAll}
           onItemPress={handleRecentVisitClubPress}
-        /> */}
+        />
 
         <View
           style={{

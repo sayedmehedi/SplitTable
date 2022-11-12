@@ -5,45 +5,29 @@ import {handleCancelableAxiosPromise} from "@utils/http";
 import {IClubService} from "@core/services/IClubService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {
-  GetRecentViewedClubsReposne,
-  GetRecentViewedClubsQueryParams,
-} from "@src/models";
+import {GetRecentViewsReponse, GetRecentViewsQueryParams} from "@src/models";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 const queryFn: QueryFunction<
-  GetRecentViewedClubsReposne,
-  [
-    typeof QueryKeys.CLUB,
-    "LIST",
-    "recent-viewed",
-    GetRecentViewedClubsQueryParams,
-  ]
+  GetRecentViewsReponse,
+  [typeof QueryKeys.TABLE, "LIST", "recent-viewed", GetRecentViewsQueryParams]
 > = ({signal, queryKey}) => {
   const queryParams = queryKey[3];
 
-  return handleCancelableAxiosPromise(
-    service.getRecentViewedClubs(queryParams),
-    {
-      signal,
-    },
-  );
+  return handleCancelableAxiosPromise(service.getRecentViews(queryParams), {
+    signal,
+  });
 };
 
-export default function useGetRecentViewedClubsQuery(
-  queryParams: GetRecentViewedClubsQueryParams = {},
+export default function useGetRecentViewsClubsQuery(
+  queryParams: GetRecentViewsQueryParams = {},
   options?: UseQueryOptions<
-    GetRecentViewedClubsReposne,
+    GetRecentViewsReponse,
     ApplicationError,
-    GetRecentViewedClubsReposne,
-    [
-      typeof QueryKeys.CLUB,
-      "LIST",
-      "recent-viewed",
-      GetRecentViewedClubsQueryParams,
-    ]
+    GetRecentViewsReponse,
+    [typeof QueryKeys.TABLE, "LIST", "recent-viewed", GetRecentViewsQueryParams]
   >,
 ) {
   const optionsRef = React.useRef(options);
@@ -53,17 +37,12 @@ export default function useGetRecentViewedClubsQuery(
   }, [options]);
 
   return useQuery<
-    GetRecentViewedClubsReposne,
+    GetRecentViewsReponse,
     ApplicationError,
-    GetRecentViewedClubsReposne,
-    [
-      typeof QueryKeys.CLUB,
-      "LIST",
-      "recent-viewed",
-      GetRecentViewedClubsQueryParams,
-    ]
+    GetRecentViewsReponse,
+    [typeof QueryKeys.TABLE, "LIST", "recent-viewed", GetRecentViewsQueryParams]
   >(
-    [QueryKeys.CLUB, "LIST", "recent-viewed", queryParams],
+    [QueryKeys.TABLE, "LIST", "recent-viewed", queryParams],
     queryFn,
     optionsRef.current,
   );

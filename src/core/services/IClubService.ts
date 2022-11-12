@@ -1,19 +1,19 @@
 import {AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {
-  GetSplitTableNEventsReposne,
+  GetSplitTablesReponse,
   GetClubDetailsResponse,
-  GetTableNEventsReposne,
+  GetBookedTablesReponse,
   GlobalAxiosRequestConfig,
   ToggleFavoriteClubRequest,
-  GetSplitTableNEventsQueryParams,
-  GetTableNEventsQueryParams,
-  GetClubsByLocationResponse,
+  GetSplitTablesQueryParams,
+  GetBookedTablesQueryParams,
+  GetTablesByLocationResponse,
   ToggleFavoriteClubResponse,
-  GetRecentViewedClubsReposne,
+  GetRecentViewsReponse,
   GetClubsBySearchTermResponse,
-  GetClubsByLocationQueryParams,
-  GetRecentViewedClubsQueryParams,
+  GetTablesByLocationQueryParams,
+  GetRecentViewsQueryParams,
   GetClubsBySearchTermQueryParams,
 } from "@src/models";
 
@@ -24,28 +24,28 @@ export interface IClubService {
     AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
   >;
 
-  getTableNEvents(
-    params: GetTableNEventsQueryParams,
+  getBookedTables(
+    params: GetBookedTablesQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetTableNEventsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetBookedTablesReponse, GlobalAxiosRequestConfig>
   >;
 
-  getRecentViewedClubs(
-    params: GetRecentViewedClubsQueryParams,
+  getRecentViews(
+    params: GetRecentViewsQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetRecentViewedClubsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetRecentViewsReponse, GlobalAxiosRequestConfig>
   >;
 
   getSplitTableNEvents(
-    params: GetSplitTableNEventsQueryParams,
+    params: GetSplitTablesQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetSplitTableNEventsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
   >;
 
-  getClubsByLocation(
-    params: GetClubsByLocationQueryParams,
+  getTablesByLocation(
+    params: GetTablesByLocationQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetClubsByLocationResponse, GlobalAxiosRequestConfig>
+    AxiosResponse<GetTablesByLocationResponse, GlobalAxiosRequestConfig>
   >;
 
   getClubsBySearchTerm(

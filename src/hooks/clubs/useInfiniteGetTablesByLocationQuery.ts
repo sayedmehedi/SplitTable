@@ -5,46 +5,52 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetTableNEventsReposne, GetTableNEventsQueryParams} from "@src/models";
+import {
+  GetTablesByLocationResponse,
+  GetTablesByLocationQueryParams,
+} from "@src/models";
 import {
   QueryFunction,
-  useInfiniteQuery,
   QueryFunctionContext,
+  useInfiniteQuery,
   UseInfiniteQueryOptions,
 } from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.CLUB,
+  typeof QueryKeys.TABLE,
   "LIST",
-  "infinite",
-  "popular",
-  GetTableNEventsQueryParams,
+  "INFINITE",
+  "by-location",
+  GetTablesByLocationQueryParams,
 ];
 
-const queryFn: QueryFunction<GetTableNEventsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetTablesByLocationResponse, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetTableNEventsQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetTablesByLocationQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(service.getTableNEvents(queryParams), {
-    signal,
-  });
+  return handleCancelableAxiosPromise(
+    service.getTablesByLocation(queryParams),
+    {
+      signal,
+    },
+  );
 };
 
-export default function useInfiniteGetPopularClubsQuery(
-  queryParams: GetTableNEventsQueryParams = {},
+export default function useInfiniteGetTablesByLocationQuery(
+  queryParams: GetTablesByLocationQueryParams,
   options?: UseInfiniteQueryOptions<
-    GetTableNEventsReposne,
+    GetTablesByLocationResponse,
     ApplicationError,
-    GetTableNEventsReposne,
-    GetTableNEventsReposne,
+    GetTablesByLocationResponse,
+    GetTablesByLocationResponse,
     QueryKey
   >,
 ) {
@@ -55,12 +61,18 @@ export default function useInfiniteGetPopularClubsQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetTableNEventsReposne,
+    GetTablesByLocationResponse,
     ApplicationError,
-    GetTableNEventsReposne,
-    QueryKey
+    GetTablesByLocationResponse,
+    [
+      typeof QueryKeys.TABLE,
+      "LIST",
+      "INFINITE",
+      "by-location",
+      GetTablesByLocationQueryParams,
+    ]
   >(
-    [QueryKeys.CLUB, "LIST", "infinite", "popular", queryParams],
+    [QueryKeys.TABLE, "LIST", "INFINITE", "by-location", queryParams],
     queryFn,
     optionsRef.current,
   );
