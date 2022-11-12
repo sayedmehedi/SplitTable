@@ -1,6 +1,6 @@
 import React from "react";
 import truncate from "lodash.truncate";
-import {ClubListItem} from "@src/models";
+import {TableNEvent} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {MapIcon, Clock} from "@constants/iconPath";
@@ -24,8 +24,8 @@ import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMut
 import {splitAppTheme} from "@src/theme";
 
 type Props = {
-  item: ClubListItem;
-  onPress: (item: ClubListItem) => void;
+  item: TableNEvent;
+  onPress: (item: TableNEvent) => void;
 };
 
 const EachRecentVisitsItem = ({item, onPress}: Props) => {

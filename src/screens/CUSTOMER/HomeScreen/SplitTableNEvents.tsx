@@ -1,17 +1,17 @@
 import React from "react";
-import EachNearByItem from "./EachNearByItem";
-import {NearbyClubListItem} from "@src/models";
-import useGetNearbyClubsQuery from "@hooks/clubs/useGetNearbyClubsQuery";
+import {Text, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
-import {View} from "react-native";
+import {SplitTableNEvent} from "@src/models";
+import EachSplitTableNEventItem from "./EachSplitTableNEventItem";
+import useGetSplitTableNEventsQuery from "@hooks/clubs/useGetSplitTableNEventsQuery";
 
 type Props = {
-  onItemPress: (item: NearbyClubListItem) => void;
+  onItemPress: (item: SplitTableNEvent) => void;
 };
 
-export default function NearbyClubsList({onItemPress}: Props) {
-  const {data: nearbyClubsResponse, isLoading: isNearbyClubsLoading} =
-    useGetNearbyClubsQuery();
+export default function SplitTableNEvents({onItemPress}: Props) {
+  const {data: splitTableNEventsResponse, isLoading: isNearbyClubsLoading} =
+    useGetSplitTableNEventsQuery();
 
   return (
     <View>
@@ -29,6 +29,7 @@ export default function NearbyClubsList({onItemPress}: Props) {
                   height: splitAppTheme.sizes[32],
                   borderRadius: splitAppTheme.radii.md,
                 }}>
+                <Text>Loading..</Text>
                 {/* <Skeleton
                   height={"24"}
                   width={"24"}
@@ -53,9 +54,13 @@ export default function NearbyClubsList({onItemPress}: Props) {
               </View>
             </View>
           ))
-        : nearbyClubsResponse?.clubs.data.map(item => {
+        : splitTableNEventsResponse?.tables.data.map(item => {
             return (
-              <EachNearByItem key={item.id} item={item} onPress={onItemPress} />
+              <EachSplitTableNEventItem
+                item={item}
+                key={item.id}
+                onPress={onItemPress}
+              />
             );
           })}
     </View>

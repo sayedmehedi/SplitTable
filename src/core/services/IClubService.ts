@@ -1,13 +1,13 @@
 import {AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {
-  GetNearByClubsReposne,
+  GetSplitTableNEventsReposne,
   GetClubDetailsResponse,
-  GetPopularClubsReposne,
+  GetTableNEventsReposne,
   GlobalAxiosRequestConfig,
   ToggleFavoriteClubRequest,
-  GetNearByClubsQueryParams,
-  GetPopularClubsQueryParams,
+  GetSplitTableNEventsQueryParams,
+  GetTableNEventsQueryParams,
   GetClubsByLocationResponse,
   ToggleFavoriteClubResponse,
   GetRecentViewedClubsReposne,
@@ -24,10 +24,10 @@ export interface IClubService {
     AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
   >;
 
-  getPopularClubs(
-    params: GetPopularClubsQueryParams,
+  getTableNEvents(
+    params: GetTableNEventsQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetTableNEventsReposne, GlobalAxiosRequestConfig>
   >;
 
   getRecentViewedClubs(
@@ -36,10 +36,10 @@ export interface IClubService {
     AxiosResponse<GetRecentViewedClubsReposne, GlobalAxiosRequestConfig>
   >;
 
-  getNearByClubs(
-    params: GetNearByClubsQueryParams,
+  getSplitTableNEvents(
+    params: GetSplitTableNEventsQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetNearByClubsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetSplitTableNEventsReposne, GlobalAxiosRequestConfig>
   >;
 
   getClubsByLocation(

@@ -12,6 +12,7 @@ export const CustomerStackRoutes = {
   CLUB_DETAILS: "ClubDetails",
   CUSTOMER_AUTH: "CustomerAuth",
   NOTIFICATIONS: "Notifications",
+  LOCATION_ENABLE: "LocationEnable",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
 
   FAQ: "Faq",
@@ -24,6 +25,7 @@ export const CustomerStackRoutes = {
 
 export const CustomerAuthStackRoutes = {
   SIGNIN: "Signin",
+  SIGNUP: "Signup",
   LOGIN_PROMPT: "LoginPrompt",
   LOCATION_ENABLE: "LocationEnable",
   EMAIL_VERIFICATION: "EmailVerification",
@@ -32,7 +34,6 @@ export const CustomerAuthStackRoutes = {
 export const OwnerAuthStackRoutes = {
   SIGNIN: "Signin",
   SIGNUP: "Signup",
-  LOCATION_ENABLE: "LocationEnable",
   EMAIL_VERIFICATION: "EmailVerification",
 } as const;
 

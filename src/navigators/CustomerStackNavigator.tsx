@@ -23,11 +23,15 @@ import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
+import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
 const CustomerStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
+
+  const showLocationScreen =
+    !authData?.location && !authData?.latitude && !authData?.longitude;
 
   return (
     <CustomerStack.Navigator
@@ -47,6 +51,14 @@ const CustomerStackNavigator = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
+          {showLocationScreen && (
+            <CustomerStack.Screen
+              options={locationEnableScreenOptions}
+              component={LocationEnablePromptScreen}
+              name={CustomerStackRoutes.LOCATION_ENABLE}
+            />
+          )}
+
           <CustomerStack.Screen
             component={CustomerBottomTabNavigator}
             name={CustomerStackRoutes.CUSTOMER_MAIN_TAB}
@@ -122,6 +134,21 @@ const CustomerStackNavigator = () => {
 };
 
 export default CustomerStackNavigator;
+
+const locationEnableScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.LOCATION_ENABLE
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitleAlign: "center",
+  headerTitle: "Select Location",
+};
 
 const clubSearchScreenOptions:
   | StackNavigationOptions

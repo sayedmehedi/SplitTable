@@ -5,16 +5,16 @@ import {IClubService} from "@core/services/IClubService";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {
   PaginationQueryParams,
-  GetNearByClubsReposne,
-  GetPopularClubsReposne,
+  GetSplitTableNEventsReposne,
+  GetTableNEventsReposne,
   GetClubDetailsResponse,
   GlobalAxiosRequestConfig,
   GetClubsByLocationResponse,
-  GetNearByClubsQueryParams,
+  GetSplitTableNEventsQueryParams,
   ToggleFavoriteClubRequest,
   GetRecentViewedClubsReposne,
   ToggleFavoriteClubResponse,
-  GetPopularClubsQueryParams,
+  GetTableNEventsQueryParams,
   GetClubsByLocationQueryParams,
   GetClubsBySearchTermResponse,
   GetClubsBySearchTermQueryParams,
@@ -109,22 +109,22 @@ export class ClubService implements IClubService {
     });
   }
 
-  getPopularClubs(
-    params: GetPopularClubsQueryParams,
+  getTableNEvents(
+    params: GetTableNEventsQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetTableNEventsReposne, GlobalAxiosRequestConfig>
   > {
     const controller = new AbortController();
 
     return new CancelablePromise<
-      AxiosResponse<GetPopularClubsReposne, GlobalAxiosRequestConfig>
+      AxiosResponse<GetTableNEventsReposne, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
         controller.abort();
       });
 
       return this._httpService
-        .get<GetPopularClubsReposne>("popular-clubs", {
+        .get<GetTableNEventsReposne>("booked-tables", {
           params,
           signal: controller.signal,
         })
@@ -157,22 +157,22 @@ export class ClubService implements IClubService {
     });
   }
 
-  getNearByClubs(
-    params: GetNearByClubsQueryParams,
+  getSplitTableNEvents(
+    params: GetSplitTableNEventsQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetNearByClubsReposne, GlobalAxiosRequestConfig>
+    AxiosResponse<GetSplitTableNEventsReposne, GlobalAxiosRequestConfig>
   > {
     const controller = new AbortController();
 
     return new CancelablePromise<
-      AxiosResponse<GetNearByClubsReposne, GlobalAxiosRequestConfig>
+      AxiosResponse<GetSplitTableNEventsReposne, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
         controller.abort();
       });
 
       this._httpService
-        .get<GetNearByClubsReposne>("nearby-clubs", {
+        .get<GetSplitTableNEventsReposne>("split-tables", {
           params,
           signal: controller.signal,
         })

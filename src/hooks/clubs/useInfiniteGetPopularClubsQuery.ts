@@ -5,7 +5,7 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetPopularClubsReposne, GetPopularClubsQueryParams} from "@src/models";
+import {GetTableNEventsReposne, GetTableNEventsQueryParams} from "@src/models";
 import {
   QueryFunction,
   useInfiniteQuery,
@@ -20,31 +20,31 @@ type QueryKey = [
   "LIST",
   "infinite",
   "popular",
-  GetPopularClubsQueryParams,
+  GetTableNEventsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetPopularClubsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetTableNEventsReposne, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetPopularClubsQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetTableNEventsQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(service.getPopularClubs(queryParams), {
+  return handleCancelableAxiosPromise(service.getTableNEvents(queryParams), {
     signal,
   });
 };
 
 export default function useInfiniteGetPopularClubsQuery(
-  queryParams: GetPopularClubsQueryParams = {},
+  queryParams: GetTableNEventsQueryParams = {},
   options?: UseInfiniteQueryOptions<
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     ApplicationError,
-    GetPopularClubsReposne,
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
+    GetTableNEventsReposne,
     QueryKey
   >,
 ) {
@@ -55,9 +55,9 @@ export default function useInfiniteGetPopularClubsQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     ApplicationError,
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     QueryKey
   >(
     [QueryKeys.CLUB, "LIST", "infinite", "popular", queryParams],

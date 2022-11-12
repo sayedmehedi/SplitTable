@@ -15,6 +15,7 @@ import {ClubListTypes} from "@constants/club";
 
 type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.SIGNIN]: undefined;
+  [CustomerAuthStackRoutes.SIGNUP]: undefined;
   [CustomerAuthStackRoutes.LOGIN_PROMPT]: undefined;
   [CustomerAuthStackRoutes.LOCATION_ENABLE]: undefined;
   [CustomerAuthStackRoutes.EMAIL_VERIFICATION]: {
@@ -82,6 +83,7 @@ type CustomerStackParamList = {
     | ClubListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
   [CustomerStackRoutes.NOTIFICATIONS]: undefined;
+  [CustomerStackRoutes.LOCATION_ENABLE]: undefined;
   [CustomerStackRoutes.CLUB_DETAILS]: {
     clubId: number;
   };

@@ -234,25 +234,38 @@ const LoginPromptScreen = ({navigation}: Props) => {
 
             <View
               style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
                 marginTop: splitAppTheme.space[10],
               }}>
-              <Text
-                style={{
-                  color: splitAppTheme.colors.white,
-                  fontSize: splitAppTheme.fontSizes.lg,
-                  fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
-                }}>
-                Don't have an account?{" "}
+              <View>
                 <Text
                   style={{
-                    textDecorationLine: "underline",
                     color: splitAppTheme.colors.white,
                     fontSize: splitAppTheme.fontSizes.lg,
-                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
                   }}>
-                  Sign Up
+                  Don't have an account?{" "}
                 </Text>
-              </Text>
+              </View>
+
+              <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(CustomerAuthStackRoutes.SIGNUP);
+                  }}>
+                  <Text
+                    style={{
+                      textDecorationLine: "underline",
+                      color: splitAppTheme.colors.white,
+                      fontSize: splitAppTheme.fontSizes.lg,
+                      fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                    }}>
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>

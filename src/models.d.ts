@@ -104,43 +104,35 @@ export type ClubListItemMenu = {
   price: string;
 };
 
-export type ClubListItem = {
+export type TableNEvent = {
   id: number;
   name: string;
+  date: string;
+  location: string;
   distance: string;
   image: string;
-  location: string;
-  opening_time: string;
-  closing_time: string;
-  total_reviews: number;
-  avg_rating: number;
-  is_favourite: boolean;
-  menus: ClubListItemMenu[];
 };
 
-export type GetPopularClubsReposne = {
-  clubs: SimplePaginatedResponse<ClubListItem>;
+export type GetTableNEventsReposne = {
+  tables: SimplePaginatedResponse<TableNEvent>;
 };
 
 export type GetRecentViewedClubsReposne = {
-  clubs: SimplePaginatedResponse<ClubListItem>;
+  clubs: SimplePaginatedResponse<TableNEvent>;
 };
 
-export type NearbyClubListItem = {
+export type SplitTableNEvent = {
   id: number;
   name: string;
+  date: string;
+  location: string;
   distance: string;
   image: string;
-  location: string;
-  opening_time: string;
-  closing_time: string;
-  total_reviews: number;
-  avg_rating: number;
-  is_favourite: boolean;
+  total_joined: number;
 };
 
-export type GetNearByClubsReposne = {
-  clubs: SimplePaginatedResponse<NearbyClubListItem>;
+export type GetSplitTableNEventsReposne = {
+  tables: SimplePaginatedResponse<SplitTableNEvent>;
 };
 
 export type PaginationQueryParams =
@@ -174,11 +166,11 @@ export type GetClubsByLocationQueryParams = PaginationQueryParams & {
   locationId: number;
 };
 
-export type GetPopularClubsQueryParams = PaginationQueryParams & {
+export type GetTableNEventsQueryParams = PaginationQueryParams & {
   search?: string;
 };
 
-export type GetNearByClubsQueryParams = PaginationQueryParams & {
+export type GetSplitTableNEventsQueryParams = PaginationQueryParams & {
   search?: string;
 };
 
@@ -431,12 +423,12 @@ export type SignupRequest = {
   };
   first_name: string;
   last_name: string;
-  club: string;
-  location_id: string;
-  job_role: string;
+  club?: string;
+  location_id?: string;
+  job_role?: string;
   phone: string;
   email: string;
-  dob: string;
+  dob?: string;
   password: string;
   password_confirmation: string;
 
@@ -457,3 +449,24 @@ export type ResendEmailVerificationCodeRequest = {
 };
 
 export type ResendEmailVerificationCodeResponse = ResponseResult;
+
+export type GeolocationPosition = {
+  coords: {
+    latitude: number;
+    longitude: number;
+    altitude: number | null;
+    accuracy: number;
+    altitudeAccuracy: number | null;
+    heading: number | null;
+    speed: number | null;
+  };
+  timestamp: number;
+};
+
+export type GeolocationError = {
+  code: number;
+  message: string;
+  PERMISSION_DENIED: number;
+  POSITION_UNAVAILABLE: number;
+  TIMEOUT: number;
+};

@@ -1,16 +1,24 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
+import {useTimer} from "react-timer-hook";
+import useAppToast from "@hooks/useAppToast";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CustomerAuthStackRoutes} from "@constants/routes";
+import {isResponseResultError} from "@utils/error-handling";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import useVerifyEmailMutation from "@hooks/auth/useVerifyEmailMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {
-  CustomerAuthStackParamList,
-  CustomerStackParamList,
   RootStackParamList,
+  CustomerStackParamList,
+  CustomerAuthStackParamList,
 } from "@src/navigation";
+import useResendEmailVerificationCodeMutation from "@hooks/auth/useResendEmailVerificationCodeMutation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -23,15 +31,66 @@ type Props = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
-const EmailVerificationScreen = ({navigation}: Props) => {
+const EmailVerificationScreen = ({navigation, route}: Props) => {
+  const [otpCode, setOtpCode] = React.useState("");
+  const toast = useAppToast();
+  const {minutes, seconds, isRunning, restart} = useTimer({
+    expiryTimestamp: dayjs().add(1, "minute").add(20, "seconds").toDate(),
+  });
+
+  const {
+    error: resendError,
+    data: resendResponse,
+    mutate: resendEmailVerificationCode,
+    isLoading: isResendingEmailVerificationCode,
+  } = useResendEmailVerificationCodeMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        toast.success(data.success);
+        restart(dayjs().add(1, "minute").add(20, "seconds").toDate(), true);
+      }
+    },
+  });
+  useHandleNonFieldError(resendError);
+  useHandleResponseResultError(resendResponse);
+
+  const {
+    mutate: verifyEmail,
+    error: verifyError,
+    data: verifyResponse,
+    isLoading: isVerifying,
+  } = useVerifyEmailMutation();
+  useHandleNonFieldError(verifyError);
+  useHandleResponseResultError(verifyResponse);
+
   const handleVerify = () => {
-    navigation.navigate(CustomerAuthStackRoutes.LOCATION_ENABLE);
+    if (otpCode === "") {
+      toast.error("Please insert otp");
+      return;
+    }
+
+    verifyEmail(
+      {
+        otp: otpCode,
+        email: route.params.email,
+      },
+      {
+        onSuccess(data) {
+          if (!isResponseResultError(data)) {
+            toast.success(data.success);
+            navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
+          }
+        },
+      },
+    );
   };
 
   return (
     <View
       style={{
+        padding: splitAppTheme.space[6],
         height: splitAppTheme.sizes.full,
+        backgroundColor: splitAppTheme.colors.white,
       }}>
       <View
         style={{
@@ -40,9 +99,6 @@ const EmailVerificationScreen = ({navigation}: Props) => {
         <View
           style={{
             alignItems: "center",
-            padding: splitAppTheme.space[7],
-            marginTop: splitAppTheme.space[7],
-            backgroundColor: splitAppTheme.colors.white,
           }}>
           <Text
             style={{
@@ -70,44 +126,59 @@ const EmailVerificationScreen = ({navigation}: Props) => {
               fontSize: splitAppTheme.fontSizes["md"],
               fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
             }}>
-            john..@gmail.com
+            {route.params.email}
           </Text>
 
           <OTPInputView
             pinCount={4}
+            code={otpCode}
             autoFocusOnLoad
+            editable={isRunning}
             style={styles.otpInput}
+            onCodeChanged={setOtpCode}
             codeInputFieldStyle={styles.underlineStyleBase}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={code => {
-              console.log(`Code is $, you are good to go!`);
-            }}
           />
 
-          <Text
+          <View
             style={{
-              color: "#262B2E",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
               marginVertical: splitAppTheme.space[2],
-              fontSize: splitAppTheme.fontSizes["md"],
-              fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
             }}>
-            I didn't received code{" "}
             <Text
               style={{
-                marginVertical: splitAppTheme.space[2],
+                color: "#262B2E",
                 fontSize: splitAppTheme.fontSizes["md"],
-                color: splitAppTheme.colors.primary[300],
-                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
               }}>
-              Resend Code
+              I didn't received code{" "}
             </Text>
-          </Text>
+
+            <TouchableOpacity
+              disabled={isResendingEmailVerificationCode}
+              onPress={() => {
+                resendEmailVerificationCode({
+                  email: route.params.email,
+                });
+              }}>
+              <Text
+                style={{
+                  fontSize: splitAppTheme.fontSizes["md"],
+                  color: splitAppTheme.colors.primary[300],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                Resend Code
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           <Text
             style={{
               color: splitAppTheme.colors.red[300],
             }}>
-            1:20 Sec left
+            {minutes}:{seconds} Sec left
           </Text>
         </View>
 
@@ -120,6 +191,9 @@ const EmailVerificationScreen = ({navigation}: Props) => {
             color={"primary"}
             variant={"solid"}
             title={"Verify Now"}
+            touchableOpacityProps={{
+              disabled: !isRunning || isVerifying,
+            }}
             onPress={handleVerify}
           />
         </View>

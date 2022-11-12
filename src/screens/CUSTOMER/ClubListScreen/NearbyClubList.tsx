@@ -26,10 +26,10 @@ const NearbyClubList = ({onItemPress, searchTerm}: Props) => {
     },
     {
       getNextPageParam(lastPage) {
-        if (lastPage.clubs.has_more_data) {
+        if (lastPage.tables.has_more_data) {
           return {
             search: searchTerm,
-            page: lastPage.clubs.current_page + 1,
+            page: lastPage.tables.current_page + 1,
           };
         }
       },
@@ -39,7 +39,7 @@ const NearbyClubList = ({onItemPress, searchTerm}: Props) => {
   const clubListData = React.useMemo(() => {
     return (
       infiniteGetClubsByLocationsResponse?.pages.flatMap(eachPage => {
-        return eachPage.clubs.data;
+        return eachPage.tables.data;
       }) ?? []
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);

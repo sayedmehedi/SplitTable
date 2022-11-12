@@ -1,18 +1,18 @@
 import React from "react";
-import {ClubListItem} from "@src/models";
+import {TableNEvent} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import {ScrollView, View} from "react-native";
-import EachPopularClubItem from "@components/EachPopularClubItem";
-import useGetPopularClubsQuery from "@hooks/clubs/useGetPopularClubsQuery";
+import EachTableNEventItem from "@components/EachTableNEventItem";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import useGetTableNEventsQuery from "@hooks/clubs/useGetTableNEventsQuery";
 
 type Props = {
-  onItemPress: (club: ClubListItem) => void;
+  onItemPress: (club: TableNEvent) => void;
 };
 
-export default function PopularClubsSwiper({onItemPress}: Props) {
-  const {data: popularClubsResponse, isLoading: isPopularClubsLoading} =
-    useGetPopularClubsQuery();
+export default function TableNEventsSwiper({onItemPress}: Props) {
+  const {data: tableNEventsResponse, isLoading: isPopularClubsLoading} =
+    useGetTableNEventsQuery();
 
   return (
     <ScrollView
@@ -83,18 +83,20 @@ export default function PopularClubsSwiper({onItemPress}: Props) {
           </View>
         </SkeletonPlaceholder>
       ) : (
-        popularClubsResponse?.clubs.data.map((item, index) => {
+        tableNEventsResponse?.tables?.data.map((item, index) => {
           return (
             <View
               style={{
                 width: splitAppTheme.sizes[72],
                 marginRight:
                   splitAppTheme.space[
-                    index === popularClubsResponse.clubs.data.length - 1 ? 0 : 5
+                    index === tableNEventsResponse.tables.data.length - 1
+                      ? 0
+                      : 5
                   ],
               }}
               key={item.id}>
-              <EachPopularClubItem item={item} onPress={onItemPress} />
+              <EachTableNEventItem item={item} onPress={onItemPress} />
             </View>
           );
         })

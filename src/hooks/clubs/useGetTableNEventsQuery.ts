@@ -5,7 +5,7 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetPopularClubsReposne, GetPopularClubsQueryParams} from "@src/models";
+import {GetTableNEventsReposne, GetTableNEventsQueryParams} from "@src/models";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
@@ -14,26 +14,26 @@ type QueryKey = [
   typeof QueryKeys.CLUB,
   "LIST",
   "popular",
-  GetPopularClubsQueryParams,
+  GetTableNEventsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetPopularClubsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetTableNEventsReposne, QueryKey> = ({
   signal,
   queryKey,
 }) => {
   const queryParams = queryKey[3];
 
-  return handleCancelableAxiosPromise(service.getPopularClubs(queryParams), {
+  return handleCancelableAxiosPromise(service.getTableNEvents(queryParams), {
     signal,
   });
 };
 
-export default function useGetPopularClubsQuery(
-  queryParams: GetPopularClubsQueryParams = {},
+export default function useGetTableNEventsQuery(
+  queryParams: GetTableNEventsQueryParams = {},
   options?: UseQueryOptions<
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     ApplicationError,
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     QueryKey
   >,
 ) {
@@ -44,9 +44,9 @@ export default function useGetPopularClubsQuery(
   }, [options]);
 
   return useQuery<
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     ApplicationError,
-    GetPopularClubsReposne,
+    GetTableNEventsReposne,
     QueryKey
   >(
     [QueryKeys.CLUB, "LIST", "popular", queryParams],

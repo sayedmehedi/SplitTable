@@ -5,7 +5,10 @@ import {handleCancelableAxiosPromise} from "@utils/http";
 import {IClubService} from "@core/services/IClubService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetNearByClubsReposne, GetNearByClubsQueryParams} from "@src/models";
+import {
+  GetSplitTableNEventsReposne,
+  GetSplitTableNEventsQueryParams,
+} from "@src/models";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
@@ -14,26 +17,29 @@ type QueryKey = [
   typeof QueryKeys.CLUB,
   "LIST",
   "nearby",
-  GetNearByClubsQueryParams,
+  GetSplitTableNEventsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetNearByClubsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetSplitTableNEventsReposne, QueryKey> = ({
   signal,
   queryKey,
 }) => {
   const queryParams = queryKey[3];
 
-  return handleCancelableAxiosPromise(service.getNearByClubs(queryParams), {
-    signal,
-  });
+  return handleCancelableAxiosPromise(
+    service.getSplitTableNEvents(queryParams),
+    {
+      signal,
+    },
+  );
 };
 
-export default function useGetNearbyClubsQuery(
-  queryParams: GetNearByClubsQueryParams = {},
+export default function useGetSplitTableNEventsQuery(
+  queryParams: GetSplitTableNEventsQueryParams = {},
   options?: UseQueryOptions<
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     ApplicationError,
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     QueryKey
   >,
 ) {
@@ -44,9 +50,9 @@ export default function useGetNearbyClubsQuery(
   }, [options]);
 
   return useQuery<
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     ApplicationError,
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     QueryKey
   >(
     [QueryKeys.CLUB, "LIST", "nearby", queryParams],

@@ -12,6 +12,7 @@ import EmailLoginScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailLoginScr
 import LoginPromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LoginPromptScreen";
 import EmailVerificationScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailVerificationScreen";
 import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
+import SignUpScreen from "@screens/CUSTOMER/CustomerAuthScreen/SignUpScreen";
 
 const CustomerAuthStack = createStackNavigator<CustomerAuthStackParamList>();
 
@@ -31,32 +32,20 @@ const CustomerAuthStackNavigator = () => {
         name={CustomerAuthStackRoutes.SIGNIN}
       />
       <CustomerAuthStack.Screen
+        component={SignUpScreen}
+        options={registerScreenOptions}
+        name={CustomerAuthStackRoutes.SIGNUP}
+      />
+      <CustomerAuthStack.Screen
         component={EmailVerificationScreen}
         options={emailVerificationScreenOptions}
         name={CustomerAuthStackRoutes.EMAIL_VERIFICATION}
-      />
-      <CustomerAuthStack.Screen
-        options={locationEnableScreenOptions}
-        component={LocationEnablePromptScreen}
-        name={CustomerAuthStackRoutes.LOCATION_ENABLE}
       />
     </CustomerAuthStack.Navigator>
   );
 };
 
 export default CustomerAuthStackNavigator;
-
-const locationEnableScreenOptions:
-  | StackNavigationOptions
-  | ((props: {
-      route: RouteProp<
-        CustomerAuthStackParamList,
-        typeof CustomerAuthStackRoutes.LOCATION_ENABLE
-      >;
-      navigation: any;
-    }) => StackNavigationOptions) = {
-  headerTitle: "Select Location",
-};
 
 const emailVerificationScreenOptions:
   | StackNavigationOptions
@@ -80,6 +69,18 @@ const loginScreenOptions:
       navigation: any;
     }) => StackNavigationOptions) = {
   headerTitle: "Sign in",
+};
+
+const registerScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerAuthStackParamList,
+        typeof CustomerAuthStackRoutes.SIGNUP
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Sign Up",
 };
 
 const loginPromptScreenOptions:

@@ -5,7 +5,10 @@ import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetNearByClubsReposne, GetNearByClubsQueryParams} from "@src/models";
+import {
+  GetSplitTableNEventsReposne,
+  GetSplitTableNEventsQueryParams,
+} from "@src/models";
 import {
   QueryFunction,
   useInfiniteQuery,
@@ -20,31 +23,34 @@ type QueryKey = [
   "LIST",
   "infinite",
   "near-by",
-  GetNearByClubsQueryParams,
+  GetSplitTableNEventsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetNearByClubsReposne, QueryKey> = ({
+const queryFn: QueryFunction<GetSplitTableNEventsReposne, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetNearByClubsQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetSplitTableNEventsQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(service.getNearByClubs(queryParams), {
-    signal,
-  });
+  return handleCancelableAxiosPromise(
+    service.getSplitTableNEvents(queryParams),
+    {
+      signal,
+    },
+  );
 };
 
 export default function useInfiniteGetNearByClubsQuery(
-  queryParams: GetNearByClubsQueryParams = {},
+  queryParams: GetSplitTableNEventsQueryParams = {},
   options?: UseInfiniteQueryOptions<
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     ApplicationError,
-    GetNearByClubsReposne,
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
+    GetSplitTableNEventsReposne,
     QueryKey
   >,
 ) {
@@ -55,9 +61,9 @@ export default function useInfiniteGetNearByClubsQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     ApplicationError,
-    GetNearByClubsReposne,
+    GetSplitTableNEventsReposne,
     QueryKey
   >(
     [QueryKeys.CLUB, "LIST", "infinite", "near-by", queryParams],

@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
-import {ClubListItem} from "@src/models";
+import {TableNEvent} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
-import {RedMap, MapIcon} from "@constants/iconPath";
+import {RedMap, MapIcon, Clock} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -23,11 +23,11 @@ import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 
 type Props = {
-  item: ClubListItem;
-  onPress: (club: ClubListItem) => void;
+  item: TableNEvent;
+  onPress: (club: TableNEvent) => void;
 };
 
-const EachPopularClubItem = ({item, onPress}: Props) => {
+const EachTableNEventItem = ({item, onPress}: Props) => {
   const toast = useAppToast();
   const queryClient = useQueryClient();
   const handlePress = React.useCallback(() => {
@@ -62,7 +62,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
     <Pressable
       style={{
         flex: 1,
-        minHeight: 238,
+        minHeight: 200,
         backgroundColor: "white",
         ...splitAppTheme.shadows[3],
         borderRadius: splitAppTheme.radii.lg,
@@ -86,7 +86,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
               justifyContent: "space-between",
               padding: splitAppTheme.space[2],
             }}>
-            <View
+            {/* <View
               style={{
                 alignItems: "center",
                 flexDirection: "row",
@@ -100,14 +100,14 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
               <Text style={{color: splitAppTheme.colors.black}}>
                 ({item.total_reviews})
               </Text>
-            </View>
+            </View> */}
 
             <View
               style={{
                 alignItems: "center",
                 flexDirection: "row",
               }}>
-              {isTogglingFavorite ? (
+              {/* {isTogglingFavorite ? (
                 <View style={{padding: splitAppTheme.space[3]}}>
                   <ActivityIndicator color={"white"} size={"small"} />
                 </View>
@@ -127,7 +127,7 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
                     name={item.is_favourite ? "heart" : "hearto"}
                   />
                 </TouchableOpacity>
-              )}
+              )} */}
 
               <View
                 style={{
@@ -168,57 +168,47 @@ const EachPopularClubItem = ({item, onPress}: Props) => {
 
         <View
           style={{
-            alignItems: "center",
             flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
-          <MapIcon height={20} width={20} color={"#402B8C"} />
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+            }}>
+            <Clock height={12} width={12} color={"#402B8C"} />
+
+            <Text
+              style={{
+                marginLeft: splitAppTheme.space[2],
+              }}>
+              {item.date}
+            </Text>
+          </View>
 
           <View
             style={{
-              marginLeft: splitAppTheme.space[2],
+              alignItems: "center",
+              flexDirection: "row",
             }}>
-            <Text
-              style={{
-                color: "#8A8D9F",
-                marginRight: splitAppTheme.space[1],
-                fontSize: splitAppTheme.fontSizes.sm,
-                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
-              }}>
-              {truncate(item.location)}
-            </Text>
-          </View>
-        </View>
+            <MapIcon height={12} width={12} color={"#402B8C"} />
 
-        <View
-          style={{
-            flexWrap: "wrap",
-            alignItems: "center",
-            flexDirection: "row",
-            paddingBottom: splitAppTheme.space[2],
-          }}>
-          {item.menus.map((menu, index) => (
             <View
-              style={[
-                styles.menuContainer,
-                index === 1
-                  ? {backgroundColor: "rgba(255,188,0,0.2)"}
-                  : index === 2
-                  ? {backgroundColor: "rgba(29,191,115,0.2)"}
-                  : {},
-              ]}
-              key={menu.id}>
+              style={{
+                marginLeft: splitAppTheme.space[2],
+              }}>
               <Text
                 style={{
+                  color: "#8A8D9F",
+                  marginRight: splitAppTheme.space[1],
                   fontSize: splitAppTheme.fontSizes.sm,
-                  color: splitAppTheme.colors.primary[300],
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
                 }}>
-                {truncate(menu.name, {
-                  length: 12,
-                })}
+                {truncate(item.location)}
               </Text>
             </View>
-          ))}
+          </View>
         </View>
       </View>
     </Pressable>
@@ -237,4 +227,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EachPopularClubItem;
+export default EachTableNEventItem;

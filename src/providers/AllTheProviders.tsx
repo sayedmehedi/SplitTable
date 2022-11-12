@@ -1,14 +1,16 @@
 import React from "react";
-import {AppState, Platform} from "react-native";
 import {QueryClient} from "@tanstack/react-query";
 import type {AppStateStatus} from "react-native";
 import {onlineManager} from "@tanstack/react-query";
 import {focusManager} from "@tanstack/react-query";
-import {splitAppNavigationTheme} from "@src/theme";
 import NetInfo from "@react-native-community/netinfo";
 import {useFlipper} from "@react-navigation/devtools";
+import {useAppState} from "@react-native-community/hooks";
 import AuthDataIsLoaded from "@components/AuthDataIsLoaded";
 import AuthTypeIsLoaded from "@components/AuthTypeIsLoaded";
+import {ActivityIndicator, Platform, View} from "react-native";
+import BearerTokenAttacher from "@components/BearerTokenAttacher";
+import {splitAppNavigationTheme, splitAppTheme} from "@src/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {PersistQueryClientProvider} from "@tanstack/react-query-persist-client";
 import {createAsyncStoragePersister} from "@tanstack/query-async-storage-persister";
@@ -16,7 +18,6 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
-import BearerTokenAttacher from "@components/BearerTokenAttacher";
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -50,14 +51,14 @@ const asyncStoragePersister = createAsyncStoragePersister({
 });
 
 function AllTheProviders({children}: React.PropsWithChildren) {
+  const appState = useAppState();
+
   const navigationRef = useNavigationContainerRef();
   useFlipper(navigationRef);
 
   React.useEffect(() => {
-    const subscription = AppState.addEventListener("change", onAppStateChange);
-
-    return () => subscription.remove();
-  }, []);
+    onAppStateChange(appState);
+  }, [appState]);
 
   return (
     <PersistQueryClientProvider

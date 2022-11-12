@@ -1,17 +1,17 @@
 import React from "react";
 import truncate from "lodash.truncate";
-import {MapIcon} from "@constants/iconPath";
-import {NearbyClubListItem} from "@src/models";
+import {splitAppTheme} from "@src/theme";
+import {Clock, MapIcon} from "@constants/iconPath";
+import {SplitTableNEvent} from "@src/models";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import {Image, Pressable, Text, View} from "react-native";
-import {splitAppTheme} from "@src/theme";
 
 type Props = {
-  item: NearbyClubListItem;
-  onPress: (item: NearbyClubListItem) => void;
+  item: SplitTableNEvent;
+  onPress: (item: SplitTableNEvent) => void;
 };
 
-const EachNearByItem = ({item, onPress}: Props) => {
+const EachSplitTableNEventItem = ({item, onPress}: Props) => {
   const handlePress = React.useCallback(() => {
     onPress(item);
   }, [item, onPress]);
@@ -60,6 +60,19 @@ const EachNearByItem = ({item, onPress}: Props) => {
           </View>
 
           <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Clock height={10} width={10} color={"#402B8C"} />
+            <Text
+              style={{
+                color: "#8A8D9F",
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+              }}>
+              {truncate(item.date)}
+            </Text>
+          </View>
+
+          <View style={{flexDirection: "row", alignItems: "center"}}>
             <MapIcon height={10} width={10} color={"#402B8C"} />
             <Text
               style={{
@@ -72,10 +85,17 @@ const EachNearByItem = ({item, onPress}: Props) => {
             </Text>
           </View>
 
-          <View style={{flexDirection: "row"}}>
-            <Text style={{color: "black"}}>{item.avg_rating}</Text>
-            <Fontisto name="star" color={"#FFC529"} size={16} />
-            <Text style={{color: "black"}}>({item.total_reviews})</Text>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Clock height={10} width={10} color={"#402B8C"} />
+            <Text
+              style={{
+                color: "#8A8D9F",
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.sm,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+              }}>
+              {item.total_joined}
+            </Text>
           </View>
         </View>
       </View>
@@ -83,4 +103,4 @@ const EachNearByItem = ({item, onPress}: Props) => {
   );
 };
 
-export default EachNearByItem;
+export default EachSplitTableNEventItem;

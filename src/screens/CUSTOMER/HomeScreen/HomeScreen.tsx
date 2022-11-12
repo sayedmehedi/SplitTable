@@ -11,9 +11,9 @@ import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
 import {ClubListTypes} from "@constants/club";
-import NearbyClubsList from "./NearbyClubsList";
+import SplitTableNEvents from "./SplitTableNEvents";
 import {useDisclosure} from "react-use-disclosure";
-import PopularClubsSwiper from "./PopularClubsSwiper";
+import TableNEventsSwiper from "./TableNEventsSwiper";
 import Feather from "react-native-vector-icons/Feather";
 import LocationSwiper from "@components/LocationSwiper";
 import RestaurantSearchBtn from "./RestaurantSearchBtn";
@@ -26,7 +26,7 @@ import RecentVisitClubsSwiper from "./RecentVisitClubsSwiper";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {ClubListItem, LocationItem, NearbyClubListItem} from "@src/models";
+import {TableNEvent, LocationItem, SplitTableNEvent} from "@src/models";
 import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
@@ -57,7 +57,7 @@ const HomeScreen = ({navigation}: Props) => {
   } = useDimensions();
 
   const handlePopularClubItemPress = React.useCallback(
-    (item: ClubListItem) => {
+    (item: TableNEvent) => {
       navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
         clubId: item.id,
       });
@@ -66,7 +66,7 @@ const HomeScreen = ({navigation}: Props) => {
   );
 
   const handleRecentVisitClubPress = React.useCallback(
-    (item: ClubListItem) => {
+    (item: TableNEvent) => {
       navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
         clubId: item.id,
       });
@@ -75,7 +75,7 @@ const HomeScreen = ({navigation}: Props) => {
   );
 
   const handleNearbyClubPress = React.useCallback(
-    (item: NearbyClubListItem) => {
+    (item: SplitTableNEvent) => {
       navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
         clubId: item.id,
       });
@@ -267,7 +267,7 @@ const HomeScreen = ({navigation}: Props) => {
           style={{
             paddingVertical: splitAppTheme.space[2],
           }}>
-          {/* <LocationSwiper onItemPress={handleLocationItemPress} /> */}
+          <LocationSwiper onItemPress={handleLocationItemPress} />
         </View>
 
         <View
@@ -294,7 +294,7 @@ const HomeScreen = ({navigation}: Props) => {
                   color: "#030819",
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                 }}>
-                Popular Clubs/Bars
+                Table & Events
               </Text>
               <TouchableOpacity onPress={handlePopularClubSeeAll}>
                 <Text
@@ -310,7 +310,7 @@ const HomeScreen = ({navigation}: Props) => {
           </View>
         </View>
 
-        {/* <PopularClubsSwiper onItemPress={handlePopularClubItemPress} /> */}
+        <TableNEventsSwiper onItemPress={handlePopularClubItemPress} />
 
         <View
           style={{
@@ -335,7 +335,7 @@ const HomeScreen = ({navigation}: Props) => {
                   color: "#030819",
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                 }}>
-                Near by You
+                Split Table & Events
               </Text>
 
               <TouchableOpacity onPress={handleNearbyClubSeeAll}>
@@ -350,7 +350,7 @@ const HomeScreen = ({navigation}: Props) => {
               </TouchableOpacity>
             </View>
 
-            {/* <NearbyClubsList onItemPress={handleNearbyClubPress} /> */}
+            <SplitTableNEvents onItemPress={handleNearbyClubPress} />
           </View>
         </View>
 

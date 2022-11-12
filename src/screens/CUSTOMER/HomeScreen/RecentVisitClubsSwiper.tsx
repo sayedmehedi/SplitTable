@@ -1,5 +1,5 @@
 import React from "react";
-import {ClubListItem} from "@src/models";
+import {TableNEvent} from "@src/models";
 import EachRecentVisitsItem from "./EachRecentVisitsItem";
 import useGetRecentViewedClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
 import {ScrollView, Text, TouchableOpacity, View} from "react-native";
@@ -7,7 +7,7 @@ import {splitAppTheme} from "@src/theme";
 
 type Props = {
   onSeeAll: () => void;
-  onItemPress: (club: ClubListItem) => void;
+  onItemPress: (club: TableNEvent) => void;
 };
 
 export default function RecentVisitClubsSwiper({onItemPress, onSeeAll}: Props) {
