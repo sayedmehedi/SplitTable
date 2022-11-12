@@ -1,8 +1,11 @@
 import React from "react";
 import {ReviewItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
+import {Rating} from "react-native-ratings";
 import EachReviewItem from "./EachReviewItem";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import GenericListEmpty from "@components/GenericListEmpty";
+import {useDimensions} from "@react-native-community/hooks";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {
   View,
@@ -12,9 +15,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import useInfiniteGetClubReviewsQuery from "@hooks/review/useInfiniteGetClubReviewsQuery";
-import {useDimensions} from "@react-native-community/hooks";
-import {Rating} from "react-native-ratings";
-import Fontisto from "react-native-vector-icons/Fontisto";
 
 const keyExtractor = (item: {id: number}) =>
   `user-reviews-${item.id.toString()}`;

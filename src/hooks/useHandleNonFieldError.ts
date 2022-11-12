@@ -8,7 +8,7 @@ function useHandleNonFieldError(
   const toast = useAppToast();
 
   React.useEffect(() => {
-    if (!!error && error instanceof ApplicationError) {
+    if (!!error && "non_field_error" in error) {
       toast.error(error.non_field_error);
     } else if (!!error) {
       toast.error(error.message);

@@ -1,84 +1,39 @@
-import {View, Text, FlatList, StyleSheet} from "react-native";
 import React from "react";
+import dayjs from "dayjs";
+import {Transaction} from "@src/models";
+import {splitAppTheme} from "@src/theme";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ListRenderItem,
+  ActivityIndicator,
+} from "react-native";
+import useInfiniteGetTransactionsQuery from "@hooks/user/useInfiniteGetTransactionsQuery";
 
-const TransactionData = [
-  {
-    id: 1,
-    dateTime: "24 June 12:00",
-    clubName: "Ebc at night",
-    tableName: "table Name",
-    numberOfGuest: "6",
-    status: "Cancelled",
-    paymentType: "Credit Card",
-    price: "$1315.30",
-  },
-  {
-    id: 2,
-    dateTime: "24 June 12:00",
-    clubName: "Ebc at night",
-    tableName: "table Name",
-    numberOfGuest: "6",
-    status: "Cancelled",
-    paymentType: "Credit Card",
-    price: "$1315.30",
-  },
-  {
-    id: 3,
-    dateTime: "24 June 12:00",
-    clubName: "Ebc at night",
-    tableName: "table Name",
-    numberOfGuest: "6",
-    status: "Cancelled",
-    paymentType: "Credit Card",
-    price: "$1315.30",
-  },
-  {
-    id: 4,
-    dateTime: "24 June 12:00",
-    clubName: "Ebc at night",
-    tableName: "table Name",
-    numberOfGuest: "6",
-    status: "Cancelled",
-    paymentType: "Credit Card",
-    price: "$1315.30",
-  },
-  {
-    id: 5,
-    dateTime: "24 June 12:00",
-    clubName: "Ebc at night",
-    tableName: "table Name",
-    numberOfGuest: "6",
-    status: "Cancelled",
-    paymentType: "Credit Card",
-    price: "$1315.30",
-  },
-  {
-    id: 6,
-    dateTime: "24 June 12:00",
-    clubName: "Ebc at night",
-    tableName: "table Name",
-    numberOfGuest: "6",
-    status: "Cancelled",
-    paymentType: "Credit Card",
-    price: "$1315.30",
-  },
-];
+const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
-const renderTransactionList = ({item}) => (
+interface TransactionItem extends Omit<Transaction, "date"> {
+  date: dayjs.Dayjs;
+}
+
+const renderTransactionList: ListRenderItem<TransactionItem> = ({item}) => (
   <View
     key={item.id}
     style={{
       height: 100,
       width: "100%",
-      borderRadius: 8,
-      backgroundColor: "white",
-      marginVertical: 5,
-      flexDirection: "row",
-      alignItems: "center",
       borderWidth: 1,
+      borderRadius: 8,
+      marginVertical: 5,
+      alignItems: "center",
+      flexDirection: "row",
+      paddingHorizontal: 20,
+      backgroundColor: "white",
       borderColor: "#F1F1F1",
       justifyContent: "space-around",
-      paddingHorizontal: 20,
     }}>
     <View style={{alignItems: "center"}}>
       <Text
@@ -87,7 +42,7 @@ const renderTransactionList = ({item}) => (
           fontSize: 12,
           color: "#8A8D9F",
         }}>
-        24
+        {item.date.format("DD")}
       </Text>
       <Text
         style={{
@@ -95,7 +50,7 @@ const renderTransactionList = ({item}) => (
           fontSize: 20,
           color: "#8A8D9F",
         }}>
-        Jun
+        {item.date.format("MMM")}
       </Text>
       <Text
         style={{
@@ -103,7 +58,7 @@ const renderTransactionList = ({item}) => (
           fontSize: 12,
           color: "#8A8D9F",
         }}>
-        12:00
+        {item.date.format("HH:mm")}
       </Text>
     </View>
 
@@ -114,7 +69,7 @@ const renderTransactionList = ({item}) => (
           fontSize: 14,
           color: "#262B2E",
         }}>
-        {item.clubName}
+        {item.club}
       </Text>
       <View style={{flexDirection: "row", marginVertical: 4}}>
         <Text
@@ -123,7 +78,7 @@ const renderTransactionList = ({item}) => (
             fontSize: 12,
             color: "#8A8D9F",
           }}>
-          {item.tableName} |
+          {item.tables} |
         </Text>
         <Text
           style={{
@@ -132,16 +87,29 @@ const renderTransactionList = ({item}) => (
             color: "#8A8D9F",
           }}>
           {" "}
-          {item.numberOfGuest} Guest
+          {item.no_of_guest} Guest
         </Text>
       </View>
       <View style={{flexDirection: "row", alignItems: "center"}}>
-        <View style={styles.dot} />
+        <View
+          style={[
+            styles.dot,
+            {
+              backgroundColor:
+                item.status === "Pending"
+                  ? splitAppTheme.colors.blue[300]
+                  : splitAppTheme.colors.red[300],
+            },
+          ]}
+        />
         <Text
           style={{
-            fontFamily: "Satoshi-Regular",
             fontSize: 10,
-            color: "#FE2121",
+            color:
+              item.status === "Pending"
+                ? splitAppTheme.colors.blue[300]
+                : splitAppTheme.colors.red[300],
+            fontFamily: "Satoshi-Regular",
           }}>
           {item.status}
         </Text>
@@ -151,29 +119,143 @@ const renderTransactionList = ({item}) => (
     <View>
       <Text
         style={{
-          fontFamily: "Satoshi-Regular",
           fontSize: 10,
           color: "#8A8D9F",
           alignSelf: "flex-end",
+          fontFamily: "Satoshi-Regular",
         }}>
-        {item.paymentType}
+        {item.payment_method}
       </Text>
       <Text
         style={{
-          fontFamily: "SatoshiVariable-Bold",
           fontSize: 18,
           color: "#262B2E",
+          fontFamily: "SatoshiVariable-Bold",
         }}>
-        {item.price}
+        {item.amount}
       </Text>
     </View>
   </View>
 );
 
 const TransactionScreen = () => {
+  const {
+    refetch,
+    isRefetching,
+    fetchNextPage,
+    isFetchingNextPage,
+    error: infiniteGetResourcesError,
+    data: infiniteGetResourcesResponse,
+    isLoading: isLoadingInfiniteResources,
+  } = useInfiniteGetTransactionsQuery(
+    {
+      page: 1,
+    },
+    {
+      getNextPageParam(lastPage) {
+        if (lastPage.transactions?.has_more_data) {
+          return {
+            page: lastPage.transactions.current_page + 1,
+          };
+        }
+      },
+    },
+  );
+  useHandleNonFieldError(infiniteGetResourcesError);
+
+  const resourceListData = React.useMemo(() => {
+    return (
+      infiniteGetResourcesResponse?.pages?.flatMap(eachPage => {
+        return (
+          eachPage?.transactions?.data?.map(eachData => ({
+            ...eachData,
+            date: dayjs(eachData.date, "DD MMM, hh:mm A"),
+          })) ?? []
+        );
+      }) ?? ([] as TransactionItem[])
+    );
+  }, [infiniteGetResourcesResponse?.pages]);
+
+  console.log("resourceListData", resourceListData[0]);
+
+  const handleFetchNextPage = React.useCallback(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
+
+  if (isLoadingInfiniteResources) {
+    return (
+      <View>
+        <Text>Loading..</Text>
+      </View>
+    );
+    // return (
+    //   <ScrollView>
+    //     {ListHeaderComponent}
+
+    //     <View p={6}>
+    //       {new Array(5).fill(1).map((_, i) => (
+    //         <Center width={"full"} key={i}>
+    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+    //             <Skeleton
+    //               height={"24"}
+    //               width={"24"}
+    //               borderRadius={"sm"}
+    //               startColor="coolGray.100"
+    //             />
+    //             <VStack flex={"3"} space={"2.5"}>
+    //               <Skeleton height={"5"} startColor="amber.300" />
+    //               <Skeleton.Text lines={2} />
+
+    //               <HStack space="2" alignItems="center">
+    //                 <Skeleton size={"5"} borderRadius={"full"} />
+    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+    //                 <Skeleton
+    //                   height={"3"}
+    //                   flex={"1"}
+    //                   borderRadius={"full"}
+    //                   startColor={"indigo.300"}
+    //                 />
+    //               </HStack>
+    //             </VStack>
+    //           </HStack>
+    //         </Center>
+    //       ))}
+    //     </View>
+    //   </ScrollView>
+    // );
+  }
+
   return (
-    <View style={{backgroundColor: "white", flex: 1, padding: 10}}>
-      <FlatList data={TransactionData} renderItem={renderTransactionList} />
+    <View style={{backgroundColor: "white", flex: 1}}>
+      {isFetchingNextPage ? (
+        <View style={{alignItems: "center", justifyContent: "center"}}>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : resourceListData.length === 0 ? (
+        <View style={{alignItems: "center", justifyContent: "center"}}>
+          <Text>No Data</Text>
+        </View>
+      ) : null}
+
+      <FlatList<TransactionItem>
+        onRefresh={refetch}
+        refreshing={isRefetching}
+        data={resourceListData}
+        keyExtractor={keyExtractor}
+        renderItem={renderTransactionList}
+        onEndReached={handleFetchNextPage}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => (
+          <View
+            style={{
+              height: splitAppTheme.space["3"],
+            }}
+          />
+        )}
+        contentContainerStyle={{
+          paddingHorizontal: splitAppTheme.space["6"],
+        }}
+      />
     </View>
   );
 };

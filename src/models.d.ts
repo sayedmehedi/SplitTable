@@ -94,7 +94,7 @@ export type LocationItem = {
 
 export type GetLocationsReposne = {
   success: string;
-  items: SimplePaginatedResponse<LocationItem>;
+  items: Array<LocationItem>;
 };
 
 export type ClubListItemMenu = {
@@ -349,9 +349,9 @@ export interface UserImage {
 export interface GetUserImagesResponse {
   images: SimplePaginatedResponse<UserImage>;
 }
-export interface GetUserImageQueryParams extends PaginationQueryParams {
+export type GetUserImageQueryParams = PaginationQueryParams & {
   userId?: number;
-}
+};
 
 export type AddUserImageResponse = ResponseResult;
 export type DeleteUserImageResponse = ResponseResult;
@@ -402,3 +402,58 @@ export interface UpdateProfilePayload {
 export type UpdateProfileRequest = Partial<UpdateProfilePayload>;
 
 export type UpdateProfileResponse = ResponseResult;
+
+export interface Transaction {
+  id: number;
+  date: string;
+  club: string;
+  tables: string;
+  no_of_guest: number;
+  status: "Pending" | "Success" | "Cancelled";
+  amount: string;
+  payment_method: string;
+  user: string;
+}
+
+export type GetTransactionsResponse = {
+  transactions: SimplePaginatedResponse<Transaction>;
+};
+
+export type GetTransactionsQueryParams = PaginationQueryParams & {
+  clubId?: number;
+};
+
+export type SignupRequest = {
+  image: {
+    name: string;
+    type: string;
+    uri: string;
+  };
+  first_name: string;
+  last_name: string;
+  club: string;
+  location_id: string;
+  job_role: string;
+  phone: string;
+  email: string;
+  dob: string;
+  password: string;
+  password_confirmation: string;
+
+  onUploadProgress?: OnUploadProgress;
+};
+
+export type SignupResponse = ResponseResult;
+
+export type VerifyEmailRequest = {
+  email: string;
+  otp: string;
+};
+
+export type VerifyEmailResponse = ResponseResult;
+
+export type ResendEmailVerificationCodeRequest = {
+  email: string;
+};
+
+export type ResendEmailVerificationCodeResponse = ResponseResult;

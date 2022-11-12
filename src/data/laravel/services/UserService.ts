@@ -16,9 +16,11 @@ import {
   UpdateProfileResponse,
   DeleteUserImageRequest,
   GetUserImageQueryParams,
+  GetTransactionsResponse,
   GlobalAxiosRequestConfig,
   DeleteUserImageResponse,
   ToggleUserImageLikeRequest,
+  GetTransactionsQueryParams,
   ToggleUserImageLikeResponse,
 } from "@src/models";
 
@@ -31,6 +33,42 @@ export class UserService implements IUserService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  getTransactions(
+    params: GetTransactionsQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetTransactionsResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetTransactionsResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      let queryParams: Record<string, any> = {};
+
+      if (!!params) {
+        const {clubId, ...rest} = params;
+
+        queryParams = {
+          club_id: clubId,
+          ...rest,
+        };
+      }
+
+      this._httpService
+        .get<GetTransactionsResponse>(`transactions`, {
+          params: queryParams,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
   async updateProfile({
     onUploadProgress,
     ...data
@@ -85,7 +123,21 @@ export class UserService implements IUserService {
         onUploadProgress?.(sent, total);
       });
 
-    return response.json();
+    const serverData = response.json();
+
+    if (response.info().status === 422) {
+      throw {
+        non_field_error: "Invalid data",
+        field_errors: Object.entries(
+          serverData.errors as Record<string, string[]>,
+        ).reduce((acc, [field, messages]) => {
+          acc[field] = messages[0];
+          return acc;
+        }, {} as Record<string, string>),
+      };
+    }
+
+    return serverData;
   }
 
   toggleImageLike(
@@ -173,6 +225,21 @@ export class UserService implements IUserService {
       .uploadProgress({interval: 100}, (written, total) => {
         data.onUploadProgress?.(written, total);
       });
-    return response.json();
+
+    const serverData = response.json();
+
+    if (response.info().status === 422) {
+      throw {
+        non_field_error: "Invalid data",
+        field_errors: Object.entries(
+          serverData.errors as Record<string, string[]>,
+        ).reduce((acc, [field, messages]) => {
+          acc[field] = messages[0];
+          return acc;
+        }, {} as Record<string, string>),
+      };
+    }
+
+    return serverData;
   }
 }

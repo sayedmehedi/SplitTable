@@ -2,6 +2,9 @@ export const ROOT_STACK_NAVIGATOR_ID = "root-stack-navigator" as const;
 
 export const OWNER_STACK_NAVIGATOR_ID = "owner-stack-navigator" as const;
 
+export const OWNER_AUTH_STACK_NAVIGATOR_ID =
+  "customer-auth-stack-navigator" as const;
+
 export const OWNER_PROFILE_STACK_NAVIGATOR_ID =
   "owner-profile-stack-navigator" as const;
 

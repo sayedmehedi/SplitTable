@@ -1,5 +1,4 @@
 import React from "react";
-import CustomerAuthStack from "./CustomerAuthStack";
 import {RouteProp} from "@react-navigation/native";
 import {CustomerStackParamList} from "@src/navigation";
 import {CustomerStackRoutes} from "@constants/routes";
@@ -11,6 +10,7 @@ import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import ClubSearchScreen from "@screens/CUSTOMER/ClubSearchScreen";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
+import CustomerAuthStackNavigator from "./CustomerAuthStackNavigator";
 import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
 import ClubListScreen from "@screens/CUSTOMER/ClubListScreen/ClubListScreen";
 import {
@@ -41,7 +41,7 @@ const CustomerStackNavigator = () => {
           />
 
           <CustomerStack.Screen
-            component={CustomerAuthStack}
+            component={CustomerAuthStackNavigator}
             name={CustomerStackRoutes.CUSTOMER_AUTH}
           />
         </React.Fragment>

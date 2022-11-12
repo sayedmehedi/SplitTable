@@ -9,6 +9,7 @@ import {
   CustomerProfileStackRoutes,
   CustomerMainBottomTabRoutes,
   CustomerBookingStackRoutes,
+  OwnerAuthStackRoutes,
 } from "@constants/routes";
 import {ClubListTypes} from "@constants/club";
 
@@ -16,7 +17,18 @@ type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.SIGNIN]: undefined;
   [CustomerAuthStackRoutes.LOGIN_PROMPT]: undefined;
   [CustomerAuthStackRoutes.LOCATION_ENABLE]: undefined;
-  [CustomerAuthStackRoutes.EMAIL_VERIFICATION]: undefined;
+  [CustomerAuthStackRoutes.EMAIL_VERIFICATION]: {
+    email: string;
+  };
+};
+
+type OwnerAuthStackParamList = {
+  [OwnerAuthStackRoutes.SIGNIN]: undefined;
+  [OwnerAuthStackRoutes.SIGNUP]: undefined;
+  [OwnerAuthStackRoutes.LOCATION_ENABLE]: undefined;
+  [OwnerAuthStackRoutes.EMAIL_VERIFICATION]: {
+    email: string;
+  };
 };
 
 type CustomerBookingStackParamList = {
@@ -105,8 +117,8 @@ type OwnerBottomTabParamList = {
 };
 
 type OwnerStackParamList = {
-  [OwnerStackRoutes.OWNER_SIGN_UP]: undefined;
   [OwnerStackRoutes.ADD_MENU_ITEM]: undefined;
+  [OwnerStackRoutes.OWNER_AUTH]: NavigatorScreenParams<OwnerAuthStackParamList>;
   [OwnerStackRoutes.OWNER_MAIN_TABS]: NavigatorScreenParams<OwnerBottomTabParamList>;
 };
 

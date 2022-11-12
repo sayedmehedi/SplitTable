@@ -7,6 +7,7 @@ export const QueryKeys = {
   LOCATION: "location",
   AUTH_DATA: "auth-data",
   AUTH_TYPE: "auth-type",
+  TRANSACTION: "transaction",
   SEARCH_HISTORY: "search-history",
   IS_AUTHENTICATED: "is-authenticated",
 } as const;

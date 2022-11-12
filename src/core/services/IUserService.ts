@@ -9,9 +9,11 @@ import {
   DeleteUserImageRequest,
   DeleteUserImageResponse,
   GetUserImageQueryParams,
+  GetTransactionsResponse,
   GlobalAxiosRequestConfig,
   ToggleUserImageLikeRequest,
   ToggleUserImageLikeResponse,
+  GetTransactionsQueryParams,
 } from "@src/models";
 
 export interface IUserService {
@@ -34,4 +36,10 @@ export interface IUserService {
   >;
 
   updateProfile(data: UpdateProfileRequest): Promise<UpdateProfileResponse>;
+
+  getTransactions(
+    params: GetTransactionsQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetTransactionsResponse, GlobalAxiosRequestConfig>
+  >;
 }

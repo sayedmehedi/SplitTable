@@ -2,16 +2,16 @@ import React from "react";
 import {OwnerStackRoutes} from "@constants/routes";
 import {RouteProp} from "@react-navigation/native";
 import {OwnerStackParamList} from "@src/navigation";
-import SignUpScreen from "@screens/OWNER/SignUpScreen";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
 import {OWNER_STACK_NAVIGATOR_ID} from "@constants/navigators";
+import OwnerAuthStackNavigator from "./OwnerAuthStackNavigator";
 import OwnerBottomTabNavigator from "./OwnerBottomTabNavigator";
 import AddMenuItemScreen from "@screens/OWNER/MenuItemScreen/AddMenuItemScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -38,20 +38,6 @@ const addMenuItemScreenOptions:
   headerTitle: "Add Menu Items",
 };
 
-const signupScreenOptions:
-  | StackNavigationOptions
-  | ((props: {
-      route: RouteProp<
-        OwnerStackParamList,
-        typeof OwnerStackRoutes.OWNER_SIGN_UP
-      >;
-      navigation: any;
-    }) => StackNavigationOptions) = {
-  headerShown: true,
-  header: CommonStackHeader,
-  headerTitle: "Sign Up",
-};
-
 const OwnerStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
 
@@ -61,9 +47,8 @@ const OwnerStackNavigator = () => {
       screenOptions={globalScreenOptions}>
       {!authData ? (
         <OwnerStack.Screen
-          component={SignUpScreen}
-          options={signupScreenOptions}
-          name={OwnerStackRoutes.OWNER_SIGN_UP}
+          component={OwnerAuthStackNavigator}
+          name={OwnerStackRoutes.OWNER_AUTH}
         />
       ) : (
         <React.Fragment>

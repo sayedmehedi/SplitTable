@@ -2,8 +2,8 @@ import {Axios, AxiosResponse} from "axios";
 import {inject, injectable} from "inversify";
 import {CancelablePromise} from "cancelable-promise";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GetLocationsReposne, GlobalAxiosRequestConfig} from "@src/models";
 import {ILocationService} from "@core/services/ILocationService";
+import {GetLocationsReposne, GlobalAxiosRequestConfig} from "@src/models";
 
 @injectable()
 export class LocationService implements ILocationService {

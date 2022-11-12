@@ -13,38 +13,38 @@ import LoginPromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LoginPromptS
 import EmailVerificationScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailVerificationScreen";
 import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
 
-const CustomerAuth = createStackNavigator<CustomerAuthStackParamList>();
+const CustomerAuthStack = createStackNavigator<CustomerAuthStackParamList>();
 
-const CustomerAuthStack = () => {
+const CustomerAuthStackNavigator = () => {
   return (
-    <CustomerAuth.Navigator
+    <CustomerAuthStack.Navigator
       id={CUSTOMER_AUTH_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      <CustomerAuth.Screen
+      <CustomerAuthStack.Screen
         component={LoginPromptScreen}
         options={loginPromptScreenOptions}
         name={CustomerAuthStackRoutes.LOGIN_PROMPT}
       />
-      <CustomerAuth.Screen
+      <CustomerAuthStack.Screen
         component={EmailLoginScreen}
         options={loginScreenOptions}
         name={CustomerAuthStackRoutes.SIGNIN}
       />
-      <CustomerAuth.Screen
+      <CustomerAuthStack.Screen
         component={EmailVerificationScreen}
         options={emailVerificationScreenOptions}
         name={CustomerAuthStackRoutes.EMAIL_VERIFICATION}
       />
-      <CustomerAuth.Screen
+      <CustomerAuthStack.Screen
         options={locationEnableScreenOptions}
         component={LocationEnablePromptScreen}
         name={CustomerAuthStackRoutes.LOCATION_ENABLE}
       />
-    </CustomerAuth.Navigator>
+    </CustomerAuthStack.Navigator>
   );
 };
 
-export default CustomerAuthStack;
+export default CustomerAuthStackNavigator;
 
 const locationEnableScreenOptions:
   | StackNavigationOptions

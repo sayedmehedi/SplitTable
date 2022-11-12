@@ -14,10 +14,9 @@ const service = container.get<ILocationService>(
 
 type QueryKey = [typeof QueryKeys.LOCATION, "LIST"];
 
-const getLocationsQueryFunction: QueryFunction<
-  GetLocationsReposne,
-  QueryKey
-> = ({signal}) => {
+const queryFunction: QueryFunction<GetLocationsReposne, QueryKey> = ({
+  signal,
+}) => {
   return handleCancelableAxiosPromise(service.getLocations(), {
     signal,
   });
@@ -42,9 +41,5 @@ export default function useGetLocationsQuery(
     ApplicationError,
     GetLocationsReposne,
     QueryKey
-  >(
-    [QueryKeys.LOCATION, "LIST"],
-    getLocationsQueryFunction,
-    optionsRef.current,
-  );
+  >([QueryKeys.LOCATION, "LIST"], queryFunction, optionsRef.current);
 }

@@ -90,13 +90,13 @@ const LocationSwiper = ({onItemPress}: Props) => {
               </View>
             );
           })
-        : locationsResponse?.items?.data?.map((item, index) => {
+        : locationsResponse?.items?.map((item, index) => {
             return (
               <Pressable
                 style={{
                   marginRight:
                     splitAppTheme.space[
-                      index === locationsResponse.items.data.length - 1 ? 0 : 3
+                      index === locationsResponse.items.length - 1 ? 0 : 3
                     ],
                 }}
                 key={item.id}

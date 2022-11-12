@@ -29,6 +29,13 @@ export const CustomerAuthStackRoutes = {
   EMAIL_VERIFICATION: "EmailVerification",
 } as const;
 
+export const OwnerAuthStackRoutes = {
+  SIGNIN: "Signin",
+  SIGNUP: "Signup",
+  LOCATION_ENABLE: "LocationEnable",
+  EMAIL_VERIFICATION: "EmailVerification",
+} as const;
+
 export const OwnerMainBottomTabRoutes = {
   MENU: "Menu",
   TABLE_ADD: "TableAdd",
@@ -46,7 +53,7 @@ export const CustomerMainBottomTabRoutes = {
 } as const;
 
 export const OwnerStackRoutes = {
-  OWNER_SIGN_UP: "OwnerSignUp",
+  OWNER_AUTH: "OwnerAuth",
   ADD_MENU_ITEM: "AddMenuItem",
   OWNER_MAIN_TABS: "OwnerMainTabs",
 } as const;
