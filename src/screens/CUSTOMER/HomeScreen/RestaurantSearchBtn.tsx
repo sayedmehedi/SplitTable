@@ -32,7 +32,7 @@ import {
   CustomerStackParamList,
   RootStackParamList,
 } from "@src/navigation";
-import {TableListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/table";
 import {SearchHistoryItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 

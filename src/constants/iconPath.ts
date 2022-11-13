@@ -1,3 +1,12 @@
+import DjIcon from "@assets/icons/dj.svg";
+import DishIcon from "@assets/icons/dish.svg";
+import CalendarIcon from "@assets/icons/calendar.svg";
+import PeopleIcon from "@assets/icons/people.svg";
+import MapMarkerPrimaryIcon from "@assets/icons/map-marker-primary.svg";
+import FemaleIcon from "@assets/icons/female.svg";
+import GroupIcon from "@assets/icons/group.svg";
+import MaleIcon from "@assets/icons/male.svg";
+
 import MapIcon from "@assets/icons/map-icon-2.svg";
 import LasVegas from "@assets/icons/las-vagas.svg";
 import Miami from "@assets/icons/miami.svg";
@@ -40,4 +49,12 @@ export {
   InfoIcon,
   ReviewIcon,
   HolidayIcon,
+  DjIcon,
+  DishIcon,
+  CalendarIcon,
+  PeopleIcon,
+  MapMarkerPrimaryIcon,
+  FemaleIcon,
+  MaleIcon,
+  GroupIcon,
 };

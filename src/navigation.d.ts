@@ -11,7 +11,7 @@ import {
   CustomerBookingStackRoutes,
   OwnerAuthStackRoutes,
 } from "@constants/routes";
-import {TableListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/table";
 import {TableCommonSearchParams} from "./models";
 
 type CustomerAuthStackParamList = {

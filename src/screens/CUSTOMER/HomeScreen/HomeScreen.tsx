@@ -11,7 +11,7 @@ import SplitTables from "./SplitTables";
 import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
-import {TableListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/table";
 import {useDisclosure} from "react-use-disclosure";
 import BookedTablesSwiper from "./BookedTablesSwiper";
 import Feather from "react-native-vector-icons/Feather";

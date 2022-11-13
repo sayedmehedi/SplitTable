@@ -24,7 +24,7 @@ import {
   CustomerBottomTabParamList,
 } from "@src/navigation";
 import AppGradientButton from "@components/AppGradientButton";
-import {TableListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/table";
 
 type NavigationProps = CompositeNavigationProp<
   StackNavigationProp<CustomerStackParamList>,

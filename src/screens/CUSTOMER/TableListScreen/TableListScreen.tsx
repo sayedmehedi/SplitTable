@@ -2,7 +2,7 @@ import React from "react";
 import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
 import {StatusBar, View} from "react-native";
-import {TableListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/table";
 import SplitTableList from "./SplitTableList";
 import BookedTableList from "./BookedTableList";
 import RecentVisits from "./RecentVisitClubList";

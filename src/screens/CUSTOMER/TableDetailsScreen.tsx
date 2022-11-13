@@ -7,18 +7,31 @@ import {
   ImageBackground,
   SafeAreaView,
   TouchableOpacity,
+  Image,
 } from "react-native";
+import {splitAppTheme} from "@src/theme";
+import {Rating} from "react-native-ratings";
+import {
+  CalendarIcon,
+  Clock,
+  DishIcon,
+  DjIcon,
+  FemaleIcon,
+  GroupIcon,
+  MaleIcon,
+  MapIcon,
+  MapMarkerPrimaryIcon,
+  PeopleIcon,
+} from "@constants/iconPath";
 import {CustomerStackRoutes} from "@constants/routes";
+import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
-import Ripple from "react-native-material-ripple";
-import Entypo from "react-native-vector-icons/Entypo";
-import {splitAppTheme} from "@src/theme";
-import {Clock, MapIcon} from "@constants/iconPath";
-import {Rating} from "react-native-ratings";
+import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
+import AppGradientButton from "@components/AppGradientButton";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -84,7 +97,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
         </SafeAreaView>
       </ImageBackground>
 
-      {/* EVENT NAME */}
+      {/* EVENT NAME & INITIAL */}
       <View style={{overflow: "hidden", paddingBottom: splitAppTheme.space[5]}}>
         <View
           style={[
@@ -238,8 +251,327 @@ export default function TableDetailsScreen({route, navigation}: Props) {
         </View>
       </TouchableOpacity>
 
-      {/*  */}
-      <View></View>
+      {/* EVENTS INFO */}
+      <View
+        style={{
+          paddingTop: splitAppTheme.space[4],
+          paddingHorizontal: splitAppTheme.space[6],
+        }}>
+        <View>
+          <Text
+            style={{
+              fontSize: splitAppTheme.fontSizes.xl,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
+            Table/Events Info
+          </Text>
+        </View>
+
+        <View
+          style={{
+            marginTop: splitAppTheme.space[2],
+          }}>
+          <Text>{tableDetailsResponse.description}</Text>
+        </View>
+
+        {/* LIST */}
+        <View style={{marginTop: splitAppTheme.space[5]}}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: splitAppTheme.space[4],
+            }}>
+            <View
+              style={{
+                height: splitAppTheme.sizes[9],
+                width: splitAppTheme.sizes[9],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: "rgba(255, 63, 204, 0.2)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <DjIcon
+                height={splitAppTheme.sizes[5]}
+                width={splitAppTheme.sizes[5]}
+              />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[3]}}>
+              <Text>{tableDetailsResponse.performer}</Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: splitAppTheme.space[4],
+            }}>
+            <View
+              style={{
+                height: splitAppTheme.sizes[9],
+                width: splitAppTheme.sizes[9],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: "rgba(255, 63, 204, 0.2)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <DishIcon
+                height={splitAppTheme.sizes[5]}
+                width={splitAppTheme.sizes[5]}
+              />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[3]}}>
+              <Text>{tableDetailsResponse.cuisines}</Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: splitAppTheme.space[4],
+            }}>
+            <View
+              style={{
+                height: splitAppTheme.sizes[9],
+                width: splitAppTheme.sizes[9],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: "rgba(255, 63, 204, 0.2)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <CalendarIcon
+                height={splitAppTheme.sizes[5]}
+                width={splitAppTheme.sizes[5]}
+              />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[3]}}>
+              <Text>Min {tableDetailsResponse.min_age} years age</Text>
+            </View>
+          </View>
+
+          {isSplitTableDetails(tableDetailsResponse) &&
+            tableDetailsResponse.joined_users.length > 0 && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: splitAppTheme.space[4],
+                }}>
+                <View
+                  style={{
+                    height: splitAppTheme.sizes[9],
+                    width: splitAppTheme.sizes[9],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor: "rgba(255, 63, 204, 0.2)",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                  <PeopleIcon
+                    height={splitAppTheme.sizes[5]}
+                    width={splitAppTheme.sizes[5]}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginLeft: splitAppTheme.space[3],
+                  }}>
+                  {tableDetailsResponse.joined_users.map(user => (
+                    <Image
+                      key={user.id}
+                      source={{uri: user.image}}
+                      style={{
+                        width: splitAppTheme.sizes[9],
+                        height: splitAppTheme.sizes[9],
+                        marginRight: splitAppTheme.space[2],
+                        borderRadius: splitAppTheme.radii.full,
+                      }}
+                    />
+                  ))}
+                </View>
+              </View>
+            )}
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: splitAppTheme.space[4],
+            }}>
+            <View
+              style={{
+                height: splitAppTheme.sizes[9],
+                width: splitAppTheme.sizes[9],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: "rgba(255, 63, 204, 0.2)",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <MapMarkerPrimaryIcon
+                height={splitAppTheme.sizes[5]}
+                width={splitAppTheme.sizes[5]}
+              />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[3]}}>
+              <Text>{tableDetailsResponse.location}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {isSplitTableDetails(tableDetailsResponse) && (
+        <View
+          style={{
+            marginTop: splitAppTheme.space[5],
+            paddingHorizontal: splitAppTheme.space[6],
+          }}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: splitAppTheme.sizes[16],
+                height: splitAppTheme.sizes[16],
+                borderRadius: splitAppTheme.radii.full,
+                borderWidth: splitAppTheme.borderWidths[2],
+                borderColor: splitAppTheme.colors.secondary[600],
+              }}>
+              <MaleIcon />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[2]}}>
+              <Text
+                style={{
+                  color: splitAppTheme.colors.black,
+                  fontSize: splitAppTheme.fontSizes.xl,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                {tableDetailsResponse.men_seat} Seat
+              </Text>
+
+              <Text
+                style={{
+                  marginTop: splitAppTheme.space["0.5"],
+                  fontSize: splitAppTheme.fontSizes.md,
+                  color: splitAppTheme.colors.coolGray[400],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                ${tableDetailsResponse.men_seat_price}/Guest
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: splitAppTheme.space[4],
+            }}>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: splitAppTheme.sizes[16],
+                height: splitAppTheme.sizes[16],
+                borderRadius: splitAppTheme.radii.full,
+                borderWidth: splitAppTheme.borderWidths[2],
+                borderColor: splitAppTheme.colors.secondary[600],
+              }}>
+              <FemaleIcon />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[2]}}>
+              <Text
+                style={{
+                  color: splitAppTheme.colors.black,
+                  fontSize: splitAppTheme.fontSizes.xl,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                {tableDetailsResponse.women_seat} Seat
+              </Text>
+
+              <Text
+                style={{
+                  marginTop: splitAppTheme.space["0.5"],
+                  fontSize: splitAppTheme.fontSizes.md,
+                  color: splitAppTheme.colors.coolGray[400],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                ${tableDetailsResponse.women_seat_price}/Guest
+              </Text>
+            </View>
+          </View>
+
+          <View style={{marginVertical: splitAppTheme.space[6]}}>
+            <AppGradientButton
+              color={"primary"}
+              variant={"solid"}
+              title={"Join Now"}
+              onPress={() => {}}
+            />
+          </View>
+        </View>
+      )}
+
+      {isBookedTableDetails(tableDetailsResponse) && (
+        <View
+          style={{
+            marginTop: splitAppTheme.space[5],
+            paddingHorizontal: splitAppTheme.space[6],
+          }}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: splitAppTheme.sizes[16],
+                height: splitAppTheme.sizes[16],
+                borderRadius: splitAppTheme.radii.full,
+                borderWidth: splitAppTheme.borderWidths[2],
+                borderColor: splitAppTheme.colors.secondary[600],
+              }}>
+              <GroupIcon />
+            </View>
+
+            <View style={{marginLeft: splitAppTheme.space[2]}}>
+              <Text
+                style={{
+                  color: splitAppTheme.colors.black,
+                  fontSize: splitAppTheme.fontSizes.xl,
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                {tableDetailsResponse.total_seat} Seat
+              </Text>
+
+              <Text
+                style={{
+                  marginTop: splitAppTheme.space["0.5"],
+                  fontSize: splitAppTheme.fontSizes.md,
+                  color: splitAppTheme.colors.coolGray[400],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+                }}>
+                ${tableDetailsResponse.price}/Whole Table
+              </Text>
+            </View>
+          </View>
+
+          <View style={{marginVertical: splitAppTheme.space[6]}}>
+            <AppGradientButton
+              color={"primary"}
+              variant={"solid"}
+              title={"Book Table"}
+              onPress={() => {}}
+            />
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 }
