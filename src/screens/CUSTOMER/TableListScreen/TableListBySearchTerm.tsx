@@ -1,17 +1,17 @@
 import React from "react";
 import {TTableItem} from "./shared";
-import TableListItem from "./TableListItem";
-import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
-import GenericListEmpty from "@components/GenericListEmpty";
-import useInfiniteGetSplitTablesQuery from "@hooks/clubs/useInfiniteGetSplitTablesQuery";
 import {splitAppTheme} from "@src/theme";
+import TableListItem from "./TableListItem";
+import {TableCommonSearchParams} from "@src/models";
+import GenericListEmpty from "@components/GenericListEmpty";
+import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
+import useInfiniteGetTablesBySearchTermQuery from "@hooks/clubs/useInfiniteGetTablesBySearchTermQuery";
 
 type Props = {
-  searchTerm?: string;
   onItemPress: (item: TTableItem) => void;
-};
+} & TableCommonSearchParams;
 
-const SplitTableList = ({onItemPress, searchTerm}: Props) => {
+const TableListBySearchTerm = ({onItemPress, ...params}: Props) => {
   const {
     refetch,
     isLoading,
@@ -19,16 +19,16 @@ const SplitTableList = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage,
     isFetchingNextPage,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetSplitTablesQuery(
+  } = useInfiniteGetTablesBySearchTermQuery(
     {
       page: 1,
-      search: searchTerm,
+      ...params,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
-            search: searchTerm,
+            ...params,
             page: lastPage.tables.current_page + 1,
           };
         }
@@ -110,4 +110,4 @@ const SplitTableList = ({onItemPress, searchTerm}: Props) => {
   );
 };
 
-export default SplitTableList;
+export default TableListBySearchTerm;

@@ -11,7 +11,8 @@ import {
   CustomerBookingStackRoutes,
   OwnerAuthStackRoutes,
 } from "@constants/routes";
-import {ClubListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/club";
+import {TableCommonSearchParams} from "./models";
 
 type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.SIGNIN]: undefined;
@@ -60,24 +61,24 @@ type ClubListScreenCommon = {
 
 export type ClubListScreenTypeByLocation = ClubListScreenCommon & {
   locationId: number;
-  listType: typeof ClubListTypes["BY_LOCATION"];
+  listType: typeof TableListTypes.BY_LOCATION;
 };
 
 export type ClubListScreenTypeSearchResult = ClubListScreenCommon & {
-  listType: typeof ClubListTypes["SEARCH_RESULT"];
-  searchTerm: string;
+  listType: typeof TableListTypes.SEARCH_RESULT;
+  searchTerm: TableCommonSearchParams;
 };
 
 export type ClubListScreenTypeRest = ClubListScreenCommon & {
   listType:
-    | typeof ClubListTypes["ALL"]
-    | typeof ClubListTypes["NEAR"]
-    | typeof ClubListTypes["POPULAR"]
-    | typeof ClubListTypes["RECENT_VISIT"];
+    | typeof TableListTypes.ALL
+    | typeof TableListTypes.SPLIT
+    | typeof TableListTypes.BOOKED
+    | typeof TableListTypes.RECENT_VISIT;
 };
 
 type CustomerStackParamList = {
-  [CustomerStackRoutes.CLUB_LIST]:
+  [CustomerStackRoutes.TABLE_LIST]:
     | ClubListScreenTypeByLocation
     | ClubListScreenTypeSearchResult
     | ClubListScreenTypeRest;
@@ -87,10 +88,13 @@ type CustomerStackParamList = {
   [CustomerStackRoutes.CLUB_DETAILS]: {
     clubId: number;
   };
+  [CustomerStackRoutes.TABLE_DETAILS]: {
+    tableId: number;
+  };
   [CustomerStackRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
   [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
-  [CustomerStackRoutes.CLUB_SEARCH]: undefined;
+  [CustomerStackRoutes.TABLE_SEARCH]: undefined;
 
   [CustomerStackRoutes.FAQ]: undefined;
   [CustomerStackRoutes.LEGAL]: undefined;

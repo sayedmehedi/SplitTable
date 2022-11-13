@@ -389,9 +389,6 @@ const SignUpScreen = ({navigation}: Props) => {
               <View style={[styles.SectionStyle, {zIndex: 10}]}>
                 <AutocompleteDropdown
                   inputHeight={50}
-                  closeOnBlur={true}
-                  clearOnFocus={false}
-                  closeOnSubmit={false}
                   dataSet={locationList}
                   loading={isLocationsLoading}
                   containerStyle={{flexGrow: 1, flexShrink: 1}}

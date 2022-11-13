@@ -1,5 +1,4 @@
 import React from "react";
-import {useTheme} from "styled-components";
 import {splitAppTheme} from "@src/theme";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackHeaderProps} from "@react-navigation/stack";
@@ -30,6 +29,8 @@ const CommonStackHeader = (props: StackHeaderProps) => {
       title={title}
       layout={layout}
       headerShadowVisible
+      headerRight={options.headerRight}
+      headerStyle={options.headerStyle}
       headerLeft={(props: {
         tintColor?: string | undefined;
         pressColor?: string | undefined;
@@ -52,6 +53,8 @@ const CommonStackHeader = (props: StackHeaderProps) => {
         )
       }
       headerBackground={headerBackground}
+      headerLeftContainerStyle={options.headerLeftContainerStyle}
+      headerRightContainerStyle={options.headerRightContainerStyle}
       headerTitleStyle={{
         fontSize: 22,
         fontWeight: "bold",

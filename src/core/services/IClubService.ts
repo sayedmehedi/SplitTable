@@ -2,6 +2,7 @@ import {AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {
   GetSplitTablesReponse,
+  GetRecentViewsReponse,
   GetClubDetailsResponse,
   GetBookedTablesReponse,
   GlobalAxiosRequestConfig,
@@ -10,11 +11,11 @@ import {
   GetBookedTablesQueryParams,
   GetTablesByLocationResponse,
   ToggleFavoriteClubResponse,
-  GetRecentViewsReponse,
-  GetClubsBySearchTermResponse,
-  GetTablesByLocationQueryParams,
+  GetTableDetailsResponse,
   GetRecentViewsQueryParams,
-  GetClubsBySearchTermQueryParams,
+  GetTablesBySearchTermResponse,
+  GetTablesByLocationQueryParams,
+  GetTablesBySearchTermQueryParams,
 } from "@src/models";
 
 export interface IClubService {
@@ -22,6 +23,12 @@ export interface IClubService {
     clubId: number,
   ): CancelablePromise<
     AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
+  >;
+
+  getTableDetails(
+    tableId: number,
+  ): CancelablePromise<
+    AxiosResponse<GetTableDetailsResponse, GlobalAxiosRequestConfig>
   >;
 
   getBookedTables(
@@ -48,10 +55,10 @@ export interface IClubService {
     AxiosResponse<GetTablesByLocationResponse, GlobalAxiosRequestConfig>
   >;
 
-  getClubsBySearchTerm(
-    params: GetClubsBySearchTermQueryParams,
+  getTablesBySearchTerm(
+    params: GetTablesBySearchTermQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+    AxiosResponse<GetTablesBySearchTermResponse, GlobalAxiosRequestConfig>
   >;
 
   toggleFavoriteClub(

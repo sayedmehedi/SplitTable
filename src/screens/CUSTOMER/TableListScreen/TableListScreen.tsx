@@ -1,54 +1,46 @@
 import React from "react";
 import {TTableItem} from "./shared";
-import {ClubListTypes} from "@constants/club";
-import BookedTableList from "./BookedTableList";
+import {splitAppTheme} from "@src/theme";
+import {StatusBar, View} from "react-native";
+import {TableListTypes} from "@constants/club";
 import SplitTableList from "./SplitTableList";
+import BookedTableList from "./BookedTableList";
+import RecentVisits from "./RecentVisitClubList";
 import {useDisclosure} from "react-use-disclosure";
 import {CustomerStackRoutes} from "@constants/routes";
-import TablesByLocationList from "./TablesByLocationList";
 import {StackScreenProps} from "@react-navigation/stack";
-import RecentVisits from "./RecentVisitClubList";
-import ClubListBySearchTerm from "./ClubListBySearchTerm";
+import TablesByLocationList from "./TablesByLocationList";
+import TableListBySearchTerm from "./TableListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {StatusBar, View} from "react-native";
-import {splitAppTheme} from "@src/theme";
+import {TableCommonSearchParams} from "@src/models";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
     CustomerStackParamList,
-    typeof CustomerStackRoutes.CLUB_LIST
+    typeof CustomerStackRoutes.TABLE_LIST
   >,
   StackScreenProps<RootStackParamList>
 >;
 
-const ClubListScreen = ({route}: Props) => {
-  const [clubSearchTerm, setClubSearchTerm] = React.useState("");
+const TableListScreen = ({route}: Props) => {
   const {isOpen: isButtonOpened, toggle: setButtonOpen} = useDisclosure();
   const [clubSearchTermDraft, setClubSearchTermDraft] = React.useState("");
+  const [tableSearchParams, setTableSearchParams] =
+    React.useState<TableCommonSearchParams>({});
   const {isOpen: isClubSearchModalOpen, toggle: setToggleClubSearchModal} =
     useDisclosure();
 
   React.useEffect(() => {
-    if (route.params.listType === ClubListTypes.SEARCH_RESULT) {
-      setClubSearchTerm(route.params.searchTerm);
+    if (route.params.listType === TableListTypes.SEARCH_RESULT) {
+      setTableSearchParams(route.params.searchTerm);
     }
   }, [route.params.listType]);
 
   const handleSearchTermChange = (text: string) => {
     setClubSearchTermDraft(text);
-  };
-
-  const clearClubSearchTerm = () => {
-    setClubSearchTerm("");
-  };
-
-  const handleSubmitDraftClubSearchTerm = () => {
-    setClubSearchTerm(clubSearchTermDraft);
-    setToggleClubSearchModal();
-    setClubSearchTermDraft("");
   };
 
   const handleItemPresss = React.useCallback((item: TTableItem) => {}, []);
@@ -60,37 +52,31 @@ const ClubListScreen = ({route}: Props) => {
         height: splitAppTheme.sizes.full,
       }}>
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
-      {route.params.listType === ClubListTypes.BY_LOCATION && (
+      {route.params.listType === TableListTypes.BY_LOCATION && (
         <TablesByLocationList
           onItemPress={handleItemPresss}
           locationId={route.params.locationId}
         />
       )}
 
-      {route.params.listType === ClubListTypes.POPULAR && (
+      {route.params.listType === TableListTypes.BOOKED && (
         <BookedTableList
-          searchTerm={clubSearchTerm}
+          {...tableSearchParams}
           onItemPress={handleItemPresss}
         />
       )}
 
-      {route.params.listType === ClubListTypes.NEAR && (
-        <SplitTableList
-          searchTerm={clubSearchTerm}
-          onItemPress={handleItemPresss}
-        />
+      {route.params.listType === TableListTypes.SPLIT && (
+        <SplitTableList {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
 
-      {route.params.listType === ClubListTypes.RECENT_VISIT && (
-        <RecentVisits
-          searchTerm={clubSearchTerm}
-          onItemPress={handleItemPresss}
-        />
+      {route.params.listType === TableListTypes.RECENT_VISIT && (
+        <RecentVisits {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
 
-      {route.params.listType === ClubListTypes.SEARCH_RESULT && (
-        <ClubListBySearchTerm
-          searchTerm={clubSearchTerm}
+      {route.params.listType === TableListTypes.SEARCH_RESULT && (
+        <TableListBySearchTerm
+          {...tableSearchParams}
           onItemPress={handleItemPresss}
         />
       )}
@@ -250,4 +236,4 @@ const ClubListScreen = ({route}: Props) => {
   );
 };
 
-export default ClubListScreen;
+export default TableListScreen;

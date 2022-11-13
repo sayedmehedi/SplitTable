@@ -7,11 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import SplitTables from "./SplitTables";
 import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
-import {ClubListTypes} from "@constants/club";
-import SplitTables from "./SplitTables";
+import {TableListTypes} from "@constants/club";
 import {useDisclosure} from "react-use-disclosure";
 import BookedTablesSwiper from "./BookedTablesSwiper";
 import Feather from "react-native-vector-icons/Feather";
@@ -58,17 +58,17 @@ const HomeScreen = ({navigation}: Props) => {
 
   const handleBookedTableItemPress = React.useCallback(
     (item: BookedTable) => {
-      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
-        clubId: item.id,
+      navigation.navigate(CustomerStackRoutes.TABLE_DETAILS, {
+        tableId: item.id,
       });
     },
     [navigation],
   );
 
-  const handleRecentVisitClubPress = React.useCallback(
+  const handleRecentVisitItemPress = React.useCallback(
     (item: BookedTable) => {
-      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
-        clubId: item.id,
+      navigation.navigate(CustomerStackRoutes.TABLE_DETAILS, {
+        tableId: item.id,
       });
     },
     [navigation],
@@ -76,8 +76,8 @@ const HomeScreen = ({navigation}: Props) => {
 
   const handleSpiltTablePress = React.useCallback(
     (item: SplitTable) => {
-      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
-        clubId: item.id,
+      navigation.navigate(CustomerStackRoutes.TABLE_DETAILS, {
+        tableId: item.id,
       });
     },
     [navigation],
@@ -85,33 +85,33 @@ const HomeScreen = ({navigation}: Props) => {
 
   const handleLocationItemPress = React.useCallback(
     (item: LocationItem) => {
-      navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+      navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
         locationId: item.id,
         headerTitle: item.location,
-        listType: ClubListTypes.BY_LOCATION,
+        listType: TableListTypes.BY_LOCATION,
       });
     },
     [navigation],
   );
 
   const handleBookedTableSeeAll = React.useCallback(() => {
-    navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+    navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Book Table",
-      listType: ClubListTypes.POPULAR,
+      listType: TableListTypes.BOOKED,
     });
   }, [navigation]);
 
   const handleRecentVisitSeeAll = React.useCallback(() => {
-    navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+    navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Your Recent Visits",
-      listType: ClubListTypes.RECENT_VISIT,
+      listType: TableListTypes.RECENT_VISIT,
     });
   }, [navigation]);
 
   const handleSplitTableSeeAll = React.useCallback(() => {
-    navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+    navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Split Table",
-      listType: ClubListTypes.NEAR,
+      listType: TableListTypes.SPLIT,
     });
   }, [navigation]);
 
@@ -225,7 +225,7 @@ const HomeScreen = ({navigation}: Props) => {
                       <TouchableOpacity
                         style={styles.searchButton}
                         onPress={() => {
-                          navigation.navigate(CustomerStackRoutes.CLUB_SEARCH);
+                          navigation.navigate(CustomerStackRoutes.TABLE_SEARCH);
                         }}>
                         <Feather name="search" color={"#3B3B3B"} size={15} />
                         <Text
@@ -356,7 +356,7 @@ const HomeScreen = ({navigation}: Props) => {
 
         <RecentVisitsSwiper
           onSeeAll={handleRecentVisitSeeAll}
-          onItemPress={handleRecentVisitClubPress}
+          onItemPress={handleRecentVisitItemPress}
         />
 
         <View

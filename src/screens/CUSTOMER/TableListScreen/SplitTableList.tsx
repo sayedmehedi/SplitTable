@@ -1,17 +1,17 @@
 import React from "react";
 import {TTableItem} from "./shared";
-import TableListItem from "./TableListItem";
-import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
-import GenericListEmpty from "@components/GenericListEmpty";
-import useInfiniteGetClubsBySearchTermQuery from "@hooks/clubs/useInfiniteGetClubsBySearchTermQuery";
 import {splitAppTheme} from "@src/theme";
+import TableListItem from "./TableListItem";
+import {TableCommonSearchParams} from "@src/models";
+import GenericListEmpty from "@components/GenericListEmpty";
+import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
+import useInfiniteGetSplitTablesQuery from "@hooks/clubs/useInfiniteGetSplitTablesQuery";
 
 type Props = {
-  searchTerm?: string;
   onItemPress: (item: TTableItem) => void;
-};
+} & TableCommonSearchParams;
 
-const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
+const SplitTableList = ({onItemPress, ...params}: Props) => {
   const {
     refetch,
     isLoading,
@@ -19,17 +19,17 @@ const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage,
     isFetchingNextPage,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetClubsBySearchTermQuery(
+  } = useInfiniteGetSplitTablesQuery(
     {
       page: 1,
-      search: searchTerm,
+      ...params,
     },
     {
       getNextPageParam(lastPage) {
-        if (lastPage.clubs.has_more_data) {
+        if (lastPage.tables.has_more_data) {
           return {
-            search: searchTerm,
-            page: lastPage.clubs.current_page + 1,
+            ...params,
+            page: lastPage.tables.current_page + 1,
           };
         }
       },
@@ -39,7 +39,7 @@ const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
   const clubListData = React.useMemo(() => {
     return (
       infiniteGetClubsByLocationsResponse?.pages.flatMap(eachPage => {
-        return eachPage.clubs.data;
+        return eachPage.tables.data;
       }) ?? []
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
@@ -50,14 +50,12 @@ const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
         <TableListItem
           item={{
             id: item.id,
+            date: item.date,
             name: item.name,
             image: item.image,
             location: item.location,
-            avgRating: item.avg_rating,
-            isFavorite: item.is_favourite,
-            closingTime: item.closing_time,
-            openingTime: item.opening_time,
-            totalReviews: item.total_reviews,
+            distance: item.distance,
+            total_joined: item.total_joined,
           }}
           onPress={onItemPress}
         />
@@ -112,4 +110,4 @@ const ClubListBySearchTerm = ({onItemPress, searchTerm}: Props) => {
   );
 };
 
-export default ClubListBySearchTerm;
+export default SplitTableList;

@@ -1,7 +1,7 @@
-export const ClubListTypes = {
+export const TableListTypes = {
   ALL: "all",
-  NEAR: "near",
-  POPULAR: "popular",
+  SPLIT: "split",
+  BOOKED: "booked",
   BY_LOCATION: "byLocation",
   RECENT_VISIT: "recentVisit",
   SEARCH_RESULT: "searchResult",

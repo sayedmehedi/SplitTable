@@ -2,7 +2,7 @@ import React from "react";
 import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
 import TableListItem from "./TableListItem";
-import {ClubByLocationItem, TableType} from "@src/models";
+import {TableByLocationItem, TableType} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {
   ActivityIndicator,
@@ -56,7 +56,7 @@ const TablesByLocationList = ({locationId, onItemPress}: Props) => {
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
 
-  const renderClubList: ListRenderItem<ClubByLocationItem> = React.useCallback(
+  const renderClubList: ListRenderItem<TableByLocationItem> = React.useCallback(
     ({item}) => (
       <TableListItem
         item={{

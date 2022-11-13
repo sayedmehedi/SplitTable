@@ -26,7 +26,7 @@ export const splitAppNavigationTheme = {
   colors: {
     ...DefaultTheme.colors,
     primary: splitAppTheme.colors.primary[300],
-    background: splitAppTheme.colors.coolGray[50],
+    background: splitAppTheme.colors.white,
   },
 };
 

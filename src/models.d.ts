@@ -145,7 +145,7 @@ export type PaginationQueryParams =
       limit?: number;
     };
 
-export interface ClubByLocationItem {
+export interface TableByLocationItem {
   id: number;
   name: string;
   date: string;
@@ -155,8 +155,15 @@ export interface ClubByLocationItem {
   total_joined: number;
 }
 
+export type TableCommonSearchParams = {
+  tableType?: TableType;
+  date?: string;
+  locationId?: number;
+  distance?: [number, number];
+};
+
 export type GetTablesByLocationResponse = {
-  tables: SimplePaginatedResponse<ClubByLocationItem>;
+  tables: SimplePaginatedResponse<TableByLocationItem>;
 };
 
 export type GetTablesByLocationQueryParams = PaginationQueryParams & {
@@ -164,17 +171,14 @@ export type GetTablesByLocationQueryParams = PaginationQueryParams & {
   tableType: TableType;
 };
 
-export type GetBookedTablesQueryParams = PaginationQueryParams & {
-  search?: string;
-};
+export type GetBookedTablesQueryParams = PaginationQueryParams &
+  TableCommonSearchParams;
 
-export type GetSplitTablesQueryParams = PaginationQueryParams & {
-  search?: string;
-};
+export type GetSplitTablesQueryParams = PaginationQueryParams &
+  TableCommonSearchParams;
 
-export type GetRecentViewsQueryParams = PaginationQueryParams & {
-  search?: string;
-};
+export type GetRecentViewsQueryParams = PaginationQueryParams &
+  TableCommonSearchParams;
 
 export type ToggleFavoriteClubResponse = ResponseResult<{message: string}>;
 
@@ -201,26 +205,22 @@ export type SearchHistoryItem = {
   data: string;
   lastUsedTime: string;
 };
-export interface ClubItemBySearchTerm {
+export interface TableBySearchTerm {
   id: number;
   name: string;
-  image: string;
-  distance: string;
+  date: string;
   location: string;
-  avg_rating: number;
-  opening_time: s;
-  closing_time: string;
-  total_reviews: number;
-  is_favourite: boolean;
+  distance: string;
+  image: string;
+  total_joined: number;
 }
 
-export type GetClubsBySearchTermResponse = {
-  clubs: SimplePaginatedResponse<ClubItemBySearchTerm>;
+export type GetTablesBySearchTermResponse = {
+  tables: SimplePaginatedResponse<TableBySearchTerm>;
 };
 
-export type GetClubsBySearchTermQueryParams = PaginationQueryParams & {
-  search?: string;
-};
+export type GetTablesBySearchTermQueryParams = PaginationQueryParams &
+  TableCommonSearchParams;
 
 export interface ClubDetails {
   id: number;
@@ -470,3 +470,51 @@ export type GeolocationError = {
 };
 
 export type TableType = "booked" | "split";
+
+export interface JoinedUser {
+  id: number;
+  name: string;
+  image: string;
+}
+export interface SplitTableDetails {
+  id: number;
+  name: string;
+  date: string;
+  location: string;
+  distance: string;
+  image: string;
+  club_id: number;
+  club_name: string;
+  rating: number;
+  description: string;
+  performer: string;
+  cuisines: string;
+  min_age: number;
+  club_location: string;
+  joined_users: JoinedUser[];
+  men_seat: number;
+  men_seat_price: string;
+  women_seat: number;
+  women_seat_price: string;
+}
+
+export interface BookedTableDetails {
+  id: number;
+  name: string;
+  date: string;
+  location: string;
+  distance: string;
+  image: string;
+  club_id: number;
+  club_name: string;
+  rating: number;
+  description: string;
+  performer: string;
+  cuisines: string;
+  min_age: number;
+  club_location: string;
+  total_seat: number;
+  price: string;
+}
+
+export type GetTableDetailsResponse = SplitTableDetails | BookedTableDetails;

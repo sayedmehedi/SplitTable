@@ -16,8 +16,9 @@ import {
   ToggleFavoriteClubResponse,
   GetBookedTablesQueryParams,
   GetTablesByLocationQueryParams,
-  GetClubsBySearchTermResponse,
-  GetClubsBySearchTermQueryParams,
+  GetTablesBySearchTermResponse,
+  GetTablesBySearchTermQueryParams,
+  GetTableDetailsResponse,
 } from "@src/models";
 
 @injectable()
@@ -26,6 +27,28 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+  getTableDetails(
+    tableId: number,
+  ): CancelablePromise<
+    AxiosResponse<GetTableDetailsResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetTableDetailsResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetTableDetailsResponse>(`table-details/${tableId}`, {
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   getClubDetails(
     clubId: number,
@@ -50,22 +73,22 @@ export class ClubService implements IClubService {
     });
   }
 
-  getClubsBySearchTerm(
-    params: GetClubsBySearchTermQueryParams,
+  getTablesBySearchTerm(
+    params: GetTablesBySearchTermQueryParams,
   ): CancelablePromise<
-    AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+    AxiosResponse<GetTablesBySearchTermResponse, GlobalAxiosRequestConfig>
   > {
     const controller = new AbortController();
 
     return new CancelablePromise<
-      AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+      AxiosResponse<GetTablesBySearchTermResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
         controller.abort();
       });
 
       this._httpService
-        .get<GetClubsBySearchTermResponse>(`search-clubs`, {
+        .get<GetTablesBySearchTermResponse>(`search-tables`, {
           params,
           signal: controller.signal,
         })

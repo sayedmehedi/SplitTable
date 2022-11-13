@@ -1,21 +1,25 @@
 import React from "react";
-import {RouteProp} from "@react-navigation/native";
-import {CustomerStackParamList} from "@src/navigation";
+import {splitAppTheme} from "@src/theme";
+import {TouchableOpacity, View} from "react-native";
 import {CustomerStackRoutes} from "@constants/routes";
 import BookingStackNavigator from "./BookingStackNavigator";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
+import TableListScreen from "@screens/CUSTOMER/TableListScreen";
 import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import ClubSearchScreen from "@screens/CUSTOMER/ClubSearchScreen";
+import TableSearchScreen from "@screens/CUSTOMER/TableSearchScreen";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
 import CustomerAuthStackNavigator from "./CustomerAuthStackNavigator";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {CompositeNavigationProp, RouteProp} from "@react-navigation/native";
 import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
-import ClubListScreen from "@screens/CUSTOMER/ClubListScreen/ClubListScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,
+  StackNavigationProp,
 } from "@react-navigation/stack";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
@@ -24,8 +28,14 @@ import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
 import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
+import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
+
+type NavitaionProps = CompositeNavigationProp<
+  StackNavigationProp<CustomerStackParamList>,
+  StackNavigationProp<RootStackParamList>
+>;
 
 const CustomerStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
@@ -65,9 +75,15 @@ const CustomerStackNavigator = () => {
           />
 
           <CustomerStack.Screen
-            component={ClubListScreen}
-            options={clubListScreenOptions}
-            name={CustomerStackRoutes.CLUB_LIST}
+            component={TableListScreen}
+            options={tableListScreenOptions}
+            name={CustomerStackRoutes.TABLE_LIST}
+          />
+
+          <CustomerStack.Screen
+            component={TableDetailsScreen}
+            options={tableDetailsScreenOptions}
+            name={CustomerStackRoutes.TABLE_DETAILS}
           />
 
           <CustomerStack.Screen
@@ -87,9 +103,9 @@ const CustomerStackNavigator = () => {
           />
 
           <CustomerStack.Screen
-            component={ClubSearchScreen}
+            component={TableSearchScreen}
             options={clubSearchScreenOptions}
-            name={CustomerStackRoutes.CLUB_SEARCH}
+            name={CustomerStackRoutes.TABLE_SEARCH}
           />
 
           <CustomerStack.Screen
@@ -142,7 +158,7 @@ const locationEnableScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.LOCATION_ENABLE
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerShown: true,
   header: CommonStackHeader,
@@ -155,11 +171,14 @@ const clubSearchScreenOptions:
   | ((props: {
       route: RouteProp<
         CustomerStackParamList,
-        typeof CustomerStackRoutes.CLUB_SEARCH
+        typeof CustomerStackRoutes.TABLE_SEARCH
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = () => ({
-  headerShown: false,
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitleAlign: "center",
+  title: "Search Table & Events",
 });
 
 const notificationListScreenOptions:
@@ -169,32 +188,61 @@ const notificationListScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.NOTIFICATIONS
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = () => ({
   headerShown: true,
   header: CommonStackHeader,
   headerTitle: "Notification",
 });
 
-const clubListScreenOptions:
+const tableDetailsScreenOptions:
   | StackNavigationOptions
   | ((props: {
       route: RouteProp<
         CustomerStackParamList,
-        typeof CustomerStackRoutes.CLUB_LIST
+        typeof CustomerStackRoutes.TABLE_DETAILS
       >;
-      navigation: any;
-    }) => StackNavigationOptions) = ({route}) => ({
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
+  headerShown: false,
+});
+
+const tableListScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.TABLE_LIST
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
   headerShown: true,
   header: CommonStackHeader,
   headerTitle: route.params.headerTitle,
+  headerRight: () => (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate(CustomerStackRoutes.TABLE_SEARCH);
+      }}>
+      <View>
+        <MaterialIcons
+          size={30}
+          name={"search"}
+          color={splitAppTheme.colors.black}
+        />
+      </View>
+    </TouchableOpacity>
+  ),
+  headerRightContainerStyle: {
+    paddingRight: splitAppTheme.space[6],
+  },
 });
 
 const globalScreenOptions:
   | StackNavigationOptions
   | ((props: {
       route: RouteProp<CustomerStackParamList, keyof CustomerStackParamList>;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerShown: false,
 };
@@ -206,7 +254,7 @@ const profileScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.PROFILE
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerShown: false,
 };
@@ -217,7 +265,7 @@ const transactionScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.TRANSACTION
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerTitle: "Transaction",
 };
@@ -228,7 +276,7 @@ const accountSettingScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.ACCOUNT_SETTING
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerTitle: "Account Settings",
 };
@@ -239,7 +287,7 @@ const favoriteScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.FAVORITE
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerTitle: "Favorite",
 };
@@ -250,7 +298,7 @@ const legalScreenOptions:
         CustomerStackParamList,
         typeof CustomerStackRoutes.LEGAL
       >;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerTitle: "Legal",
 };
@@ -258,7 +306,7 @@ const faqScreenOptions:
   | StackNavigationOptions
   | ((props: {
       route: RouteProp<CustomerStackParamList, typeof CustomerStackRoutes.FAQ>;
-      navigation: any;
+      navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerTitle: "FAQ",
 };

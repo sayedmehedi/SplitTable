@@ -6,8 +6,8 @@ import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {
-  GetClubsBySearchTermResponse,
-  GetClubsBySearchTermQueryParams,
+  GetTablesBySearchTermResponse,
+  GetTablesBySearchTermQueryParams,
 } from "@src/models";
 import {
   QueryFunction,
@@ -23,34 +23,34 @@ type QueryKey = [
   "LIST",
   "infinite",
   "by-search",
-  GetClubsBySearchTermQueryParams,
+  GetTablesBySearchTermQueryParams,
 ];
 
-const queryFn: QueryFunction<GetClubsBySearchTermResponse, QueryKey> = ({
+const queryFn: QueryFunction<GetTablesBySearchTermResponse, QueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetClubsBySearchTermQueryParams>) => {
+}: QueryFunctionContext<QueryKey, GetTablesBySearchTermQueryParams>) => {
   const queryParams = {
     ...queryKey[4],
     ...(pageParam ?? {}),
   };
 
   return handleCancelableAxiosPromise(
-    service.getClubsBySearchTerm(queryParams),
+    service.getTablesBySearchTerm(queryParams),
     {
       signal,
     },
   );
 };
 
-export default function useInfiniteGetClubsBySearchTermQuery(
-  queryParams: GetClubsBySearchTermQueryParams = {},
+export default function useInfiniteGetTablesBySearchTermQuery(
+  queryParams: GetTablesBySearchTermQueryParams = {},
   options?: UseInfiniteQueryOptions<
-    GetClubsBySearchTermResponse,
+    GetTablesBySearchTermResponse,
     ApplicationError,
-    GetClubsBySearchTermResponse,
-    GetClubsBySearchTermResponse,
+    GetTablesBySearchTermResponse,
+    GetTablesBySearchTermResponse,
     QueryKey
   >,
 ) {
@@ -61,9 +61,9 @@ export default function useInfiniteGetClubsBySearchTermQuery(
   }, [options]);
 
   return useInfiniteQuery<
-    GetClubsBySearchTermResponse,
+    GetTablesBySearchTermResponse,
     ApplicationError,
-    GetClubsBySearchTermResponse,
+    GetTablesBySearchTermResponse,
     QueryKey
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "by-search", queryParams],

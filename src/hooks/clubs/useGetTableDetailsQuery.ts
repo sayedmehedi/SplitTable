@@ -1,7 +1,7 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
-import {GetClubDetailsResponse} from "@src/models";
+import {GetTableDetailsResponse} from "@src/models";
 import {IClubService} from "@core/services/IClubService";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {ApplicationError} from "@core/domain/ApplicationError";
@@ -10,25 +10,25 @@ import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
-type QueryKey = [typeof QueryKeys.CLUB, "DETAILS", number];
+type QueryKey = [typeof QueryKeys.TABLE, "DETAILS", number];
 
-const queryFn: QueryFunction<GetClubDetailsResponse, QueryKey> = ({
+const queryFn: QueryFunction<GetTableDetailsResponse, QueryKey> = ({
   signal,
   queryKey,
 }) => {
-  const clubId = queryKey[2];
+  const tableId = queryKey[2];
 
-  return handleCancelableAxiosPromise(service.getClubDetails(clubId), {
+  return handleCancelableAxiosPromise(service.getTableDetails(tableId), {
     signal,
   });
 };
 
-export default function useGetClubDetailsQuery(
-  clubId: number,
+export default function useGetTableDetailsQuery(
+  tableId: number,
   options?: UseQueryOptions<
-    GetClubDetailsResponse,
+    GetTableDetailsResponse,
     ApplicationError,
-    GetClubDetailsResponse,
+    GetTableDetailsResponse,
     QueryKey
   >,
 ) {
@@ -39,9 +39,9 @@ export default function useGetClubDetailsQuery(
   }, [options]);
 
   return useQuery<
-    GetClubDetailsResponse,
+    GetTableDetailsResponse,
     ApplicationError,
-    GetClubDetailsResponse,
+    GetTableDetailsResponse,
     QueryKey
-  >([QueryKeys.CLUB, "DETAILS", clubId], queryFn, optionsRef.current);
+  >([QueryKeys.TABLE, "DETAILS", tableId], queryFn, optionsRef.current);
 }

@@ -32,7 +32,7 @@ import {
   CustomerStackParamList,
   RootStackParamList,
 } from "@src/navigation";
-import {ClubListTypes} from "@constants/club";
+import {TableListTypes} from "@constants/club";
 import {SearchHistoryItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 
@@ -116,10 +116,10 @@ export default function RestaurantSearchBtn({
           onSuccess() {
             setSearchTerm("");
             toggleSearchModal();
-            navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+            navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
               searchTerm: searchTerm,
               headerTitle: "Search Result",
-              listType: ClubListTypes.SEARCH_RESULT,
+              listType: TableListTypes.SEARCH_RESULT,
             });
           },
         },
@@ -147,10 +147,10 @@ export default function RestaurantSearchBtn({
   const handleItemPress = (item: SearchHistoryItem) => {
     return () => {
       toggleSearchModal();
-      navigation.navigate(CustomerStackRoutes.CLUB_LIST, {
+      navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
         searchTerm: item.data,
         headerTitle: "Search Result",
-        listType: ClubListTypes.SEARCH_RESULT,
+        listType: TableListTypes.SEARCH_RESULT,
       });
     };
   };
@@ -160,7 +160,7 @@ export default function RestaurantSearchBtn({
       <TouchableOpacity
         style={styles.searchButton}
         onPress={() => {
-          navigation.navigate(CustomerStackRoutes.CLUB_SEARCH);
+          navigation.navigate(CustomerStackRoutes.TABLE_SEARCH);
         }}>
         <Feather name="search" color={"#3B3B3B"} size={15} />
         <Text
