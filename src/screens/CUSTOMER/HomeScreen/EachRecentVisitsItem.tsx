@@ -3,7 +3,7 @@ import truncate from "lodash.truncate";
 import {BookedTable} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
-import {MapIcon, Clock} from "@constants/iconPath";
+import {MapIcon, Clock, RedMap} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
 import {
   ActivityIndicator,
@@ -92,11 +92,11 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
                   padding: splitAppTheme.space[1],
                   borderRadius: splitAppTheme.radii.full,
                 }}>
-                <Text style={{color: "black"}}>{item.avg_rating}</Text>
-                <Fontisto name="star" color={"#FFC529"} size={16} />
-                <Text style={{color: "black"}}>({item.total_reviews})</Text>
-              </View>
+                <RedMap height={16} width={16} />
 
+                <Text style={{color: "black"}}>{item.distance}</Text>
+              </View>
+              {/* 
               {isTogglingFavorite ? (
                 <View
                   style={{
@@ -120,7 +120,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
                     name={item.is_favourite ? "heart" : "hearto"}
                   />
                 </TouchableOpacity>
-              )}
+              )} */}
             </View>
           </ImageBackground>
         </View>
@@ -144,7 +144,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
               flexDirection: "row",
               alignItems: "center",
             }}>
-            <MapIcon height={10} width={10} color={"#402B8C"} />
+            <MapIcon height={15} width={15} color={"#402B8C"} />
             <Text
               style={{
                 color: "#8A8D9F",
@@ -162,7 +162,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
               alignItems: "center",
               paddingBottom: splitAppTheme.space[2],
             }}>
-            <Clock height={10} width={10} color={"#402B8C"} />
+            <Clock height={15} width={15} color={"#402B8C"} />
             <Text
               style={{
                 color: "#8A8D9F",
@@ -170,7 +170,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
                 fontSize: splitAppTheme.fontSizes.sm,
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
-              Open: {item.opening_time} - {item.closing_time}
+              {item.date}
             </Text>
           </View>
         </View>

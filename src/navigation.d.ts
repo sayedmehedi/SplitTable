@@ -12,7 +12,13 @@ import {
   OwnerAuthStackRoutes,
 } from "@constants/routes";
 import {TableListTypes} from "@constants/table";
-import {TableCommonSearchParams} from "./models";
+import {
+  BookedTable,
+  BookedTableDetails as BookingTableDetails,
+  ClubMenuItem,
+  SplitTableDetails,
+  TableCommonSearchParams,
+} from "./models";
 
 type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.SIGNIN]: undefined;
@@ -78,6 +84,13 @@ export type ClubListScreenTypeRest = ClubListScreenCommon & {
 };
 
 type CustomerStackParamList = {
+  [CustomerStackRoutes.PAYMENT_METHOD]: {
+    amount: string;
+  };
+  [CustomerStackRoutes.PAYMENT]: {
+    totalAmount: string;
+    partialAmount: string;
+  };
   [CustomerStackRoutes.TABLE_LIST]:
     | ClubListScreenTypeByLocation
     | ClubListScreenTypeSearchResult
@@ -102,6 +115,21 @@ type CustomerStackParamList = {
   [CustomerStackRoutes.FAVORITE]: undefined;
   [CustomerStackRoutes.TRANSACTION]: undefined;
   [CustomerStackRoutes.ACCOUNT_SETTING]: undefined;
+
+  [CustomerStackRoutes.GUEST_N_MENU]: {
+    tableDetails: SplitTableDetails | BookingTableDetails;
+  };
+  [CustomerStackRoutes.ADD_MENU_ITEM]: {
+    tableDetails: SplitTableDetails | BookingTableDetails;
+    menGuestCount: number;
+    womenGuestCount: number;
+  };
+  [CustomerStackRoutes.BOOKING_DETAILS]: {
+    tableDetails: SplitTableDetails | BookingTableDetails;
+    menuListToAdd: Array<ClubMenuItem & {purchaseQty: number}>;
+    menGuestCount: number;
+    womenGuestCount: number;
+  };
 };
 
 type OwnerAccountStackParamList = {

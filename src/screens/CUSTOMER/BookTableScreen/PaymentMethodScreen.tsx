@@ -1,8 +1,21 @@
-import {View, Text, StyleSheet} from "react-native";
 import React from "react";
+import {View, Text, StyleSheet} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import AppGradientButton from "@components/AppGradientButton";
-const PaymentMethodScreen = ({navigation}) => {
+import {CompositeScreenProps} from "@react-navigation/native";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {StackScreenProps} from "@react-navigation/stack";
+import {CustomerStackRoutes} from "@constants/routes";
+
+type Props = CompositeScreenProps<
+  StackScreenProps<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.PAYMENT_METHOD
+  >,
+  StackScreenProps<RootStackParamList>
+>;
+
+const PaymentMethodScreen = ({navigation}: Props) => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", padding: 20}}>
       <TouchableOpacity style={styles.paymentContainer}>
@@ -15,7 +28,9 @@ const PaymentMethodScreen = ({navigation}) => {
       </TouchableOpacity>
 
       <AppGradientButton
-        onPress={() => navigation.navigate("paymentMethod")}
+        onPress={() => {
+          // navigation.navigate("paymentMethod")
+        }}
         width={"100%"}
         color={"primary"}
         variant={"solid"}

@@ -16,7 +16,6 @@ import {useDisclosure} from "react-use-disclosure";
 import BookedTablesSwiper from "./BookedTablesSwiper";
 import Feather from "react-native-vector-icons/Feather";
 import LocationSwiper from "@components/LocationSwiper";
-import RestaurantSearchBtn from "./RestaurantSearchBtn";
 import LinearGradient from "react-native-linear-gradient";
 import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";

@@ -49,6 +49,14 @@ export default function TableDetailsScreen({route, navigation}: Props) {
   } = useGetTableDetailsQuery(route.params.tableId);
   useHandleNonFieldError(tableDetailsError);
 
+  const handleBookTable = () => {
+    if (tableDetailsResponse) {
+      navigation.navigate(CustomerStackRoutes.GUEST_N_MENU, {
+        tableDetails: tableDetailsResponse,
+      });
+    }
+  };
+
   if (isTableDetailsLoading) {
     return <Text>Loading...</Text>;
   }
@@ -169,7 +177,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                     fontSize: splitAppTheme.fontSizes.sm,
                     fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
                   }}>
-                  {tableDetailsResponse.club_location}
+                  {tableDetailsResponse.location}
                 </Text>
               </View>
             </View>
@@ -382,9 +390,9 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                     flexDirection: "row",
                     marginLeft: splitAppTheme.space[3],
                   }}>
-                  {tableDetailsResponse.joined_users.map(user => (
+                  {tableDetailsResponse.joined_users.map((user, index) => (
                     <Image
-                      key={user.id}
+                      key={index}
                       source={{uri: user.image}}
                       style={{
                         width: splitAppTheme.sizes[9],
@@ -420,7 +428,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             </View>
 
             <View style={{marginLeft: splitAppTheme.space[3]}}>
-              <Text>{tableDetailsResponse.location}</Text>
+              <Text>{tableDetailsResponse.club_location}</Text>
             </View>
           </View>
         </View>
@@ -514,7 +522,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
               color={"primary"}
               variant={"solid"}
               title={"Join Now"}
-              onPress={() => {}}
+              onPress={handleBookTable}
             />
           </View>
         </View>
@@ -567,7 +575,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
               color={"primary"}
               variant={"solid"}
               title={"Book Table"}
-              onPress={() => {}}
+              onPress={handleBookTable}
             />
           </View>
         </View>

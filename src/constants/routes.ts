@@ -15,6 +15,12 @@ export const CustomerStackRoutes = {
   NOTIFICATIONS: "Notifications",
   LOCATION_ENABLE: "LocationEnable",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
+  PAYMENT: "Payment",
+  PAYMENT_METHOD: "PaymentMethod",
+
+  GUEST_N_MENU: "GuestNMenu",
+  ADD_MENU_ITEM: "AddMenuItem",
+  BOOKING_DETAILS: "BookingDetails",
 
   FAQ: "Faq",
   LEGAL: "Legal",

@@ -3,7 +3,7 @@ import {QueryClient} from "@tanstack/react-query";
 import type {AppStateStatus} from "react-native";
 import {onlineManager} from "@tanstack/react-query";
 import {focusManager} from "@tanstack/react-query";
-import NetInfo from "@react-native-community/netinfo";
+import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
 import {useFlipper} from "@react-navigation/devtools";
 import {useAppState} from "@react-native-community/hooks";
 import AuthDataIsLoaded from "@components/AuthDataIsLoaded";
@@ -18,6 +18,7 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
+import {Text} from "react-native-svg";
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -52,6 +53,7 @@ const asyncStoragePersister = createAsyncStoragePersister({
 
 function AllTheProviders({children}: React.PropsWithChildren) {
   const appState = useAppState();
+  const {isInternetReachable, isConnected} = useNetInfo();
 
   const navigationRef = useNavigationContainerRef();
   useFlipper(navigationRef);
@@ -59,6 +61,22 @@ function AllTheProviders({children}: React.PropsWithChildren) {
   React.useEffect(() => {
     onAppStateChange(appState);
   }, [appState]);
+
+  if (!isConnected) {
+    return (
+      <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+        <Text>Not connected to any wifi</Text>
+      </View>
+    );
+  }
+
+  if (!isInternetReachable) {
+    return (
+      <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+        <Text>No Internet..</Text>
+      </View>
+    );
+  }
 
   return (
     <PersistQueryClientProvider

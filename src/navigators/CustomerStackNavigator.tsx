@@ -21,14 +21,20 @@ import {
   StackNavigationOptions,
   StackNavigationProp,
 } from "@react-navigation/stack";
+import {isSplitTableDetails} from "@utils/table";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
+import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
 import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
+import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
+import BookingDetailsScreen from "@screens/CUSTOMER/BookTableScreen/BookingDetailsScreen";
+import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
 import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
-import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
+import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
+import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -91,10 +97,10 @@ const CustomerStackNavigator = () => {
             name={CustomerStackRoutes.CLUB_DETAILS}
           />
 
-          <CustomerStack.Screen
+          {/* <CustomerStack.Screen
             component={BookingStackNavigator}
             name={CustomerStackRoutes.BOOKING}
-          />
+          /> */}
 
           <CustomerStack.Screen
             component={NotificationListScreen}
@@ -108,41 +114,74 @@ const CustomerStackNavigator = () => {
             name={CustomerStackRoutes.TABLE_SEARCH}
           />
 
-          <CustomerStack.Screen
-            component={ProfileScreen}
-            options={profileScreenOptions}
-            name={CustomerStackRoutes.PROFILE}
-          />
+          <CustomerStack.Group>
+            <CustomerStack.Screen
+              component={GuestAndOfferMenuScreen}
+              options={guestNOfferMenuScreenOptions}
+              name={CustomerStackRoutes.GUEST_N_MENU}
+            />
 
-          <CustomerStack.Screen
-            component={TransactionScreen}
-            options={transactionScreenOptions}
-            name={CustomerStackRoutes.TRANSACTION}
-          />
+            <CustomerStack.Screen
+              component={AddMenuItemScreen}
+              options={addMenuItemScreenOptions}
+              name={CustomerStackRoutes.ADD_MENU_ITEM}
+            />
 
-          <CustomerStack.Screen
-            component={AccountSettingScreen}
-            options={accountSettingScreenOptions}
-            name={CustomerStackRoutes.ACCOUNT_SETTING}
-          />
+            <CustomerStack.Screen
+              component={BookingDetailsScreen}
+              name={CustomerStackRoutes.BOOKING_DETAILS}
+            />
 
-          <CustomerStack.Screen
-            component={FavoriteScreen}
-            options={favoriteScreenOptions}
-            name={CustomerStackRoutes.FAVORITE}
-          />
+            <CustomerStack.Screen
+              component={PaymentScreen}
+              options={paymentScreenOptions}
+              name={CustomerStackRoutes.PAYMENT}
+            />
 
-          <CustomerStack.Screen
-            component={LegalScreen}
-            options={legalScreenOptions}
-            name={CustomerStackRoutes.LEGAL}
-          />
+            <CustomerStack.Screen
+              component={PaymentMethodScreen}
+              options={paymentMethodScreenOptions}
+              name={CustomerStackRoutes.PAYMENT_METHOD}
+            />
+          </CustomerStack.Group>
 
-          <CustomerStack.Screen
-            component={FaqScreen}
-            options={faqScreenOptions}
-            name={CustomerStackRoutes.FAQ}
-          />
+          <CustomerStack.Group>
+            <CustomerStack.Screen
+              component={ProfileScreen}
+              options={profileScreenOptions}
+              name={CustomerStackRoutes.PROFILE}
+            />
+
+            <CustomerStack.Screen
+              component={TransactionScreen}
+              options={transactionScreenOptions}
+              name={CustomerStackRoutes.TRANSACTION}
+            />
+
+            <CustomerStack.Screen
+              component={AccountSettingScreen}
+              options={accountSettingScreenOptions}
+              name={CustomerStackRoutes.ACCOUNT_SETTING}
+            />
+
+            <CustomerStack.Screen
+              component={FavoriteScreen}
+              options={favoriteScreenOptions}
+              name={CustomerStackRoutes.FAVORITE}
+            />
+
+            <CustomerStack.Screen
+              component={LegalScreen}
+              options={legalScreenOptions}
+              name={CustomerStackRoutes.LEGAL}
+            />
+
+            <CustomerStack.Screen
+              component={FaqScreen}
+              options={faqScreenOptions}
+              name={CustomerStackRoutes.FAQ}
+            />
+          </CustomerStack.Group>
         </React.Fragment>
       )}
     </CustomerStack.Navigator>
@@ -150,6 +189,51 @@ const CustomerStackNavigator = () => {
 };
 
 export default CustomerStackNavigator;
+
+const paymentMethodScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.PAYMENT_METHOD
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitleAlign: "center",
+  headerTitle: "Select a payment method",
+};
+
+const paymentScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.PAYMENT
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  headerTitle: "Payment",
+  header: CommonStackHeader,
+  headerTitleAlign: "center",
+};
+
+const addMenuItemScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.ADD_MENU_ITEM
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitleAlign: "center",
+  headerTitle: "Add Menu Item",
+};
 
 const locationEnableScreenOptions:
   | StackNavigationOptions
@@ -165,6 +249,22 @@ const locationEnableScreenOptions:
   headerTitleAlign: "center",
   headerTitle: "Select Location",
 };
+
+const guestNOfferMenuScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.GUEST_N_MENU
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = ({route}) => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: isSplitTableDetails(route.params.tableDetails)
+    ? "Join Now"
+    : "Book Table",
+});
 
 const clubSearchScreenOptions:
   | StackNavigationOptions

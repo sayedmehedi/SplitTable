@@ -16,6 +16,8 @@ import {
   GetTablesBySearchTermResponse,
   GetTablesByLocationQueryParams,
   GetTablesBySearchTermQueryParams,
+  BookTableRequest,
+  BookTableResponse,
 } from "@src/models";
 
 export interface IClubService {
@@ -66,4 +68,8 @@ export interface IClubService {
   ): Promise<
     AxiosResponse<ToggleFavoriteClubResponse, GlobalAxiosRequestConfig>
   >;
+
+  bookTable(
+    data: BookTableRequest,
+  ): Promise<AxiosResponse<BookTableResponse, GlobalAxiosRequestConfig>>;
 }

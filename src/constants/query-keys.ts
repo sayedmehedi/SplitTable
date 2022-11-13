@@ -1,8 +1,8 @@
 export const QueryKeys = {
   MENU: "menu",
+  CLUB: "club",
   IMAGE: "image",
   TABLE: "table",
-  CLUB: "club",
   REVIEW: "review",
   PROFILE: "profile",
   LOCATION: "location",
@@ -11,5 +11,7 @@ export const QueryKeys = {
   GEOLOCATION: "geolocation",
   TRANSACTION: "transaction",
   SEARCH_HISTORY: "search-history",
+  UPCOMING_BOOKING: "upcoming-booking",
+  BOOKING_HISTORY: "booking-history",
   IS_AUTHENTICATED: "is-authenticated",
 } as const;

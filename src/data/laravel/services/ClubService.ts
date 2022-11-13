@@ -19,6 +19,8 @@ import {
   GetTablesBySearchTermResponse,
   GetTablesBySearchTermQueryParams,
   GetTableDetailsResponse,
+  BookTableRequest,
+  BookTableResponse,
 } from "@src/models";
 
 @injectable()
@@ -27,6 +29,23 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+
+  bookTable(
+    data: BookTableRequest,
+  ): Promise<AxiosResponse<BookTableResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<BookTableResponse>("create-booking", {
+      club_id: data.clubId,
+      table_id: data.tableId,
+      men_seat: data.menSeat,
+      women_seat: data.womenSeat,
+      menu_id: data.menuId,
+      qty: data.qty,
+      discount: data.discount,
+      tax: data.tax,
+      tip: data.tip,
+    });
+  }
+
   getTableDetails(
     tableId: number,
   ): CancelablePromise<

@@ -1,96 +1,190 @@
+import React from "react";
+import {splitAppTheme} from "@src/theme";
+import {productData} from "@constants/dummy";
+import {ClubListItemMenu, ClubMenuItem} from "@src/models";
+import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
+import Entypo from "react-native-vector-icons/Entypo";
+import {CustomerStackRoutes} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
+import useDebouncedState from "@hooks/useDebouncedState";
+import {SafeAreaView} from "react-native-safe-area-context";
+import AppGradientButton from "@components/AppGradientButton";
+import {CompositeScreenProps} from "@react-navigation/native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {
   View,
   Text,
-  FlatList,
-  ImageBackground,
   Image,
   StyleSheet,
+  ImageBackground,
+  TextInput,
 } from "react-native";
-import React from "react";
-import {productData} from "@constants/dummy";
-import {SafeAreaView} from "react-native-safe-area-context";
-import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
-import Entypo from "react-native-vector-icons/Entypo";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import AppGradientButton from "@components/AppGradientButton";
+import useBookTableMutation from "@hooks/useBookTableMutation";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import {isResponseResultError} from "@utils/error-handling";
 
-const renderOfferMenu = ({item, index}) => {
-  if (index <= 1) {
+type Props = CompositeScreenProps<
+  StackScreenProps<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.BOOKING_DETAILS
+  >,
+  StackScreenProps<RootStackParamList>
+>;
+
+const TAX_PERCENTAGE = 0;
+
+const MenuItemAction = React.memo(
+  function ({
+    onChange,
+    maxQuantity,
+    initialQuantity,
+  }: {
+    maxQuantity: number;
+    initialQuantity: number;
+    onChange: (quantity: number) => void;
+  }) {
+    const [quantity, setQuantity] = React.useState(initialQuantity);
+    const [debouncedQuantity] = useDebouncedState(quantity, 500);
+
+    React.useEffect(() => {
+      onChange(debouncedQuantity);
+    }, [debouncedQuantity, onChange]);
+
     return (
-      <View
-        style={{
-          height: 60,
-          width: "100%",
+      <View style={{flexDirection: "row", alignItems: "center"}}>
+        <TouchableOpacity
+          disabled={quantity <= 0}
+          onPress={() => {
+            setQuantity(prevQuantity => {
+              const newQuantity = prevQuantity - 1;
+              if (newQuantity >= 0) {
+                return newQuantity;
+              }
 
-          flexDirection: "row",
-
-          backgroundColor: "rgba(255,255,255,0.9)",
-          marginVertical: 5,
-        }}>
-        <Image
-          source={item.uri}
-          style={{
-            height: 50,
-            width: 50,
+              return prevQuantity;
+            });
           }}
-        />
-        <View
           style={{
-            padding: 5,
-            justifyContent: "space-between",
-            flex: 1,
-            flexDirection: "row",
+            height: 30,
+            width: 30,
+            borderRadius: 15,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(64,43,140,0.1)",
           }}>
-          <View>
-            <Text
-              style={{
-                fontFamily: "Satoshi-Medium",
-                color: "#262B2E",
-                fontSize: 18,
-              }}>
-              {item.name}
-            </Text>
-            <Text
-              style={{
-                fontFamily: "SatoshiVariable-Bold",
-                fontSize: 12,
-                color: "#00C1FF",
-              }}>
-              Price: $2123
-            </Text>
-          </View>
+          <Entypo name="minus" size={8} color={"#402B8C"} />
+        </TouchableOpacity>
 
-          <View style={{flexDirection: "row", alignItems: "center"}}>
-            <TouchableOpacity
-              style={{
-                height: 30,
-                width: 30,
-                borderRadius: 15,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(64,43,140,0.1)",
-              }}>
-              <Entypo name="minus" size={8} color={"#402B8C"} />
-            </TouchableOpacity>
-            <Text style={{marginHorizontal: 10}}>0</Text>
-            <TouchableOpacity
-              style={{
-                height: 30,
-                width: 30,
-                borderRadius: 15,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(64,43,140,0.9)",
-              }}>
-              <Entypo name="plus" size={10} color={"white"} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <Text style={{marginHorizontal: 10}}>{quantity}</Text>
+
+        <TouchableOpacity
+          disabled={quantity >= maxQuantity}
+          onPress={() => {
+            setQuantity(prevQuantity => {
+              const newQuantity = prevQuantity + 1;
+              if (newQuantity < maxQuantity) {
+                return newQuantity;
+              }
+
+              return prevQuantity;
+            });
+          }}
+          style={{
+            height: 30,
+            width: 30,
+            borderRadius: 15,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(64,43,140,0.9)",
+          }}>
+          <Entypo name="plus" size={10} color={"white"} />
+        </TouchableOpacity>
       </View>
     );
-  }
-};
-const BookingDetailsScreen = ({navigation}) => {
+  },
+  (prevProps, nextProps) =>
+    prevProps.maxQuantity === nextProps.maxQuantity &&
+    prevProps.initialQuantity === nextProps.initialQuantity,
+);
+
+const BookingDetailsScreen = ({navigation, route}: Props) => {
+  const [tip, setTip] = React.useState(0);
+  const [discount] = React.useState(0);
+  const [menus, setMenus] = React.useState<
+    Record<number, ClubMenuItem & {purchaseQty: number}>
+  >({});
+
+  const {
+    mutate: bookTable,
+    error: bookTableError,
+    data: bookTableResponse,
+    isLoading: isBookingTable,
+  } = useBookTableMutation();
+  useHandleNonFieldError(bookTableError);
+  useHandleResponseResultError(bookTableResponse);
+
+  const handleItemQuantity = React.useCallback(
+    (menuItem: ClubMenuItem, newQuantity: number) => {
+      setMenus(prevMenus => {
+        const copiedMenus = {...prevMenus};
+
+        if (menuItem.id in copiedMenus) {
+          const copiedItem = {...copiedMenus[menuItem.id]};
+
+          if (newQuantity >= 0 && newQuantity < copiedItem.qty) {
+            copiedItem.purchaseQty = newQuantity;
+            copiedMenus[copiedItem.id] = copiedItem;
+          }
+        } else {
+          if (newQuantity > 0) {
+            copiedMenus[menuItem.id] = {
+              ...menuItem,
+              purchaseQty: newQuantity,
+            };
+          }
+        }
+
+        return copiedMenus;
+      });
+    },
+    [],
+  );
+
+  const tableBookingCostForMen = isSplitTableDetails(route.params.tableDetails)
+    ? route.params.menGuestCount *
+      parseFloat(route.params.tableDetails.men_seat_price)
+    : 0;
+
+  const tableBookingCostForWomen = isSplitTableDetails(
+    route.params.tableDetails,
+  )
+    ? route.params.womenGuestCount *
+      parseFloat(route.params.tableDetails.women_seat_price)
+    : 0;
+
+  const wholetableBookingCost = isBookedTableDetails(route.params.tableDetails)
+    ? route.params.tableDetails.total_seat *
+      parseFloat(route.params.tableDetails.price)
+    : 0;
+
+  const menuTotal = React.useMemo(() => {
+    return Object.values(menus).reduce((acc, curr) => {
+      acc += curr.purchaseQty * parseFloat(curr.price.replace(",", ""));
+      return acc;
+    }, 0);
+  }, [menus]);
+
+  const subtotal = isSplitTableDetails(route.params.tableDetails)
+    ? tableBookingCostForMen + tableBookingCostForWomen + menuTotal
+    : wholetableBookingCost + menuTotal;
+
+  const tax = subtotal * TAX_PERCENTAGE;
+
+  const total = tax + subtotal + tip - discount;
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{flex: 1}}>
@@ -99,21 +193,21 @@ const BookingDetailsScreen = ({navigation}) => {
             height: 300,
             width: "100%",
           }}
-          source={require("@assets/images/book-details.jpg")}>
+          source={{uri: route.params.tableDetails.image}}>
           <SafeAreaView>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
                 padding: 15,
                 alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}>
               <FontAwesome5 name="chevron-left" size={25} color={"white"} />
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 22,
                   color: "#FFFFFF",
+                  fontFamily: "SatoshiVariable-Bold",
                 }}>
                 Booking Details
               </Text>
@@ -124,71 +218,125 @@ const BookingDetailsScreen = ({navigation}) => {
           <View style={{padding: 15}}>
             <View
               style={{
+                marginVertical: 5,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginVertical: 5,
               }}>
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 14,
                   color: "#FFFFFF",
+                  fontFamily: "SatoshiVariable-Bold",
                 }}>
                 Club/Bar Name
               </Text>
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 14,
                   color: "#FFFFFF",
+                  fontFamily: "SatoshiVariable-Bold",
                 }}>
-                Omania Nightclub
+                {route.params.tableDetails.club_name}
               </Text>
             </View>
+
+            {isBookedTableDetails(route.params.tableDetails) ? (
+              <View
+                style={{
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: "#FFFFFF",
+                    fontFamily: "SatoshiVariable-Bold",
+                  }}>
+                  Guest:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: "#FFFFFF",
+                    fontFamily: "SatoshiVariable-Bold",
+                  }}>
+                  {route.params.tableDetails.total_seat}
+                </Text>
+              </View>
+            ) : (
+              <React.Fragment>
+                <View
+                  style={{
+                    marginVertical: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#FFFFFF",
+                      fontFamily: "SatoshiVariable-Bold",
+                    }}>
+                    Men Guest:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#FFFFFF",
+                      fontFamily: "SatoshiVariable-Bold",
+                    }}>
+                    {route.params.menGuestCount}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    marginVertical: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#FFFFFF",
+                      fontFamily: "SatoshiVariable-Bold",
+                    }}>
+                    Women Guest:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#FFFFFF",
+                      fontFamily: "SatoshiVariable-Bold",
+                    }}>
+                    {route.params.womenGuestCount}
+                  </Text>
+                </View>
+              </React.Fragment>
+            )}
+
             <View
               style={{
+                marginVertical: 5,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginVertical: 5,
               }}>
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 14,
                   color: "#FFFFFF",
+                  fontFamily: "SatoshiVariable-Bold",
                 }}>
-                Number of Guest:
+                Table/Event Name:
               </Text>
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 14,
                   color: "#FFFFFF",
-                }}>
-                3
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 5,
-              }}>
-              <Text
-                style={{
                   fontFamily: "SatoshiVariable-Bold",
-                  fontSize: 14,
-                  color: "#FFFFFF",
                 }}>
-                Table:
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "SatoshiVariable-Bold",
-                  fontSize: 14,
-                  color: "#FFFFFF",
-                }}>
-                Table Name 3
+                {route.params.tableDetails.name}
               </Text>
             </View>
 
@@ -200,43 +348,19 @@ const BookingDetailsScreen = ({navigation}) => {
               }}>
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 14,
                   color: "#FFFFFF",
+                  fontFamily: "SatoshiVariable-Bold",
                 }}>
-                Date:
+                Date & Time:
               </Text>
               <Text
                 style={{
-                  fontFamily: "SatoshiVariable-Bold",
                   fontSize: 14,
                   color: "#FFFFFF",
-                }}>
-                Tue, 17 Jun 2022
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 5,
-              }}>
-              <Text
-                style={{
                   fontFamily: "SatoshiVariable-Bold",
-                  fontSize: 14,
-                  color: "#FFFFFF",
                 }}>
-                Time:
-              </Text>
-              <Text
-                style={{
-                  fontFamily: "SatoshiVariable-Bold",
-                  fontSize: 14,
-                  color: "#FFFFFF",
-                }}>
-                10:30am
+                {route.params.tableDetails.date}
               </Text>
             </View>
           </View>
@@ -248,102 +372,207 @@ const BookingDetailsScreen = ({navigation}) => {
             backgroundColor: "rgba(255,255,255,0.7)",
             padding: 20,
           }}>
-          <FlatList
-            data={productData}
-            renderItem={renderOfferMenu}
-            maxToRenderPerBatch={2}
-          />
+          {route.params.menuListToAdd.map(item => (
+            <View
+              key={item.id}
+              style={{
+                height: 60,
+                width: "100%",
+                marginVertical: 5,
+                flexDirection: "row",
+                backgroundColor: "rgba(255,255,255,0.9)",
+              }}>
+              <View>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    width: 50,
+                    height: 50,
+                  }}
+                />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  padding: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: "#262B2E",
+                      fontFamily: "Satoshi-Medium",
+                    }}>
+                    {item.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: "#00C1FF",
+                      fontFamily: "SatoshiVariable-Bold",
+                    }}>
+                    Price: ${item.price}
+                  </Text>
+                </View>
+
+                <MenuItemAction
+                  onChange={quantity => {
+                    handleItemQuantity(item, quantity);
+                  }}
+                  maxQuantity={item.qty}
+                  initialQuantity={item.purchaseQty}
+                />
+              </View>
+            </View>
+          ))}
           <View
             style={{
               marginTop: 10,
               borderTopWidth: 2,
+              paddingVertical: 10,
               borderStyle: "dashed",
               borderColor: "#D8D8D8",
-              paddingVertical: 10,
             }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 5,
-              }}>
-              <Text style={styles.textStyle}>Table Booking x 3 Guest</Text>
-              <Text style={styles.textStyle}>$1820.00</Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 5,
-              }}>
-              <Text style={styles.textStyle}>Bombay Sapphire x 1 </Text>
-              <Text style={styles.textStyle}>$476.00</Text>
-            </View>
+            {isSplitTableDetails(route.params.tableDetails) ? (
+              <React.Fragment>
+                <View
+                  style={{
+                    marginVertical: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text style={styles.textStyle}>
+                    Table Booking x {route.params.menGuestCount} Men Guest
+                  </Text>
+                  <Text style={styles.textStyle}>
+                    ${tableBookingCostForMen}
+                  </Text>
+                </View>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 5,
-              }}>
-              <Text style={styles.textStyle}>Bacardi x 2</Text>
-              <Text style={styles.textStyle}>$1440.00</Text>
-            </View>
+                <View
+                  style={{
+                    marginVertical: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text style={styles.textStyle}>
+                    Table Booking x {route.params.womenGuestCount} Women Guest
+                  </Text>
+                  <Text style={styles.textStyle}>
+                    ${tableBookingCostForWomen}
+                  </Text>
+                </View>
+              </React.Fragment>
+            ) : (
+              <View
+                style={{
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <Text style={styles.textStyle}>
+                  Table Booking x {route.params.tableDetails.total_seat} Guest
+                </Text>
+                <Text style={styles.textStyle}>${wholetableBookingCost}</Text>
+              </View>
+            )}
+
+            {Object.values(menus).map(menu => (
+              <View
+                key={menu.id}
+                style={{
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <Text style={styles.textStyle}>
+                  {menu.name} x {menu.purchaseQty}{" "}
+                </Text>
+                <Text style={styles.textStyle}>
+                  ${menu.purchaseQty * parseFloat(menu.price.replace(",", ""))}
+                </Text>
+              </View>
+            ))}
           </View>
 
           <View
             style={{
               borderTopWidth: 2,
+              paddingVertical: 10,
               borderStyle: "dashed",
               borderColor: "#D8D8D8",
-              paddingVertical: 10,
             }}>
             <View
               style={{
+                marginVertical: 5,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginVertical: 5,
               }}>
               <Text style={styles.textStyle}>Subtotal</Text>
-              <Text style={styles.textStyle}>$3,736.00</Text>
+              <Text style={styles.textStyle}>${subtotal}</Text>
             </View>
             <View
               style={{
+                marginVertical: 5,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginVertical: 5,
               }}>
               <Text style={styles.textStyle}>Tax </Text>
-              <Text style={styles.textStyle}>$200.00</Text>
+              <Text style={styles.textStyle}>${tax}</Text>
+            </View>
+
+            <View
+              style={{
+                marginVertical: 5,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}>
+              <Text style={styles.textStyle}>Discount </Text>
+              <Text style={styles.textStyle}>${discount}</Text>
             </View>
           </View>
 
           <View
             style={{
               borderTopWidth: 2,
+              paddingVertical: 10,
               borderStyle: "dashed",
               borderColor: "#D8D8D8",
-              paddingVertical: 10,
             }}>
             <View
               style={{
+                marginVertical: 5,
+                alignItems: "center",
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginVertical: 5,
               }}>
               <Text style={styles.textStyle}>Tip</Text>
-              <TouchableOpacity
+              <TextInput
+                value={`${tip}`}
+                editable={!isBookingTable}
+                keyboardType={"number-pad"}
+                onChangeText={text => {
+                  const output = parseFloat(text);
+
+                  if (isNaN(output)) {
+                    setTip(0);
+                  } else {
+                    setTip(output);
+                  }
+                }}
                 style={{
-                  height: 40,
-                  width: 90,
-                  borderWidth: 1,
-                  borderColor: "#8A8D9F",
-                  borderRadius: 8,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}>
-                <Text>$30.00</Text>
-              </TouchableOpacity>
+                  width: 50,
+                  textAlign: "center",
+                  padding: splitAppTheme.space[2],
+                  borderRadius: splitAppTheme.radii.lg,
+                  fontSize: splitAppTheme.fontSizes.md,
+                  borderWidth: splitAppTheme.borderWidths[2],
+                  borderColor: splitAppTheme.colors.primary[300],
+                }}
+              />
             </View>
           </View>
 
@@ -359,15 +588,48 @@ const BookingDetailsScreen = ({navigation}) => {
             <Text
               style={{
                 fontSize: 30,
-                color: "#FF3FCB",
-                fontFamily: "SatoshiVariable-Bold",
                 marginVertical: 10,
+                fontFamily: "SatoshiVariable-Bold",
+                color: splitAppTheme.colors.primary[300],
               }}>
-              $3966.00
+              ${total}
             </Text>
 
             <AppGradientButton
-              onPress={() => navigation.navigate("payment")}
+              touchableOpacityProps={{
+                disabled: isBookingTable,
+              }}
+              onPress={() => {
+                bookTable(
+                  {
+                    tax,
+                    tip,
+                    discount,
+                    tableId: [route.params.tableDetails.id],
+                    menuId: Object.keys(menus).map(parseInt),
+                    clubId: route.params.tableDetails.club_id,
+                    menSeat: {
+                      [route.params.tableDetails.id]:
+                        route.params.menGuestCount,
+                    },
+                    womenSeat: {
+                      [route.params.tableDetails.id]:
+                        route.params.womenGuestCount,
+                    },
+                    qty: Object.values(menus).map(menu => menu.purchaseQty),
+                  },
+                  {
+                    onSuccess(data) {
+                      if (!isResponseResultError(data)) {
+                        navigation.navigate(CustomerStackRoutes.PAYMENT, {
+                          totalAmount: data.booking_details.total_amount,
+                          partialAmount: data.booking_details.partial_amount,
+                        });
+                      }
+                    },
+                  },
+                );
+              }}
               width={290}
               color={"primary"}
               variant={"solid"}

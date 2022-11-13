@@ -397,7 +397,7 @@ export interface Transaction {
   id: number;
   date: string;
   club: string;
-  tables: string;
+  tables: "" | string[];
   no_of_guest: number;
   status: "Pending" | "Success" | "Cancelled";
   amount: string;
@@ -518,3 +518,23 @@ export interface BookedTableDetails {
 }
 
 export type GetTableDetailsResponse = SplitTableDetails | BookedTableDetails;
+
+export type BookTableRequest = {
+  clubId: number;
+  tableId: number[];
+  menSeat: Record<number, number>;
+  womenSeat: Record<number, number>;
+  menuId: number[];
+  qty: number[];
+  discount: number;
+  tax: number;
+  tip: number;
+};
+
+export type BookTableResponse = ResponseResult<{
+  booking_details: {
+    id: number;
+    total_amount: string;
+    partial_amount: string;
+  };
+}>;
