@@ -6,7 +6,10 @@ import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {isCustomerProfile} from "@utils/profile";
-import {CustomerStackRoutes} from "@constants/routes";
+import {
+  CustomerMainBottomTabRoutes,
+  CustomerStackRoutes,
+} from "@constants/routes";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
@@ -15,10 +18,18 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
-import {View, Text, Image, FlatList, TouchableOpacity} from "react-native";
-import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from "react-native";
 import ProfileImageUploader from "./ProfileImageUploader";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 
 type ProfileScreenProps = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.PROFILE>,
@@ -29,6 +40,7 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
   const toast = useAppToast();
   const queryClient = useQueryClient();
   const pagerRef = React.useRef<FlatList>(null!);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const isFetchingUserImages = useIsFetching({
     queryKey: [QueryKeys.IMAGE],
@@ -43,6 +55,16 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
       toast.error(error.non_field_error);
     },
   });
+
+  const setIndex = React.useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const viewSize = event.nativeEvent.layoutMeasurement.width;
+      const contentOffset = event.nativeEvent.contentOffset.x;
+      const carouselIndex = Math.floor(contentOffset / viewSize);
+      setSelectedIndex(carouselIndex);
+    },
+    [],
+  );
 
   const handlePager = (index: number) => {
     pagerRef?.current?.scrollToOffset({
@@ -192,44 +214,105 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
           paddingHorizontal: splitAppTheme.space[6],
         }}>
         <TouchableOpacity onPress={() => handlePager(0)}>
-          <LinearGradient
-            end={{x: 1, y: 0}}
-            start={{x: 0, y: 0}}
-            colors={["#472BBE", "#DF3BC0"]}
-            style={{
-              height: 40,
-              borderRadius: 5,
-              alignItems: "center",
-              justifyContent: "center",
-              width:
-                WINDOW_WIDTH * 0.3 -
-                splitAppTheme.space["6"] * 0.3 -
-                splitAppTheme.space["3"] * 0.3,
-            }}>
-            <Text style={{color: "white"}}>Photo Story</Text>
-          </LinearGradient>
+          {selectedIndex === 0 ? (
+            <LinearGradient
+              end={{x: 1, y: 0}}
+              start={{x: 0, y: 0}}
+              colors={["#472BBE", "#DF3BC0"]}
+              style={{
+                height: 40,
+                borderRadius: 5,
+                alignItems: "center",
+                justifyContent: "center",
+                width:
+                  WINDOW_WIDTH * 0.3 -
+                  splitAppTheme.space["6"] * 0.3 -
+                  splitAppTheme.space["3"] * 0.3,
+              }}>
+              <Text style={{color: "white"}}>Photo Story</Text>
+            </LinearGradient>
+          ) : (
+            <View
+              style={[
+                {
+                  height: 40,
+                  borderRadius: 5,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width:
+                    WINDOW_WIDTH * 0.3 -
+                    splitAppTheme.space["6"] * 0.3 -
+                    splitAppTheme.space["3"] * 0.3,
+                },
+                {
+                  borderColor: "rgba(229, 7, 167, 0.2)",
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  backgroundColor: "rgba(229, 7, 167, 0.2)",
+                },
+              ]}>
+              <Text
+                style={{
+                  color: splitAppTheme.colors.primary[400],
+                }}>
+                Photo Story
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => handlePager(1)}>
-          <LinearGradient
-            colors={["#402BBC", "#00C1FF"]}
-            start={{x: 0, y: 1}}
-            end={{x: 0, y: 0}}
-            style={{
-              height: 40,
-              borderRadius: 5,
-              alignItems: "center",
-              justifyContent: "center",
-              width:
-                WINDOW_WIDTH * 0.3 -
-                splitAppTheme.space["6"] * 0.3 -
-                splitAppTheme.space["3"] * 0.3,
-            }}>
-            <Text style={{color: "white"}}>Reviews</Text>
-          </LinearGradient>
+          {selectedIndex === 1 ? (
+            <LinearGradient
+              colors={["#402BBC", "#00C1FF"]}
+              start={{x: 0, y: 1}}
+              end={{x: 0, y: 0}}
+              style={{
+                height: 40,
+                borderRadius: 5,
+                alignItems: "center",
+                justifyContent: "center",
+                width:
+                  WINDOW_WIDTH * 0.3 -
+                  splitAppTheme.space["6"] * 0.3 -
+                  splitAppTheme.space["3"] * 0.3,
+              }}>
+              <Text style={{color: "white"}}>Reviews</Text>
+            </LinearGradient>
+          ) : (
+            <View
+              style={[
+                {
+                  height: 40,
+                  borderRadius: 5,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width:
+                    WINDOW_WIDTH * 0.3 -
+                    splitAppTheme.space["6"] * 0.3 -
+                    splitAppTheme.space["3"] * 0.3,
+                },
+                {
+                  borderColor: "rgba(0, 174, 230, 0.2)",
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  backgroundColor: "rgba(0, 174, 230, 0.2)",
+                },
+              ]}>
+              <Text
+                style={{
+                  color: splitAppTheme.colors.blue[400],
+                }}>
+                Reviews
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handlePager(2)}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
+              screen: CustomerMainBottomTabRoutes.CHAT,
+            });
+          }}>
           <LinearGradient
             colors={["#201648", "#7359D1"]}
             start={{x: 0, y: 0}}
@@ -257,6 +340,7 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
       pagingEnabled
       ref={pagerRef}
       listKey={"pager"}
+      onMomentumScrollEnd={setIndex}
       showsHorizontalScrollIndicator={false}
       data={[{key: "photos"}, {key: "reviews"}, {key: "chat"}]}
       renderItem={({item}) => {
@@ -286,9 +370,6 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
         refreshing={isFetchingUserImages == 1}
         ListHeaderComponent={ListHeaderComponent}
         ListFooterComponent={ListFooterComponent}
-        // ListFooterComponentStyle={{
-        //   height: WINDOW_HEIGHT,
-        // }}
         keyExtractor={(_, i) => i.toString()}
       />
     </View>

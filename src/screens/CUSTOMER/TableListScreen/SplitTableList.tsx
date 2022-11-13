@@ -4,7 +4,13 @@ import {splitAppTheme} from "@src/theme";
 import TableListItem from "./TableListItem";
 import {TableCommonSearchParams} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItem,
+  Text,
+  View,
+} from "react-native";
 import useInfiniteGetSplitTablesQuery from "@hooks/clubs/useInfiniteGetSplitTablesQuery";
 
 type Props = {
@@ -67,25 +73,9 @@ const SplitTableList = ({onItemPress, ...params}: Props) => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  // if (isLoading) {
-  //   return (
-  //     <Box p={6}>
-  //       {new Array(7).fill(1).map((_, index) => (
-  //         <Box width={"full"} key={index} mb={index === 6 ? 0 : 5}>
-  //           <VStack
-  //             space={8}
-  //             width={"full"}
-  //             borderRadius={"md"}
-  //             borderWidth={"1"}
-  //             overflow={"hidden"}>
-  //             <Skeleton height={"32"} />
-  //             <Skeleton.Text px={"2"} my={"4"} />
-  //           </VStack>
-  //         </Box>
-  //       ))}
-  //     </Box>
-  //   );
-  // }
+  if (isLoading) {
+    return <Text>Loading..</Text>;
+  }
 
   return (
     <FlatList

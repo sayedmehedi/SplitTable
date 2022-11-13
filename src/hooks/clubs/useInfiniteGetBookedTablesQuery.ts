@@ -19,7 +19,7 @@ type QueryKey = [
   typeof QueryKeys.TABLE,
   "LIST",
   "infinite",
-  "popular",
+  "booked",
   GetBookedTablesQueryParams,
 ];
 
@@ -60,7 +60,7 @@ export default function useInfiniteGetBookedTablesQuery(
     GetBookedTablesReponse,
     QueryKey
   >(
-    [QueryKeys.TABLE, "LIST", "infinite", "popular", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "booked", queryParams],
     queryFn,
     optionsRef.current,
   );

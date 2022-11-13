@@ -79,6 +79,7 @@ export type ClubListScreenTypeRest = ClubListScreenCommon & {
   listType:
     | typeof TableListTypes.ALL
     | typeof TableListTypes.SPLIT
+    | typeof TableListTypes.JOIN
     | typeof TableListTypes.BOOKED
     | typeof TableListTypes.RECENT_VISIT;
 };

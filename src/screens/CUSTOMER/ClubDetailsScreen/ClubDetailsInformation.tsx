@@ -3,8 +3,9 @@ import React from "react";
 import MapView from "react-native-maps";
 import {splitAppTheme} from "@src/theme";
 import relativeTime from "dayjs/plugin/relativeTime";
+import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {Dimensions, StyleSheet, View, g} from "react-native";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
@@ -18,6 +19,9 @@ type Props = {
 };
 
 const ClubDetailsInformation = ({clubId}: Props) => {
+  const {
+    window: {width: WINDOW_WIDTH},
+  } = useDimensions();
   const {
     error: clubDetailsError,
     data: clubDetailsResponse,
@@ -118,8 +122,8 @@ const ClubDetailsInformation = ({clubId}: Props) => {
     return (
       <View
         style={{
+          width: WINDOW_WIDTH,
           flexDirection: "row",
-          width: splitAppTheme.sizes.full,
           height: splitAppTheme.sizes.full,
         }}>
         <View
@@ -137,6 +141,7 @@ const ClubDetailsInformation = ({clubId}: Props) => {
     <View
       style={{
         flex: 1,
+        width: WINDOW_WIDTH,
         paddingHorizontal: splitAppTheme.space[6],
       }}>
       <View>

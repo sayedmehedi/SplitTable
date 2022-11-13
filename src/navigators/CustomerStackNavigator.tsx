@@ -27,14 +27,14 @@ import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
 import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
+import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
+import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
 import BookingDetailsScreen from "@screens/CUSTOMER/BookTableScreen/BookingDetailsScreen";
 import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
 import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
-import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
-import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 

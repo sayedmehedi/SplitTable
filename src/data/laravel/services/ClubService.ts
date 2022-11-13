@@ -204,7 +204,7 @@ export class ClubService implements IClubService {
     });
   }
 
-  getSplitTableNEvents(
+  getSplitTables(
     params: GetSplitTablesQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
@@ -220,6 +220,30 @@ export class ClubService implements IClubService {
 
       this._httpService
         .get<GetSplitTablesReponse>("split-tables", {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  getJoinTables(
+    params: GetSplitTablesQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetSplitTablesReponse>("join-tables", {
           params,
           signal: controller.signal,
         })

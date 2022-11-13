@@ -1,9 +1,8 @@
 import React from "react";
 import {QueryClient} from "@tanstack/react-query";
-import type {AppStateStatus} from "react-native";
+import {AppStateStatus, Text} from "react-native";
 import {onlineManager} from "@tanstack/react-query";
 import {focusManager} from "@tanstack/react-query";
-import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
 import {useFlipper} from "@react-navigation/devtools";
 import {useAppState} from "@react-native-community/hooks";
 import AuthDataIsLoaded from "@components/AuthDataIsLoaded";
@@ -11,6 +10,7 @@ import AuthTypeIsLoaded from "@components/AuthTypeIsLoaded";
 import {ActivityIndicator, Platform, View} from "react-native";
 import BearerTokenAttacher from "@components/BearerTokenAttacher";
 import {splitAppNavigationTheme, splitAppTheme} from "@src/theme";
+import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {PersistQueryClientProvider} from "@tanstack/react-query-persist-client";
 import {createAsyncStoragePersister} from "@tanstack/query-async-storage-persister";
@@ -18,7 +18,6 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
-import {Text} from "react-native-svg";
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -64,7 +63,12 @@ function AllTheProviders({children}: React.PropsWithChildren) {
 
   if (!isConnected) {
     return (
-      <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
         <Text>Not connected to any wifi</Text>
       </View>
     );
@@ -73,7 +77,7 @@ function AllTheProviders({children}: React.PropsWithChildren) {
   if (!isInternetReachable) {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-        <Text>No Internet..</Text>
+        <Text>No Internet</Text>
       </View>
     );
   }

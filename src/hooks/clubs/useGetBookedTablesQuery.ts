@@ -13,7 +13,7 @@ const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 type QueryKey = [
   typeof QueryKeys.TABLE,
   "LIST",
-  "popular",
+  "booked",
   GetBookedTablesQueryParams,
 ];
 
@@ -49,7 +49,7 @@ export default function useGetBookedTablesQuery(
     GetBookedTablesReponse,
     QueryKey
   >(
-    [QueryKeys.TABLE, "LIST", "popular", queryParams],
+    [QueryKeys.TABLE, "LIST", "booked", queryParams],
     queryFn,
     optionsRef.current,
   );

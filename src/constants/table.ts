@@ -1,5 +1,6 @@
 export const TableListTypes = {
   ALL: "all",
+  JOIN: "join",
   SPLIT: "split",
   BOOKED: "booked",
   BY_LOCATION: "byLocation",

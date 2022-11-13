@@ -45,7 +45,13 @@ export interface IClubService {
     AxiosResponse<GetRecentViewsReponse, GlobalAxiosRequestConfig>
   >;
 
-  getSplitTableNEvents(
+  getSplitTables(
+    params: GetSplitTablesQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
+  >;
+
+  getJoinTables(
     params: GetSplitTablesQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>

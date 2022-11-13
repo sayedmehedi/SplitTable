@@ -2,15 +2,20 @@ import React from "react";
 import {TTableItem} from "./shared";
 import TableListItem from "./TableListItem";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItem,
+  Text,
+  View,
+} from "react-native";
 import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
 
 type Props = {
-  searchTerm?: string;
   onItemPress: (item: TTableItem) => void;
 };
 
-const BookedTableList = ({onItemPress, searchTerm}: Props) => {
+const BookedTableList = ({onItemPress}: Props) => {
   const {
     refetch,
     isLoading,
@@ -21,13 +26,11 @@ const BookedTableList = ({onItemPress, searchTerm}: Props) => {
   } = useInfiniteGetBookedTablesQuery(
     {
       page: 1,
-      search: searchTerm,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
-            search: searchTerm,
             page: lastPage.tables.current_page + 1,
           };
         }
@@ -65,25 +68,9 @@ const BookedTableList = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  // if (isLoading) {
-  //   return (
-  //     <Box p={6}>
-  //       {new Array(7).fill(1).map((_, index) => (
-  //         <Center width={"full"} key={index} mb={index === 6 ? 0 : 5}>
-  //           <VStack
-  //             space={8}
-  //             width={"full"}
-  //             borderRadius={"md"}
-  //             borderWidth={"1"}
-  //             overflow={"hidden"}>
-  //             <Skeleton height={"32"} />
-  //             <Skeleton.Text px={"2"} my={"4"} />
-  //           </VStack>
-  //         </Center>
-  //       ))}
-  //     </Box>
-  //   );
-  // }
+  if (isLoading) {
+    return <Text>Loading..</Text>;
+  }
 
   return (
     <FlatList

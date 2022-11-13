@@ -2,6 +2,7 @@ import React from "react";
 import {ClubMenuItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import EachOfferMenuItem from "./EachOfferMenuItem";
+import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useInfiniteGetClubMenusQuery from "@hooks/menu/useInfiniteGetClubMenusQuery";
@@ -22,6 +23,9 @@ const renderOfferMenu: ListRenderItem<ClubMenuItem> = ({item}) => (
 type Props = {clubId: number};
 
 const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
+  const {
+    window: {width: WINDOW_WIDTH},
+  } = useDimensions();
   const {
     error: infiniteGetResourcesError,
     data: infiniteGetResourcesResponse,
@@ -60,7 +64,14 @@ const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
   }, [fetchNextPage]);
 
   if (isLoadingInfiniteResources) {
-    return <Text>Loading..</Text>;
+    return (
+      <View
+        style={{
+          width: WINDOW_WIDTH,
+        }}>
+        <Text>Loading..</Text>
+      </View>
+    );
     // return (
     //   <ScrollView>
     //     <Box p={6}>
@@ -100,8 +111,15 @@ const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
     <View
       style={{
         flex: 1,
+        width: WINDOW_WIDTH,
         padding: splitAppTheme.space["6"],
       }}>
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator />
+        </View>
+      ) : null}
+
       <FlatList
         onRefresh={refetch}
         listKey={"club-menus"}
@@ -118,18 +136,8 @@ const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
             }}
           />
         )}
-        // contentContainerStyle={{
-        //   backgroundColor: "red",
-        //   padding: splitAppTheme.space["6"],
-        // }}
         ListFooterComponent={
-          isFetchingNextPage ? (
-            <View>
-              <ActivityIndicator />
-            </View>
-          ) : resourceListData.length === 0 ? (
-            <GenericListEmpty />
-          ) : null
+          resourceListData.length === 0 ? <GenericListEmpty /> : null
         }
       />
     </View>

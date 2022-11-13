@@ -13,7 +13,7 @@ const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 type QueryKey = [
   typeof QueryKeys.TABLE,
   "LIST",
-  "nearby",
+  "split",
   GetSplitTablesQueryParams,
 ];
 
@@ -23,12 +23,9 @@ const queryFn: QueryFunction<GetSplitTablesReponse, QueryKey> = ({
 }) => {
   const queryParams = queryKey[3];
 
-  return handleCancelableAxiosPromise(
-    service.getSplitTableNEvents(queryParams),
-    {
-      signal,
-    },
-  );
+  return handleCancelableAxiosPromise(service.getSplitTables(queryParams), {
+    signal,
+  });
 };
 
 export default function useGetSplitTablesQuery(
@@ -52,7 +49,7 @@ export default function useGetSplitTablesQuery(
     GetSplitTablesReponse,
     QueryKey
   >(
-    [QueryKeys.TABLE, "LIST", "nearby", queryParams],
+    [QueryKeys.TABLE, "LIST", "split", queryParams],
     queryFn,
     optionsRef.current,
   );

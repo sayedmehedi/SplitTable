@@ -20,7 +20,7 @@ const EachBookingItem = ({item}: any) => {
         style={{
           width: 65,
           height: 65,
-          borderRadius: splitAppTheme.radii.xl,
+          borderRadius: splitAppTheme.radii.full,
         }}
         source={{
           uri: "https://www.tripsavvy.com/thmb/gauQCVHTK9uk1QZYdM4k2UeRBO8=/640x427/filters:fill(auto,1)/club-56a3e8683df78cf7727fcf6d.jpg",

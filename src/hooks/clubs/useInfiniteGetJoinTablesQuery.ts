@@ -19,7 +19,7 @@ type QueryKey = [
   typeof QueryKeys.TABLE,
   "LIST",
   "infinite",
-  "split",
+  "joined",
   GetSplitTablesQueryParams,
 ];
 
@@ -33,12 +33,12 @@ const queryFn: QueryFunction<GetSplitTablesReponse, QueryKey> = ({
     ...(pageParam ?? {}),
   };
 
-  return handleCancelableAxiosPromise(service.getSplitTables(queryParams), {
+  return handleCancelableAxiosPromise(service.getJoinTables(queryParams), {
     signal,
   });
 };
 
-export default function useInfiniteGetSplitTablesQuery(
+export default function useInfiniteGetJoinTablesQuery(
   queryParams: GetSplitTablesQueryParams = {},
   options?: UseInfiniteQueryOptions<
     GetSplitTablesReponse,
@@ -60,7 +60,7 @@ export default function useInfiniteGetSplitTablesQuery(
     GetSplitTablesReponse,
     QueryKey
   >(
-    [QueryKeys.TABLE, "LIST", "infinite", "split", queryParams],
+    [QueryKeys.TABLE, "LIST", "infinite", "joined", queryParams],
     queryFn,
     optionsRef.current,
   );

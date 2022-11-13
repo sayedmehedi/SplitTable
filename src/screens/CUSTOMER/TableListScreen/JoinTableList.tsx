@@ -11,13 +11,13 @@ import {
   Text,
   View,
 } from "react-native";
-import useInfiniteGetTablesBySearchTermQuery from "@hooks/clubs/useInfiniteGetTablesBySearchTermQuery";
+import useInfiniteGetJoinTablesQuery from "@hooks/clubs/useInfiniteGetJoinTablesQuery";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
 } & TableCommonSearchParams;
 
-const TableListBySearchTerm = ({onItemPress, ...params}: Props) => {
+const JoinTableList = ({onItemPress, ...params}: Props) => {
   const {
     refetch,
     isLoading,
@@ -25,7 +25,7 @@ const TableListBySearchTerm = ({onItemPress, ...params}: Props) => {
     fetchNextPage,
     isFetchingNextPage,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetTablesBySearchTermQuery(
+  } = useInfiniteGetJoinTablesQuery(
     {
       page: 1,
       ...params,
@@ -100,4 +100,4 @@ const TableListBySearchTerm = ({onItemPress, ...params}: Props) => {
   );
 };
 
-export default TableListBySearchTerm;
+export default JoinTableList;

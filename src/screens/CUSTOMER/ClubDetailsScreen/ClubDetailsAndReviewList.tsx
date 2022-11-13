@@ -7,6 +7,7 @@ import EachReviewItem from "./EachReviewItem";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import GenericListEmpty from "@components/GenericListEmpty";
+import {useDimensions} from "@react-native-community/hooks";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
 import useInfiniteGetClubReviewsQuery from "@hooks/review/useInfiniteGetClubReviewsQuery";
@@ -40,6 +41,9 @@ type Props = {
 };
 
 const ClubDetailsAndReviewList = ({clubId}: Props) => {
+  const {
+    window: {width: WINDOW_WIDTH},
+  } = useDimensions();
   const {
     error: clubDetailsError,
     data: clubDetailsResponse,
@@ -184,9 +188,9 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
     return (
       <View
         style={{
+          width: WINDOW_WIDTH,
           flexDirection: "row",
           height: splitAppTheme.sizes.full,
-          width: splitAppTheme.sizes.full,
         }}>
         <View
           style={{
@@ -238,7 +242,10 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
   // }
 
   return (
-    <View>
+    <View
+      style={{
+        width: WINDOW_WIDTH,
+      }}>
       {infiniteGetResourcesResponse !== undefined &&
         infiniteGetResourcesResponse?.pages?.length > 0 && (
           <View
@@ -358,6 +365,12 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
           </View>
         )}
 
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : null}
+
       <FlatList
         onRefresh={refetch}
         data={resourceListData}
@@ -375,13 +388,7 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
           />
         )}
         ListFooterComponent={
-          isFetchingNextPage ? (
-            <View>
-              <ActivityIndicator size={"small"} />
-            </View>
-          ) : resourceListData.length === 0 ? (
-            <GenericListEmpty />
-          ) : null
+          resourceListData.length === 0 ? <GenericListEmpty /> : null
         }
       />
     </View>

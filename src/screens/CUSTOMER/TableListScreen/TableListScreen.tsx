@@ -16,6 +16,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {TableCommonSearchParams} from "@src/models";
+import JoinTableList from "./JoinTableList";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -70,6 +71,10 @@ const TableListScreen = ({route}: Props) => {
         <SplitTableList {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
 
+      {route.params.listType === TableListTypes.JOIN && (
+        <JoinTableList {...tableSearchParams} onItemPress={handleItemPresss} />
+      )}
+
       {route.params.listType === TableListTypes.RECENT_VISIT && (
         <RecentVisits {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
@@ -80,158 +85,6 @@ const TableListScreen = ({route}: Props) => {
           onItemPress={handleItemPresss}
         />
       )}
-
-      {/* <Modal
-        size={"xl"}
-        bottom={"4"}
-        avoidKeyboard
-        finalFocusRef={finalRef}
-        animationPreset={"slide"}
-        initialFocusRef={initialRef}
-        isOpen={isClubSearchModalOpen}
-        onClose={setToggleClubSearchModal}>
-        <View>
-          <Modal.CloseButton />
-          <Modal.Header
-            _text={{
-              fontSize: "xl",
-              fontWeight: "bold",
-              fontFamily: "satoshi",
-            }}>
-            Search Club
-          </Modal.Header>
-          <Modal.Body>
-            <FormControl>
-              <Input
-                ref={initialRef}
-                onChangeText={handleSearchTermChange}
-                InputRightElement={
-                  <Button
-                    w="1/5"
-                    height={"full"}
-                    size={"sm"}
-                    borderRadius={"none"}
-                    onPress={handleSubmitDraftClubSearchTerm}>
-                    Submit
-                  </Button>
-                }
-              />
-            </FormControl>
-          </Modal.Body>
-        </Vi>
-      </Modal> */}
-
-      <View
-        style={{
-          position: "absolute",
-          bottom: splitAppTheme.space[6],
-          right: splitAppTheme.space[6],
-        }}>
-        <View
-          style={{
-            alignItems: "center",
-          }}>
-          {/* <Stagger
-            visible={isButtonOpened}
-            initial={{
-              opacity: 0,
-              scale: 0,
-              translateY: 34,
-            }}
-            animate={{
-              translateY: 0,
-              scale: 1,
-              opacity: 1,
-              transition: {
-                type: "spring",
-                mass: 0.8,
-                stagger: {
-                  offset: 30,
-                  reverse: true,
-                },
-              },
-            }}
-            exit={{
-              translateY: 34,
-              scale: 0.5,
-              opacity: 0,
-              transition: {
-                duration: 100,
-                stagger: {
-                  offset: 30,
-                  reverse: true,
-                },
-              },
-            }}>
-            {!clubSearchTerm ? (
-              <IconButton
-                mb={"4"}
-                size={"lg"}
-                variant={"solid"}
-                bg={"secondary.400"}
-                borderRadius={"full"}
-                onPress={setToggleClubSearchModal}
-                _pressed={{
-                  bg: "secondary.100",
-                }}
-                icon={
-                  <Icon
-                    size={"6"}
-                    name={"search"}
-                    as={MaterialIcons}
-                    color={"warmGray.50"}
-                  />
-                }
-              />
-            ) : (
-              <IconButton
-                mb={"4"}
-                size={"lg"}
-                bg={"rose.400"}
-                variant={"solid"}
-                borderRadius={"full"}
-                onPress={clearClubSearchTerm}
-                _pressed={{
-                  bg: "rose.100",
-                }}
-                icon={
-                  <Icon
-                    size={"6"}
-                    name={"clear"}
-                    as={MaterialIcons}
-                    color={"warmGray.50"}
-                  />
-                }
-              />
-            )}
-          </Stagger> */}
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-          }}>
-          {/* <IconButton
-            size={"lg"}
-            bg={"cyan.400"}
-            variant={"solid"}
-            borderRadius={"full"}
-            onPress={setButtonOpen}
-            _pressed={{
-              bg: "cyan.100",
-            }}
-            icon={
-              <Icon
-                size={"6"}
-                color={"warmGray.50"}
-                name={"dots-horizontal"}
-                as={MaterialCommunityIcons}
-              />
-            }
-          /> */}
-        </View>
-      </View>
     </View>
   );
 };

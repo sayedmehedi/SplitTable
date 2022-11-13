@@ -1,17 +1,22 @@
 import React from "react";
 import {TTableItem} from "./shared";
 import TableListItem from "./TableListItem";
-import {ActivityIndicator, FlatList, ListRenderItem, View} from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItem,
+  Text,
+  View,
+} from "react-native";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useInfiniteGetRecentViewsQuery from "@hooks/clubs/useInfiniteGetRecentViewsQuery";
 import {splitAppTheme} from "@src/theme";
 
 type Props = {
-  searchTerm?: string;
   onItemPress: (item: TTableItem) => void;
 };
 
-const RecentVisits = ({onItemPress, searchTerm}: Props) => {
+const RecentVisits = ({onItemPress}: Props) => {
   const {
     refetch,
     isLoading,
@@ -22,13 +27,11 @@ const RecentVisits = ({onItemPress, searchTerm}: Props) => {
   } = useInfiniteGetRecentViewsQuery(
     {
       page: 1,
-      search: searchTerm,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
-            search: searchTerm,
             page: lastPage.tables.current_page + 1,
           };
         }
@@ -68,25 +71,9 @@ const RecentVisits = ({onItemPress, searchTerm}: Props) => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  // if (isLoading) {
-  //   return (
-  //     <Box p={6}>
-  //       {new Array(7).fill(1).map((_, index) => (
-  //         <Box width={"full"} key={index} mb={index === 6 ? 0 : 5}>
-  //           <VStack
-  //             space={8}
-  //             width={"full"}
-  //             borderRadius={"md"}
-  //             borderWidth={"1"}
-  //             overflow={"hidden"}>
-  //             <Skeleton height={"32"} />
-  //             <Skeleton.Text px={"2"} my={"4"} />
-  //           </VStack>
-  //         </Box>
-  //       ))}
-  //     </Box>
-  //   );
-  // }
+  if (isLoading) {
+    return <Text>Loading..</Text>;
+  }
 
   return (
     <FlatList

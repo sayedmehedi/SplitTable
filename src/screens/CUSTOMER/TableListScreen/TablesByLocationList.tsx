@@ -78,25 +78,9 @@ const TablesByLocationList = ({locationId, onItemPress}: Props) => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  // if (isLoading) {
-  //   return (
-  //     <Box p={6}>
-  //       {new Array(7).fill(1).map((_, index) => (
-  //         <Box width={"full"} key={index} mb={index === 6 ? 0 : 5}>
-  //           <VStack
-  //             space={8}
-  //             width={"full"}
-  //             borderRadius={"md"}
-  //             borderWidth={"1"}
-  //             overflow={"hidden"}>
-  //             <Skeleton height={"32"} />
-  //             <Skeleton.Text px={"2"} my={"4"} />
-  //           </VStack>
-  //         </Box>
-  //       ))}
-  //     </Box>
-  //   );
-  // }
+  if (isLoading) {
+    return <Text>Loading..</Text>;
+  }
 
   return (
     <View>
