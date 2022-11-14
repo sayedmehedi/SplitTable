@@ -22,6 +22,7 @@ import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScre
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
 import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
+import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -46,6 +47,20 @@ const addMenuItemScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitle: "Add Menu Items",
+};
+
+const tableDetailsScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        OwnerStackParamList,
+        typeof OwnerStackRoutes.TABLE_DETAILS
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "Booking/Joining",
 };
 
 const myTablesScreenOptions:
@@ -108,6 +123,12 @@ const OwnerStackNavigator = () => {
             component={AddMenuItemScreen}
             options={addMenuItemScreenOptions}
             name={OwnerStackRoutes.ADD_MENU_ITEM}
+          />
+
+          <OwnerStack.Screen
+            component={TableDetailsScreen}
+            options={tableDetailsScreenOptions}
+            name={OwnerStackRoutes.TABLE_DETAILS}
           />
 
           <OwnerStack.Screen

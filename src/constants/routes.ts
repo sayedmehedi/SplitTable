@@ -62,9 +62,10 @@ export const CustomerMainBottomTabRoutes = {
 
 export const OwnerStackRoutes = {
   MY_TABLES: "MyTables",
-  UPSERT_TABLE: "UpsertTable",
   OWNER_AUTH: "OwnerAuth",
+  UPSERT_TABLE: "UpsertTable",
   ADD_MENU_ITEM: "AddMenuItem",
+  TABLE_DETAILS: "TableDetails",
   LOCATION_ENABLE: "LocationEnable",
   OWNER_MAIN_TABS: "OwnerMainTabs",
 

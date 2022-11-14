@@ -157,6 +157,9 @@ type OwnerBottomTabParamList = {
 };
 
 type OwnerStackParamList = {
+  [OwnerStackRoutes.TABLE_DETAILS]: {
+    tableId: number;
+  };
   [OwnerStackRoutes.MY_TABLES]: undefined;
   [OwnerStackRoutes.ADD_MENU_ITEM]: undefined;
   [OwnerStackRoutes.LOCATION_ENABLE]: undefined;

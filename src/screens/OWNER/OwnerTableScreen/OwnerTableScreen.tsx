@@ -265,7 +265,11 @@ const OwnerTableScreen = ({navigation}: Props) => {
                   style={{marginTop: splitAppTheme.space[5]}}>
                   <EachTableNEventItem
                     item={bookedTable}
-                    onPress={table => {}}
+                    onPress={table => {
+                      navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
+                        tableId: table.id,
+                      });
+                    }}
                     onUpdatePress={table => {
                       navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
                         actionMode: "update",
