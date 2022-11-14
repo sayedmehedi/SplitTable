@@ -1,5 +1,5 @@
 import React from "react";
-import {AuthTypes} from "@constants/auth";
+import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import {RootStackRoutes} from "@constants/routes";
 import InitialScreen from "@screens/InitialScreen";
@@ -13,6 +13,8 @@ import {
 } from "@react-navigation/stack";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import useGetAuthTypeQuery from "@hooks/useGetAuthTypeQuery";
+import {Text} from "react-native";
+import {AuthTypeContext} from "@providers/AuthTypeProvider";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -27,10 +29,42 @@ const globalScreenOptions:
 
 const RootStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
-  const {data: authType} = useGetAuthTypeQuery();
+  const {authType} = React.useContext(AuthTypeContext);
+
+  console.log("auth data", authData);
 
   const authenticatedScreens = (
     <React.Fragment>
+      {authData?.user_type === AuthTypeNum.CUSTOMER && (
+        <RootStack.Screen
+          name={RootStackRoutes.CUSTOMER}
+          component={CustomerStackNavigator}
+        />
+      )}
+
+      {authData?.user_type === AuthTypeNum.OWNER && (
+        <RootStack.Screen
+          name={RootStackRoutes.OWNER}
+          component={OwnerStackNavigator}
+        />
+      )}
+
+      <RootStack.Screen
+        component={InitialScreen}
+        name={RootStackRoutes.INITIAL}
+      />
+    </React.Fragment>
+  );
+
+  const unauthenticatedScreens = (
+    <React.Fragment>
+      {authType === null && (
+        <RootStack.Screen
+          component={InitialScreen}
+          name={RootStackRoutes.INITIAL}
+        />
+      )}
+
       {authType === AuthTypes.CUSTOMER && (
         <RootStack.Screen
           name={RootStackRoutes.CUSTOMER}
@@ -47,29 +81,11 @@ const RootStackNavigator = () => {
     </React.Fragment>
   );
 
-  const unauthenticatedScreens = (
-    <React.Fragment>
-      <RootStack.Screen
-        component={InitialScreen}
-        name={RootStackRoutes.INITIAL}
-      />
-
-      <RootStack.Screen
-        name={RootStackRoutes.CUSTOMER}
-        component={CustomerStackNavigator}
-      />
-
-      <RootStack.Screen
-        name={RootStackRoutes.OWNER}
-        component={OwnerStackNavigator}
-      />
-    </React.Fragment>
-  );
-
   return (
     <RootStack.Navigator
       id={ROOT_STACK_NAVIGATOR_ID}
-      screenOptions={globalScreenOptions}>
+      screenOptions={globalScreenOptions}
+      initialRouteName={RootStackRoutes.INITIAL}>
       {!!authData ? authenticatedScreens : unauthenticatedScreens}
     </RootStack.Navigator>
   );

@@ -46,6 +46,8 @@ type NavitaionProps = CompositeNavigationProp<
 const CustomerStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
 
+  console.log("auth data in CustomerStackNavigator", authData);
+
   const showLocationScreen =
     !authData?.location && !authData?.latitude && !authData?.longitude;
 

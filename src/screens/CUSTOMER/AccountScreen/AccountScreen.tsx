@@ -18,6 +18,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import {
   FaqIcon,
@@ -36,7 +37,6 @@ import {
 } from "@src/navigation";
 import useAppToast from "@hooks/useAppToast";
 import {useQueryClient} from "@tanstack/react-query";
-import useDeleteAuthDataMutation from "@hooks/useDeleteAuthDataMutation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -59,20 +59,7 @@ const AccountScreen = ({navigation}: Props) => {
   const {data: profileData, error, isLoading} = useGetProfileQuery();
   useHandleNonFieldError(error);
 
-  const {mutate: deleteAuthData} = useDeleteAuthDataMutation({
-    onError(error) {
-      toast.error(error.message);
-    },
-    onSuccess() {
-      queryClient.removeQueries();
-    },
-  });
-
-  const {mutate: logout, error: logoutError} = useLogoutMutation({
-    onMutate() {
-      deleteAuthData();
-    },
-  });
+  const {mutate: logout, error: logoutError} = useLogoutMutation();
   useHandleNonFieldError(logoutError);
 
   if (isLoading) {
@@ -256,7 +243,21 @@ const AccountScreen = ({navigation}: Props) => {
 
         <TouchableOpacity
           style={styles.sectionContainer}
-          onPress={() => logout()}>
+          onPress={() => {
+            Alert.alert("Confirm", "Are your sure want to logout?", [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Sure",
+                style: "destructive",
+                onPress() {
+                  logout();
+                },
+              },
+            ]);
+          }}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <LogoutIcon />
             <Text

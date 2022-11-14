@@ -7,7 +7,7 @@ import {RootStackParamList} from "@src/navigation";
 import {useDimensions} from "@react-native-community/hooks";
 import AppGradientButton from "@components/AppGradientButton";
 import type {StackScreenProps} from "@react-navigation/stack";
-import useAddAuthTypeMutation from "@hooks/useAddAuthTypeMutation";
+import {AuthTypeContext} from "@providers/AuthTypeProvider";
 import {
   View,
   Text,
@@ -43,8 +43,8 @@ type Props = StackScreenProps<
 const InitialScreen = ({navigation}: Props) => {
   const scrollRef = React.useRef<RNScrollView>(null!);
   const {screen: windowDimension} = useDimensions();
-  const {mutate: setAuthType} = useAddAuthTypeMutation();
   const intervalIdRef = React.useRef<number | null>(null);
+  const {changeAuthType} = React.useContext(AuthTypeContext);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const onSlideChange = React.useCallback(() => {
@@ -88,17 +88,7 @@ const InitialScreen = ({navigation}: Props) => {
   };
 
   const handleSetAuthType = (type: AuthType) => {
-    setAuthType(type, {
-      onSuccess(_data, authType) {
-        if (authType === AuthTypes.CUSTOMER) {
-          //@ts-ignore
-          navigation.navigate(RootStackRoutes.CUSTOMER, {});
-        } else {
-          //@ts-ignore
-          navigation.navigate(RootStackRoutes.OWNER, {});
-        }
-      },
-    });
+    changeAuthType(type);
   };
 
   return (

@@ -127,7 +127,8 @@ const OnboardingScreen = ({navigation}: Props) => {
                 style={{
                   lineHeight: 23,
                   textAlign: "center",
-                  marginHorizontal: "auto",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                   color: splitAppTheme.colors.white,
                   marginTop: splitAppTheme.space[1.5],
                   marginBottom: splitAppTheme.space[5],
@@ -145,8 +146,7 @@ const OnboardingScreen = ({navigation}: Props) => {
               }}>
               <View
                 style={{
-                  paddingHorizontal: 6,
-                  height: PAGINATION_INDICATOR_HEIGHT,
+                  paddingHorizontal: splitAppTheme.space[6],
                 }}>
                 <TouchableOpacity
                   style={{

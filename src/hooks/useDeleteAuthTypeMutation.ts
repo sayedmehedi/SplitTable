@@ -1,11 +1,12 @@
+import React from "react";
 import {StorageKeys} from "@constants/storage";
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 import {useAsyncStorage} from "@react-native-async-storage/async-storage";
 
-function useDeleteAuthDataMutation(
+function useDeleteAuthTypeMutation(
   options: UseMutationOptions<void, Error> = {},
 ) {
-  const {removeItem} = useAsyncStorage(StorageKeys.AUTH_DATA);
+  const {removeItem} = useAsyncStorage(StorageKeys.AUTH_TYPE);
 
   return useMutation<void, Error>(
     () => {
@@ -20,4 +21,4 @@ function useDeleteAuthDataMutation(
   );
 }
 
-export default useDeleteAuthDataMutation;
+export default useDeleteAuthTypeMutation;
