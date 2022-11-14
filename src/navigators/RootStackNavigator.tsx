@@ -1,20 +1,20 @@
 import React from "react";
-import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import {RootStackRoutes} from "@constants/routes";
 import InitialScreen from "@screens/InitialScreen";
 import {RouteProp} from "@react-navigation/native";
+import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import OwnerStackNavigator from "./OwnerStackNavigator";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
+import CommonStackHeader from "@components/CommonStackHeader";
+import {AuthTypeContext} from "@providers/AuthTypeProvider";
 import CustomerStackNavigator from "./CustomerStackNavigator";
 import {ROOT_STACK_NAVIGATOR_ID} from "@constants/navigators";
+import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
-import useGetAuthTypeQuery from "@hooks/useGetAuthTypeQuery";
-import {Text} from "react-native";
-import {AuthTypeContext} from "@providers/AuthTypeProvider";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -31,8 +31,6 @@ const RootStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
   const {authType} = React.useContext(AuthTypeContext);
 
-  console.log("auth data", authData);
-
   const authenticatedScreens = (
     <React.Fragment>
       {authData?.user_type === AuthTypeNum.CUSTOMER && (
@@ -48,6 +46,12 @@ const RootStackNavigator = () => {
           component={OwnerStackNavigator}
         />
       )}
+
+      <RootStack.Screen
+        component={NotificationListScreen}
+        options={notificationListScreenOptions}
+        name={RootStackRoutes.NOTIFICATIONS}
+      />
     </React.Fragment>
   );
 
@@ -87,3 +91,17 @@ const RootStackNavigator = () => {
 };
 
 export default RootStackNavigator;
+
+const notificationListScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        RootStackParamList,
+        typeof RootStackRoutes.NOTIFICATIONS
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = () => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "Notification",
+});

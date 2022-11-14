@@ -12,17 +12,13 @@ import {
 } from "react-native";
 import {StackScreenProps} from "@react-navigation/stack";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {RootStackParamList} from "@src/navigation";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
 
-type Props = CompositeScreenProps<
-  StackScreenProps<CustomerStackParamList>,
-  StackScreenProps<RootStackParamList>
->;
+type Props = StackScreenProps<RootStackParamList>;
 
 const renderNotificationItem: ListRenderItem<NotificationItem> = ({item}) => (
   <View
@@ -117,6 +113,7 @@ export default function NotificationListScreen({}: Props) {
       <View>
         <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
+        <Text>Loading..</Text>
         {/* <ScrollView
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{

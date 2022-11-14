@@ -105,12 +105,6 @@ const CustomerStackNavigator = () => {
           /> */}
 
           <CustomerStack.Screen
-            component={NotificationListScreen}
-            options={notificationListScreenOptions}
-            name={CustomerStackRoutes.NOTIFICATIONS}
-          />
-
-          <CustomerStack.Screen
             component={TableSearchScreen}
             options={clubSearchScreenOptions}
             name={CustomerStackRoutes.TABLE_SEARCH}
@@ -286,20 +280,6 @@ const clubSearchScreenOptions:
   header: CommonStackHeader,
   headerTitleAlign: "center",
   title: "Search Table & Events",
-});
-
-const notificationListScreenOptions:
-  | StackNavigationOptions
-  | ((props: {
-      route: RouteProp<
-        CustomerStackParamList,
-        typeof CustomerStackRoutes.NOTIFICATIONS
-      >;
-      navigation: NavitaionProps;
-    }) => StackNavigationOptions) = () => ({
-  headerShown: true,
-  header: CommonStackHeader,
-  headerTitle: "Notification",
 });
 
 const tableDetailsScreenOptions:

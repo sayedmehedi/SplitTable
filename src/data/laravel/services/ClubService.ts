@@ -43,6 +43,7 @@ import {
   ServerErrorType,
   DeleteOwnerTableRequest,
   DeleteOwnerTableResponse,
+  ClubInfo,
 } from "@src/models";
 import {ApplicationError} from "@core/domain/ApplicationError";
 
@@ -55,6 +56,27 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  getClubInfo(): CancelablePromise<
+    AxiosResponse<ClubInfo, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<ClubInfo, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<ClubInfo>(`club`, {
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   deleteOwnerTable(
     data: DeleteOwnerTableRequest,
@@ -423,9 +445,14 @@ export class ClubService implements IClubService {
     });
   }
 
-  getTablesBySearchTerm(
-    params: GetTablesBySearchTermQueryParams,
-  ): CancelablePromise<
+  getTablesBySearchTerm({
+    locationId,
+    tableType,
+    clubId,
+    date,
+    distance,
+    ...params
+  }: GetTablesBySearchTermQueryParams): CancelablePromise<
     AxiosResponse<GetTablesBySearchTermResponse, GlobalAxiosRequestConfig>
   > {
     const controller = new AbortController();
@@ -437,9 +464,36 @@ export class ClubService implements IClubService {
         controller.abort();
       });
 
+      const realParams: any = {
+        ...params,
+      };
+
+      if (locationId !== undefined) {
+        realParams.location_id = locationId;
+      }
+
+      if (tableType !== undefined) {
+        realParams.table_type = tableType;
+      }
+
+      if (clubId !== undefined) {
+        realParams.club_id = clubId;
+      }
+
+      if (distance !== undefined) {
+        realParams.distance = {
+          min: distance[0],
+          max: distance[0],
+        };
+      }
+
+      if (date !== undefined) {
+        realParams.date = date;
+      }
+
       this._httpService
         .get<GetTablesBySearchTermResponse>(`search-tables`, {
-          params,
+          params: realParams,
           signal: controller.signal,
         })
         .then(resolve)

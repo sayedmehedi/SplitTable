@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./styles";
 import {
   Text,
   View,
@@ -29,6 +28,7 @@ import {BookedTable, LocationItem, SplitTable} from "@src/models";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 import {
+  RootStackRoutes,
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
@@ -121,7 +121,7 @@ const HomeScreen = ({navigation}: Props) => {
   }, [navigation]);
 
   const handleGotoNotifications = () => {
-    navigation.navigate(CustomerStackRoutes.NOTIFICATIONS);
+    navigation.navigate(RootStackRoutes.NOTIFICATIONS);
   };
 
   return (
@@ -200,20 +200,6 @@ const HomeScreen = ({navigation}: Props) => {
                     </View>
 
                     <View>
-                      {/* <Badge
-                          mb={-4}
-                          mr={-2}
-                          zIndex={1}
-                          borderRadius={"full"}
-                          variant={"solid"}
-                          alignSelf={"flex-end"}
-                          colorScheme={"secondary"}
-                          _text={{
-                            fontSize: "sm",
-                          }}>
-                          2
-                        </Badge> */}
-
                       <TouchableOpacity
                         style={{
                           padding: splitAppTheme.space[1],

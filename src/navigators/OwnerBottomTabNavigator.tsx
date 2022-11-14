@@ -1,5 +1,6 @@
 import React from "react";
 import {View, Text} from "react-native";
+import {splitAppTheme} from "@src/theme";
 import BookingIcon from "@assets/icons/booking.svg";
 import AccountIcon from "@assets/icons/account.svg";
 import {RouteProp} from "@react-navigation/native";
@@ -18,7 +19,6 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
-import {splitAppTheme} from "@src/theme";
 
 const OwnerMainBotoomTab = createBottomTabNavigator<OwnerBottomTabParamList>();
 
@@ -264,11 +264,13 @@ const OwnerBottomTabNavigator = () => {
         options={ownerBookingScreenOptions}
         name={OwnerMainBottomTabRoutes.OWNER_BOOKING}
       />
-      <OwnerMainBotoomTab.Screen
+
+      {/* <OwnerMainBotoomTab.Screen
         component={OwnerTableScreen}
         options={tableAddScreenOptions}
         name={OwnerMainBottomTabRoutes.TABLE_ADD}
-      />
+      /> */}
+
       <OwnerMainBotoomTab.Screen
         component={MenuItemScreen}
         options={menuScreenOptions}

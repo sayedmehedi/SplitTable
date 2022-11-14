@@ -5,45 +5,49 @@ import TableListItem from "./TableListItem";
 import {AppTableTypes} from "@constants/table";
 import {TableByLocationItem, TableType} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
-import useInfiniteGetTablesByLocationQuery from "@hooks/clubs/useInfiniteGetTablesByLocationQuery";
+import useGetClubInfoQuery from "@hooks/clubs/useGetClubInfoQuery";
+import useInfiniteGetTablesBySearchTermQuery from "@hooks/clubs/useInfiniteGetTablesBySearchTermQuery";
 import {
-  Text,
   View,
+  Text,
   FlatList,
   ListRenderItem,
-  TouchableOpacity,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 
 type Props = {
-  locationId: number;
   onItemPress: (item: TTableItem) => void;
 };
 
-const TableListByLocation = ({locationId, onItemPress}: Props) => {
+const MyTableList = ({onItemPress}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
     AppTableTypes.BOOKED,
   );
 
+  const {data: clubInfoData, isLoading: isClubInfoLoading} =
+    useGetClubInfoQuery();
+
   const {
     refetch,
-    isLoading,
     isRefetching,
     fetchNextPage,
     isFetchingNextPage,
+    isLoading: isInfiniteResourceLoading,
     data: infiniteGetClubsByLocationsResponse,
-  } = useInfiniteGetTablesByLocationQuery(
+  } = useInfiniteGetTablesBySearchTermQuery(
     {
       page: 1,
-      locationId,
       tableType,
+      clubId: clubInfoData?.id,
     },
     {
+      enabled: clubInfoData?.id !== undefined,
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
-            locationId,
             tableType,
+            clubId: clubInfoData?.id,
             page: lastPage.tables.current_page + 1,
           };
         }
@@ -59,29 +63,30 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
 
-  const renderClubList: ListRenderItem<TableByLocationItem> = React.useCallback(
-    ({item}) => (
-      <TableListItem
-        item={{
-          id: item.id,
-          date: item.date,
-          name: item.name,
-          image: item.image,
-          location: item.location,
-          distance: item.distance,
-          total_joined: item.total_joined,
-        }}
-        onPress={onItemPress}
-      />
-    ),
-    [onItemPress],
-  );
+  const renderTableItem: ListRenderItem<TableByLocationItem> =
+    React.useCallback(
+      ({item}) => (
+        <TableListItem
+          item={{
+            id: item.id,
+            date: item.date,
+            name: item.name,
+            image: item.image,
+            location: item.location,
+            distance: item.distance,
+            total_joined: item.total_joined,
+          }}
+          onPress={onItemPress}
+        />
+      ),
+      [onItemPress],
+    );
 
   const handleFetchNextPage = React.useCallback(() => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  if (isLoading) {
+  if (isInfiniteResourceLoading || isClubInfoLoading) {
     return <Text>Loading..</Text>;
   }
 
@@ -164,7 +169,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
         data={clubListData}
         onRefresh={refetch}
         refreshing={isRefetching}
-        renderItem={renderClubList}
+        renderItem={renderTableItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -177,4 +182,4 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
   );
 };
 
-export default TableListByLocation;
+export default MyTableList;

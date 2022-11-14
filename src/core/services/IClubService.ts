@@ -34,6 +34,7 @@ import {
   UpdateOwnerTableResponse,
   DeleteOwnerTableRequest,
   DeleteOwnerTableResponse,
+  ClubInfo,
 } from "@src/models";
 
 export interface IClubService {
@@ -135,4 +136,8 @@ export interface IClubService {
   deleteOwnerTable(
     data: DeleteOwnerTableRequest,
   ): Promise<AxiosResponse<DeleteOwnerTableResponse, GlobalAxiosRequestConfig>>;
+
+  getClubInfo(): CancelablePromise<
+    AxiosResponse<ClubInfo, GlobalAxiosRequestConfig>
+  >;
 }

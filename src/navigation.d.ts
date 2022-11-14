@@ -103,7 +103,6 @@ type CustomerStackParamList = {
     | TableListScreenTypeSearchResult
     | TableListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
-  [CustomerStackRoutes.NOTIFICATIONS]: undefined;
   [CustomerStackRoutes.LOCATION_ENABLE]: undefined;
   [CustomerStackRoutes.CLUB_DETAILS]: {
     clubId: number;
@@ -158,14 +157,24 @@ type OwnerBottomTabParamList = {
 };
 
 type OwnerStackParamList = {
+  [OwnerStackRoutes.MY_TABLES]: undefined;
   [OwnerStackRoutes.ADD_MENU_ITEM]: undefined;
   [OwnerStackRoutes.LOCATION_ENABLE]: undefined;
   [OwnerStackRoutes.OWNER_AUTH]: NavigatorScreenParams<OwnerAuthStackParamList>;
   [OwnerStackRoutes.OWNER_MAIN_TABS]: NavigatorScreenParams<OwnerBottomTabParamList>;
+
+  [OwnerStackRoutes.FAQ]: undefined;
+  [OwnerStackRoutes.LEGAL]: undefined;
+  [OwnerStackRoutes.ACCOUNT]: undefined;
+  [OwnerStackRoutes.PROFILE]: undefined;
+  [OwnerStackRoutes.FAVORITE]: undefined;
+  [OwnerStackRoutes.TRANSACTION]: undefined;
+  [OwnerStackRoutes.ACCOUNT_SETTING]: undefined;
 };
 
 type RootStackParamList = {
   [RootStackRoutes.INITIAL]: undefined;
+  [RootStackRoutes.NOTIFICATIONS]: undefined;
   [RootStackRoutes.OWNER]: NavigatorScreenParams<OwnerStackParamList>;
   [RootStackRoutes.CUSTOMER]: NavigatorScreenParams<CustomerStackParamList>;
 };

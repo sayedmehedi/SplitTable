@@ -156,6 +156,7 @@ export type TableCommonSearchParams = {
   date?: string;
   locationId?: number;
   distance?: [number, number];
+  clubId?: number;
 };
 
 export type GetTablesByLocationResponse = {
@@ -771,3 +772,17 @@ export type DeleteOwnerClubMenuRequest = {
 };
 
 export type DeleteOwnerClubMenuResponse = ResponseResult;
+
+export interface ClubInfo {
+  id: number;
+  name: string;
+  job_role: string;
+  location: string;
+  opening_time: string;
+  closing_time: string;
+  cuisine: string;
+  min_avg_cost: string;
+  max_avg_cost: string;
+  about: string;
+  slider_images: string[];
+}

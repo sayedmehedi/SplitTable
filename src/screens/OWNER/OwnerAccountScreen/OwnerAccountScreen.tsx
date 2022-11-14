@@ -2,7 +2,7 @@ import React from "react";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import {View, Text, Image, StyleSheet} from "react-native";
-import {OwnerProfileStackRoutes} from "@constants/routes";
+import {OwnerStackRoutes} from "@constants/routes";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
@@ -28,7 +28,7 @@ type OwnerAccountScreenProps = CompositeScreenProps<
     CompositeScreenProps<
       StackScreenProps<
         OwnerAccountStackParamList,
-        typeof OwnerProfileStackRoutes.ACCOUNT
+        typeof OwnerStackRoutes.ACCOUNT
       >,
       BottomTabScreenProps<OwnerBottomTabParamList>
     >,
@@ -93,7 +93,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
 
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerProfileStackRoutes.PROFILE)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.PROFILE)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <InfoIcon />
@@ -112,9 +112,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(OwnerProfileStackRoutes.ACCOUNT_SETTING)
-          }
+          onPress={() => navigation.navigate(OwnerStackRoutes.ACCOUNT_SETTING)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <AccountSettingIcon />
@@ -133,9 +131,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate(OwnerProfileStackRoutes.TRANSACTION)
-          }
+          onPress={() => navigation.navigate(OwnerStackRoutes.TRANSACTION)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <TransactionIcon />
@@ -154,7 +150,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerProfileStackRoutes.FAVORITE)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.FAVORITE)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <ReviewIcon />
@@ -173,7 +169,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerProfileStackRoutes.FAQ)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.FAQ)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <HolidayIcon />
@@ -191,7 +187,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerProfileStackRoutes.FAQ)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.FAQ)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <FaqIcon />
@@ -210,7 +206,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerProfileStackRoutes.LEGAL)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.LEGAL)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <LegalIcon />

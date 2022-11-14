@@ -1,12 +1,15 @@
 import React from "react";
 import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
+import JoinTableList from "./JoinTableList";
 import {StatusBar, View} from "react-native";
-import {AppTableListTypes} from "@constants/table";
 import SplitTableList from "./SplitTableList";
 import BookedTableList from "./BookedTableList";
 import RecentVisits from "./RecentVisitClubList";
 import {useDisclosure} from "react-use-disclosure";
+import {AppTableListTypes} from "@constants/table";
+import {TableCommonSearchParams} from "@src/models";
+import TableListByClubId from "./TableListByClubId";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import TableListByLocation from "./TableListByLocation";
@@ -15,9 +18,6 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {TableCommonSearchParams} from "@src/models";
-import JoinTableList from "./JoinTableList";
-import TableListByClubId from "./TableListByClubId";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
