@@ -67,7 +67,6 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
 
   React.useEffect(() => {
     if (!!geolocationData) {
-      console.log("running");
       setMarkerCoords(geolocationData.coords);
     }
   }, [geolocationData?.coords?.latitude, geolocationData?.coords?.longitude]);

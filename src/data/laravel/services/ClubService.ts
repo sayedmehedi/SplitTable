@@ -107,17 +107,19 @@ export class ClubService implements IClubService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload !== "string" && !!payload) {
-        acc.push({
-          name: fieldName,
-          type: payload.type,
-          filename: payload.name,
-          data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
-        });
+      if (fieldName === "image" && typeof payload === "object" && !!payload) {
+        if (!!payload.name && !!payload.uri && !!payload.type) {
+          acc.push({
+            name: fieldName,
+            type: payload.type,
+            filename: payload.name,
+            data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+          });
+        }
       } else if (typeof payload !== "object" && !!payload) {
         acc.push({
           name: fieldName,
-          data: payload,
+          data: `${payload}`,
         });
       }
 
@@ -191,17 +193,19 @@ export class ClubService implements IClubService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload !== "string" && !!payload) {
-        acc.push({
-          name: fieldName,
-          type: payload.type,
-          filename: payload.name,
-          data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
-        });
+      if (fieldName === "image" && typeof payload === "object" && !!payload) {
+        if (!!payload.name && !!payload.uri && !!payload.type) {
+          acc.push({
+            name: fieldName,
+            type: payload.type,
+            filename: payload.name,
+            data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+          });
+        }
       } else if (typeof payload !== "object" && !!payload) {
         acc.push({
           name: fieldName,
-          data: payload,
+          data: `${payload}`,
         });
       }
 

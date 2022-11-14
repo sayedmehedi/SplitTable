@@ -683,13 +683,13 @@ export type CreateOwnerSplitTableRequest = {
   name: string;
   type: typeof AppTableTypes.SPLIT;
   date_time: string;
-  men_seat: string;
-  men_seat_price: string;
-  women_seat: string;
-  women_seat_price: string;
+  men_seat: number;
+  men_seat_price: number;
+  women_seat: number;
+  women_seat_price: number;
   performer?: string;
   cuisines?: string;
-  age_limit?: string;
+  age_limit?: number;
   description?: string;
   image?: {
     name: string;
@@ -702,11 +702,11 @@ export type CreateOwnerBookTableRequest = {
   name: string;
   type: typeof AppTableTypes.BOOKED;
   date_time: string;
-  price: string;
-  total_seat: string;
+  price: number;
+  total_seat: number;
   performer?: string;
   cuisines?: string;
-  age_limit?: string;
+  age_limit?: number;
   description?: string;
   image?: {
     name: string;

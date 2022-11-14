@@ -21,6 +21,7 @@ import FavoriteScreen from "@screens/OWNER/OwnerAccountScreen/FavoriteScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
+import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -46,6 +47,32 @@ const addMenuItemScreenOptions:
   header: CommonStackHeader,
   headerTitle: "Add Menu Items",
 };
+
+const myTablesScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<OwnerStackParamList, typeof OwnerStackRoutes.MY_TABLES>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "My Table",
+};
+
+const upsertTableScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        OwnerStackParamList,
+        typeof OwnerStackRoutes.UPSERT_TABLE
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = ({route}) => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle:
+    route.params.actionMode === "create" ? "Create Table" : "Update Table",
+});
 
 const OwnerStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
@@ -84,8 +111,14 @@ const OwnerStackNavigator = () => {
           />
 
           <OwnerStack.Screen
+            component={UpsertTableScreen}
+            options={upsertTableScreenOptions}
+            name={OwnerStackRoutes.UPSERT_TABLE}
+          />
+
+          <OwnerStack.Screen
             component={MyTablesScreen}
-            options={addMenuItemScreenOptions}
+            options={myTablesScreenOptions}
             name={OwnerStackRoutes.MY_TABLES}
           />
 

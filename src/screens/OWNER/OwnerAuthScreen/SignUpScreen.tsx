@@ -625,6 +625,7 @@ const SignUpScreen = ({navigation}: Props) => {
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   SectionStyle: {
     height: 50,

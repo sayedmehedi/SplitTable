@@ -266,6 +266,12 @@ const OwnerTableScreen = ({navigation}: Props) => {
                   <EachTableNEventItem
                     item={bookedTable}
                     onPress={table => {}}
+                    onUpdatePress={table => {
+                      navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
+                        actionMode: "update",
+                        tableId: table.id,
+                      });
+                    }}
                   />
                 </View>
               ))}
@@ -289,7 +295,12 @@ const OwnerTableScreen = ({navigation}: Props) => {
             Upcomming Booking
           </Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
+                screen: OwnerMainBottomTabRoutes.OWNER_BOOKING,
+              });
+            }}>
             <Text
               style={{
                 color: "#262B2E",

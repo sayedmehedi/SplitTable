@@ -64,12 +64,14 @@ export class MenuService implements IMenuService {
       ];
 
       if (fieldName === "image" && typeof payload === "object" && !!payload) {
-        acc.push({
-          name: fieldName,
-          type: payload.type,
-          filename: payload.name,
-          data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
-        });
+        if (!!payload.uri && !!payload.name && !!payload.type) {
+          acc.push({
+            name: fieldName,
+            type: payload.type,
+            filename: payload.name,
+            data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+          });
+        }
       } else if (typeof payload !== "object" && !!payload) {
         acc.push({
           name: fieldName,
@@ -138,12 +140,14 @@ export class MenuService implements IMenuService {
       ];
 
       if (fieldName === "image" && typeof payload === "object" && !!payload) {
-        acc.push({
-          name: fieldName,
-          type: payload.type,
-          filename: payload.name,
-          data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
-        });
+        if (!!payload.uri && !!payload.name && !!payload.type) {
+          acc.push({
+            name: fieldName,
+            type: payload.type,
+            filename: payload.name,
+            data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+          });
+        }
       } else if (typeof payload !== "object" && !!payload) {
         acc.push({
           name: fieldName,

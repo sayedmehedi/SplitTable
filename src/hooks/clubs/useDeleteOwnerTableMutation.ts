@@ -39,11 +39,7 @@ export default function useDeleteOwnerTableMutation(
     DeleteOwnerTableRequest
   >(mutationFunction, {
     async onSuccess(data, variables, context) {
-      await queryClient.invalidateQueries([
-        QueryKeys.TABLE,
-        "LIST",
-        "infinite",
-      ]);
+      await queryClient.invalidateQueries([QueryKeys.TABLE, "LIST"]);
       optionsRef.current?.onSuccess?.(data, variables, context);
     },
   });

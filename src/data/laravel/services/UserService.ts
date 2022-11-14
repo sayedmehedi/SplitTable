@@ -144,12 +144,14 @@ export class UserService implements IUserService {
       ];
 
       if (fieldName === "image" && typeof payload !== "string" && !!payload) {
-        acc.push({
-          name: fieldName,
-          type: payload.type,
-          filename: payload.name,
-          data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
-        });
+        if (!!payload.name && !!payload.type && !!payload.uri) {
+          acc.push({
+            name: fieldName,
+            type: payload.type,
+            filename: payload.name,
+            data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+          });
+        }
       } else if (typeof payload !== "object" && !!payload) {
         acc.push({
           name: fieldName,

@@ -162,6 +162,9 @@ type OwnerStackParamList = {
   [OwnerStackRoutes.LOCATION_ENABLE]: undefined;
   [OwnerStackRoutes.OWNER_AUTH]: NavigatorScreenParams<OwnerAuthStackParamList>;
   [OwnerStackRoutes.OWNER_MAIN_TABS]: NavigatorScreenParams<OwnerBottomTabParamList>;
+  [OwnerStackRoutes.UPSERT_TABLE]:
+    | {actionMode: "update"; tableId: number}
+    | {actionMode: "create"};
 
   [OwnerStackRoutes.FAQ]: undefined;
   [OwnerStackRoutes.LEGAL]: undefined;

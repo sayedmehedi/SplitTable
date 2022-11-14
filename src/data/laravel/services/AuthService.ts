@@ -57,7 +57,7 @@ export class AuthService implements IAuthService {
       ];
 
       if (fieldName === "image" && typeof payload !== "string" && !!payload) {
-        if (!!payload.uri) {
+        if (!!payload.uri && payload.name && !!payload.type) {
           // because this image is optional
           acc.push({
             name: fieldName,
