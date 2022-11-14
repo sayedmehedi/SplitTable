@@ -235,7 +235,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
             width: splitAppTheme.sizes.full,
             height: splitAppTheme.sizes.full,
           }}>
-          <GenericListEmpty />
+          <GenericListEmpty height={300} width={300} />
         </View>
       </View>
     );
@@ -618,7 +618,8 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                 default:
                   return (
                     <ClubDetailsAndMenuListScreen
-                      clubId={route.params.clubId}
+                      clubId={clubDetailsResponse.club.id}
+                      clubName={clubDetailsResponse.club.name}
                     />
                   );
               }

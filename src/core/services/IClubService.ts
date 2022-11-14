@@ -18,6 +18,10 @@ import {
   GetTablesBySearchTermQueryParams,
   BookTableRequest,
   BookTableResponse,
+  GetSplitTablesByClubIdResponse,
+  GetBookedTablesByClubIdQueryParams,
+  GetBookedTablesByClubIdResponse,
+  GetSplitTablesByClubIdQueryParams,
 } from "@src/models";
 
 export interface IClubService {
@@ -49,6 +53,17 @@ export interface IClubService {
     params: GetSplitTablesQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
+  >;
+
+  getTablesByClubId(
+    params: GetSplitTablesByClubIdQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetSplitTablesByClubIdResponse, GlobalAxiosRequestConfig>
+  >;
+  getTablesByClubId(
+    params: GetBookedTablesByClubIdQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetBookedTablesByClubIdResponse, GlobalAxiosRequestConfig>
   >;
 
   getJoinTables(

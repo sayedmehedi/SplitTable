@@ -65,17 +65,22 @@ type ClubListScreenCommon = {
   headerTitle: string;
 };
 
-export type ClubListScreenTypeByLocation = ClubListScreenCommon & {
+export type TableListScreenTypeByLocation = ClubListScreenCommon & {
   locationId: number;
   listType: typeof TableListTypes.BY_LOCATION;
 };
 
-export type ClubListScreenTypeSearchResult = ClubListScreenCommon & {
+export type TableListScreenTypeByClubId = ClubListScreenCommon & {
+  clubId: number;
+  listType: typeof TableListTypes.BY_CLUB_ID;
+};
+
+export type TableListScreenTypeSearchResult = ClubListScreenCommon & {
   listType: typeof TableListTypes.SEARCH_RESULT;
   searchTerm: TableCommonSearchParams;
 };
 
-export type ClubListScreenTypeRest = ClubListScreenCommon & {
+export type TableListScreenTypeRest = ClubListScreenCommon & {
   listType:
     | typeof TableListTypes.ALL
     | typeof TableListTypes.SPLIT
@@ -93,9 +98,10 @@ type CustomerStackParamList = {
     partialAmount: string;
   };
   [CustomerStackRoutes.TABLE_LIST]:
-    | ClubListScreenTypeByLocation
-    | ClubListScreenTypeSearchResult
-    | ClubListScreenTypeRest;
+    | TableListScreenTypeByLocation
+    | TableListScreenTypeByClubId
+    | TableListScreenTypeSearchResult
+    | TableListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
   [CustomerStackRoutes.NOTIFICATIONS]: undefined;
   [CustomerStackRoutes.LOCATION_ENABLE]: undefined;

@@ -7,6 +7,8 @@ import {
   GetClubReviewsResponse,
   GlobalAxiosRequestConfig,
   GetClubReviewsQueryParams,
+  AddClubReviewRequest,
+  AddClubReviewResponse,
 } from "@src/models";
 
 @injectable()
@@ -15,6 +17,16 @@ export class ReviewService implements IReviewService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+
+  addClubReview(
+    data: AddClubReviewRequest,
+  ): Promise<AxiosResponse<AddClubReviewResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<AddClubReviewResponse>("store-review", {
+      reviewer_id: data.ownerId,
+      rating: data.rating,
+      review: data.review,
+    });
+  }
 
   getClubReviews({
     ownerId,

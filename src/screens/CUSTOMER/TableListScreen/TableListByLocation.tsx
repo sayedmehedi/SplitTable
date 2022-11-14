@@ -13,14 +13,17 @@ import {
   View,
 } from "react-native";
 import useInfiniteGetTablesByLocationQuery from "@hooks/clubs/useInfiniteGetTablesByLocationQuery";
+import {TableTypes} from "@constants/table";
 
 type Props = {
   locationId: number;
   onItemPress: (item: TTableItem) => void;
 };
 
-const TablesByLocationList = ({locationId, onItemPress}: Props) => {
-  const [tableType, setTableType] = React.useState<TableType>("booked");
+const TableListByLocation = ({locationId, onItemPress}: Props) => {
+  const [tableType, setTableType] = React.useState<TableType>(
+    TableTypes.BOOKED,
+  );
 
   const {
     refetch,
@@ -93,20 +96,27 @@ const TablesByLocationList = ({locationId, onItemPress}: Props) => {
           style={{
             flex: 1,
           }}>
-          <TouchableOpacity onPress={() => setTableType("booked")}>
+          <TouchableOpacity onPress={() => setTableType(TableTypes.BOOKED)}>
             <View
               style={{
                 padding: splitAppTheme.space[3],
                 borderRadius: splitAppTheme.radii.md,
                 borderWidth: splitAppTheme.borderWidths[2],
                 borderColor: splitAppTheme.colors.blue[300],
+                backgroundColor:
+                  tableType === TableTypes.BOOKED
+                    ? splitAppTheme.colors.blue[300]
+                    : splitAppTheme.colors.white,
               }}>
               <Text
                 style={{
                   textAlign: "center",
                   fontSize: splitAppTheme.fontSizes.lg,
-                  color: splitAppTheme.colors.blue[300],
                   fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                  color:
+                    tableType === TableTypes.BOOKED
+                      ? splitAppTheme.colors.white
+                      : splitAppTheme.colors.blue[300],
                 }}>
                 Book Table
               </Text>
@@ -115,20 +125,27 @@ const TablesByLocationList = ({locationId, onItemPress}: Props) => {
         </View>
 
         <View style={{flex: 1, marginLeft: splitAppTheme.space[3]}}>
-          <TouchableOpacity onPress={() => setTableType("split")}>
+          <TouchableOpacity onPress={() => setTableType(TableTypes.SPLIT)}>
             <View
               style={{
                 padding: splitAppTheme.space[3],
                 borderRadius: splitAppTheme.radii.md,
                 borderWidth: splitAppTheme.borderWidths[2],
                 borderColor: splitAppTheme.colors.secondary[300],
+                backgroundColor:
+                  tableType === TableTypes.SPLIT
+                    ? splitAppTheme.colors.secondary[300]
+                    : splitAppTheme.colors.white,
               }}>
               <Text
                 style={{
                   textAlign: "center",
                   fontSize: splitAppTheme.fontSizes.lg,
-                  color: splitAppTheme.colors.secondary[300],
                   fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                  color:
+                    tableType === TableTypes.SPLIT
+                      ? splitAppTheme.colors.white
+                      : splitAppTheme.colors.secondary[300],
                 }}>
                 Split Table
               </Text>
@@ -136,6 +153,13 @@ const TablesByLocationList = ({locationId, onItemPress}: Props) => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : null}
+
       <FlatList
         data={clubListData}
         onRefresh={refetch}
@@ -147,17 +171,10 @@ const TablesByLocationList = ({locationId, onItemPress}: Props) => {
           paddingTop: 0,
           padding: splitAppTheme.space[6],
         }}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <View>
-              <ActivityIndicator size={"small"} />
-            </View>
-          ) : null
-        }
-        ListEmptyComponent={<GenericListEmpty />}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>
   );
 };
 
-export default TablesByLocationList;
+export default TableListByLocation;

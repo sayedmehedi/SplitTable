@@ -12,7 +12,14 @@ import {
   FlatList,
   ListRenderItem,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
+import {TableListTypes} from "@constants/table";
+import {CustomerStackRoutes} from "@constants/routes";
+import LinearGradient from "react-native-linear-gradient";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 
 const keyExtractor = (item: {id: number}) => `menu-${item.id.toString()}`;
 
@@ -20,12 +27,22 @@ const renderOfferMenu: ListRenderItem<ClubMenuItem> = ({item}) => (
   <EachOfferMenuItem item={item} />
 );
 
-type Props = {clubId: number};
+type Props = {clubId: number; clubName: string};
 
-const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
+type NavigationProp = CompositeNavigationProp<
+  StackNavigationProp<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.TABLE_LIST
+  >,
+  StackNavigationProp<RootStackParamList>
+>;
+
+const ClubDetailsAndMenuListScreen = ({clubId, clubName}: Props) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+  const navigation = useNavigation<NavigationProp>();
+
   const {
     error: infiniteGetResourcesError,
     data: infiniteGetResourcesResponse,
@@ -36,8 +53,8 @@ const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
     isFetchingNextPage,
   } = useInfiniteGetClubMenusQuery(
     {
-      clubId: clubId,
       page: 1,
+      clubId: clubId,
     },
     {
       getNextPageParam(lastPage) {
@@ -113,6 +130,7 @@ const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
         flex: 1,
         width: WINDOW_WIDTH,
         padding: splitAppTheme.space["6"],
+        position: "relative",
       }}>
       {isFetchingNextPage ? (
         <View>
@@ -136,10 +154,55 @@ const ClubDetailsAndMenuListScreen = ({clubId}: Props) => {
             }}
           />
         )}
-        ListFooterComponent={
-          resourceListData.length === 0 ? <GenericListEmpty /> : null
-        }
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
+
+      <View
+        style={{
+          bottom: 0,
+          width: WINDOW_WIDTH,
+          position: "absolute",
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
+              clubId,
+              headerTitle: clubName,
+              listType: TableListTypes.BY_CLUB_ID,
+            });
+          }}>
+          <LinearGradient
+            colors={[
+              splitAppTheme.colors.secondary[500],
+              splitAppTheme.colors.primary[500],
+            ]}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: splitAppTheme.sizes.full,
+              paddingVertical: splitAppTheme.space[5],
+            }}>
+            <View
+              style={{
+                justifyContent: "center",
+                width: splitAppTheme.sizes.full,
+              }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: splitAppTheme.colors.white,
+                  fontSize: splitAppTheme.fontSizes.lg,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                View This Club Table & Events
+              </Text>
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

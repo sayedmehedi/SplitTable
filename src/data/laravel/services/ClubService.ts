@@ -21,6 +21,10 @@ import {
   GetTableDetailsResponse,
   BookTableRequest,
   BookTableResponse,
+  GetBookedTablesByClubIdQueryParams,
+  GetBookedTablesByClubIdResponse,
+  GetSplitTablesByClubIdResponse,
+  GetSplitTablesByClubIdQueryParams,
 } from "@src/models";
 
 @injectable()
@@ -29,6 +33,57 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+
+  getTablesByClubId(
+    params: GetSplitTablesByClubIdQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetSplitTablesByClubIdResponse, GlobalAxiosRequestConfig>
+  >;
+  getTablesByClubId(
+    params: GetBookedTablesByClubIdQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetBookedTablesByClubIdResponse, GlobalAxiosRequestConfig>
+  >;
+  getTablesByClubId({
+    clubId,
+    tableType,
+    ...params
+  }:
+    | GetSplitTablesByClubIdQueryParams
+    | GetBookedTablesByClubIdQueryParams): CancelablePromise<
+    AxiosResponse<
+      GetSplitTablesByClubIdResponse | GetBookedTablesByClubIdResponse,
+      GlobalAxiosRequestConfig
+    >
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<
+        GetSplitTablesByClubIdResponse | GetBookedTablesByClubIdResponse,
+        GlobalAxiosRequestConfig
+      >
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetSplitTablesByClubIdResponse | GetBookedTablesByClubIdResponse>(
+          `club-tables`,
+          {
+            signal: controller.signal,
+            params: {
+              ...params,
+              club_id: clubId,
+              table_type: tableType,
+            },
+          },
+        )
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   bookTable(
     data: BookTableRequest,

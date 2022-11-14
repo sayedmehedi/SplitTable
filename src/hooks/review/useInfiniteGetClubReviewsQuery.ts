@@ -17,18 +17,18 @@ const service = container.get<IReviewService>(
   ServiceProviderTypes.ReviewService,
 );
 
-type QueryKey = [
+export type ReviewListQueryKey = [
   typeof QueryKeys.REVIEW,
   "LIST",
   "infinite",
   GetClubReviewsQueryParams,
 ];
 
-const queryFn: QueryFunction<GetClubReviewsResponse, QueryKey> = ({
+const queryFn: QueryFunction<GetClubReviewsResponse, ReviewListQueryKey> = ({
   signal,
   queryKey,
   pageParam,
-}: QueryFunctionContext<QueryKey, GetClubReviewsQueryParams>) => {
+}: QueryFunctionContext<ReviewListQueryKey, GetClubReviewsQueryParams>) => {
   const queryParams = {
     ...queryKey[3],
     ...(pageParam ?? {}),
@@ -46,7 +46,7 @@ export default function useInfiniteGetClubReviewsQuery(
     ApplicationError,
     GetClubReviewsResponse,
     GetClubReviewsResponse,
-    QueryKey
+    ReviewListQueryKey
   >,
 ) {
   const optionsRef = React.useRef(options);
@@ -59,7 +59,7 @@ export default function useInfiniteGetClubReviewsQuery(
     GetClubReviewsResponse,
     ApplicationError,
     GetClubReviewsResponse,
-    QueryKey
+    ReviewListQueryKey
   >(
     [QueryKeys.REVIEW, "LIST", "infinite", queryParams],
     queryFn,

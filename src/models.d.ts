@@ -1,5 +1,6 @@
 import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
+import {TableTypes} from "@constants/table";
 import {AxiosRequestConfig} from "axios";
 
 export type ResponseResult<T extends {} = {}> =
@@ -571,3 +572,29 @@ export type GetFaqsResponse = {
 export type GetFaqsQueryParams = PaginationQueryParams & {
   userType: typeof AuthTypeNum[keyof typeof AuthTypeNum];
 };
+
+export type GetSplitTablesByClubIdQueryParams = PaginationQueryParams & {
+  clubId: number;
+  tableType: typeof TableTypes.SPLIT;
+};
+
+export type GetBookedTablesByClubIdQueryParams = PaginationQueryParams & {
+  clubId: number;
+  tableType: typeof TableTypes.BOOKED;
+};
+
+export type GetSplitTablesByClubIdResponse = {
+  tables: SimplePaginatedResponse<SplitTable>;
+};
+
+export type GetBookedTablesByClubIdResponse = {
+  tables: SimplePaginatedResponse<BookedTable>;
+};
+
+export type AddClubReviewRequest = {
+  ownerId: number;
+  rating: number;
+  review: string;
+};
+
+export type AddClubReviewResponse = ResponseResult;

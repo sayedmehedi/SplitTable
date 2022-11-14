@@ -1,6 +1,8 @@
 import {AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {
+  AddClubReviewResponse,
+  AddClubReviewRequest,
   GetClubReviewsResponse,
   GlobalAxiosRequestConfig,
   GetClubReviewsQueryParams,
@@ -12,4 +14,8 @@ export interface IReviewService {
   ): CancelablePromise<
     AxiosResponse<GetClubReviewsResponse, GlobalAxiosRequestConfig>
   >;
+
+  addClubReview(
+    data: AddClubReviewRequest,
+  ): Promise<AxiosResponse<AddClubReviewResponse, GlobalAxiosRequestConfig>>;
 }

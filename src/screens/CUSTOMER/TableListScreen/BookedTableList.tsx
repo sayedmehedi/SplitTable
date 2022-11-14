@@ -10,6 +10,7 @@ import {
   View,
 } from "react-native";
 import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
+import {TableTypes} from "@constants/table";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
@@ -26,11 +27,13 @@ const BookedTableList = ({onItemPress}: Props) => {
   } = useInfiniteGetBookedTablesQuery(
     {
       page: 1,
+      tableType: TableTypes.BOOKED,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
+            tableType: TableTypes.BOOKED,
             page: lastPage.tables.current_page + 1,
           };
         }
@@ -73,25 +76,25 @@ const BookedTableList = ({onItemPress}: Props) => {
   }
 
   return (
-    <FlatList
-      data={clubListData}
-      onRefresh={refetch}
-      refreshing={isRefetching}
-      renderItem={renderClubList}
-      onEndReached={handleFetchNextPage}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        padding: 24,
-      }}
-      ListFooterComponent={
-        isFetchingNextPage ? (
-          <View>
-            <ActivityIndicator size={"small"} />
-          </View>
-        ) : null
-      }
-      ListEmptyComponent={<GenericListEmpty />}
-    />
+    <View>
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : null}
+      <FlatList
+        data={clubListData}
+        onRefresh={refetch}
+        refreshing={isRefetching}
+        renderItem={renderClubList}
+        onEndReached={handleFetchNextPage}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          padding: 24,
+        }}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
+      />
+    </View>
   );
 };
 

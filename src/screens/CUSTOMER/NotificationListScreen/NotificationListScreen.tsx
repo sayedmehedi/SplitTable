@@ -158,6 +158,12 @@ export default function NotificationListScreen({}: Props) {
     <View>
       <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : null}
+
       <FlatList
         data={resources}
         onRefresh={refetch}
@@ -168,14 +174,7 @@ export default function NotificationListScreen({}: Props) {
         contentContainerStyle={{
           padding: 24,
         }}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <View>
-              <ActivityIndicator size={"small"} />
-            </View>
-          ) : null
-        }
-        ListEmptyComponent={<GenericListEmpty />}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>
   );

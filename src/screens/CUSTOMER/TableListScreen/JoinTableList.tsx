@@ -78,25 +78,25 @@ const JoinTableList = ({onItemPress, ...params}: Props) => {
   }
 
   return (
-    <FlatList
-      data={clubListData}
-      onRefresh={refetch}
-      refreshing={isRefetching}
-      renderItem={renderClubList}
-      onEndReached={handleFetchNextPage}
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        padding: splitAppTheme.space[6],
-      }}
-      ListFooterComponent={
-        isFetchingNextPage ? (
-          <View>
-            <ActivityIndicator size={"small"} />
-          </View>
-        ) : null
-      }
-      ListEmptyComponent={<GenericListEmpty />}
-    />
+    <View>
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : null}
+      <FlatList
+        data={clubListData}
+        onRefresh={refetch}
+        refreshing={isRefetching}
+        renderItem={renderClubList}
+        onEndReached={handleFetchNextPage}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          padding: splitAppTheme.space[6],
+        }}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
+      />
+    </View>
   );
 };
 

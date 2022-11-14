@@ -5,10 +5,22 @@ import {splitAppTheme} from "@src/theme";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {Dimensions, StyleSheet, Text, View} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import {TableListTypes} from "@constants/table";
+import {CustomerStackRoutes} from "@constants/routes";
+import LinearGradient from "react-native-linear-gradient";
+import {StackNavigationProp} from "@react-navigation/stack";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 
 dayjs.extend(relativeTime);
 
@@ -18,10 +30,20 @@ type Props = {
   clubId: number;
 };
 
+type NavigationProp = CompositeNavigationProp<
+  StackNavigationProp<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.TABLE_LIST
+  >,
+  StackNavigationProp<RootStackParamList>
+>;
+
 const ClubDetailsInformation = ({clubId}: Props) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+  const navigation = useNavigation<NavigationProp>();
+
   const {
     error: clubDetailsError,
     data: clubDetailsResponse,
@@ -29,94 +51,99 @@ const ClubDetailsInformation = ({clubId}: Props) => {
   } = useGetClubDetailsQuery(clubId);
   useHandleNonFieldError(clubDetailsError);
 
-  // if (isClubDetailsLoading) {
-  //   return (
-  //     <ScrollView>
-  //       <Skeleton height={300} />
+  if (isClubDetailsLoading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+    // return (
+    //   <ScrollView>
+    //     <Skeleton height={300} />
 
-  //       <View mx={"6"}>
-  //         <Skeleton
-  //           width={"full"}
-  //           borderRadius={"xl"}
-  //           height={CARD_HEIGHT}
-  //           bg={"tomato"}
-  //           marginTop={CARD_NEGATIVE_MARGIN}
-  //         />
+    //     <View mx={"6"}>
+    //       <Skeleton
+    //         width={"full"}
+    //         borderRadius={"xl"}
+    //         height={CARD_HEIGHT}
+    //         bg={"tomato"}
+    //         marginTop={CARD_NEGATIVE_MARGIN}
+    //       />
 
-  //         <Skeleton
-  //           height={"12"}
-  //           my={"5"}
-  //           width={"full"}
-  //           borderRadius={"lg"}
-  //           borderWidth={"2"}
-  //           borderColor={"primary.300"}
-  //         />
+    //       <Skeleton
+    //         height={"12"}
+    //         my={"5"}
+    //         width={"full"}
+    //         borderRadius={"lg"}
+    //         borderWidth={"2"}
+    //         borderColor={"primary.300"}
+    //       />
 
-  //         <HStack space={"2"}>
-  //           <View flex={1}>
-  //             <Skeleton
-  //               height={"12"}
-  //               my={"5"}
-  //               width={"full"}
-  //               borderRadius={"lg"}
-  //               bg={"secondary.300"}
-  //             />
-  //           </View>
+    //       <HStack space={"2"}>
+    //         <View flex={1}>
+    //           <Skeleton
+    //             height={"12"}
+    //             my={"5"}
+    //             width={"full"}
+    //             borderRadius={"lg"}
+    //             bg={"secondary.300"}
+    //           />
+    //         </View>
 
-  //           <View flex={1}>
-  //             <Skeleton
-  //               height={"12"}
-  //               my={"5"}
-  //               width={"full"}
-  //               borderRadius={"lg"}
-  //               bg={"blue.300"}
-  //             />
-  //           </View>
+    //         <View flex={1}>
+    //           <Skeleton
+    //             height={"12"}
+    //             my={"5"}
+    //             width={"full"}
+    //             borderRadius={"lg"}
+    //             bg={"blue.300"}
+    //           />
+    //         </View>
 
-  //           <View flex={1}>
-  //             <Skeleton
-  //               height={"12"}
-  //               my={"5"}
-  //               width={"full"}
-  //               borderRadius={"lg"}
-  //               bg={"secondary.100"}
-  //             />
-  //           </View>
-  //         </HStack>
-  //       </View>
+    //         <View flex={1}>
+    //           <Skeleton
+    //             height={"12"}
+    //             my={"5"}
+    //             width={"full"}
+    //             borderRadius={"lg"}
+    //             bg={"secondary.100"}
+    //           />
+    //         </View>
+    //       </HStack>
+    //     </View>
 
-  //       <View p={6}>
-  //         {new Array(5).fill(1).map((_, i) => (
-  //           <Center width={"full"} key={i}>
-  //             <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-  //               <Skeleton
-  //                 height={"24"}
-  //                 width={"24"}
-  //                 borderRadius={"sm"}
-  //                 startColor="coolGray.100"
-  //               />
-  //               <VStack flex={"3"} space={"2.5"}>
-  //                 <Skeleton height={"5"} startColor="amber.300" />
-  //                 <Skeleton.Text lines={2} />
+    //     <View p={6}>
+    //       {new Array(5).fill(1).map((_, i) => (
+    //         <Center width={"full"} key={i}>
+    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+    //             <Skeleton
+    //               height={"24"}
+    //               width={"24"}
+    //               borderRadius={"sm"}
+    //               startColor="coolGray.100"
+    //             />
+    //             <VStack flex={"3"} space={"2.5"}>
+    //               <Skeleton height={"5"} startColor="amber.300" />
+    //               <Skeleton.Text lines={2} />
 
-  //                 <HStack space="2" alignItems="center">
-  //                   <Skeleton size={"5"} borderRadius={"full"} />
-  //                   <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-  //                   <Skeleton
-  //                     height={"3"}
-  //                     flex={"1"}
-  //                     borderRadius={"full"}
-  //                     startColor={"indigo.300"}
-  //                   />
-  //                 </HStack>
-  //               </VStack>
-  //             </HStack>
-  //           </Center>
-  //         ))}
-  //       </View>
-  //     </ScrollView>
-  //   );
-  // }
+    //               <HStack space="2" alignItems="center">
+    //                 <Skeleton size={"5"} borderRadius={"full"} />
+    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+    //                 <Skeleton
+    //                   height={"3"}
+    //                   flex={"1"}
+    //                   borderRadius={"full"}
+    //                   startColor={"indigo.300"}
+    //                 />
+    //               </HStack>
+    //             </VStack>
+    //           </HStack>
+    //         </Center>
+    //       ))}
+    //     </View>
+    //   </ScrollView>
+    // );
+  }
 
   if (!clubDetailsResponse) {
     return (
@@ -131,7 +158,7 @@ const ClubDetailsInformation = ({clubId}: Props) => {
             width: splitAppTheme.sizes.full,
             height: splitAppTheme.sizes.full,
           }}>
-          <GenericListEmpty />
+          <GenericListEmpty height={300} width={300} />
         </View>
       </View>
     );
@@ -142,6 +169,7 @@ const ClubDetailsInformation = ({clubId}: Props) => {
       style={{
         flex: 1,
         width: WINDOW_WIDTH,
+        position: "relative",
         paddingHorizontal: splitAppTheme.space[6],
       }}>
       <View>
@@ -367,6 +395,53 @@ const ClubDetailsInformation = ({clubId}: Props) => {
             {clubDetailsResponse.club.about}
           </Text>
         </View>
+      </View>
+
+      <View
+        style={{
+          bottom: 0,
+          width: WINDOW_WIDTH,
+          position: "absolute",
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
+              listType: TableListTypes.BY_CLUB_ID,
+              clubId: clubDetailsResponse.club.id,
+              headerTitle: clubDetailsResponse.club.name,
+            });
+          }}>
+          <LinearGradient
+            colors={[
+              splitAppTheme.colors.secondary[500],
+              splitAppTheme.colors.primary[500],
+            ]}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: splitAppTheme.sizes.full,
+              paddingVertical: splitAppTheme.space[5],
+            }}>
+            <View
+              style={{
+                justifyContent: "center",
+                width: splitAppTheme.sizes.full,
+              }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: splitAppTheme.colors.white,
+                  fontSize: splitAppTheme.fontSizes.lg,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                View This Club Table & Events
+              </Text>
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );

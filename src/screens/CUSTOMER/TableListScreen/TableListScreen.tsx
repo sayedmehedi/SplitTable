@@ -9,7 +9,7 @@ import RecentVisits from "./RecentVisitClubList";
 import {useDisclosure} from "react-use-disclosure";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
-import TablesByLocationList from "./TablesByLocationList";
+import TableListByLocation from "./TableListByLocation";
 import TableListBySearchTerm from "./TableListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -17,6 +17,7 @@ import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {TableCommonSearchParams} from "@src/models";
 import JoinTableList from "./JoinTableList";
+import TableListByClubId from "./TableListByClubId";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -54,9 +55,16 @@ const TableListScreen = ({route}: Props) => {
       }}>
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
       {route.params.listType === TableListTypes.BY_LOCATION && (
-        <TablesByLocationList
+        <TableListByLocation
           onItemPress={handleItemPresss}
           locationId={route.params.locationId}
+        />
+      )}
+
+      {route.params.listType === TableListTypes.BY_CLUB_ID && (
+        <TableListByClubId
+          clubId={route.params.clubId}
+          onItemPress={handleItemPresss}
         />
       )}
 
