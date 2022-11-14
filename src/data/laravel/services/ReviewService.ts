@@ -22,7 +22,7 @@ export class ReviewService implements IReviewService {
     data: AddClubReviewRequest,
   ): Promise<AxiosResponse<AddClubReviewResponse, GlobalAxiosRequestConfig>> {
     return this._httpService.post<AddClubReviewResponse>("store-review", {
-      reviewer_id: data.ownerId,
+      reviewer_id: data.reviewerId,
       rating: data.rating,
       review: data.review,
     });

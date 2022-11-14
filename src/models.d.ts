@@ -1,7 +1,7 @@
+import {AxiosRequestConfig} from "axios";
+import {AppTableTypes} from "@constants/table";
 import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
-import {TableTypes} from "@constants/table";
-import {AxiosRequestConfig} from "axios";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -266,6 +266,12 @@ export interface GetClubMenusResponse {
 export type GetClubMenusQueryParams = PaginationQueryParams & {
   clubId: number;
 };
+
+export interface GetOwnerClubMenusResponse {
+  menus: SimplePaginatedResponse<ClubMenuItem>;
+}
+
+export type GetOwnerClubMenusQueryParams = PaginationQueryParams;
 
 export type ReviewItem = {
   id: number;
@@ -575,12 +581,12 @@ export type GetFaqsQueryParams = PaginationQueryParams & {
 
 export type GetSplitTablesByClubIdQueryParams = PaginationQueryParams & {
   clubId: number;
-  tableType: typeof TableTypes.SPLIT;
+  tableType: typeof AppTableTypes.SPLIT;
 };
 
 export type GetBookedTablesByClubIdQueryParams = PaginationQueryParams & {
   clubId: number;
-  tableType: typeof TableTypes.BOOKED;
+  tableType: typeof AppTableTypes.BOOKED;
 };
 
 export type GetSplitTablesByClubIdResponse = {
@@ -592,7 +598,7 @@ export type GetBookedTablesByClubIdResponse = {
 };
 
 export type AddClubReviewRequest = {
-  ownerId: number;
+  reviewerId: number;
   rating: number;
   review: string;
 };
@@ -605,6 +611,7 @@ export interface ClubBooking {
   amount: string;
   no_of_guest: number;
   owner_id: number;
+  user_id: number;
   club: string;
   club_id: number;
   user: string;
@@ -632,3 +639,135 @@ export type GetUpcomingBookingQueryParams = PaginationQueryParams & {
   ownerId?: number;
   clubId?: number;
 };
+
+export type BookedTableOwnerView = {
+  id: number;
+  name: string;
+  type: typeof AppTableTypes.BOOKED;
+  date: string;
+  performer: string;
+  cuisines: string;
+  age_limit: number;
+  image: string;
+  description: string;
+  price: string;
+  total_seat: number;
+};
+
+export type SplitTableOwnerView = {
+  id: number;
+  name: string;
+  type: typeof AppTableTypes.SPLIT;
+  date: string;
+  performer: string;
+  cuisines: string;
+  age_limit: number;
+  image: string;
+  description: string;
+  men_seat: number;
+  men_seat_price: string;
+  women_seat: number;
+  women_seat_price: string;
+};
+
+export type GetOwnerTablesResponse = {
+  tables: SimplePaginatedResponse<BookedTableOwnerView | SplitTableOwnerView>;
+};
+
+export type GetOwnerTablesQueryParams = PaginationQueryParams & {
+  tableType: TableType;
+};
+
+export type CreateOwnerSplitTableRequest = {
+  name: string;
+  type: typeof AppTableTypes.SPLIT;
+  date_time: string;
+  men_seat: string;
+  men_seat_price: string;
+  women_seat: string;
+  women_seat_price: string;
+  performer?: string;
+  cuisines?: string;
+  age_limit?: string;
+  description?: string;
+  image?: {
+    name: string;
+    type: string;
+    uri: string;
+  };
+};
+
+export type CreateOwnerBookTableRequest = {
+  name: string;
+  type: typeof AppTableTypes.BOOKED;
+  date_time: string;
+  price: string;
+  total_seat: string;
+  performer?: string;
+  cuisines?: string;
+  age_limit?: string;
+  description?: string;
+  image?: {
+    name: string;
+    type: string;
+    uri: string;
+  };
+};
+
+export type CreateOwnerTableRequest = (
+  | CreateOwnerSplitTableRequest
+  | CreateOwnerBookTableRequest
+) & {
+  onUploadProgress?: OnUploadProgress;
+};
+
+export type CreateOwnerTableResponse = ResponseResult;
+
+export type UpdateOwnerSplitTableRequest =
+  Partial<CreateOwnerSplitTableRequest>;
+
+export type UpdateOwnerBookTableRequest = Partial<CreateOwnerBookTableRequest>;
+
+export type UpdateOwnerTableRequest = (
+  | UpdateOwnerSplitTableRequest
+  | UpdateOwnerBookTableRequest
+) & {
+  tableId: number;
+  onUploadProgress?: OnUploadProgress;
+};
+
+export type UpdateOwnerTableResponse = ResponseResult;
+
+export type DeleteOwnerTableRequest = {
+  tableId: number;
+};
+export type DeleteOwnerTableResponse = ResponseResult;
+
+export type CreateOwnerClubMenuRequest = {
+  name: string;
+  price: number;
+  qty: number;
+  details: string;
+  status: number;
+  club_id: number;
+  image?: {
+    name: string;
+    type: string;
+    uri: string;
+  };
+  onUploadProgress?: OnUploadProgress;
+};
+
+export type CreateOwnerClubMenuResponse = ResponseResult;
+
+export type UpdateOwnerClubMenuRequest = Partial<CreateOwnerClubMenuRequest> & {
+  menuId: number;
+};
+
+export type UpdateOwnerClubMenuResponse = ResponseResult;
+
+export type DeleteOwnerClubMenuRequest = {
+  menuId: number;
+};
+
+export type DeleteOwnerClubMenuResponse = ResponseResult;

@@ -12,7 +12,7 @@ import SplitTables from "./SplitTables";
 import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 import {QueryKeys} from "@constants/query-keys";
 import BookedTablesSwiper from "./BookedTablesSwiper";
 import Feather from "react-native-vector-icons/Feather";
@@ -93,7 +93,7 @@ const HomeScreen = ({navigation}: Props) => {
       navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
         locationId: item.id,
         headerTitle: item.location,
-        listType: TableListTypes.BY_LOCATION,
+        listType: AppTableListTypes.BY_LOCATION,
       });
     },
     [navigation],
@@ -102,21 +102,21 @@ const HomeScreen = ({navigation}: Props) => {
   const handleBookedTableSeeAll = React.useCallback(() => {
     navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Book Table",
-      listType: TableListTypes.BOOKED,
+      listType: AppTableListTypes.BOOKED,
     });
   }, [navigation]);
 
   const handleRecentVisitSeeAll = React.useCallback(() => {
     navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Your Recent Visits",
-      listType: TableListTypes.RECENT_VISIT,
+      listType: AppTableListTypes.RECENT_VISIT,
     });
   }, [navigation]);
 
   const handleSplitTableSeeAll = React.useCallback(() => {
     navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Split Table",
-      listType: TableListTypes.SPLIT,
+      listType: AppTableListTypes.SPLIT,
     });
   }, [navigation]);
 

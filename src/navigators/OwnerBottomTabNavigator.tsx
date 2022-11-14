@@ -1,18 +1,18 @@
 import React from "react";
 import {View, Text} from "react-native";
 import BookingIcon from "@assets/icons/booking.svg";
-import {OwnerBottomTabParamList} from "@src/navigation";
 import AccountIcon from "@assets/icons/account.svg";
 import {RouteProp} from "@react-navigation/native";
 import Entypo from "react-native-vector-icons/Entypo";
 import {RedTable, MenuIcon} from "@constants/iconPath";
+import {OwnerBottomTabParamList} from "@src/navigation";
 import CommonTabHeader from "@components/CommonTabHeader";
 import LinearGradient from "react-native-linear-gradient";
-import MenuItemScreen from "@screens/OWNER/MenuItemScreen/MenuItemScreen";
 import {OwnerMainBottomTabRoutes} from "@constants/routes";
 import OwnerTableScreen from "@screens/OWNER/OwnerTableScreen";
 import OwnerProfileStackNavigator from "./OwnerProfileStackNavigator";
 import {OWNER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
+import MenuItemScreen from "@screens/OWNER/MenuItemScreen/MenuItemScreen";
 import OwnerBookingListScreen from "@screens/OWNER/OwnerBookingListScreen/OwnerBookingListScreen";
 import {
   createBottomTabNavigator,

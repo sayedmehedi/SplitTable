@@ -11,7 +11,7 @@ import {
   CustomerBookingStackRoutes,
   OwnerAuthStackRoutes,
 } from "@constants/routes";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 import {
   BookedTable,
   BookedTableDetails as BookingTableDetails,
@@ -67,26 +67,26 @@ type ClubListScreenCommon = {
 
 export type TableListScreenTypeByLocation = ClubListScreenCommon & {
   locationId: number;
-  listType: typeof TableListTypes.BY_LOCATION;
+  listType: typeof AppTableListTypes.BY_LOCATION;
 };
 
 export type TableListScreenTypeByClubId = ClubListScreenCommon & {
   clubId: number;
-  listType: typeof TableListTypes.BY_CLUB_ID;
+  listType: typeof AppTableListTypes.BY_CLUB_ID;
 };
 
 export type TableListScreenTypeSearchResult = ClubListScreenCommon & {
-  listType: typeof TableListTypes.SEARCH_RESULT;
+  listType: typeof AppTableListTypes.SEARCH_RESULT;
   searchTerm: TableCommonSearchParams;
 };
 
 export type TableListScreenTypeRest = ClubListScreenCommon & {
   listType:
-    | typeof TableListTypes.ALL
-    | typeof TableListTypes.SPLIT
-    | typeof TableListTypes.JOIN
-    | typeof TableListTypes.BOOKED
-    | typeof TableListTypes.RECENT_VISIT;
+    | typeof AppTableListTypes.ALL
+    | typeof AppTableListTypes.SPLIT
+    | typeof AppTableListTypes.JOIN
+    | typeof AppTableListTypes.BOOKED
+    | typeof AppTableListTypes.RECENT_VISIT;
 };
 
 type CustomerStackParamList = {

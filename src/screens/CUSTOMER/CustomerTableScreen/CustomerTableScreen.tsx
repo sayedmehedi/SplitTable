@@ -28,7 +28,7 @@ import {
 } from "@src/navigation";
 import {useDimensions} from "@react-native-community/hooks";
 import Entypo from "react-native-vector-icons/Entypo";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -200,7 +200,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
           onPress={() => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
               headerTitle: "Book Table",
-              listType: TableListTypes.BOOKED,
+              listType: AppTableListTypes.BOOKED,
             });
           }}>
           <View
@@ -271,7 +271,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
           onPress={() => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
               headerTitle: "Split Table",
-              listType: TableListTypes.SPLIT,
+              listType: AppTableListTypes.SPLIT,
             });
           }}>
           <View
@@ -342,7 +342,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
           onPress={() => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
               headerTitle: "Join Table",
-              listType: TableListTypes.JOIN,
+              listType: AppTableListTypes.JOIN,
             });
           }}>
           <View

@@ -1,10 +1,13 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
-import {IReviewService} from "@core/services/IReviewService";
+import {IMenuService} from "@core/services/IMenuService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {AddClubReviewRequest, AddClubReviewResponse} from "@src/models";
+import {
+  UpdateOwnerClubMenuRequest,
+  UpdateOwnerClubMenuResponse,
+} from "@src/models";
 import {
   useMutation,
   useQueryClient,
@@ -12,20 +15,18 @@ import {
   UseMutationOptions,
 } from "@tanstack/react-query";
 
-const service = container.get<IReviewService>(
-  ServiceProviderTypes.ReviewService,
-);
+const service = container.get<IMenuService>(ServiceProviderTypes.MenuService);
 
 const mutationFunction: MutationFunction<
-  AddClubReviewResponse,
-  AddClubReviewRequest
-> = data => service.addClubReview(data).then(response => response.data);
+  UpdateOwnerClubMenuResponse,
+  UpdateOwnerClubMenuRequest
+> = data => service.updateOwnerClubMenu(data);
 
-export default function useAddClubReviewMutation(
+export default function useUpdateOwnerClubMenuMutation(
   options?: UseMutationOptions<
-    AddClubReviewResponse,
+    UpdateOwnerClubMenuResponse,
     ApplicationError,
-    AddClubReviewRequest
+    UpdateOwnerClubMenuRequest
   >,
 ) {
   const queryClient = useQueryClient();
@@ -36,17 +37,12 @@ export default function useAddClubReviewMutation(
   }, [options]);
 
   return useMutation<
-    AddClubReviewResponse,
+    UpdateOwnerClubMenuResponse,
     ApplicationError,
-    AddClubReviewRequest
+    UpdateOwnerClubMenuRequest
   >(mutationFunction, {
     async onSuccess(data, variables, context) {
-      await queryClient.invalidateQueries([
-        QueryKeys.REVIEW,
-        "LIST",
-        "infinite",
-        {ownerId: variables.reviewerId},
-      ]);
+      await queryClient.invalidateQueries([QueryKeys.TABLE]);
       optionsRef.current?.onSuccess?.(data, variables, context);
     },
   });

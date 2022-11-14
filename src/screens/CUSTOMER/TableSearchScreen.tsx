@@ -24,7 +24,7 @@ import {
   CustomerBottomTabParamList,
 } from "@src/navigation";
 import AppGradientButton from "@components/AppGradientButton";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 
 type NavigationProps = CompositeNavigationProp<
   StackNavigationProp<CustomerStackParamList>,
@@ -81,7 +81,7 @@ const TableSearchScreen = () => {
             ? parseInt(values.location_id)
             : undefined,
       },
-      listType: TableListTypes.SEARCH_RESULT,
+      listType: AppTableListTypes.SEARCH_RESULT,
     });
   });
 

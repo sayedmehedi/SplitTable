@@ -42,6 +42,9 @@ const addMenuItemScreenOptions:
 const OwnerStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
 
+  const showLocationScreen =
+    !authData?.location && !authData?.latitude && !authData?.longitude;
+
   return (
     <OwnerStack.Navigator
       id={OWNER_STACK_NAVIGATOR_ID}
@@ -53,11 +56,14 @@ const OwnerStackNavigator = () => {
         />
       ) : (
         <React.Fragment>
-          <OwnerStack.Screen
-            options={locationEnableScreenOptions}
-            component={LocationEnablePromptScreen}
-            name={OwnerStackRoutes.LOCATION_ENABLE}
-          />
+          {showLocationScreen && (
+            <OwnerStack.Screen
+              options={locationEnableScreenOptions}
+              component={LocationEnablePromptScreen}
+              name={OwnerStackRoutes.LOCATION_ENABLE}
+            />
+          )}
+
           <OwnerStack.Screen
             component={OwnerBottomTabNavigator}
             name={OwnerStackRoutes.OWNER_MAIN_TABS}

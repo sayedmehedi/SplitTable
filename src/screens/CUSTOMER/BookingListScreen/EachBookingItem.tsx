@@ -109,7 +109,11 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
           {item.tables.join(", ")}
         </Text>
 
-        <ReviewModal open={isOpen} onClose={toggle} ownerId={item.owner_id} />
+        <ReviewModal
+          open={isOpen}
+          onClose={toggle}
+          reviewerId={item.owner_id}
+        />
 
         <View
           style={{

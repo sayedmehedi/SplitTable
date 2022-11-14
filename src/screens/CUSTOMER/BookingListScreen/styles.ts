@@ -1,7 +1,5 @@
 import {splitAppTheme} from "@src/theme";
-import {StyleSheet, Dimensions} from "react-native";
-
-const screenWidth = Dimensions.get("screen").width;
+import {StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
   buttonContainer: {},

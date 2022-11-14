@@ -1,10 +1,10 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
-import {IReviewService} from "@core/services/IReviewService";
+import {IClubService} from "@core/services/IClubService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {AddClubReviewRequest, AddClubReviewResponse} from "@src/models";
+import {CreateOwnerTableRequest, CreateOwnerTableResponse} from "@src/models";
 import {
   useMutation,
   useQueryClient,
@@ -12,20 +12,18 @@ import {
   UseMutationOptions,
 } from "@tanstack/react-query";
 
-const service = container.get<IReviewService>(
-  ServiceProviderTypes.ReviewService,
-);
+const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 const mutationFunction: MutationFunction<
-  AddClubReviewResponse,
-  AddClubReviewRequest
-> = data => service.addClubReview(data).then(response => response.data);
+  CreateOwnerTableResponse,
+  CreateOwnerTableRequest
+> = data => service.createOwnerTable(data);
 
-export default function useAddClubReviewMutation(
+export default function useCreateOwnerTableMutation(
   options?: UseMutationOptions<
-    AddClubReviewResponse,
+    CreateOwnerTableResponse,
     ApplicationError,
-    AddClubReviewRequest
+    CreateOwnerTableRequest
   >,
 ) {
   const queryClient = useQueryClient();
@@ -36,16 +34,15 @@ export default function useAddClubReviewMutation(
   }, [options]);
 
   return useMutation<
-    AddClubReviewResponse,
+    CreateOwnerTableResponse,
     ApplicationError,
-    AddClubReviewRequest
+    CreateOwnerTableRequest
   >(mutationFunction, {
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([
-        QueryKeys.REVIEW,
+        QueryKeys.TABLE,
         "LIST",
         "infinite",
-        {ownerId: variables.reviewerId},
       ]);
       optionsRef.current?.onSuccess?.(data, variables, context);
     },

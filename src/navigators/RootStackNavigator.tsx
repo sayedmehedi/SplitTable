@@ -48,11 +48,6 @@ const RootStackNavigator = () => {
           component={OwnerStackNavigator}
         />
       )}
-
-      <RootStack.Screen
-        component={InitialScreen}
-        name={RootStackRoutes.INITIAL}
-      />
     </React.Fragment>
   );
 

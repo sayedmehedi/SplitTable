@@ -2,7 +2,7 @@ import React from "react";
 import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
 import {StatusBar, View} from "react-native";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 import SplitTableList from "./SplitTableList";
 import BookedTableList from "./BookedTableList";
 import RecentVisits from "./RecentVisitClubList";
@@ -36,7 +36,7 @@ const TableListScreen = ({route}: Props) => {
     useDisclosure();
 
   React.useEffect(() => {
-    if (route.params.listType === TableListTypes.SEARCH_RESULT) {
+    if (route.params.listType === AppTableListTypes.SEARCH_RESULT) {
       setTableSearchParams(route.params.searchTerm);
     }
   }, [route.params.listType]);
@@ -54,40 +54,40 @@ const TableListScreen = ({route}: Props) => {
         height: splitAppTheme.sizes.full,
       }}>
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
-      {route.params.listType === TableListTypes.BY_LOCATION && (
+      {route.params.listType === AppTableListTypes.BY_LOCATION && (
         <TableListByLocation
           onItemPress={handleItemPresss}
           locationId={route.params.locationId}
         />
       )}
 
-      {route.params.listType === TableListTypes.BY_CLUB_ID && (
+      {route.params.listType === AppTableListTypes.BY_CLUB_ID && (
         <TableListByClubId
           clubId={route.params.clubId}
           onItemPress={handleItemPresss}
         />
       )}
 
-      {route.params.listType === TableListTypes.BOOKED && (
+      {route.params.listType === AppTableListTypes.BOOKED && (
         <BookedTableList
           {...tableSearchParams}
           onItemPress={handleItemPresss}
         />
       )}
 
-      {route.params.listType === TableListTypes.SPLIT && (
+      {route.params.listType === AppTableListTypes.SPLIT && (
         <SplitTableList {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
 
-      {route.params.listType === TableListTypes.JOIN && (
+      {route.params.listType === AppTableListTypes.JOIN && (
         <JoinTableList {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
 
-      {route.params.listType === TableListTypes.RECENT_VISIT && (
+      {route.params.listType === AppTableListTypes.RECENT_VISIT && (
         <RecentVisits {...tableSearchParams} onItemPress={handleItemPresss} />
       )}
 
-      {route.params.listType === TableListTypes.SEARCH_RESULT && (
+      {route.params.listType === AppTableListTypes.SEARCH_RESULT && (
         <TableListBySearchTerm
           {...tableSearchParams}
           onItemPress={handleItemPresss}

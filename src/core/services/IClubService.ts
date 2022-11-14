@@ -26,6 +26,14 @@ import {
   GetBookingHistoryResponse,
   GetUpcomingBookingQueryParams,
   GetUpcomingBookingResponse,
+  GetOwnerTablesQueryParams,
+  GetOwnerTablesResponse,
+  CreateOwnerTableRequest,
+  CreateOwnerTableResponse,
+  UpdateOwnerTableRequest,
+  UpdateOwnerTableResponse,
+  DeleteOwnerTableRequest,
+  DeleteOwnerTableResponse,
 } from "@src/models";
 
 export interface IClubService {
@@ -109,4 +117,22 @@ export interface IClubService {
   ): CancelablePromise<
     AxiosResponse<GetUpcomingBookingResponse, GlobalAxiosRequestConfig>
   >;
+
+  getOwnerTables(
+    params: GetOwnerTablesQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetOwnerTablesResponse, GlobalAxiosRequestConfig>
+  >;
+
+  createOwnerTable(
+    data: CreateOwnerTableRequest,
+  ): Promise<CreateOwnerTableResponse>;
+
+  updateOwnerTable(
+    data: UpdateOwnerTableRequest,
+  ): Promise<UpdateOwnerTableResponse>;
+
+  deleteOwnerTable(
+    data: DeleteOwnerTableRequest,
+  ): Promise<AxiosResponse<DeleteOwnerTableResponse, GlobalAxiosRequestConfig>>;
 }

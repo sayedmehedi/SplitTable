@@ -13,7 +13,7 @@ import {
   View,
 } from "react-native";
 import useInfiniteGetTablesByLocationQuery from "@hooks/clubs/useInfiniteGetTablesByLocationQuery";
-import {TableTypes} from "@constants/table";
+import {AppTableTypes} from "@constants/table";
 
 type Props = {
   locationId: number;
@@ -22,7 +22,7 @@ type Props = {
 
 const TableListByLocation = ({locationId, onItemPress}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
-    TableTypes.BOOKED,
+    AppTableTypes.BOOKED,
   );
 
   const {
@@ -96,7 +96,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
           style={{
             flex: 1,
           }}>
-          <TouchableOpacity onPress={() => setTableType(TableTypes.BOOKED)}>
+          <TouchableOpacity onPress={() => setTableType(AppTableTypes.BOOKED)}>
             <View
               style={{
                 padding: splitAppTheme.space[3],
@@ -104,7 +104,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
                 borderWidth: splitAppTheme.borderWidths[2],
                 borderColor: splitAppTheme.colors.blue[300],
                 backgroundColor:
-                  tableType === TableTypes.BOOKED
+                  tableType === AppTableTypes.BOOKED
                     ? splitAppTheme.colors.blue[300]
                     : splitAppTheme.colors.white,
               }}>
@@ -114,7 +114,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.lg,
                   fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
                   color:
-                    tableType === TableTypes.BOOKED
+                    tableType === AppTableTypes.BOOKED
                       ? splitAppTheme.colors.white
                       : splitAppTheme.colors.blue[300],
                 }}>
@@ -125,7 +125,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
         </View>
 
         <View style={{flex: 1, marginLeft: splitAppTheme.space[3]}}>
-          <TouchableOpacity onPress={() => setTableType(TableTypes.SPLIT)}>
+          <TouchableOpacity onPress={() => setTableType(AppTableTypes.SPLIT)}>
             <View
               style={{
                 padding: splitAppTheme.space[3],
@@ -133,7 +133,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
                 borderWidth: splitAppTheme.borderWidths[2],
                 borderColor: splitAppTheme.colors.secondary[300],
                 backgroundColor:
-                  tableType === TableTypes.SPLIT
+                  tableType === AppTableTypes.SPLIT
                     ? splitAppTheme.colors.secondary[300]
                     : splitAppTheme.colors.white,
               }}>
@@ -143,7 +143,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.lg,
                   fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
                   color:
-                    tableType === TableTypes.SPLIT
+                    tableType === AppTableTypes.SPLIT
                       ? splitAppTheme.colors.white
                       : splitAppTheme.colors.secondary[300],
                 }}>

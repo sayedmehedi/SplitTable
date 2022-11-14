@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
-import {TableTypes} from "@constants/table";
+import {AppTableTypes} from "@constants/table";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
@@ -27,13 +27,13 @@ const BookedTableList = ({onItemPress}: Props) => {
   } = useInfiniteGetBookedTablesQuery(
     {
       page: 1,
-      tableType: TableTypes.BOOKED,
+      tableType: AppTableTypes.BOOKED,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
-            tableType: TableTypes.BOOKED,
+            tableType: AppTableTypes.BOOKED,
             page: lastPage.tables.current_page + 1,
           };
         }

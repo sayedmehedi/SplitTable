@@ -14,7 +14,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 import {CustomerStackRoutes} from "@constants/routes";
 import LinearGradient from "react-native-linear-gradient";
 import {StackNavigationProp} from "@react-navigation/stack";
@@ -168,7 +168,7 @@ const ClubDetailsAndMenuListScreen = ({clubId, clubName}: Props) => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
               clubId,
               headerTitle: clubName,
-              listType: TableListTypes.BY_CLUB_ID,
+              listType: AppTableListTypes.BY_CLUB_ID,
             });
           }}>
           <LinearGradient

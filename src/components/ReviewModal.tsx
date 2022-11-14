@@ -19,12 +19,12 @@ import useAppToast from "@hooks/useAppToast";
 import {isResponseResultError} from "@utils/error-handling";
 
 type Props = {
-  ownerId: number;
+  reviewerId: number;
   open: boolean;
   onClose: () => void;
 };
 
-export default function ReviewModal({onClose, open, ownerId}: Props) {
+export default function ReviewModal({onClose, open, reviewerId}: Props) {
   const toast = useAppToast();
   const [rating, setRating] = React.useState<number>(1);
   const [review, setReview] = React.useState("");
@@ -46,7 +46,7 @@ export default function ReviewModal({onClose, open, ownerId}: Props) {
 
     addClubReview(
       {
-        ownerId,
+        reviewerId,
         review,
         rating,
       },

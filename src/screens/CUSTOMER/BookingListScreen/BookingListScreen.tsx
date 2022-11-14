@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./styles";
 import {splitAppTheme} from "@src/theme";
+import {ClubBooking} from "@src/models";
 import EachBookingItem from "./EachBookingItem";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
@@ -18,7 +19,6 @@ import {
   ActivityIndicator,
   ListRenderItem,
 } from "react-native";
-import {ClubBooking} from "@src/models";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 

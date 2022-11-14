@@ -2,7 +2,7 @@ import React from "react";
 import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
 import TableListItem from "./TableListItem";
-import {TableTypes} from "@constants/table";
+import {AppTableTypes} from "@constants/table";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {BookedTable, SplitTable, TableType} from "@src/models";
 import useInfiniteGetTablesByClubIdQuery from "@hooks/clubs/useInfiniteGetTablesByClubIdQuery";
@@ -22,7 +22,7 @@ type Props = {
 
 const TableListByClubId = ({clubId, onItemPress}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
-    TableTypes.BOOKED,
+    AppTableTypes.BOOKED,
   );
 
   const {
@@ -98,7 +98,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
           style={{
             flex: 1,
           }}>
-          <TouchableOpacity onPress={() => setTableType(TableTypes.BOOKED)}>
+          <TouchableOpacity onPress={() => setTableType(AppTableTypes.BOOKED)}>
             <View
               style={{
                 padding: splitAppTheme.space[3],
@@ -106,7 +106,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
                 borderWidth: splitAppTheme.borderWidths[2],
                 borderColor: splitAppTheme.colors.blue[300],
                 backgroundColor:
-                  tableType === TableTypes.BOOKED
+                  tableType === AppTableTypes.BOOKED
                     ? splitAppTheme.colors.blue[300]
                     : splitAppTheme.colors.white,
               }}>
@@ -116,7 +116,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.lg,
                   fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
                   color:
-                    tableType === TableTypes.BOOKED
+                    tableType === AppTableTypes.BOOKED
                       ? splitAppTheme.colors.white
                       : splitAppTheme.colors.blue[300],
                 }}>
@@ -127,7 +127,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
         </View>
 
         <View style={{flex: 1, marginLeft: splitAppTheme.space[3]}}>
-          <TouchableOpacity onPress={() => setTableType(TableTypes.SPLIT)}>
+          <TouchableOpacity onPress={() => setTableType(AppTableTypes.SPLIT)}>
             <View
               style={{
                 padding: splitAppTheme.space[3],
@@ -135,7 +135,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
                 borderWidth: splitAppTheme.borderWidths[2],
                 borderColor: splitAppTheme.colors.secondary[300],
                 backgroundColor:
-                  tableType === TableTypes.SPLIT
+                  tableType === AppTableTypes.SPLIT
                     ? splitAppTheme.colors.secondary[300]
                     : splitAppTheme.colors.white,
               }}>
@@ -145,7 +145,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.lg,
                   fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
                   color:
-                    tableType === TableTypes.SPLIT
+                    tableType === AppTableTypes.SPLIT
                       ? splitAppTheme.colors.white
                       : splitAppTheme.colors.secondary[300],
                 }}>

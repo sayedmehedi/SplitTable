@@ -1,136 +1,172 @@
-import {View, Text, Image} from "react-native";
 import React from "react";
+import {ClubBooking} from "@src/models";
+import {splitAppTheme} from "@src/theme";
+import {Image, Text, TouchableOpacity, View} from "react-native";
+import {useDisclosure} from "react-use-disclosure";
+import ReviewModal from "@components/ReviewModal";
 
-const EachBookingItem = ({
-  item,
-}: {
-  item: {
-    id: number;
-    dateTime: string;
-    totalGuest: string;
-    totalPrice: string;
-    name: string;
-    tableName: string;
-    status: string;
-  };
-}) => {
+const EachBookingItem = ({item}: {item: ClubBooking}) => {
+  const {toggle, isOpen} = useDisclosure();
+
   return (
     <View
       style={{
-        height: 100,
-        width: "100%",
-        borderRadius: 8,
-        backgroundColor: "white",
-        marginVertical: 5,
-        flexDirection: "row",
-        alignItems: "center",
         borderWidth: 1,
+        alignItems: "center",
+        flexDirection: "row",
         borderColor: "#F1F1F1",
-        justifyContent: "space-around",
-        paddingHorizontal: 20,
-      }}
-      key={item.id}>
+        backgroundColor: "white",
+        width: splitAppTheme.sizes.full,
+        borderRadius: splitAppTheme.radii.xl,
+        paddingHorizontal: splitAppTheme.space["4"],
+        paddingVertical: splitAppTheme.space["3"],
+      }}>
       <Image
         style={{
-          height: 65,
           width: 65,
-          borderRadius: 65,
+          height: 65,
+          borderRadius: splitAppTheme.radii.full,
         }}
         source={{
-          uri: "https://www.tripsavvy.com/thmb/gauQCVHTK9uk1QZYdM4k2UeRBO8=/640x427/filters:fill(auto,1)/club-56a3e8683df78cf7727fcf6d.jpg",
+          uri: item.club_image,
         }}
       />
 
-      <View>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
-          <Text
-            style={{
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
-              color: "#8A8D9F",
-            }}>
-            {item.dateTime}
-          </Text>
+      <View
+        style={{
+          flex: 1,
+          marginLeft: splitAppTheme.space[4],
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}>
+          <View>
+            <Text
+              style={{
+                color: "#8A8D9F",
+                fontSize: splitAppTheme.fontSizes.xs,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
+              {item.date}
+            </Text>
+          </View>
+
           <View
             style={{
-              height: 8,
-              width: 8,
-              borderRadius: 4,
-              backgroundColor: "#00C1FF",
-              marginHorizontal: 5,
-            }}
-          />
-          <Text
-            style={{
-              fontFamily: "Satoshi-Regular",
-              fontSize: 13,
-              color: "#8A8D9F",
-              marginHorizontal: 5,
+              flexDirection: "row",
+              alignItems: "center",
             }}>
-            {item.totalGuest} Guest
-          </Text>
-          <Text
-            style={{
-              fontFamily: "SatoshiVariable-Bold",
-              fontSize: 13,
-              color: "#00C1FF",
-            }}>
-            {item.totalPrice}
-          </Text>
+            <View
+              style={{
+                width: splitAppTheme.sizes[2],
+                height: splitAppTheme.sizes[2],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: splitAppTheme.colors.blue[300],
+              }}
+            />
+
+            <Text
+              style={{
+                color: "#8A8D9F",
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.xs,
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
+              {item.no_of_guest} Guest
+            </Text>
+          </View>
+
+          <View>
+            <Text
+              style={{
+                fontSize: splitAppTheme.fontSizes.xs,
+                color: splitAppTheme.colors.blue[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
+              {item.amount}
+            </Text>
+          </View>
         </View>
+
         <Text
           style={{
-            fontFamily: "SatoshiVariable-Bold",
-            fontSize: 15,
             color: "#262B2E",
+            fontSize: splitAppTheme.fontSizes.md,
+            fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
           }}>
-          {item.name}
+          {item.club}
         </Text>
+
         <Text
           style={{
-            fontFamily: "Satoshi-Regular",
-            fontSize: 12,
             color: "#8A8D9F",
+            fontSize: splitAppTheme.fontSizes.md,
+            fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
           }}>
-          {item.tableName}
+          {item.tables?.join(", ")}
         </Text>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
+
+        <ReviewModal open={isOpen} onClose={toggle} reviewerId={item.user_id} />
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}>
           <View
             style={{
-              height: 8,
-              width: 8,
-              backgroundColor: "#1DBF73",
-              borderRadius: 8,
-            }}
-          />
-          <Text
-            style={{
-              color: "#1DBF73",
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
-              marginHorizontal: 5,
+              flexDirection: "row",
+              alignItems: "center",
             }}>
-            {item.status}
-          </Text>
-          <Text
-            style={{
-              color: "#00C1FF",
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
-              textDecorationLine: "underline",
-              marginHorizontal: 5,
-            }}>
-            Add Review
-          </Text>
-          <Text
-            style={{
-              color: "#FE2121",
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
-              textDecorationLine: "underline",
-            }}>
-            Cancel
-          </Text>
+            <View
+              style={{
+                width: splitAppTheme.sizes[2],
+                height: splitAppTheme.sizes[2],
+                borderRadius: splitAppTheme.radii.full,
+                backgroundColor: splitAppTheme.colors.green[300],
+              }}
+            />
+
+            <Text
+              style={{
+                marginLeft: splitAppTheme.space[1],
+                fontSize: splitAppTheme.fontSizes.xs,
+                color: splitAppTheme.colors.green[300],
+                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              }}>
+              {item.status}
+            </Text>
+          </View>
+
+          {!item.is_reviewed && (
+            <TouchableOpacity onPress={() => toggle()}>
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontSize: splitAppTheme.fontSizes.xs,
+                  color: splitAppTheme.colors.blue[300],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                }}>
+                Add Review
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                fontSize: splitAppTheme.fontSizes.xs,
+                color: splitAppTheme.colors.red[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

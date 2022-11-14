@@ -12,7 +12,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import {TableListTypes} from "@constants/table";
+import {AppTableListTypes} from "@constants/table";
 import {CustomerStackRoutes} from "@constants/routes";
 import LinearGradient from "react-native-linear-gradient";
 import {StackNavigationProp} from "@react-navigation/stack";
@@ -406,7 +406,7 @@ const ClubDetailsInformation = ({clubId}: Props) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
-              listType: TableListTypes.BY_CLUB_ID,
+              listType: AppTableListTypes.BY_CLUB_ID,
               clubId: clubDetailsResponse.club.id,
               headerTitle: clubDetailsResponse.club.name,
             });

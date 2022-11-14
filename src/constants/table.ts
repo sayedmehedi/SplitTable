@@ -1,4 +1,4 @@
-export const TableListTypes = {
+export const AppTableListTypes = {
   ALL: "all",
   JOIN: "join",
   SPLIT: "split",
@@ -9,7 +9,7 @@ export const TableListTypes = {
   SEARCH_RESULT: "searchResult",
 } as const;
 
-export const TableTypes = {
+export const AppTableTypes = {
   SPLIT: "split",
   BOOKED: "booked",
 } as const;

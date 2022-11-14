@@ -421,7 +421,7 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
       <ReviewModal
         open={isReviewModalOpen}
         onClose={toggleReviewModal}
-        ownerId={clubDetailsResponse.club.owner_id}
+        reviewerId={clubDetailsResponse.club.owner_id}
       />
 
       <View
