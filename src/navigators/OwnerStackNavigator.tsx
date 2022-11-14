@@ -17,7 +17,7 @@ import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
 import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
 import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
 import ProfileScreen from "@screens/OWNER/OwnerAccountScreen/ProfileScreen";
-import FavoriteScreen from "@screens/OWNER/OwnerAccountScreen/FavoriteScreen";
+import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
@@ -169,9 +169,9 @@ const OwnerStackNavigator = () => {
             />
 
             <OwnerStack.Screen
-              component={FavoriteScreen}
-              options={favoriteScreenOptions}
-              name={OwnerStackRoutes.FAVORITE}
+              component={ReviewsScreen}
+              options={reviewScreenOptions}
+              name={OwnerStackRoutes.REVIEWS}
             />
 
             <OwnerStack.Screen
@@ -244,13 +244,15 @@ const accountSettingScreenOptions:
     }) => StackNavigationOptions) = {
   headerTitle: "Account Settings",
 };
-const favoriteScreenOptions:
+const reviewScreenOptions:
   | StackNavigationOptions
   | ((props: {
-      route: RouteProp<OwnerStackParamList, typeof OwnerStackRoutes.FAVORITE>;
+      route: RouteProp<OwnerStackParamList, typeof OwnerStackRoutes.REVIEWS>;
       navigation: any;
     }) => StackNavigationOptions) = {
-  headerTitle: "Favorite",
+  headerShown: true,
+  headerTitle: "Reviews",
+  header: CommonStackHeader,
 };
 const legalScreenOptions:
   | StackNavigationOptions

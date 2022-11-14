@@ -173,7 +173,7 @@ type OwnerStackParamList = {
   [OwnerStackRoutes.LEGAL]: undefined;
   [OwnerStackRoutes.ACCOUNT]: undefined;
   [OwnerStackRoutes.PROFILE]: undefined;
-  [OwnerStackRoutes.FAVORITE]: undefined;
+  [OwnerStackRoutes.REVIEWS]: undefined;
   [OwnerStackRoutes.TRANSACTION]: undefined;
   [OwnerStackRoutes.ACCOUNT_SETTING]: undefined;
 };

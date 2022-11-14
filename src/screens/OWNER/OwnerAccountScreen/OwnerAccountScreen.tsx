@@ -1,11 +1,10 @@
 import React from "react";
+import {OwnerStackRoutes} from "@constants/routes";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
-import {View, Text, Image, StyleSheet} from "react-native";
-import {OwnerStackRoutes} from "@constants/routes";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {TouchableOpacity} from "react-native-gesture-handler";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import {View, Text, Image, StyleSheet, TouchableOpacity} from "react-native";
 import {
   FaqIcon,
   InfoIcon,
@@ -150,7 +149,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerStackRoutes.FAVORITE)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.REVIEWS)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <ReviewIcon />

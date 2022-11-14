@@ -73,7 +73,7 @@ export const OwnerStackRoutes = {
   LEGAL: "Legal",
   ACCOUNT: "Account",
   PROFILE: "Profile",
-  FAVORITE: "Favorite",
+  REVIEWS: "Reviews",
   TRANSACTION: "Transaction",
   ACCOUNT_SETTING: "AccountSetting",
 } as const;

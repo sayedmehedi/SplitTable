@@ -8,7 +8,7 @@ import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
 import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
 import {OWNER_PROFILE_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import ProfileScreen from "@screens/OWNER/OwnerAccountScreen/ProfileScreen";
-import FavoriteScreen from "@screens/OWNER/OwnerAccountScreen/FavoriteScreen";
+import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import {
@@ -48,7 +48,7 @@ const OwnerProfileStackNavigator = () => {
       />
 
       <OwnerProfileStack.Screen
-        component={FavoriteScreen}
+        component={ReviewsScreen}
         options={favoriteScreenOptions}
         name={OwnerProfileStackRoutes.FAVORITE}
       />
