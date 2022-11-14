@@ -25,6 +25,10 @@ import {
   GetBookedTablesByClubIdResponse,
   GetSplitTablesByClubIdResponse,
   GetSplitTablesByClubIdQueryParams,
+  GetBookingHistoryResponse,
+  GetUpcomingBookingResponse,
+  GetUpcomingBookingQueryParams,
+  GetBookingHistoryQueryParams,
 } from "@src/models";
 
 @injectable()
@@ -33,6 +37,66 @@ export class ClubService implements IClubService {
   private readonly _httpService!: Axios;
 
   constructor() {}
+
+  getBookingHistory({
+    ownerId,
+    clubId,
+    ...params
+  }: GetBookingHistoryQueryParams): CancelablePromise<
+    AxiosResponse<GetBookingHistoryResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetBookingHistoryResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetBookingHistoryResponse>(`booking-history`, {
+          params: {
+            ...params,
+            club_id: clubId,
+            owner_id: ownerId,
+          },
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  getUpcomingBooking({
+    ownerId,
+    clubId,
+    ...params
+  }: GetUpcomingBookingQueryParams): CancelablePromise<
+    AxiosResponse<GetUpcomingBookingResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetUpcomingBookingResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetUpcomingBookingResponse>(`upcoming-booking`, {
+          params: {
+            ...params,
+            club_id: clubId,
+            owner_id: ownerId,
+          },
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   getTablesByClubId(
     params: GetSplitTablesByClubIdQueryParams,

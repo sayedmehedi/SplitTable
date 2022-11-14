@@ -63,7 +63,7 @@ export default function ReviewModal({onClose, open, ownerId}: Props) {
 
   return (
     <>
-      <Modal visible={open} transparent onRequestClose={onClose}>
+      <Modal visible={open} transparent onRequestClose={() => onClose()}>
         <View
           style={{
             position: "relative",
@@ -79,7 +79,7 @@ export default function ReviewModal({onClose, open, ownerId}: Props) {
               width: splitAppTheme.sizes.full,
             }}>
             <Pressable
-              onPress={onClose}
+              onPress={() => onClose()}
               style={{
                 marginLeft: "auto",
                 marginTop: splitAppTheme.space[6],
@@ -152,7 +152,7 @@ export default function ReviewModal({onClose, open, ownerId}: Props) {
               </View>
 
               <View>
-                <TouchableOpacity onPress={onClose}>
+                <TouchableOpacity onPress={() => onClose()}>
                   <Text
                     style={{
                       textAlign: "center",

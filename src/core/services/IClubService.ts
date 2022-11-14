@@ -22,6 +22,10 @@ import {
   GetBookedTablesByClubIdQueryParams,
   GetBookedTablesByClubIdResponse,
   GetSplitTablesByClubIdQueryParams,
+  GetBookingHistoryQueryParams,
+  GetBookingHistoryResponse,
+  GetUpcomingBookingQueryParams,
+  GetUpcomingBookingResponse,
 } from "@src/models";
 
 export interface IClubService {
@@ -93,4 +97,16 @@ export interface IClubService {
   bookTable(
     data: BookTableRequest,
   ): Promise<AxiosResponse<BookTableResponse, GlobalAxiosRequestConfig>>;
+
+  getBookingHistory(
+    params: GetBookingHistoryQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetBookingHistoryResponse, GlobalAxiosRequestConfig>
+  >;
+
+  getUpcomingBooking(
+    params: GetUpcomingBookingQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetUpcomingBookingResponse, GlobalAxiosRequestConfig>
+  >;
 }

@@ -25,7 +25,7 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 import {useDisclosure} from "react-use-disclosure";
-import ReviewModal from "./ReviewModal";
+import ReviewModal from "../../../components/ReviewModal";
 
 dayjs.extend(relativeTime);
 

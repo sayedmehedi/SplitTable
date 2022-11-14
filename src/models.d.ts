@@ -598,3 +598,37 @@ export type AddClubReviewRequest = {
 };
 
 export type AddClubReviewResponse = ResponseResult;
+
+export interface ClubBooking {
+  id: number;
+  date: string;
+  amount: string;
+  no_of_guest: number;
+  owner_id: number;
+  club: string;
+  club_id: number;
+  user: string;
+  user_image: string;
+  club_image: string;
+  tables: string[];
+  is_reviewed: boolean;
+  status: string;
+}
+
+export type GetBookingHistoryResponse = {
+  bookings: SimplePaginatedResponse<ClubBooking>;
+};
+
+export type GetBookingHistoryQueryParams = PaginationQueryParams & {
+  ownerId?: number;
+  clubId?: number;
+};
+
+export type GetUpcomingBookingResponse = {
+  bookings: SimplePaginatedResponse<ClubBooking>;
+};
+
+export type GetUpcomingBookingQueryParams = PaginationQueryParams & {
+  ownerId?: number;
+  clubId?: number;
+};

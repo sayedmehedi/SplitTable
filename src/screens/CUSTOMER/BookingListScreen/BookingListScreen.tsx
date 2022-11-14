@@ -3,6 +3,11 @@ import styles from "./styles";
 import {splitAppTheme} from "@src/theme";
 import EachBookingItem from "./EachBookingItem";
 import LinearGradient from "react-native-linear-gradient";
+import {useDimensions} from "@react-native-community/hooks";
+import GenericListEmpty from "@components/GenericListEmpty";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookingHistoryQuery";
+import useInfiniteGetUpcomingBookingQuery from "@hooks/clubs/useInfiniteGetUpcomingBookingQuery";
 import {
   View,
   Text,
@@ -10,90 +15,57 @@ import {
   TouchableOpacity,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  ActivityIndicator,
+  ListRenderItem,
 } from "react-native";
-import {useDimensions} from "@react-native-community/hooks";
+import {ClubBooking} from "@src/models";
 
-const bookingList = [
-  {
-    id: 1,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 2,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 3,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 4,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 5,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 6,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 7,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-  {
-    id: 8,
-    dateTime: "24 Jun, 12:30",
-    totalGuest: "5",
-    totalPrice: "$1315.30",
-    name: "Ebc at night",
-    tableName: "Table name 1",
-    status: "upcomming",
-  },
-];
+const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
-const renderBookingItem = ({item}: any) => <EachBookingItem item={item} />;
+const renderBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
+  <EachBookingItem item={item} />
+);
 
 const UpcomingBookingRoute = (props: {}) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+
+  const {
+    refetch,
+    isRefetching,
+    fetchNextPage,
+    isFetchingNextPage,
+    error: infiniteGetResourcesError,
+    data: infiniteGetResourcesResponse,
+    isLoading: isLoadingInfiniteResources,
+  } = useInfiniteGetUpcomingBookingQuery(
+    {
+      page: 1,
+    },
+    {
+      getNextPageParam(lastPage) {
+        if (lastPage.bookings.has_more_data) {
+          return {
+            page: lastPage.bookings.current_page + 1,
+          };
+        }
+      },
+    },
+  );
+  useHandleNonFieldError(infiniteGetResourcesError);
+
+  const resourceListData = React.useMemo(() => {
+    return (
+      infiniteGetResourcesResponse?.pages.flatMap(eachPage => {
+        return eachPage.bookings.data;
+      }) ?? []
+    );
+  }, [infiniteGetResourcesResponse?.pages]);
+
+  const handleFetchNextPage = React.useCallback(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
 
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
@@ -101,26 +73,76 @@ const UpcomingBookingRoute = (props: {}) => {
     };
   }, [splitAppTheme.space[6]]);
 
-  const flatlistListheadercomponentStyle = React.useMemo(() => {
-    return {
-      marginBottom: splitAppTheme.space[4],
-    };
-  }, [splitAppTheme.space[4]]);
+  if (isLoadingInfiniteResources) {
+    return (
+      <View
+        style={{
+          width: WINDOW_WIDTH,
+        }}>
+        <Text>Loading..</Text>
+      </View>
+    );
+    // return (
+    //   <ScrollView>
+    //     <Box p={6}>
+    //       {new Array(5).fill(1).map((_, i) => (
+    //         <Box width={"full"} key={i}>
+    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+    //             <Skeleton
+    //               height={"24"}
+    //               width={"24"}
+    //               borderRadius={"sm"}
+    //               startColor="coolGray.100"
+    //             />
+    //             <VStack flex={"3"} space={"2.5"}>
+    //               <Skeleton height={"5"} startColor="amber.300" />
+    //               <Skeleton.Text lines={2} />
+
+    //               <HStack space="2" alignItems="center">
+    //                 <Skeleton size={"5"} borderRadius={"full"} />
+    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+    //                 <Skeleton
+    //                   height={"3"}
+    //                   flex={"1"}
+    //                   borderRadius={"full"}
+    //                   startColor={"indigo.300"}
+    //                 />
+    //               </HStack>
+    //             </VStack>
+    //           </HStack>
+    //         </Box>
+    //       ))}
+    //     </Box>
+    //   </ScrollView>
+    // );
+  }
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator />
+        </View>
+      ) : null}
+
       <FlatList
-        data={bookingList}
+        onRefresh={refetch}
+        listKey={"club-menus"}
+        data={resourceListData}
+        refreshing={isRefetching}
+        keyExtractor={keyExtractor}
+        renderItem={renderBookingItem}
+        onEndReached={handleFetchNextPage}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
             style={{
-              height: splitAppTheme.sizes["2.5"],
+              height: splitAppTheme.space["4"],
             }}
           />
         )}
-        renderItem={renderBookingItem}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={flatlistContentContainerStyle}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>
   );
@@ -131,32 +153,118 @@ const HistoryBookingRoute = (props: {}) => {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
 
+  const {
+    refetch,
+    isRefetching,
+    fetchNextPage,
+    isFetchingNextPage,
+    error: infiniteGetResourcesError,
+    data: infiniteGetResourcesResponse,
+    isLoading: isLoadingInfiniteResources,
+  } = useInfiniteGetBookingHistoryQuery(
+    {
+      page: 1,
+    },
+    {
+      getNextPageParam(lastPage) {
+        if (lastPage.bookings.has_more_data) {
+          return {
+            page: lastPage.bookings.current_page + 1,
+          };
+        }
+      },
+    },
+  );
+  useHandleNonFieldError(infiniteGetResourcesError);
+
+  const resourceListData = React.useMemo(() => {
+    return (
+      infiniteGetResourcesResponse?.pages.flatMap(eachPage => {
+        return eachPage.bookings.data;
+      }) ?? []
+    );
+  }, [infiniteGetResourcesResponse?.pages]);
+
+  const handleFetchNextPage = React.useCallback(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
+
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
       padding: splitAppTheme.space[6],
     };
   }, [splitAppTheme.space[6]]);
 
-  const flatlistListheadercomponentStyle = React.useMemo(() => {
-    return {
-      marginBottom: splitAppTheme.space[4],
-    };
-  }, [splitAppTheme.space[4]]);
+  if (isLoadingInfiniteResources) {
+    return (
+      <View
+        style={{
+          width: WINDOW_WIDTH,
+        }}>
+        <Text>Loading..</Text>
+      </View>
+    );
+    // return (
+    //   <ScrollView>
+    //     <Box p={6}>
+    //       {new Array(5).fill(1).map((_, i) => (
+    //         <Box width={"full"} key={i}>
+    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
+    //             <Skeleton
+    //               height={"24"}
+    //               width={"24"}
+    //               borderRadius={"sm"}
+    //               startColor="coolGray.100"
+    //             />
+    //             <VStack flex={"3"} space={"2.5"}>
+    //               <Skeleton height={"5"} startColor="amber.300" />
+    //               <Skeleton.Text lines={2} />
+
+    //               <HStack space="2" alignItems="center">
+    //                 <Skeleton size={"5"} borderRadius={"full"} />
+    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
+    //                 <Skeleton
+    //                   height={"3"}
+    //                   flex={"1"}
+    //                   borderRadius={"full"}
+    //                   startColor={"indigo.300"}
+    //                 />
+    //               </HStack>
+    //             </VStack>
+    //           </HStack>
+    //         </Box>
+    //       ))}
+    //     </Box>
+    //   </ScrollView>
+    // );
+  }
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator />
+        </View>
+      ) : null}
+
       <FlatList
-        data={bookingList}
+        onRefresh={refetch}
+        listKey={"club-menus"}
+        data={resourceListData}
+        refreshing={isRefetching}
+        keyExtractor={keyExtractor}
+        renderItem={renderBookingItem}
+        onEndReached={handleFetchNextPage}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
             style={{
-              height: splitAppTheme.sizes["2.5"],
+              height: splitAppTheme.space["4"],
             }}
           />
         )}
-        renderItem={renderBookingItem}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={flatlistContentContainerStyle}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>
   );

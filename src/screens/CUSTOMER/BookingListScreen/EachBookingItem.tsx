@@ -1,8 +1,13 @@
-import {splitAppTheme} from "@src/theme";
 import React from "react";
-import {Image, Text, View} from "react-native";
+import {ClubBooking} from "@src/models";
+import {splitAppTheme} from "@src/theme";
+import {Image, Text, TouchableOpacity, View} from "react-native";
+import {useDisclosure} from "react-use-disclosure";
+import ReviewModal from "@components/ReviewModal";
 
-const EachBookingItem = ({item}: any) => {
+const EachBookingItem = ({item}: {item: ClubBooking}) => {
+  const {toggle, isOpen} = useDisclosure();
+
   return (
     <View
       style={{
@@ -14,7 +19,7 @@ const EachBookingItem = ({item}: any) => {
         width: splitAppTheme.sizes.full,
         borderRadius: splitAppTheme.radii.xl,
         paddingHorizontal: splitAppTheme.space["4"],
-        paddingVertical: splitAppTheme.space["1.5"],
+        paddingVertical: splitAppTheme.space["3"],
       }}>
       <Image
         style={{
@@ -23,7 +28,7 @@ const EachBookingItem = ({item}: any) => {
           borderRadius: splitAppTheme.radii.full,
         }}
         source={{
-          uri: "https://www.tripsavvy.com/thmb/gauQCVHTK9uk1QZYdM4k2UeRBO8=/640x427/filters:fill(auto,1)/club-56a3e8683df78cf7727fcf6d.jpg",
+          uri: item.club_image,
         }}
       />
 
@@ -42,10 +47,10 @@ const EachBookingItem = ({item}: any) => {
             <Text
               style={{
                 color: "#8A8D9F",
-                fontSize: splitAppTheme.fontSizes.sm,
+                fontSize: splitAppTheme.fontSizes.xs,
                 fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
               }}>
-              {item.dateTime}
+              {item.date}
             </Text>
           </View>
 
@@ -67,21 +72,21 @@ const EachBookingItem = ({item}: any) => {
               style={{
                 color: "#8A8D9F",
                 marginLeft: splitAppTheme.space[1],
-                fontSize: splitAppTheme.fontSizes.sm,
+                fontSize: splitAppTheme.fontSizes.xs,
                 fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
               }}>
-              {item.totalGuest} Guest
+              {item.no_of_guest} Guest
             </Text>
           </View>
 
           <View>
             <Text
               style={{
-                fontSize: splitAppTheme.fontSizes.sm,
+                fontSize: splitAppTheme.fontSizes.xs,
                 color: splitAppTheme.colors.blue[300],
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
               }}>
-              {item.totalPrice}
+              {item.amount}
             </Text>
           </View>
         </View>
@@ -92,7 +97,7 @@ const EachBookingItem = ({item}: any) => {
             fontSize: splitAppTheme.fontSizes.md,
             fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
           }}>
-          {item.name}
+          {item.club}
         </Text>
 
         <Text
@@ -101,8 +106,10 @@ const EachBookingItem = ({item}: any) => {
             fontSize: splitAppTheme.fontSizes.md,
             fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
           }}>
-          {item.tableName}
+          {item.tables.join(", ")}
         </Text>
+
+        <ReviewModal open={isOpen} onClose={toggle} ownerId={item.owner_id} />
 
         <View
           style={{
@@ -127,7 +134,7 @@ const EachBookingItem = ({item}: any) => {
             <Text
               style={{
                 marginLeft: splitAppTheme.space[1],
-                fontSize: splitAppTheme.fontSizes.sm,
+                fontSize: splitAppTheme.fontSizes.xs,
                 color: splitAppTheme.colors.green[300],
                 fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
               }}>
@@ -135,25 +142,31 @@ const EachBookingItem = ({item}: any) => {
             </Text>
           </View>
 
-          {/* <Button
-            variant={"link"}
-            _text={{
-              fontSize: "sm",
-              color: "blue.300",
-              fontFamily: "satoshi",
-            }}>
-            Add Review
-          </Button>
+          {!item.is_reviewed && (
+            <TouchableOpacity onPress={() => toggle()}>
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontSize: splitAppTheme.fontSizes.xs,
+                  color: splitAppTheme.colors.blue[300],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                }}>
+                Add Review
+              </Text>
+            </TouchableOpacity>
+          )}
 
-          <Button
-            variant={"link"}
-            _text={{
-              fontSize: "sm",
-              color: "red.300",
-              fontFamily: "satoshi",
-            }}>
-            Cancel
-          </Button> */}
+          <TouchableOpacity>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                fontSize: splitAppTheme.fontSizes.xs,
+                color: splitAppTheme.colors.red[300],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
