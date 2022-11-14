@@ -105,7 +105,7 @@ const AccountScreen = ({navigation}: Props) => {
             borderRadius: 30,
           }}
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/219/219986.png",
+            uri: profileData?.image,
           }}
         />
 

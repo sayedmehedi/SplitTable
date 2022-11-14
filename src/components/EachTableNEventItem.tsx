@@ -51,7 +51,7 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
         onSuccess(data) {
           if (!isResponseResultError(data)) {
             toast.success(data.message);
-            queryClient.invalidateQueries([QueryKeys.TABLE, "LIST"]);
+            queryClient.invalidateQueries([QueryKeys.FAVORITE, "LIST"]);
           }
         },
       },

@@ -1,10 +1,12 @@
 export const QueryKeys = {
+  FAQ: "faq",
   MENU: "menu",
   CLUB: "club",
   IMAGE: "image",
   TABLE: "table",
   REVIEW: "review",
   PROFILE: "profile",
+  FAVORITE: "favorite",
   LOCATION: "location",
   AUTH_DATA: "auth-data",
   AUTH_TYPE: "auth-type",

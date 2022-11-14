@@ -153,6 +153,7 @@ type OwnerBottomTabParamList = {
 
 type OwnerStackParamList = {
   [OwnerStackRoutes.ADD_MENU_ITEM]: undefined;
+  [OwnerStackRoutes.LOCATION_ENABLE]: undefined;
   [OwnerStackRoutes.OWNER_AUTH]: NavigatorScreenParams<OwnerAuthStackParamList>;
   [OwnerStackRoutes.OWNER_MAIN_TABS]: NavigatorScreenParams<OwnerBottomTabParamList>;
 };

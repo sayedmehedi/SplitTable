@@ -63,6 +63,7 @@ export const CustomerMainBottomTabRoutes = {
 export const OwnerStackRoutes = {
   OWNER_AUTH: "OwnerAuth",
   ADD_MENU_ITEM: "AddMenuItem",
+  LOCATION_ENABLE: "LocationEnable",
   OWNER_MAIN_TABS: "OwnerMainTabs",
 } as const;
 

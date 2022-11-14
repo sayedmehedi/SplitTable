@@ -1,26 +1,17 @@
 import React from "react";
-import AppGradientButton from "@components/AppGradientButton";
-import {StackScreenProps} from "@react-navigation/stack";
-import {
-  OwnerStackRoutes,
-  OwnerAuthStackRoutes,
-  OwnerMainBottomTabRoutes,
-} from "@constants/routes";
-import {TouchableOpacity} from "react-native-gesture-handler";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {
-  RootStackParamList,
-  OwnerStackParamList,
-  OwnerAuthStackParamList,
-} from "@src/navigation";
-import {Image, Text, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
+import {Image, Text, View} from "react-native";
+import {OwnerStackRoutes} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
+import {CompositeScreenProps} from "@react-navigation/native";
+import AppGradientButton from "@components/AppGradientButton";
+import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
     StackScreenProps<
-      OwnerAuthStackParamList,
-      typeof OwnerAuthStackRoutes.LOCATION_ENABLE
+      OwnerStackParamList,
+      typeof OwnerStackRoutes.LOCATION_ENABLE
     >,
     StackScreenProps<OwnerStackParamList>
   >,

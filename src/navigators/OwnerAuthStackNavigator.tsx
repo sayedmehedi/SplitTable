@@ -35,11 +35,6 @@ const OwnerAuthStackNavigator = () => {
         options={emailVerificationScreenOptions}
         name={OwnerAuthStackRoutes.EMAIL_VERIFICATION}
       />
-      <OwnerAuthStack.Screen
-        options={locationEnableScreenOptions}
-        component={LocationEnablePromptScreen}
-        name={OwnerAuthStackRoutes.LOCATION_ENABLE}
-      />
     </OwnerAuthStack.Navigator>
   );
 };
@@ -58,18 +53,6 @@ const signupScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitle: "Sign Up",
-};
-
-const locationEnableScreenOptions:
-  | StackNavigationOptions
-  | ((props: {
-      route: RouteProp<
-        OwnerAuthStackParamList,
-        typeof OwnerAuthStackRoutes.LOCATION_ENABLE
-      >;
-      navigation: any;
-    }) => StackNavigationOptions) = {
-  headerTitle: "Select Location",
 };
 
 const emailVerificationScreenOptions:

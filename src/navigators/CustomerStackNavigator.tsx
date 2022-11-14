@@ -145,7 +145,12 @@ const CustomerStackNavigator = () => {
             />
           </CustomerStack.Group>
 
-          <CustomerStack.Group>
+          <CustomerStack.Group
+            screenOptions={{
+              headerShown: true,
+              header: CommonStackHeader,
+              headerTitleAlign: "center",
+            }}>
             <CustomerStack.Screen
               component={ProfileScreen}
               options={profileScreenOptions}

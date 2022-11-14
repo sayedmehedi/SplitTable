@@ -19,9 +19,13 @@ import {
   GetTransactionsResponse,
   GlobalAxiosRequestConfig,
   DeleteUserImageResponse,
+  GetFavoriteClubsResponse,
   ToggleUserImageLikeRequest,
   GetTransactionsQueryParams,
   ToggleUserImageLikeResponse,
+  GetFavoriteClubsQueryParams,
+  GetFaqsQueryParams,
+  GetFaqsResponse,
 } from "@src/models";
 
 @injectable()
@@ -33,6 +37,58 @@ export class UserService implements IUserService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  getFaqs({
+    userType,
+    ...params
+  }: GetFaqsQueryParams): CancelablePromise<
+    AxiosResponse<GetFaqsResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetFaqsResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetFaqsResponse>(`active-faqs`, {
+          params: {
+            ...params,
+            user_type: userType,
+          },
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  getFavorites(
+    params: GetFavoriteClubsQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetFavoriteClubsResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetFavoriteClubsResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetFavoriteClubsResponse>(`favourites`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   getTransactions(
     params: GetTransactionsQueryParams,

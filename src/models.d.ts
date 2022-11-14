@@ -1,4 +1,4 @@
-import {AuthTypes} from "@constants/auth";
+import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import {AxiosRequestConfig} from "axios";
 
@@ -135,15 +135,10 @@ export type GetSplitTablesReponse = {
   tables: SimplePaginatedResponse<SplitTable>;
 };
 
-export type PaginationQueryParams =
-  | {
-      page?: number;
-      paginate?: number;
-    }
-  | {
-      page?: number;
-      limit?: number;
-    };
+export type PaginationQueryParams = {
+  page?: number;
+  paginate?: number;
+};
 
 export interface TableByLocationItem {
   id: number;
@@ -299,12 +294,14 @@ export interface OwnerProfileData {
   location: string;
   latitude: string;
   longitude: string;
+  image: string;
 
   club: string;
   job_role: string;
 }
 export interface CustomerProfileData {
   id: number;
+  image: string;
   name: string;
   phone: string;
   email: string;
@@ -538,3 +535,39 @@ export type BookTableResponse = ResponseResult<{
     partial_amount: string;
   };
 }>;
+
+export type FavoriteClub = {
+  id: number;
+  name: string;
+  distance: string;
+  image: string;
+  location: string;
+  date?: string;
+  opening_time: string;
+  closing_time: string;
+  total_reviews: number;
+  avg_rating: number;
+  is_favourite: boolean;
+};
+
+export type GetFavoriteClubsResponse = {
+  clubs: SimplePaginatedResponse<FavoriteClub>;
+};
+
+export type GetFavoriteClubsQueryParams = PaginationQueryParams;
+
+export interface Faq {
+  id: number;
+  question: string;
+  answer: string;
+  status: number;
+}
+
+export type GetFaqsResponse = {
+  items: SimplePaginatedResponse<Faq>;
+  success: string;
+};
+
+export type GetFaqsQueryParams = PaginationQueryParams & {
+  userType: typeof AuthTypeNum[keyof typeof AuthTypeNum];
+};

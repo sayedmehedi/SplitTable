@@ -12,6 +12,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -53,10 +54,14 @@ const OwnerStackNavigator = () => {
       ) : (
         <React.Fragment>
           <OwnerStack.Screen
+            options={locationEnableScreenOptions}
+            component={LocationEnablePromptScreen}
+            name={OwnerStackRoutes.LOCATION_ENABLE}
+          />
+          <OwnerStack.Screen
             component={OwnerBottomTabNavigator}
             name={OwnerStackRoutes.OWNER_MAIN_TABS}
           />
-
           <OwnerStack.Screen
             component={AddMenuItemScreen}
             options={addMenuItemScreenOptions}
@@ -69,3 +74,15 @@ const OwnerStackNavigator = () => {
 };
 
 export default OwnerStackNavigator;
+
+const locationEnableScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        OwnerStackParamList,
+        typeof OwnerStackRoutes.LOCATION_ENABLE
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Select Location",
+};

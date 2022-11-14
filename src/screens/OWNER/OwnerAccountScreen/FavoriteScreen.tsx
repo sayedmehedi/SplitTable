@@ -8,6 +8,7 @@ import {
   ImageBackground,
   ListRenderItem,
 } from "react-native";
+import {FavoriteClub} from "@src/models";
 import {productData} from "@constants/dummy";
 import {OwnerProfileStackRoutes} from "@constants/routes";
 import Fontisto from "react-native-vector-icons/Fontisto";
@@ -38,14 +39,7 @@ type FavoriteScreenProps = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
-const renderClubList: ListRenderItem<{
-  id: string;
-  location: string;
-  name: string;
-  rating: number;
-  distance: string;
-  uri: any;
-}> = ({item}) => {
+const renderClubList: ListRenderItem<FavoriteClub> = ({item}) => {
   const rightSwipeActions = () => {
     return (
       <Pressable

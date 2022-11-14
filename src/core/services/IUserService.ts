@@ -14,6 +14,10 @@ import {
   ToggleUserImageLikeRequest,
   ToggleUserImageLikeResponse,
   GetTransactionsQueryParams,
+  GetFavoriteClubsQueryParams,
+  GetFavoriteClubsResponse,
+  GetFaqsQueryParams,
+  GetFaqsResponse,
 } from "@src/models";
 
 export interface IUserService {
@@ -41,5 +45,17 @@ export interface IUserService {
     params: GetTransactionsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetTransactionsResponse, GlobalAxiosRequestConfig>
+  >;
+
+  getFavorites(
+    params: GetFavoriteClubsQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetFavoriteClubsResponse, GlobalAxiosRequestConfig>
+  >;
+
+  getFaqs(
+    params: GetFaqsQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetFaqsResponse, GlobalAxiosRequestConfig>
   >;
 }

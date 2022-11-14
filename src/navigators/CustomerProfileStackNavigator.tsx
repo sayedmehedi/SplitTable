@@ -1,5 +1,4 @@
 import React from "react";
-import {CustomerProfileStackParamList} from "@src/navigation";
 import {
   createStackNavigator,
   StackNavigationOptions,
@@ -7,6 +6,7 @@ import {
 import {RouteProp} from "@react-navigation/native";
 import AccountScreen from "@screens/CUSTOMER/AccountScreen";
 import {CustomerProfileStackRoutes} from "@constants/routes";
+import {CustomerProfileStackParamList} from "@src/navigation";
 import CommonStackHeader from "@components/CommonStackHeader";
 
 import {CUSTOMER_PROFILE_STACK_NAVIGATOR_ID} from "@constants/navigators";

@@ -1,4 +1,28 @@
 import React from "react";
+import truncate from "lodash.truncate";
+import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
+import {QueryKeys} from "@constants/query-keys";
+import {Clock, MapIcon} from "@constants/iconPath";
+import {useQueryClient} from "@tanstack/react-query";
+import {CustomerStackRoutes} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
+import LinearGradient from "react-native-linear-gradient";
+import Fontisto from "react-native-vector-icons/Fontisto";
+import {useDimensions} from "@react-native-community/hooks";
+import GenericListEmpty from "@components/GenericListEmpty";
+import {CompositeScreenProps} from "@react-navigation/native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import {isResponseResultError} from "@utils/error-handling";
+import ClubDetailsInformation from "./ClubDetailsInformation";
+import ClubDetailsAndReviewList from "./ClubDetailsAndReviewList";
+import ClubDetailsAndMenuListScreen from "./ClubDetailsAndMenuList";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import {
   View,
   Text,
@@ -10,26 +34,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
-import truncate from "lodash.truncate";
-import {splitAppTheme} from "@src/theme";
-import {Clock, MapIcon} from "@constants/iconPath";
-import {CustomerStackRoutes} from "@constants/routes";
-import {StackScreenProps} from "@react-navigation/stack";
-import LinearGradient from "react-native-linear-gradient";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import {useDimensions} from "@react-native-community/hooks";
-import GenericListEmpty from "@components/GenericListEmpty";
-import {CompositeScreenProps} from "@react-navigation/native";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import ClubDetailsInformation from "./ClubDetailsInformation";
-import ClubDetailsAndReviewList from "./ClubDetailsAndReviewList";
-import ClubDetailsAndMenuListScreen from "./ClubDetailsAndMenuList";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
-import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const WINDOW_DIMEN = Dimensions.get("window");
 const CARD_HEIGHT = 180;
@@ -44,6 +50,8 @@ type Props = CompositeScreenProps<
 >;
 
 const ClubDetailsScreen = ({navigation, route}: Props) => {
+  const toast = useAppToast();
+  const queryClient = useQueryClient();
   const pagerRef = React.useRef<FlatList>(null!);
 
   const {
@@ -56,9 +64,32 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
   const {
     error: clubDetailsError,
     data: clubDetailsResponse,
+    refetch: refetchClubDetail,
     isLoading: isClubDetailsLoading,
   } = useGetClubDetailsQuery(route.params.clubId);
   useHandleNonFieldError(clubDetailsError);
+
+  const {
+    mutate: toggleFavoriteClub,
+    error: toggleFavoriteError,
+    isLoading: isTogglingFavorite,
+    data: toggleFavoriteClubResponse,
+  } = useToggleFavoriteClubMutation();
+
+  const handleToggleFavorite = React.useCallback(() => {
+    toggleFavoriteClub(
+      {clubId: route.params.clubId},
+      {
+        async onSuccess(data) {
+          if (!isResponseResultError(data)) {
+            toast.success(data.message);
+            await refetchClubDetail();
+            await queryClient.invalidateQueries([QueryKeys.FAVORITE, "LIST"]);
+          }
+        },
+      },
+    );
+  }, [toggleFavoriteClub]);
 
   const handlePager = (index: number) => {
     pagerRef?.current?.scrollToOffset({
@@ -295,24 +326,31 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                         style={{
                           marginLeft: splitAppTheme.space[4],
                         }}>
-                        <TouchableOpacity
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: splitAppTheme.space[2],
-                            backgroundColor: "rgba(0,0,0,0.5)",
-                            borderRadius: splitAppTheme.radii.full,
-                          }}>
-                          <AntDesign
-                            size={22}
-                            name={
-                              clubDetailsResponse.club.is_favourite
-                                ? "heart"
-                                : "hearto"
-                            }
-                            color={"white"}
-                          />
-                        </TouchableOpacity>
+                        {isTogglingFavorite ? (
+                          <View style={{padding: splitAppTheme.space[3]}}>
+                            <ActivityIndicator color={"white"} size={"small"} />
+                          </View>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={handleToggleFavorite}
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                              padding: splitAppTheme.space[2],
+                              backgroundColor: "rgba(0,0,0,0.5)",
+                              borderRadius: splitAppTheme.radii.full,
+                            }}>
+                            <AntDesign
+                              size={22}
+                              name={
+                                clubDetailsResponse.club.is_favourite
+                                  ? "heart"
+                                  : "hearto"
+                              }
+                              color={"white"}
+                            />
+                          </TouchableOpacity>
+                        )}
                       </View>
                     </View>
                   </View>
@@ -564,9 +602,9 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
             horizontal
             pagingEnabled
             ref={pagerRef}
-            showsHorizontalScrollIndicator={false}
             listKey={"club-details-pager"}
-            data={["offer", "menu", "chat"]}
+            showsHorizontalScrollIndicator={false}
+            data={["menu", "reviews", "information"]}
             renderItem={({item}) => {
               switch (item) {
                 case "information":
