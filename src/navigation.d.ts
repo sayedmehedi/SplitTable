@@ -38,6 +38,10 @@ type OwnerAuthStackParamList = {
   [OwnerAuthStackRoutes.EMAIL_VERIFICATION]: {
     email: string;
   };
+  [OwnerAuthStackRoutes.RESET_PASSWORD]: {
+    email: string;
+  };
+  [OwnerAuthStackRoutes.FORGOT_PASSWORD]: undefined;
 };
 
 type CustomerBookingStackParamList = {

@@ -42,6 +42,8 @@ export const OwnerAuthStackRoutes = {
   SIGNIN: "Signin",
   SIGNUP: "Signup",
   EMAIL_VERIFICATION: "EmailVerification",
+  FORGOT_PASSWORD: "ForgotPassword",
+  RESET_PASSWORD: "ResetPassword",
 } as const;
 
 export const OwnerMainBottomTabRoutes = {

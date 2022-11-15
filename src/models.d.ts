@@ -819,3 +819,11 @@ export type DeleteOwnerClubHolidayRequest = {
 };
 
 export type DeleteOwnerClubHolidayResponse = ResponseResult;
+
+export type ResetPasswordRequest = {
+  otp: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+};
+export type ResetPasswordResponse = ResponseResult;

@@ -17,6 +17,9 @@ import {
   GlobalAxiosRequestConfig,
   ResendEmailVerificationCodeRequest,
   ResendEmailVerificationCodeResponse,
+  ResponseResult,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -29,6 +32,18 @@ export class AuthService implements IAuthService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  resetPassword(
+    data: ResetPasswordRequest,
+  ): Promise<AxiosResponse<ResetPasswordResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<ResponseResult>("reset-password", data);
+  }
+
+  forgotPassword(
+    email: string,
+  ): Promise<AxiosResponse<ResponseResult<{}>, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<ResponseResult>("forget-password", {email});
+  }
 
   verifyEmail(
     data: VerifyEmailRequest,

@@ -12,6 +12,9 @@ import {
   GlobalAxiosRequestConfig,
   ResendEmailVerificationCodeRequest,
   ResendEmailVerificationCodeResponse,
+  ResponseResult,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from "@src/models";
 
 export interface IAuthService {
@@ -20,6 +23,10 @@ export interface IAuthService {
   ): Promise<AxiosResponse<LoginResponse, GlobalAxiosRequestConfig>>;
 
   logout(): Promise<AxiosResponse<LogoutResponse, GlobalAxiosRequestConfig>>;
+
+  resetPassword(
+    data: ResetPasswordRequest,
+  ): Promise<AxiosResponse<ResetPasswordResponse, GlobalAxiosRequestConfig>>;
 
   getProfile(): CancelablePromise<
     AxiosResponse<GetProfileDataResponse, GlobalAxiosRequestConfig>
@@ -30,6 +37,10 @@ export interface IAuthService {
   verifyEmail(
     data: VerifyEmailRequest,
   ): Promise<AxiosResponse<VerifyEmailResponse, GlobalAxiosRequestConfig>>;
+
+  forgotPassword(
+    email: string,
+  ): Promise<AxiosResponse<ResponseResult, GlobalAxiosRequestConfig>>;
 
   resendEmailVerificationCode(
     data: ResendEmailVerificationCodeRequest,
