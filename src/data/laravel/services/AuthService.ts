@@ -18,6 +18,7 @@ import {
   ResendEmailVerificationCodeRequest,
   ResendEmailVerificationCodeResponse,
 } from "@src/models";
+import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -56,7 +57,11 @@ export class AuthService implements IAuthService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload !== "string" && !!payload) {
+      if (
+        fieldName === "image" &&
+        typeof payload !== "string" &&
+        payload !== undefined
+      ) {
         if (!!payload.uri && payload.name && !!payload.type) {
           // because this image is optional
           acc.push({
@@ -66,7 +71,7 @@ export class AuthService implements IAuthService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && !!payload) {
+      } else if (typeof payload !== "object" && payload !== undefined) {
         acc.push({
           name: fieldName,
           data: payload,
@@ -94,19 +99,7 @@ export class AuthService implements IAuthService {
         onUploadProgress?.(written, total);
       });
 
-    const serverData = response.json();
-
-    if (response.info().status === 422) {
-      throw {
-        non_field_error: "Invalid data",
-        field_errors: Object.entries(
-          serverData.errors as Record<string, string[]>,
-        ).reduce((acc, [field, messages]) => {
-          acc[field] = messages[0];
-          return acc;
-        }, {} as Record<string, string>),
-      };
-    }
+    const serverData = await parseRnFetchBlobJsonResponse(response);
 
     return serverData;
   }

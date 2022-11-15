@@ -268,6 +268,10 @@ export type GetClubMenusQueryParams = PaginationQueryParams & {
   clubId: number;
 };
 
+export type ClubMenuItemOwnerSide = ClubMenuItem & {
+  qty: number;
+};
+
 export interface GetOwnerClubMenusResponse {
   menus: SimplePaginatedResponse<ClubMenuItem>;
 }
@@ -401,6 +405,10 @@ export type UpdateProfileResponse = ResponseResult;
 export interface Transaction {
   id: number;
   date: string;
+  created_date: string;
+  created_day: string;
+  created_month: string;
+  created_time: string;
   club: string;
   tables: "" | string[];
   no_of_guest: number;

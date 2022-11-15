@@ -120,7 +120,11 @@ export default function UpsertTableScreen({route, navigation}: Props) {
 
       setValue("name", tableDetailsResponse.name);
 
-      // setValue("date_time", dayjs(tableDetailsResponse.date).toDate());
+      setValue(
+        "date_time",
+        dayjs(tableDetailsResponse.date, "YYYY-MM-DD hh:mm:ss").toDate(),
+      );
+
       // console.log(
       //   tableDetailsResponse.date,
       //   dayjs("15 Nov, 04:11 AM", "DD MMM, HH:mm A"),

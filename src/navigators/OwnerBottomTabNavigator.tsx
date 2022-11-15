@@ -13,7 +13,7 @@ import {OwnerMainBottomTabRoutes} from "@constants/routes";
 import OwnerTableScreen from "@screens/OWNER/OwnerTableScreen";
 import OwnerProfileStackNavigator from "./OwnerProfileStackNavigator";
 import {OWNER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
-import MenuItemScreen from "@screens/OWNER/MenuItemScreen/MenuItemScreen";
+import MenuListScreen from "@screens/OWNER/MenuItemScreen/MenuListScreen";
 import OwnerBookingListScreen from "@screens/OWNER/OwnerBookingListScreen/OwnerBookingListScreen";
 import {
   createBottomTabNavigator,
@@ -272,7 +272,7 @@ const OwnerBottomTabNavigator = () => {
       /> */}
 
       <OwnerMainBotoomTab.Screen
-        component={MenuItemScreen}
+        component={MenuListScreen}
         options={menuScreenOptions}
         name={OwnerMainBottomTabRoutes.MENU}
       />

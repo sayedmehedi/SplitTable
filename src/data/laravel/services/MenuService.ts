@@ -5,7 +5,6 @@ import {ConfigService} from "@config/ConfigService";
 import {CancelablePromise} from "cancelable-promise";
 import {Axios, AxiosError, AxiosResponse} from "axios";
 import {IMenuService} from "@core/services/IMenuService";
-import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -17,12 +16,12 @@ import {
   CreateOwnerClubMenuRequest,
   CreateOwnerClubMenuResponse,
   AuthData,
-  ServerErrorType,
   UpdateOwnerClubMenuRequest,
   UpdateOwnerClubMenuResponse,
   DeleteOwnerClubMenuRequest,
   DeleteOwnerClubMenuResponse,
 } from "@src/models";
+import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
 @injectable()
 export class MenuService implements IMenuService {
@@ -63,7 +62,7 @@ export class MenuService implements IMenuService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload === "object" && !!payload) {
+      if (fieldName === "image" && typeof payload === "object" && payload) {
         if (!!payload.uri && !!payload.name && !!payload.type) {
           acc.push({
             name: fieldName,
@@ -72,7 +71,7 @@ export class MenuService implements IMenuService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && !!payload) {
+      } else {
         acc.push({
           name: fieldName,
           data: `${payload}`,
@@ -101,23 +100,7 @@ export class MenuService implements IMenuService {
         onUploadProgress?.(sent, total);
       });
 
-    const serverData = response.json();
-
-    if (response.respInfo.status >= 400) {
-      const axiosError = new AxiosError<ServerErrorType>(
-        "Rnfetchblob error",
-        "Server Error",
-        undefined,
-        {
-          data: serverData,
-          status: response.respInfo.status,
-          headers: response.respInfo.headers,
-        },
-      );
-
-      throw new ApplicationError(axiosError);
-    }
-
+    const serverData = await parseRnFetchBlobJsonResponse(response);
     return serverData;
   }
 
@@ -139,7 +122,11 @@ export class MenuService implements IMenuService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload === "object" && !!payload) {
+      if (
+        fieldName === "image" &&
+        typeof payload === "object" &&
+        payload !== undefined
+      ) {
         if (!!payload.uri && !!payload.name && !!payload.type) {
           acc.push({
             name: fieldName,
@@ -148,7 +135,7 @@ export class MenuService implements IMenuService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && !!payload) {
+      } else if (typeof payload !== "object" && payload !== undefined) {
         acc.push({
           name: fieldName,
           data: `${payload}`,
@@ -177,23 +164,7 @@ export class MenuService implements IMenuService {
         onUploadProgress?.(sent, total);
       });
 
-    const serverData = response.json();
-
-    if (response.respInfo.status >= 400) {
-      const axiosError = new AxiosError<ServerErrorType>(
-        "Rnfetchblob error",
-        "Server Error",
-        undefined,
-        {
-          data: serverData,
-          status: response.respInfo.status,
-          headers: response.respInfo.headers,
-        },
-      );
-
-      throw new ApplicationError(axiosError);
-    }
-
+    const serverData = await parseRnFetchBlobJsonResponse(response);
     return serverData;
   }
 

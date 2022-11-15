@@ -64,7 +64,7 @@ export const OwnerStackRoutes = {
   MY_TABLES: "MyTables",
   OWNER_AUTH: "OwnerAuth",
   UPSERT_TABLE: "UpsertTable",
-  ADD_MENU_ITEM: "AddMenuItem",
+  UPSERT_MENU: "UpsertMenu",
   TABLE_DETAILS: "TableDetails",
   LOCATION_ENABLE: "LocationEnable",
   OWNER_MAIN_TABS: "OwnerMainTabs",

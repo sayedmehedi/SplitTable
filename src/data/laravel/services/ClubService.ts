@@ -46,6 +46,7 @@ import {
   ClubInfo,
 } from "@src/models";
 import {ApplicationError} from "@core/domain/ApplicationError";
+import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
 @injectable()
 export class ClubService implements IClubService {
@@ -107,7 +108,11 @@ export class ClubService implements IClubService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload === "object" && !!payload) {
+      if (
+        fieldName === "image" &&
+        typeof payload === "object" &&
+        payload !== undefined
+      ) {
         if (!!payload.name && !!payload.uri && !!payload.type) {
           acc.push({
             name: fieldName,
@@ -116,7 +121,7 @@ export class ClubService implements IClubService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && !!payload) {
+      } else if (typeof payload !== "object" && payload! == undefined) {
         acc.push({
           name: fieldName,
           data: `${payload}`,
@@ -145,8 +150,7 @@ export class ClubService implements IClubService {
         onUploadProgress?.(sent, total);
       });
 
-    const serverData = response.json();
-
+    const serverData = await parseRnFetchBlobJsonResponse(response);
     if (response.respInfo.status >= 400) {
       const axiosError = new AxiosError<ServerErrorType>(
         "Rnfetchblob error",
@@ -193,7 +197,11 @@ export class ClubService implements IClubService {
         typeof data[keyof typeof data],
       ];
 
-      if (fieldName === "image" && typeof payload === "object" && !!payload) {
+      if (
+        fieldName === "image" &&
+        typeof payload === "object" &&
+        payload !== undefined
+      ) {
         if (!!payload.name && !!payload.uri && !!payload.type) {
           acc.push({
             name: fieldName,
@@ -202,7 +210,7 @@ export class ClubService implements IClubService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && !!payload) {
+      } else if (typeof payload !== "object" && payload! == undefined) {
         acc.push({
           name: fieldName,
           data: `${payload}`,
@@ -231,20 +239,7 @@ export class ClubService implements IClubService {
         onUploadProgress?.(sent, total);
       });
 
-    const serverData = response.json();
-
-    if (response.info().status === 422) {
-      throw {
-        non_field_error: "Invalid data",
-        field_errors: Object.entries(
-          serverData.errors as Record<string, string[]>,
-        ).reduce((acc, [field, messages]) => {
-          acc[field] = messages[0];
-          return acc;
-        }, {} as Record<string, string>),
-      };
-    }
-
+    const serverData = await parseRnFetchBlobJsonResponse(response);
     return serverData;
   }
 

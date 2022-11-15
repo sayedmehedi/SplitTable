@@ -1,3 +1,3 @@
-import MenuItemScreen from "./MenuItemScreen";
+import MenuListScreen from "./MenuListScreen";
 
-export default MenuItemScreen;
+export default MenuListScreen;

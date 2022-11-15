@@ -1,10 +1,11 @@
 import {Container} from "inversify";
-import axios, {AxiosInstance, AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosInstance, AxiosResponse} from "axios";
 import CancelablePromise from "cancelable-promise";
 import {ConfigService} from "@config/ConfigService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
-import {GlobalAxiosRequestConfig} from "@src/models";
+import {GlobalAxiosRequestConfig, ServerErrorType} from "@src/models";
+import {FetchBlobResponse} from "rn-fetch-blob";
 
 export default function registerHttpClient(container: Container) {
   container
@@ -52,4 +53,35 @@ export function handleCancelableAxiosPromise<T>(
   });
 
   return promise.then(res => res.data);
+}
+
+export async function parseRnFetchBlobJsonResponse<T = any>(
+  response: FetchBlobResponse,
+) {
+  const serverData = response.json() as T | ServerErrorType;
+
+  console.log("serverData inside parseRnFetchBlobJsonResponse", serverData);
+
+  if (response.respInfo.status >= 400) {
+    const axiosError = new AxiosError<ServerErrorType>(
+      undefined,
+      "Server Error",
+      undefined,
+      undefined,
+      {
+        config: {},
+        statusText: "",
+        request: undefined,
+        status: response.respInfo.status,
+        data: serverData as ServerErrorType,
+        headers: response.respInfo.headers,
+      },
+    );
+
+    console.log("axiosError", axiosError);
+
+    throw new ApplicationError(axiosError);
+  }
+
+  return serverData;
 }

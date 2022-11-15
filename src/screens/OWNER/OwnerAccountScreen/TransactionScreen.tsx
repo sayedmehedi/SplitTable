@@ -16,11 +16,7 @@ import useGetClubInfoQuery from "@hooks/clubs/useGetClubInfoQuery";
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
-interface TransactionItem extends Omit<Transaction, "date"> {
-  date: dayjs.Dayjs;
-}
-
-const renderTransactionList: ListRenderItem<TransactionItem> = ({item}) => (
+const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
   <View
     key={item.id}
     style={{
@@ -43,7 +39,7 @@ const renderTransactionList: ListRenderItem<TransactionItem> = ({item}) => (
           fontSize: 12,
           color: "#8A8D9F",
         }}>
-        {item.date.format("DD")}
+        {item.created_day}
       </Text>
       <Text
         style={{
@@ -51,7 +47,7 @@ const renderTransactionList: ListRenderItem<TransactionItem> = ({item}) => (
           fontSize: 20,
           color: "#8A8D9F",
         }}>
-        {item.date.format("MMM")}
+        {item.created_month}
       </Text>
       <Text
         style={{
@@ -59,7 +55,7 @@ const renderTransactionList: ListRenderItem<TransactionItem> = ({item}) => (
           fontSize: 12,
           color: "#8A8D9F",
         }}>
-        {item.date.format("HH:mm")}
+        {item.created_time}
       </Text>
     </View>
 
@@ -172,13 +168,8 @@ const TransactionScreen = () => {
   const resourceListData = React.useMemo(() => {
     return (
       infiniteGetResourcesResponse?.pages?.flatMap(eachPage => {
-        return (
-          eachPage?.transactions?.data?.map(eachData => ({
-            ...eachData,
-            date: dayjs(eachData.date, "DD MMM, hh:mm A"),
-          })) ?? []
-        );
-      }) ?? ([] as TransactionItem[])
+        return eachPage?.transactions?.data ?? [];
+      }) ?? ([] as Transaction[])
     );
   }, [infiniteGetResourcesResponse?.pages]);
 
@@ -243,7 +234,7 @@ const TransactionScreen = () => {
         </View>
       ) : null}
 
-      <FlatList<TransactionItem>
+      <FlatList<Transaction>
         onRefresh={refetch}
         refreshing={isRefetching}
         data={resourceListData}

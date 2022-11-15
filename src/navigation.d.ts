@@ -16,6 +16,7 @@ import {
   BookedTable,
   BookedTableDetails as BookingTableDetails,
   ClubMenuItem,
+  ClubMenuItemOwnerSide,
   SplitTableDetails,
   TableCommonSearchParams,
 } from "./models";
@@ -161,7 +162,9 @@ type OwnerStackParamList = {
     tableId: number;
   };
   [OwnerStackRoutes.MY_TABLES]: undefined;
-  [OwnerStackRoutes.ADD_MENU_ITEM]: undefined;
+  [OwnerStackRoutes.UPSERT_MENU]:
+    | {actionMode: "update"; menu: ClubMenuItemOwnerSide}
+    | {actionMode: "create"};
   [OwnerStackRoutes.LOCATION_ENABLE]: undefined;
   [OwnerStackRoutes.OWNER_AUTH]: NavigatorScreenParams<OwnerAuthStackParamList>;
   [OwnerStackRoutes.OWNER_MAIN_TABS]: NavigatorScreenParams<OwnerBottomTabParamList>;

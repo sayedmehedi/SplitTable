@@ -7,7 +7,7 @@ import CommonStackHeader from "@components/CommonStackHeader";
 import {OWNER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import OwnerAuthStackNavigator from "./OwnerAuthStackNavigator";
 import OwnerBottomTabNavigator from "./OwnerBottomTabNavigator";
-import AddMenuItemScreen from "@screens/OWNER/MenuItemScreen/AddMenuItemScreen";
+import UpsertMenuScreen from "@screens/OWNER/MenuItemScreen/UpsertMenuScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,
@@ -40,7 +40,7 @@ const addMenuItemScreenOptions:
   | ((props: {
       route: RouteProp<
         OwnerStackParamList,
-        typeof OwnerStackRoutes.ADD_MENU_ITEM
+        typeof OwnerStackRoutes.UPSERT_MENU
       >;
       navigation: any;
     }) => StackNavigationOptions) = {
@@ -120,9 +120,9 @@ const OwnerStackNavigator = () => {
           />
 
           <OwnerStack.Screen
-            component={AddMenuItemScreen}
+            component={UpsertMenuScreen}
             options={addMenuItemScreenOptions}
-            name={OwnerStackRoutes.ADD_MENU_ITEM}
+            name={OwnerStackRoutes.UPSERT_MENU}
           />
 
           <OwnerStack.Screen
