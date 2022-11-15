@@ -37,9 +37,33 @@ import {
   ClubInfo,
   UpdateOwnerClubInfoRequest,
   UpdateOwnerClubInfoResponse,
+  GetOwnerClubHolidaysResponse,
+  CreateOwnerClubHolidayRequest,
+  CreateOwnerClubHolidayResponse,
+  DeleteOwnerClubHolidayRequest,
+  DeleteOwnerClubHolidayResponse,
+  GetOwnerClubHolidaysQueryParams,
 } from "@src/models";
 
 export interface IClubService {
+  getOwnerClubHolidays(
+    params: GetOwnerClubHolidaysQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetOwnerClubHolidaysResponse, GlobalAxiosRequestConfig>
+  >;
+
+  createOwnerClubHoliday(
+    data: CreateOwnerClubHolidayRequest,
+  ): Promise<
+    AxiosResponse<CreateOwnerClubHolidayResponse, GlobalAxiosRequestConfig>
+  >;
+
+  deleteOwnerClubHoliday(
+    data: DeleteOwnerClubHolidayRequest,
+  ): Promise<
+    AxiosResponse<DeleteOwnerClubHolidayResponse, GlobalAxiosRequestConfig>
+  >;
+
   getClubDetails(
     clubId: number,
   ): CancelablePromise<

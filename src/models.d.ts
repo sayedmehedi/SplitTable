@@ -793,3 +793,29 @@ export type UpdateOwnerClubInfoRequest = Partial<{
 }>;
 
 export type UpdateOwnerClubInfoResponse = ResponseResult;
+
+export interface Holiday {
+  id: number;
+  name: string;
+  date: string;
+}
+
+export type GetOwnerClubHolidaysResponse = {
+  holidays: SimplePaginatedResponse<Holiday>;
+};
+
+export type GetOwnerClubHolidaysQueryParams = PaginationQueryParams;
+
+export type CreateOwnerClubHolidayRequest = {
+  name: string;
+  date: string;
+  clubId: number;
+};
+
+export type CreateOwnerClubHolidayResponse = ResponseResult;
+
+export type DeleteOwnerClubHolidayRequest = {
+  holidayId: number;
+};
+
+export type DeleteOwnerClubHolidayResponse = ResponseResult;

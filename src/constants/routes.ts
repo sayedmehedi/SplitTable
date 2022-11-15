@@ -77,6 +77,8 @@ export const OwnerStackRoutes = {
   INFORMATION: "Information",
   SLIDER_IMAGES: "SliderImages",
   ACCOUNT_SETTING: "AccountSetting",
+  HOLIDAYS: "Holidays",
+  ADD_HOLIDAY: "AddHoliday",
 } as const;
 
 export const OwnerProfileStackRoutes = {

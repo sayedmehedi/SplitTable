@@ -18,6 +18,7 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {
@@ -36,6 +37,13 @@ const defaultQueryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60,
       cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+      onError(err: any) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "non_field_error" in err ? err.non_field_error : err.message,
+        });
+      },
     },
   },
 });

@@ -5,6 +5,7 @@ export const QueryKeys = {
   IMAGE: "image",
   TABLE: "table",
   REVIEW: "review",
+  HOLIDAY: "holiday",
   PROFILE: "profile",
   FAVORITE: "favorite",
   LOCATION: "location",

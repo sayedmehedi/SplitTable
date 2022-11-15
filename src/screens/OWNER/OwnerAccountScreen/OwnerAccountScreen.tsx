@@ -193,7 +193,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerStackRoutes.FAQ)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.HOLIDAYS)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <HolidayIcon />

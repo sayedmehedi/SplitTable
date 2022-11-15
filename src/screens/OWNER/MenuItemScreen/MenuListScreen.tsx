@@ -97,6 +97,9 @@ const MenuListScreen = ({navigation}: Props) => {
       ) : null}
 
       <FlatList
+        ListHeaderComponentStyle={{
+          paddingBottom: splitAppTheme.space[3],
+        }}
         onRefresh={refetch}
         data={resourceListData}
         renderItem={renderItem}

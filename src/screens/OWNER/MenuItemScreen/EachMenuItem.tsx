@@ -34,7 +34,7 @@ const EachMenuItem = ({item, onPress}: Props) => {
   const {
     mutate: deleteClubMenu,
     error: deleteClubMenuError,
-    isLoading: isTogglingFavorite,
+    isLoading: isDeleting,
     data: deleteClubMenuResponse,
   } = useDeleteOwnerClubMenuMutation();
   useHandleNonFieldError(deleteClubMenuError);
@@ -55,7 +55,7 @@ const EachMenuItem = ({item, onPress}: Props) => {
   useHandleNonFieldError(updateError);
   useHandleResponseResultError(updateResponse);
 
-  const handleToggleFavorite = React.useCallback(() => {
+  const handleDelete = React.useCallback(() => {
     deleteClubMenu(
       {menuId: item.id},
       {
@@ -69,13 +69,13 @@ const EachMenuItem = ({item, onPress}: Props) => {
   }, [deleteClubMenu]);
 
   const rightSwipeActions = () => {
-    return isTogglingFavorite ? (
+    return isDeleting ? (
       <View style={{padding: splitAppTheme.space[3]}}>
         <ActivityIndicator color={"white"} size={"small"} />
       </View>
     ) : (
       <TouchableOpacity
-        onPress={handleToggleFavorite}
+        onPress={handleDelete}
         style={{
           marginLeft: 20,
           justifyContent: "center",

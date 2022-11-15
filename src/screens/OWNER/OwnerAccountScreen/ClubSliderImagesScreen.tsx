@@ -57,7 +57,7 @@ function EachClubImage({
   );
 }
 
-export default function ClubSliderImages() {
+export default function ClubSliderImagesScreen() {
   const {isOpen, toggle} = useDisclosure();
   const galleryListRef = React.useRef<FlatList>(null!);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);

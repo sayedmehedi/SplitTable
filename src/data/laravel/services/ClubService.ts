@@ -45,6 +45,12 @@ import {
   ClubInfo,
   UpdateOwnerClubInfoResponse,
   UpdateOwnerClubInfoRequest,
+  CreateOwnerClubHolidayRequest,
+  CreateOwnerClubHolidayResponse,
+  DeleteOwnerClubHolidayRequest,
+  DeleteOwnerClubHolidayResponse,
+  GetOwnerClubHolidaysResponse,
+  GetOwnerClubHolidaysQueryParams,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -57,6 +63,52 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  getOwnerClubHolidays(
+    params: GetOwnerClubHolidaysQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetOwnerClubHolidaysResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetOwnerClubHolidaysResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetOwnerClubHolidaysResponse>(`holidays`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  createOwnerClubHoliday(
+    data: CreateOwnerClubHolidayRequest,
+  ): Promise<
+    AxiosResponse<CreateOwnerClubHolidayResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.post<CreateOwnerClubHolidayResponse>("holidays", {
+      name: data.name,
+      club_id: data.clubId,
+      date: data.date,
+    });
+  }
+
+  deleteOwnerClubHoliday(
+    data: DeleteOwnerClubHolidayRequest,
+  ): Promise<
+    AxiosResponse<DeleteOwnerClubHolidayResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.delete<DeleteOwnerClubHolidayResponse>(
+      `holidays/${data.holidayId}`,
+    );
+  }
 
   async updateOwnerClubInfo({
     onUploadProgress,

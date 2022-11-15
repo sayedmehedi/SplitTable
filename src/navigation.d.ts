@@ -162,6 +162,8 @@ type OwnerStackParamList = {
     tableId: number;
   };
   [OwnerStackRoutes.MY_TABLES]: undefined;
+  [OwnerStackRoutes.HOLIDAYS]: undefined;
+  [OwnerStackRoutes.ADD_HOLIDAY]: undefined;
   [OwnerStackRoutes.SLIDER_IMAGES]: undefined;
   [OwnerStackRoutes.UPSERT_MENU]:
     | {actionMode: "update"; menu: ClubMenuItemOwnerSide}

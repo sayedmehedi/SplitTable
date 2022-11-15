@@ -23,7 +23,9 @@ import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSetti
 import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
 import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
 import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
-import ClubSliderImages from "@screens/OWNER/OwnerAccountScreen/ClubSliderImages";
+import ClubSliderImagesScreen from "@screens/OWNER/OwnerAccountScreen/ClubSliderImagesScreen";
+import HolidaysScreen from "@screens/OWNER/OwnerAccountScreen/HolidaysScreen";
+import AddHolidayScreen from "@screens/OWNER/OwnerAccountScreen/AddHolidayScreen";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -192,9 +194,21 @@ const OwnerStackNavigator = () => {
             />
 
             <OwnerStack.Screen
-              component={ClubSliderImages}
+              component={ClubSliderImagesScreen}
               options={sliderImagesScreenOptions}
               name={OwnerStackRoutes.SLIDER_IMAGES}
+            />
+
+            <OwnerStack.Screen
+              component={HolidaysScreen}
+              options={holidaysScreenOptions}
+              name={OwnerStackRoutes.HOLIDAYS}
+            />
+
+            <OwnerStack.Screen
+              component={AddHolidayScreen}
+              options={addholidaysScreenOptions}
+              name={OwnerStackRoutes.ADD_HOLIDAY}
             />
           </OwnerStack.Group>
         </React.Fragment>
@@ -295,4 +309,29 @@ const sliderImagesScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitle: "Slider Images",
+};
+
+const holidaysScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<OwnerStackParamList, typeof OwnerStackRoutes.HOLIDAYS>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "Holidays",
+};
+
+const addholidaysScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        OwnerStackParamList,
+        typeof OwnerStackRoutes.ADD_HOLIDAY
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "Add Holiday",
 };
