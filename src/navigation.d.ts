@@ -162,6 +162,7 @@ type OwnerStackParamList = {
     tableId: number;
   };
   [OwnerStackRoutes.MY_TABLES]: undefined;
+  [OwnerStackRoutes.SLIDER_IMAGES]: undefined;
   [OwnerStackRoutes.UPSERT_MENU]:
     | {actionMode: "update"; menu: ClubMenuItemOwnerSide}
     | {actionMode: "create"};
@@ -175,7 +176,7 @@ type OwnerStackParamList = {
   [OwnerStackRoutes.FAQ]: undefined;
   [OwnerStackRoutes.LEGAL]: undefined;
   [OwnerStackRoutes.ACCOUNT]: undefined;
-  [OwnerStackRoutes.PROFILE]: undefined;
+  [OwnerStackRoutes.INFORMATION]: undefined;
   [OwnerStackRoutes.REVIEWS]: undefined;
   [OwnerStackRoutes.TRANSACTION]: undefined;
   [OwnerStackRoutes.ACCOUNT_SETTING]: undefined;

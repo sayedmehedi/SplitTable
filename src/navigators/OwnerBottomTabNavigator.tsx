@@ -265,11 +265,11 @@ const OwnerBottomTabNavigator = () => {
         name={OwnerMainBottomTabRoutes.OWNER_BOOKING}
       />
 
-      {/* <OwnerMainBotoomTab.Screen
+      <OwnerMainBotoomTab.Screen
         component={OwnerTableScreen}
         options={tableAddScreenOptions}
         name={OwnerMainBottomTabRoutes.TABLE_ADD}
-      /> */}
+      />
 
       <OwnerMainBotoomTab.Screen
         component={MenuListScreen}

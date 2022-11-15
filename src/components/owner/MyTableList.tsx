@@ -5,7 +5,7 @@ import TableListItem from "./TableListItem";
 import {AppTableTypes} from "@constants/table";
 import {TableByLocationItem, TableType} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
-import useGetClubInfoQuery from "@hooks/clubs/useGetClubInfoQuery";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import useInfiniteGetTablesBySearchTermQuery from "@hooks/clubs/useInfiniteGetTablesBySearchTermQuery";
 import {
   View,
@@ -26,7 +26,7 @@ const MyTableList = ({onItemPress}: Props) => {
   );
 
   const {data: clubInfoData, isLoading: isClubInfoLoading} =
-    useGetClubInfoQuery();
+    useGetOwnerClubInfoQuery();
 
   const {
     refetch,

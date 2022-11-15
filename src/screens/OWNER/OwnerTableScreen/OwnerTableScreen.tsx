@@ -4,43 +4,37 @@ import {
   Text,
   StatusBar,
   SafeAreaView,
-  ListRenderItem,
   TouchableOpacity,
 } from "react-native";
-import {ClubBooking} from "@src/models";
 import {useTime} from "react-timer-hook";
 import {splitAppTheme} from "@src/theme";
+import {MapIcon} from "@constants/iconPath";
 import {isOwnerProfile} from "@utils/profile";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
-import {useDimensions} from "@react-native-community/hooks";
+import {ScrollView} from "react-native-gesture-handler";
 import {StackScreenProps} from "@react-navigation/stack";
+import EachTableNEventItem from "./EachTableNEventItem";
+import {useDimensions} from "@react-native-community/hooks";
 import LinearGradient from "react-native-linear-gradient";
-import {MapIcon, TablePerson} from "@constants/iconPath";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
-import {FlatList, ScrollView} from "react-native-gesture-handler";
+import AppGradientButton from "@components/AppGradientButton";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import EachBookingItem from "../OwnerBookingListScreen/EachBookingItem";
 import useGetBookedTablesQuery from "@hooks/clubs/useGetBookedTablesQuery";
+import useGetUpcomingBookingQuery from "@hooks/clubs/useGetUpcomingBookingQuery";
 import {
-  OwnerMainBottomTabRoutes,
-  OwnerStackRoutes,
   RootStackRoutes,
+  OwnerStackRoutes,
+  OwnerMainBottomTabRoutes,
 } from "@constants/routes";
 import {
-  OwnerBottomTabParamList,
-  OwnerStackParamList,
   RootStackParamList,
+  OwnerStackParamList,
+  OwnerBottomTabParamList,
 } from "@src/navigation";
-import AppGradientButton from "@components/AppGradientButton";
-import EachTableNEventItem from "./EachTableNEventItem";
-import useGetUpcomingBookingQuery from "@hooks/clubs/useGetUpcomingBookingQuery";
-
-const renderBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem item={item} />
-);
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<

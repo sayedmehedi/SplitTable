@@ -4,6 +4,7 @@ import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import Toast from "react-native-toast-message";
 import {QueryKeys} from "@constants/query-keys";
+import AddUserPhotoBtn from "./AddUserPhotoBtn";
 import {useDisclosure} from "react-use-disclosure";
 import {useQueryClient} from "@tanstack/react-query";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -25,7 +26,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import useDeleteUserPhotoMutation from "@hooks/user/useDeleteUserPhotoMutation";
-import AddUserPhotoBtn from "./AddUserPhotoBtn";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;

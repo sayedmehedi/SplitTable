@@ -72,9 +72,10 @@ export const OwnerStackRoutes = {
   FAQ: "Faq",
   LEGAL: "Legal",
   ACCOUNT: "Account",
-  PROFILE: "Profile",
   REVIEWS: "Reviews",
   TRANSACTION: "Transaction",
+  INFORMATION: "Information",
+  SLIDER_IMAGES: "SliderImages",
   ACCOUNT_SETTING: "AccountSetting",
 } as const;
 

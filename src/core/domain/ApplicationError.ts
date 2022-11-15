@@ -7,7 +7,6 @@ import {
 
 export class ApplicationError extends Error {
   constructor(private readonly data: AxiosError<ServerErrorType>) {
-    console.log("error inside applicationerror domain", data.response);
     super(data.message);
   }
 
@@ -20,7 +19,6 @@ export class ApplicationError extends Error {
   }
 
   get field_errors(): Record<string, string> {
-    console.log("isValidationError", this.isValidationError());
     if (this.isValidationError()) {
       const validationError = this.response!.data as ServerValidationError;
 

@@ -1,13 +1,12 @@
 import React from "react";
-import {Controller, useForm} from "react-hook-form";
 import {splitAppTheme} from "@src/theme";
-import {OwnerMainBottomTabRoutes, OwnerStackRoutes} from "@constants/routes";
+import {Controller, useForm} from "react-hook-form";
 import {StackScreenProps} from "@react-navigation/stack";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import AppGradientButton from "@components/AppGradientButton";
-import {TouchableOpacity} from "react-native-gesture-handler";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
+import {OwnerMainBottomTabRoutes, OwnerStackRoutes} from "@constants/routes";
 import {
   View,
   Text,
@@ -16,21 +15,22 @@ import {
   ScrollView,
   Alert,
   Image,
+  TouchableOpacity,
 } from "react-native";
-import useGetClubInfoQuery from "@hooks/clubs/useGetClubInfoQuery";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {
   ImagePickerResponse,
   launchCamera,
   launchImageLibrary,
 } from "react-native-image-picker";
-import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import useAppToast from "@hooks/useAppToast";
 import {ErrorMessage} from "@hookform/error-message";
-import useCreateOwnerClubMenuMutation from "@hooks/clubs/useCreateOwnerClubMenuMutation";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useUpdateOwnerClubMenuMutation from "@hooks/clubs/useUpdateOwnerClubMenuMutation";
+import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useCreateOwnerClubMenuMutation from "@hooks/clubs/useCreateOwnerClubMenuMutation";
+import useUpdateOwnerClubMenuMutation from "@hooks/clubs/useUpdateOwnerClubMenuMutation";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_MENU>,
@@ -56,7 +56,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
   const actionSheetRef = React.useRef<ActionSheetRef>(null!);
 
   const {data: clubInfoData, isLoading: isClubInfoLoading} =
-    useGetClubInfoQuery();
+    useGetOwnerClubInfoQuery();
 
   const {control, setValue, handleSubmit, setError} = useForm<FormVlaues>({
     defaultValues: {
@@ -97,8 +97,6 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
   useHandleNonFieldError(createError);
   useHandleResponseResultError(createResponse);
 
-  console.log("createError", createError);
-
   const {
     error: upateError,
     mutate: updateMenu,
@@ -121,37 +119,45 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
     }
   }, [createError, isCreateError, setError]);
 
-  const handleUpsert = handleSubmit(values => {
-    if (route.params.actionMode === "create") {
-      createMenu(values, {
-        onSuccess(data) {
-          if (!isResponseResultError(data)) {
-            toast.success(data.success);
-            navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
-              screen: OwnerMainBottomTabRoutes.MENU,
-            });
-          }
-        },
-      });
-    }
-
-    if (route.params.actionMode === "update") {
-      updateMenu(
-        {...values, menuId: route.params.menu.id},
-
-        {
-          onSuccess(data) {
-            if (!isResponseResultError(data)) {
-              toast.success(data.success);
-              navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
-                screen: OwnerMainBottomTabRoutes.MENU,
-              });
-            }
+  const handleUpsert = handleSubmit(
+    values => {
+      if (route.params.actionMode === "create") {
+        createMenu(
+          {...values, status: 0},
+          {
+            onSuccess(data) {
+              if (!isResponseResultError(data)) {
+                toast.success(data.success);
+                navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
+                  screen: OwnerMainBottomTabRoutes.MENU,
+                });
+              }
+            },
           },
-        },
-      );
-    }
-  });
+        );
+      }
+
+      if (route.params.actionMode === "update") {
+        updateMenu(
+          {...values, menuId: route.params.menu.id},
+
+          {
+            onSuccess(data) {
+              if (!isResponseResultError(data)) {
+                toast.success(data.success);
+                navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
+                  screen: OwnerMainBottomTabRoutes.MENU,
+                });
+              }
+            },
+          },
+        );
+      }
+    },
+    errors => {
+      console.log("errors", errors);
+    },
+  );
 
   const handleImageResult = (result: ImagePickerResponse) => {
     if (result.errorCode) {

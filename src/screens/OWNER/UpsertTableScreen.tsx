@@ -545,7 +545,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     }}>
                     <Text>
                       {field.value
-                        ? dayjs(field.value).format("YYYY-MM-DD")
+                        ? dayjs(field.value).format("YYYY-MM-DD HH:mm:ss")
                         : "Date & Time"}
                     </Text>
                   </View>

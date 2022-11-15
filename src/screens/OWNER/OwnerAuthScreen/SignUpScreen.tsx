@@ -24,11 +24,11 @@ import {
   Image,
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
-import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useRegisterMutation from "@hooks/auth/useRegisterMutation";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
+import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {
   launchCamera,

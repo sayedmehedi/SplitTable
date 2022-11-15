@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import useInfiniteGetTransactionsQuery from "@hooks/user/useInfiniteGetTransactionsQuery";
-import useGetClubInfoQuery from "@hooks/clubs/useGetClubInfoQuery";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
@@ -137,7 +137,7 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
 
 const TransactionScreen = () => {
   const {data: clubInfoData, isLoading: isClubInfoLoading} =
-    useGetClubInfoQuery();
+    useGetOwnerClubInfoQuery();
 
   const {
     refetch,

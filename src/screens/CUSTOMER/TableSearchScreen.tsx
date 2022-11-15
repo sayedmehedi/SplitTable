@@ -70,16 +70,23 @@ const TableSearchScreen = () => {
   }, [locationsResponse?.items]);
 
   const handleSearch = handleSubmit(values => {
+    let locationIdInt = null;
+
+    if (values.location_id !== null) {
+      locationIdInt = parseInt(values.location_id);
+    }
+
+    if (locationIdInt !== null && isNaN(locationIdInt)) {
+      locationIdInt = null;
+    }
+
     navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
       headerTitle: "Search Result",
       searchTerm: {
         date: values.date ?? undefined,
         distance: values.distance ?? undefined,
         tableType: values.table_type ?? undefined,
-        locationId:
-          values.location_id !== null
-            ? parseInt(values.location_id)
-            : undefined,
+        locationId: locationIdInt !== null ? locationIdInt : undefined,
       },
       listType: AppTableListTypes.SEARCH_RESULT,
     });

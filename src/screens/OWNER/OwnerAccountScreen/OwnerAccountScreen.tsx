@@ -4,7 +4,15 @@ import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
-import {View, Text, Image, StyleSheet, TouchableOpacity} from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import {
   FaqIcon,
   InfoIcon,
@@ -21,6 +29,9 @@ import {
   OwnerBottomTabParamList,
   OwnerAccountStackParamList,
 } from "@src/navigation";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import useLogoutMutation from "@hooks/auth/useLogoutMutation";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -37,6 +48,20 @@ type OwnerAccountScreenProps = CompositeScreenProps<
 >;
 
 const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
+  const {data: profileData, error, isLoading} = useGetProfileQuery();
+  useHandleNonFieldError(error);
+
+  const {mutate: logout, error: logoutError} = useLogoutMutation();
+  useHandleNonFieldError(logoutError);
+
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
       <View
@@ -92,7 +117,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
 
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate(OwnerStackRoutes.PROFILE)}
+          onPress={() => navigation.navigate(OwnerStackRoutes.INFORMATION)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <InfoIcon />
@@ -223,7 +248,23 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.sectionContainer}>
+        <TouchableOpacity
+          style={styles.sectionContainer}
+          onPress={() => {
+            Alert.alert("Confirm", "Are your sure want to logout?", [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              {
+                text: "Sure",
+                style: "destructive",
+                onPress() {
+                  logout();
+                },
+              },
+            ]);
+          }}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <LogoutIcon />
             <Text

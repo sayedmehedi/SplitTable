@@ -1,5 +1,5 @@
 import RNFetchBlob from "rn-fetch-blob";
-import {Axios, AxiosError, AxiosResponse} from "axios";
+import {Axios, AxiosResponse} from "axios";
 import {inject, injectable} from "inversify";
 import {StorageKeys} from "@constants/storage";
 import {ConfigService} from "@config/ConfigService";
@@ -40,12 +40,12 @@ import {
   CreateOwnerTableResponse,
   UpdateOwnerTableRequest,
   UpdateOwnerTableResponse,
-  ServerErrorType,
   DeleteOwnerTableRequest,
   DeleteOwnerTableResponse,
   ClubInfo,
+  UpdateOwnerClubInfoResponse,
+  UpdateOwnerClubInfoRequest,
 } from "@src/models";
-import {ApplicationError} from "@core/domain/ApplicationError";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
 @injectable()
@@ -57,6 +57,72 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  async updateOwnerClubInfo({
+    onUploadProgress,
+    ...data
+  }: UpdateOwnerClubInfoRequest): Promise<UpdateOwnerClubInfoResponse> {
+    const authDataString = await AsyncStorage.getItem(StorageKeys.AUTH_DATA);
+
+    if (!authDataString) {
+      throw new Error("Unauthenticated");
+    }
+
+    const {token: authToken} = JSON.parse(authDataString) as AuthData;
+
+    const formattedPayload = Object.entries(data).reduce((acc, curr) => {
+      const [fieldName, payload] = curr as [
+        keyof typeof data,
+        typeof data[keyof typeof data],
+      ];
+
+      if (
+        fieldName === "slider_images" &&
+        payload !== undefined &&
+        Array.isArray(payload)
+      ) {
+        payload.forEach(img => {
+          acc.push({
+            type: img.type,
+            filename: img.name,
+            name: "slider_images[]",
+            data: RNFetchBlob.wrap(img.uri.replace("file://", "")),
+          });
+        });
+      } else if (typeof payload !== "object" && payload !== undefined) {
+        acc.push({
+          name: fieldName,
+          data: `${payload}`,
+        });
+      }
+
+      return acc;
+    }, [] as {name: string; type?: string; filename?: string; data: string}[]);
+
+    console.log("formattedPayload", formattedPayload);
+
+    const response = await RNFetchBlob.config({
+      trusty: true,
+      timeout: 5000,
+    })
+      .fetch(
+        "POST",
+        `${this._config.apiBaseURL}/update-club`,
+
+        {
+          Accept: "application/json",
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+        formattedPayload,
+      )
+      .uploadProgress((sent, total) => {
+        onUploadProgress?.(sent, total);
+      });
+
+    const serverData = await parseRnFetchBlobJsonResponse(response);
+    return serverData;
+  }
 
   getClubInfo(): CancelablePromise<
     AxiosResponse<ClubInfo, GlobalAxiosRequestConfig>
@@ -151,30 +217,6 @@ export class ClubService implements IClubService {
       });
 
     const serverData = await parseRnFetchBlobJsonResponse(response);
-    if (response.respInfo.status >= 400) {
-      const axiosError = new AxiosError<ServerErrorType>(
-        "Rnfetchblob error",
-        "Server Error",
-        undefined,
-        {
-          data: serverData,
-          status: response.respInfo.status,
-          headers: response.respInfo.headers,
-        },
-      );
-
-      throw new ApplicationError(axiosError);
-
-      // throw {
-      //   non_field_error: "Invalid data",
-      //   field_errors: Object.entries(
-      //     serverData.errors as Record<string, string[]>,
-      //   ).reduce((acc, [field, messages]) => {
-      //     acc[field] = messages[0];
-      //     return acc;
-      //   }, {} as Record<string, string>),
-      // };
-    }
 
     return serverData;
   }
@@ -482,7 +524,7 @@ export class ClubService implements IClubService {
       if (distance !== undefined) {
         realParams.distance = {
           min: distance[0],
-          max: distance[0],
+          max: distance[1],
         };
       }
 

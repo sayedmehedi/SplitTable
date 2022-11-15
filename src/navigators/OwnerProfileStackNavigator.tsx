@@ -7,7 +7,7 @@ import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
 import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
 import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
 import {OWNER_PROFILE_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import ProfileScreen from "@screens/OWNER/OwnerAccountScreen/ProfileScreen";
+import InformationScreen from "@screens/OWNER/OwnerAccountScreen/InformationScreen";
 import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
@@ -30,7 +30,7 @@ const OwnerProfileStackNavigator = () => {
       />
 
       <OwnerProfileStack.Screen
-        component={ProfileScreen}
+        component={InformationScreen}
         options={profileScreenOptions}
         name={OwnerProfileStackRoutes.PROFILE}
       />

@@ -35,8 +35,6 @@ import {
   CustomerBottomTabParamList,
   CustomerProfileStackParamList,
 } from "@src/navigation";
-import useAppToast from "@hooks/useAppToast";
-import {useQueryClient} from "@tanstack/react-query";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -53,9 +51,6 @@ type Props = CompositeScreenProps<
 >;
 
 const AccountScreen = ({navigation}: Props) => {
-  const toast = useAppToast();
-  const queryClient = useQueryClient();
-
   const {data: profileData, error, isLoading} = useGetProfileQuery();
   useHandleNonFieldError(error);
 

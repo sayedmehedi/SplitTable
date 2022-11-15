@@ -21,6 +21,12 @@ export type AuthData = {
   profile_image: string;
 };
 
+export interface SplitAppImagePayload {
+  name: string;
+  type: string;
+  uri: string;
+}
+
 export type LoginResponse = ResponseResult<{
   success: string;
   user: AuthData;
@@ -358,11 +364,7 @@ export type DeleteUserImageResponse = ResponseResult;
 export type OnUploadProgress = (written: number, total: number) => void;
 
 export interface AddUserImageRequest {
-  image: {
-    name: string;
-    type: string;
-    uri: string;
-  };
+  image: SplitAppImagePayload;
   onUploadProgress?: OnUploadProgress;
 }
 
@@ -391,11 +393,7 @@ export interface UpdateProfilePayload {
   job_role: string;
   phone: string;
   onUploadProgress?: OnUploadProgress;
-  image: {
-    name: string;
-    type: string;
-    uri: string;
-  };
+  image: SplitAppImagePayload;
 }
 
 export type UpdateProfileRequest = Partial<UpdateProfilePayload>;
@@ -427,11 +425,7 @@ export type GetTransactionsQueryParams = PaginationQueryParams & {
 };
 
 export type SignupRequest = {
-  image: {
-    name: string;
-    type: string;
-    uri: string;
-  };
+  image: SplitAppImagePayload;
   first_name: string;
   last_name: string;
   club?: string;
@@ -699,11 +693,7 @@ export type CreateOwnerSplitTableRequest = {
   cuisines?: string;
   age_limit?: number;
   description?: string;
-  image?: {
-    name: string;
-    type: string;
-    uri: string;
-  };
+  image?: SplitAppImagePayload;
 };
 
 export type CreateOwnerBookTableRequest = {
@@ -716,11 +706,7 @@ export type CreateOwnerBookTableRequest = {
   cuisines?: string;
   age_limit?: number;
   description?: string;
-  image?: {
-    name: string;
-    type: string;
-    uri: string;
-  };
+  image?: SplitAppImagePayload;
 };
 
 export type CreateOwnerTableRequest = (
@@ -759,11 +745,8 @@ export type CreateOwnerClubMenuRequest = {
   details: string;
   status: number;
   club_id: number;
-  image?: {
-    name: string;
-    type: string;
-    uri: string;
-  };
+  status: 0 | 1;
+  image?: SplitAppImagePayload;
   onUploadProgress?: OnUploadProgress;
 };
 
@@ -794,3 +777,19 @@ export interface ClubInfo {
   about: string;
   slider_images: string[];
 }
+
+export type UpdateOwnerClubInfoRequest = Partial<{
+  name: string;
+  job_role: string;
+  location_id: string;
+  opening_time: string;
+  closing_time: string;
+  cuisine: string;
+  avg_cost_min: string;
+  avg_cost_max: string;
+  about: string;
+  slider_images: Array<SplitAppImagePayload>;
+  onUploadProgress?: OnUploadProgress;
+}>;
+
+export type UpdateOwnerClubInfoResponse = ResponseResult;

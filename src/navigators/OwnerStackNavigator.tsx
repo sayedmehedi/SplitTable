@@ -16,13 +16,14 @@ import MyTablesScreen from "@screens/OWNER/MyTablesScreen";
 import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
 import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
 import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
-import ProfileScreen from "@screens/OWNER/OwnerAccountScreen/ProfileScreen";
+import InformationScreen from "@screens/OWNER/OwnerAccountScreen/InformationScreen";
 import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
 import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
 import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
+import ClubSliderImages from "@screens/OWNER/OwnerAccountScreen/ClubSliderImages";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -143,7 +144,11 @@ const OwnerStackNavigator = () => {
             name={OwnerStackRoutes.MY_TABLES}
           />
 
-          <OwnerStack.Group>
+          <OwnerStack.Group
+            screenOptions={{
+              headerShown: true,
+              header: CommonStackHeader,
+            }}>
             <OwnerStack.Screen
               component={OwnerAccountScreen}
               options={accountScreenOptions}
@@ -151,9 +156,9 @@ const OwnerStackNavigator = () => {
             />
 
             <OwnerStack.Screen
-              component={ProfileScreen}
-              options={profileScreenOptions}
-              name={OwnerStackRoutes.PROFILE}
+              component={InformationScreen}
+              options={informationScreenOptions}
+              name={OwnerStackRoutes.INFORMATION}
             />
 
             <OwnerStack.Screen
@@ -185,6 +190,12 @@ const OwnerStackNavigator = () => {
               options={faqScreenOptions}
               name={OwnerStackRoutes.FAQ}
             />
+
+            <OwnerStack.Screen
+              component={ClubSliderImages}
+              options={sliderImagesScreenOptions}
+              name={OwnerStackRoutes.SLIDER_IMAGES}
+            />
           </OwnerStack.Group>
         </React.Fragment>
       )}
@@ -214,14 +225,15 @@ const accountScreenOptions:
     }) => StackNavigationOptions) = {
   headerTitle: "My Account",
 };
-const profileScreenOptions:
+const informationScreenOptions:
   | StackNavigationOptions
   | ((props: {
-      route: RouteProp<OwnerStackParamList, typeof OwnerStackRoutes.PROFILE>;
+      route: RouteProp<
+        OwnerStackParamList,
+        typeof OwnerStackRoutes.INFORMATION
+      >;
       navigation: any;
-    }) => StackNavigationOptions) = {
-  headerShown: false,
-};
+    }) => StackNavigationOptions) = {};
 const transactionScreenOptions:
   | StackNavigationOptions
   | ((props: {
@@ -269,4 +281,18 @@ const faqScreenOptions:
       navigation: any;
     }) => StackNavigationOptions) = {
   headerTitle: "FAQ",
+};
+
+const sliderImagesScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        OwnerStackParamList,
+        typeof OwnerStackRoutes.SLIDER_IMAGES
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitle: "Slider Images",
 };
