@@ -51,6 +51,8 @@ import {
   DeleteOwnerClubHolidayResponse,
   GetOwnerClubHolidaysResponse,
   GetOwnerClubHolidaysQueryParams,
+  ConfirmBookingRequest,
+  ConfirmBookingResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -63,6 +65,16 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  confirmBooking(
+    data: ConfirmBookingRequest,
+  ): Promise<AxiosResponse<ConfirmBookingResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<ConfirmBookingResponse>("confirm-booking", {
+      amount: data.amount,
+      booking_id: data.bookingId,
+      payment_method: data.paymentMethod,
+    });
+  }
 
   getOwnerClubHolidays(
     params: GetOwnerClubHolidaysQueryParams,

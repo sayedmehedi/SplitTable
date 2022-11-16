@@ -30,12 +30,30 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
   const [menGuestCount, setMenGuestCount] = React.useState(0);
   const [womenGuestCount, setWomenGuestCount] = React.useState(0);
 
+  const tableDetails = React.useMemo(
+    () => route.params.tableDetails,
+    [route.params.tableDetails],
+  );
+
+  const availableMenSeat = React.useMemo(() => {
+    if (isSplitTableDetails(tableDetails)) {
+      return tableDetails.men_seat - tableDetails.men_booked_seat;
+    }
+    return 0;
+  }, [tableDetails]);
+
+  const availableWomenSeat = React.useMemo(() => {
+    if (isSplitTableDetails(tableDetails)) {
+      return tableDetails.women_seat - tableDetails.women_booked_seat;
+    }
+    return 0;
+  }, [tableDetails]);
+
   const handleMenCount = (num: number) => {
-    if (isSplitTableDetails(route.params.tableDetails)) {
-      const details = route.params.tableDetails;
+    if (isSplitTableDetails(tableDetails)) {
       setMenGuestCount(prevCount => {
         const newCount = prevCount + num;
-        if (newCount < 0 || newCount > details.men_seat) {
+        if (newCount < 0 || newCount > availableMenSeat) {
           return prevCount;
         }
 
@@ -45,11 +63,10 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
   };
 
   const handleWomenCount = (num: number) => {
-    if (isSplitTableDetails(route.params.tableDetails)) {
-      const details = route.params.tableDetails;
+    if (isSplitTableDetails(tableDetails)) {
       setWomenGuestCount(prevCount => {
         const newCount = prevCount + num;
-        if (newCount < 0 || newCount > details.women_seat) {
+        if (newCount < 0 || newCount > availableWomenSeat) {
           return prevCount;
         }
 
@@ -68,7 +85,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
           paddingVertical: splitAppTheme.space[5],
           paddingHorizontal: splitAppTheme.space[6],
         }}>
-        {isSplitTableDetails(route.params.tableDetails) && (
+        {isSplitTableDetails(tableDetails) && (
           <React.Fragment>
             <View
               style={{
@@ -99,7 +116,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                         fontFamily:
                           splitAppTheme.fontConfig.Sathoshi[700].normal,
                       }}>
-                      {route.params.tableDetails.men_seat} Seat
+                      {availableMenSeat} Seat
                     </Text>
 
                     <Text
@@ -110,7 +127,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                         fontFamily:
                           splitAppTheme.fontConfig.Sathoshi[700].normal,
                       }}>
-                      ${route.params.tableDetails.men_seat_price}/Guest
+                      ${tableDetails.men_seat_price}/Guest
                     </Text>
                   </View>
                 </View>
@@ -118,6 +135,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               <View>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                   <TouchableOpacity
+                    disabled={menGuestCount === 0}
                     onPress={() => handleMenCount(-1)}
                     style={{
                       alignItems: "center",
@@ -145,6 +163,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                   </Text>
                   <TouchableOpacity
                     onPress={() => handleMenCount(1)}
+                    disabled={availableMenSeat <= menGuestCount}
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
@@ -194,7 +213,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                         fontFamily:
                           splitAppTheme.fontConfig.Sathoshi[700].normal,
                       }}>
-                      {route.params.tableDetails.women_seat} Seat
+                      {availableWomenSeat} Seat
                     </Text>
 
                     <Text
@@ -205,7 +224,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                         fontFamily:
                           splitAppTheme.fontConfig.Sathoshi[700].normal,
                       }}>
-                      ${route.params.tableDetails.women_seat_price}/Guest
+                      ${tableDetails.women_seat_price}/Guest
                     </Text>
                   </View>
                 </View>
@@ -213,6 +232,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               <View>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                   <TouchableOpacity
+                    disabled={womenGuestCount === 0}
                     onPress={() => handleWomenCount(-1)}
                     style={{
                       alignItems: "center",
@@ -240,6 +260,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                   </Text>
                   <TouchableOpacity
                     onPress={() => handleWomenCount(1)}
+                    disabled={availableWomenSeat <= womenGuestCount}
                     style={{
                       alignItems: "center",
                       justifyContent: "center",
@@ -398,7 +419,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               fontSize: splitAppTheme.fontSizes.sm,
               fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
             }}>
-            {route.params.tableDetails.name}
+            {tableDetails.name}
           </Text>
 
           <Text
@@ -407,7 +428,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               fontSize: splitAppTheme.fontSizes.lg,
               fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
             }}>
-            {route.params.tableDetails.date}
+            {tableDetails.date}
           </Text>
         </View>
 
@@ -417,14 +438,14 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               navigation.navigate(CustomerStackRoutes.ADD_MENU_ITEM, {
                 menGuestCount,
                 womenGuestCount,
-                tableDetails: route.params.tableDetails,
+                tableDetails: tableDetails,
               });
             } else {
               navigation.navigate(CustomerStackRoutes.BOOKING_DETAILS, {
                 menGuestCount,
                 womenGuestCount,
                 menuListToAdd: [],
-                tableDetails: route.params.tableDetails,
+                tableDetails: tableDetails,
               });
             }
           }}

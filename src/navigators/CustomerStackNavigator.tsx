@@ -34,7 +34,9 @@ import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSetting
 import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
 import BookingDetailsScreen from "@screens/CUSTOMER/BookTableScreen/BookingDetailsScreen";
 import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
-import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
+import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
+import BookingSelectLocationScreen from "@screens/CUSTOMER/BookTableScreen/BookingSelectLocationScreen";
+import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -72,8 +74,8 @@ const CustomerStackNavigator = () => {
           {showLocationScreen && (
             <CustomerStack.Screen
               options={locationEnableScreenOptions}
-              component={LocationEnablePromptScreen}
-              name={CustomerStackRoutes.LOCATION_ENABLE}
+              component={InitialSelectLocationScreen}
+              name={CustomerStackRoutes.INITIAL_SELECT_LOCATION}
             />
           )}
 
@@ -98,11 +100,6 @@ const CustomerStackNavigator = () => {
             component={ClubDetailsScreen}
             name={CustomerStackRoutes.CLUB_DETAILS}
           />
-
-          {/* <CustomerStack.Screen
-            component={BookingStackNavigator}
-            name={CustomerStackRoutes.BOOKING}
-          /> */}
 
           <CustomerStack.Screen
             component={TableSearchScreen}
@@ -129,15 +126,27 @@ const CustomerStackNavigator = () => {
             />
 
             <CustomerStack.Screen
+              component={BookingSelectLocationScreen}
+              options={bookingSelectLocationScreenOptions}
+              name={CustomerStackRoutes.BOOKING_SELECT_LOCATION}
+            />
+
+            <CustomerStack.Screen
               component={PaymentScreen}
               options={paymentScreenOptions}
-              name={CustomerStackRoutes.PAYMENT}
+              name={CustomerStackRoutes.PAYMENT_AMOUNT}
             />
 
             <CustomerStack.Screen
               component={PaymentMethodScreen}
               options={paymentMethodScreenOptions}
               name={CustomerStackRoutes.PAYMENT_METHOD}
+            />
+
+            <CustomerStack.Screen
+              component={PaymentGatewayScreen}
+              options={paymentGatewayScreenOptions}
+              name={CustomerStackRoutes.PAYMENT_GATEWAY}
             />
           </CustomerStack.Group>
 
@@ -203,7 +212,7 @@ const paymentMethodScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitleAlign: "center",
-  headerTitle: "Select a payment method",
+  headerTitle: "Select a Payment Method",
 };
 
 const paymentScreenOptions:
@@ -211,7 +220,7 @@ const paymentScreenOptions:
   | ((props: {
       route: RouteProp<
         CustomerStackParamList,
-        typeof CustomerStackRoutes.PAYMENT
+        typeof CustomerStackRoutes.PAYMENT_AMOUNT
       >;
       navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
@@ -241,7 +250,7 @@ const locationEnableScreenOptions:
   | ((props: {
       route: RouteProp<
         CustomerStackParamList,
-        typeof CustomerStackRoutes.LOCATION_ENABLE
+        typeof CustomerStackRoutes.INITIAL_SELECT_LOCATION
       >;
       navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
@@ -396,4 +405,28 @@ const faqScreenOptions:
       navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerTitle: "FAQ",
+};
+
+const bookingSelectLocationScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.BOOKING_SELECT_LOCATION
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Select Location",
+};
+
+const paymentGatewayScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.PAYMENT_GATEWAY
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = {
+  headerShown: false,
 };

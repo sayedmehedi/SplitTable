@@ -13,10 +13,13 @@ export const CustomerStackRoutes = {
   CLUB_DETAILS: "ClubDetails",
   TABLE_DETAILS: "TableDetails",
   CUSTOMER_AUTH: "CustomerAuth",
-  LOCATION_ENABLE: "LocationEnable",
+  INITIAL_SELECT_LOCATION: "InitialSelectLocation",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
-  PAYMENT: "Payment",
+
+  PAYMENT_AMOUNT: "PaymentAmount",
   PAYMENT_METHOD: "PaymentMethod",
+  PAYMENT_GATEWAY: "PaymentGateway",
+  BOOKING_SELECT_LOCATION: "BookingSelectLocation",
 
   GUEST_N_MENU: "GuestNMenu",
   ADD_MENU_ITEM: "AddMenuItem",

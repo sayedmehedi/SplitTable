@@ -57,6 +57,34 @@ export default function TableDetailsScreen({route, navigation}: Props) {
     }
   };
 
+  const availableMenSeat = React.useMemo(() => {
+    if (
+      !tableDetailsResponse ||
+      "error" in tableDetailsResponse ||
+      isBookedTableDetails(tableDetailsResponse)
+    ) {
+      return 0;
+    }
+
+    const {men_booked_seat, men_seat} = tableDetailsResponse;
+
+    return men_seat - men_booked_seat;
+  }, [tableDetailsResponse]);
+
+  const availableWomenSeat = React.useMemo(() => {
+    if (
+      !tableDetailsResponse ||
+      "error" in tableDetailsResponse ||
+      isBookedTableDetails(tableDetailsResponse)
+    ) {
+      return 0;
+    }
+
+    const {women_booked_seat, women_seat} = tableDetailsResponse;
+
+    return women_seat - women_booked_seat;
+  }, [tableDetailsResponse]);
+
   if (isTableDetailsLoading) {
     return <Text>Loading...</Text>;
   }
@@ -461,7 +489,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                   fontSize: splitAppTheme.fontSizes.xl,
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                 }}>
-                {tableDetailsResponse.men_seat} Seat
+                {availableMenSeat} Seat
               </Text>
 
               <Text
@@ -502,7 +530,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                   fontSize: splitAppTheme.fontSizes.xl,
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                 }}>
-                {tableDetailsResponse.women_seat} Seat
+                {availableWomenSeat} Seat
               </Text>
 
               <Text

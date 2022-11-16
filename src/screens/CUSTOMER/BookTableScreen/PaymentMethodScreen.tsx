@@ -1,11 +1,17 @@
 import React from "react";
+import {splitAppTheme} from "@src/theme";
 import {View, Text, StyleSheet} from "react-native";
+import {Controller, useForm} from "react-hook-form";
+import {SupportedPaymentMethods} from "@src/models";
+import {ErrorMessage} from "@hookform/error-message";
+import {CustomerStackRoutes} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
+import {AppSupportedPaymentMethods} from "@constants/payment";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerStackRoutes} from "@constants/routes";
+import {CreditCardIcon, CryptoIcon, PaypalIcon} from "@constants/iconPath";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -15,26 +21,167 @@ type Props = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
-const PaymentMethodScreen = ({navigation}: Props) => {
+type FormVlaues = {
+  paymentMethod: SupportedPaymentMethods | null;
+};
+
+const PaymentMethodScreen = ({navigation, route}: Props) => {
+  const {control, handleSubmit} = useForm<FormVlaues>({
+    defaultValues: {
+      paymentMethod: null,
+    },
+  });
+
+  const handlePaymentMethodSubmit = handleSubmit(values => {
+    if (values.paymentMethod !== null) {
+      navigation.navigate(CustomerStackRoutes.PAYMENT_GATEWAY, {
+        amount: route.params.amount,
+        bookingId: route.params.bookingId,
+        paymentMethod: values.paymentMethod,
+      });
+    }
+  });
+
   return (
-    <View style={{flex: 1, backgroundColor: "#FFFFFF", padding: 20}}>
-      <TouchableOpacity style={styles.paymentContainer}>
-        <Text>Pay full payment</Text>
-        <Text>$3966.00</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.paymentContainer}>
-        <Text>Pay only 10% payment</Text>
-        <Text>$396.00</Text>
-      </TouchableOpacity>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#FFFFFF",
+        padding: splitAppTheme.space[6],
+      }}>
+      <Controller
+        name={"paymentMethod"}
+        rules={{
+          required: "Please select a method",
+        }}
+        control={control}
+        render={({field, formState: {errors}}) => (
+          <React.Fragment>
+            <TouchableOpacity
+              style={styles.paymentContainer}
+              onPress={() => {
+                field.onChange(AppSupportedPaymentMethods.CARD);
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  flex: 1,
+                }}>
+                <CreditCardIcon />
+
+                <View style={{marginLeft: splitAppTheme.space[2]}}>
+                  <Text>Credit card</Text>
+                </View>
+              </View>
+
+              <View
+                style={[
+                  {
+                    width: splitAppTheme.sizes["6"],
+                    height: splitAppTheme.sizes["6"],
+                    marginLeft: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor:
+                      field.value === AppSupportedPaymentMethods.CARD
+                        ? splitAppTheme.colors.green[200]
+                        : splitAppTheme.colors.coolGray[200],
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.paymentContainer}
+              onPress={() => {
+                field.onChange(AppSupportedPaymentMethods.PAYPAL);
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  flex: 1,
+                }}>
+                <PaypalIcon />
+
+                <View style={{marginLeft: splitAppTheme.space[2]}}>
+                  <Text>Paypal</Text>
+                </View>
+              </View>
+
+              <View
+                style={[
+                  {
+                    width: splitAppTheme.sizes["6"],
+                    height: splitAppTheme.sizes["6"],
+                    marginLeft: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor:
+                      field.value === AppSupportedPaymentMethods.PAYPAL
+                        ? splitAppTheme.colors.green[200]
+                        : splitAppTheme.colors.coolGray[200],
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.paymentContainer}
+              onPress={() => {
+                field.onChange(AppSupportedPaymentMethods.CRYPTO);
+              }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  flex: 1,
+                }}>
+                <CryptoIcon />
+
+                <View style={{marginLeft: splitAppTheme.space[2]}}>
+                  <Text>Crypto</Text>
+                </View>
+              </View>
+
+              <View
+                style={[
+                  {
+                    width: splitAppTheme.sizes["6"],
+                    height: splitAppTheme.sizes["6"],
+                    marginLeft: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor:
+                      field.value === AppSupportedPaymentMethods.CRYPTO
+                        ? splitAppTheme.colors.green[200]
+                        : splitAppTheme.colors.coolGray[200],
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+
+            <ErrorMessage
+              errors={errors}
+              name={field.name}
+              render={({message}) => (
+                <Text
+                  style={{
+                    marginTop: 5,
+                    color: splitAppTheme.colors.red[300],
+                  }}>
+                  {message}
+                </Text>
+              )}
+            />
+          </React.Fragment>
+        )}
+      />
 
       <AppGradientButton
-        onPress={() => {
-          // navigation.navigate("paymentMethod")
-        }}
         width={"100%"}
         color={"primary"}
         variant={"solid"}
         title={"Pay Now"}
+        onPress={handlePaymentMethodSubmit}
       />
     </View>
   );
@@ -43,13 +190,14 @@ const PaymentMethodScreen = ({navigation}: Props) => {
 const styles = StyleSheet.create({
   paymentContainer: {
     height: 50,
+    padding: 10,
     width: "100%",
-    backgroundColor: "rgba(247,247,247,0.9)",
     borderRadius: 8,
+    marginVertical: 10,
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 10,
-    padding: 10,
+    backgroundColor: "rgba(247,247,247,0.9)",
   },
 });
 

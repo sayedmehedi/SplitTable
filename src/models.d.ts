@@ -2,6 +2,7 @@ import {AxiosRequestConfig} from "axios";
 import {AppTableTypes} from "@constants/table";
 import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
+import {AppSupportedPaymentMethods} from "@constants/payment";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -476,7 +477,7 @@ export type GeolocationError = {
   TIMEOUT: number;
 };
 
-export type TableType = "booked" | "split";
+export type TableType = typeof AppTableTypes[keyof typeof AppTableTypes];
 
 export interface JoinedUser {
   id: number;
@@ -501,6 +502,8 @@ export interface SplitTableDetails {
   joined_users: JoinedUser[];
   men_seat: number;
   men_seat_price: string;
+  men_booked_seat: number;
+  women_booked_seat: number;
   women_seat: number;
   women_seat_price: string;
 }
@@ -537,6 +540,17 @@ export type BookTableRequest = {
   tax: number;
   tip: number;
 };
+
+export type SupportedPaymentMethods =
+  typeof AppSupportedPaymentMethods[keyof typeof AppSupportedPaymentMethods];
+
+export type ConfirmBookingRequest = {
+  bookingId: number;
+  amount: number;
+  paymentMethod: SupportedPaymentMethods;
+};
+
+export type ConfirmBookingResponse = ResponseResult;
 
 export type BookTableResponse = ResponseResult<{
   booking_details: {

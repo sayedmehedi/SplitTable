@@ -1,8 +1,6 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import {productData} from "@constants/dummy";
-import {ClubListItemMenu, ClubMenuItem} from "@src/models";
-import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
+import {ClubMenuItem} from "@src/models";
 import Entypo from "react-native-vector-icons/Entypo";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
@@ -11,6 +9,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {
@@ -21,10 +20,11 @@ import {
   ImageBackground,
   TextInput,
 } from "react-native";
+import {isResponseResultError} from "@utils/error-handling";
 import useBookTableMutation from "@hooks/useBookTableMutation";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import {isResponseResultError} from "@utils/error-handling";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -117,6 +117,12 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
     Record<number, ClubMenuItem & {purchaseQty: number}>
   >({});
 
+  const {data: profileData, isLoading: isProfileDataLoading} =
+    useGetProfileQuery();
+
+  const showLocationScreen =
+    !profileData?.location && !profileData?.latitude && !profileData?.longitude;
+
   const {
     mutate: bookTable,
     error: bookTableError,
@@ -184,6 +190,10 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   const tax = subtotal * TAX_PERCENTAGE;
 
   const total = tax + subtotal + tip - discount;
+
+  if (isProfileDataLoading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -605,26 +615,49 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                     tax,
                     tip,
                     discount,
+                    // @ts-ignore
+                    menuId: Object.keys(menus),
                     tableId: [route.params.tableDetails.id],
-                    menuId: Object.keys(menus).map(parseInt),
                     clubId: route.params.tableDetails.club_id,
-                    menSeat: {
-                      [route.params.tableDetails.id]:
-                        route.params.menGuestCount,
-                    },
-                    womenSeat: {
-                      [route.params.tableDetails.id]:
-                        route.params.womenGuestCount,
-                    },
+                    menSeat:
+                      route.params.menGuestCount > 0
+                        ? {
+                            [route.params.tableDetails.id]:
+                              route.params.menGuestCount,
+                          }
+                        : {},
+                    womenSeat:
+                      route.params.womenGuestCount > 0
+                        ? {
+                            [route.params.tableDetails.id]:
+                              route.params.womenGuestCount,
+                          }
+                        : {},
                     qty: Object.values(menus).map(menu => menu.purchaseQty),
                   },
                   {
                     onSuccess(data) {
                       if (!isResponseResultError(data)) {
-                        navigation.navigate(CustomerStackRoutes.PAYMENT, {
-                          totalAmount: data.booking_details.total_amount,
-                          partialAmount: data.booking_details.partial_amount,
-                        });
+                        if (showLocationScreen) {
+                          navigation.navigate(
+                            CustomerStackRoutes.BOOKING_SELECT_LOCATION,
+                            {
+                              bookingId: data.booking_details.id,
+                              totalAmount: data.booking_details.total_amount,
+                              partialAmount:
+                                data.booking_details.partial_amount,
+                            },
+                          );
+                        } else
+                          navigation.navigate(
+                            CustomerStackRoutes.PAYMENT_AMOUNT,
+                            {
+                              bookingId: data.booking_details.id,
+                              totalAmount: data.booking_details.total_amount,
+                              partialAmount:
+                                data.booking_details.partial_amount,
+                            },
+                          );
                       }
                     },
                   },

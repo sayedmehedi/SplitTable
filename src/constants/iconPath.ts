@@ -1,3 +1,7 @@
+import PaypalIcon from "@assets/icons/paypal.svg";
+import CreditCardIcon from "@assets/icons/credit-card.svg";
+import CryptoIcon from "@assets/icons/crypto.svg";
+
 import DjIcon from "@assets/icons/dj.svg";
 import DishIcon from "@assets/icons/dish.svg";
 import CalendarIcon from "@assets/icons/calendar.svg";
@@ -57,4 +61,7 @@ export {
   FemaleIcon,
   MaleIcon,
   GroupIcon,
+  PaypalIcon,
+  CreditCardIcon,
+  CryptoIcon,
 };

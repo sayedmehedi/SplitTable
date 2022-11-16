@@ -43,6 +43,8 @@ import {
   DeleteOwnerClubHolidayRequest,
   DeleteOwnerClubHolidayResponse,
   GetOwnerClubHolidaysQueryParams,
+  ConfirmBookingRequest,
+  ConfirmBookingResponse,
 } from "@src/models";
 
 export interface IClubService {
@@ -132,6 +134,10 @@ export interface IClubService {
   bookTable(
     data: BookTableRequest,
   ): Promise<AxiosResponse<BookTableResponse, GlobalAxiosRequestConfig>>;
+
+  confirmBooking(
+    data: ConfirmBookingRequest,
+  ): Promise<AxiosResponse<ConfirmBookingResponse, GlobalAxiosRequestConfig>>;
 
   getBookingHistory(
     params: GetBookingHistoryQueryParams,

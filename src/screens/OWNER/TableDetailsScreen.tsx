@@ -1,14 +1,14 @@
 import React from "react";
-import {View, Text, ScrollView, Image} from "react-native";
+import {splitAppTheme} from "@src/theme";
 import {OwnerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
+import {View, Text, ScrollView, Image} from "react-native";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import EachTableNEventItem from "./OwnerTableScreen/EachTableNEventItem";
-import {splitAppTheme} from "@src/theme";
-import {isSplitTableDetails} from "@utils/table";
+import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.TABLE_DETAILS>,

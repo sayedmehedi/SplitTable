@@ -18,6 +18,7 @@ import {
   ClubMenuItem,
   ClubMenuItemOwnerSide,
   SplitTableDetails,
+  SupportedPaymentMethods,
   TableCommonSearchParams,
 } from "./models";
 
@@ -97,10 +98,17 @@ export type TableListScreenTypeRest = ClubListScreenCommon & {
 type CustomerStackParamList = {
   [CustomerStackRoutes.PAYMENT_METHOD]: {
     amount: string;
+    bookingId: number;
   };
-  [CustomerStackRoutes.PAYMENT]: {
+  [CustomerStackRoutes.PAYMENT_AMOUNT]: {
+    bookingId: number;
     totalAmount: string;
     partialAmount: string;
+  };
+  [CustomerStackRoutes.PAYMENT_GATEWAY]: {
+    amount: string;
+    bookingId: number;
+    paymentMethod: SupportedPaymentMethods;
   };
   [CustomerStackRoutes.TABLE_LIST]:
     | TableListScreenTypeByLocation
@@ -108,17 +116,22 @@ type CustomerStackParamList = {
     | TableListScreenTypeSearchResult
     | TableListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
-  [CustomerStackRoutes.LOCATION_ENABLE]: undefined;
+  [CustomerStackRoutes.INITIAL_SELECT_LOCATION]: undefined;
   [CustomerStackRoutes.CLUB_DETAILS]: {
     clubId: number;
   };
   [CustomerStackRoutes.TABLE_DETAILS]: {
     tableId: number;
   };
+  [CustomerStackRoutes.TABLE_SEARCH]: undefined;
+  [CustomerStackRoutes.BOOKING_SELECT_LOCATION]: {
+    bookingId: number;
+    totalAmount: string;
+    partialAmount: string;
+  };
   [CustomerStackRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
   [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
-  [CustomerStackRoutes.TABLE_SEARCH]: undefined;
 
   [CustomerStackRoutes.FAQ]: undefined;
   [CustomerStackRoutes.LEGAL]: undefined;

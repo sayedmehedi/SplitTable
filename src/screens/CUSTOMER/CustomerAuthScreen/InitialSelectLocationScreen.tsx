@@ -1,37 +1,37 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
+import MapView, {Marker} from "react-native-maps";
 import MapMarker from "@assets/icons/map-marker.svg";
+import {
+  CustomerStackRoutes,
+  CustomerMainBottomTabRoutes,
+} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
+import AppGradientButton from "@components/AppGradientButton";
+import {CompositeScreenProps} from "@react-navigation/native";
+import useGetGeolocationQuery from "@hooks/useGetGeolocationQuery";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
+import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {
   Text,
   View,
   StyleSheet,
-  ActivityIndicator,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import useAppToast from "@hooks/useAppToast";
-import MapView, {Marker} from "react-native-maps";
-import {StackScreenProps} from "@react-navigation/stack";
-import {CompositeScreenProps} from "@react-navigation/native";
-import AppGradientButton from "@components/AppGradientButton";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useGetGeolocationQuery from "@hooks/useGetGeolocationQuery";
-import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
-import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
-import {OwnerMainBottomTabRoutes, OwnerStackRoutes} from "@constants/routes";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      OwnerStackParamList,
-      typeof OwnerStackRoutes.LOCATION_ENABLE
-    >,
-    StackScreenProps<OwnerStackParamList>
+  StackScreenProps<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.INITIAL_SELECT_LOCATION
   >,
   StackScreenProps<RootStackParamList>
 >;
 
-const LocationEnablePromptScreen = ({navigation}: Props) => {
+const InitialSelectLocationScreen = ({navigation}: Props) => {
   const toast = useAppToast();
   const [markerCoords, setMarkerCoords] = React.useState<{
     latitude: number;
@@ -67,7 +67,6 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
 
   React.useEffect(() => {
     if (!!geolocationData) {
-      console.log("running");
       setMarkerCoords(geolocationData.coords);
     }
   }, [geolocationData?.coords?.latitude, geolocationData?.coords?.longitude]);
@@ -141,8 +140,8 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
-            screen: OwnerMainBottomTabRoutes.OWNER_TABLE,
+          navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
+            screen: CustomerMainBottomTabRoutes.HOME,
           });
         }}>
         <View
@@ -175,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LocationEnablePromptScreen;
+export default InitialSelectLocationScreen;

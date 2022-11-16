@@ -11,7 +11,7 @@ import {CUSTOMER_AUTH_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import EmailLoginScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailLoginScreen";
 import LoginPromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LoginPromptScreen";
 import EmailVerificationScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailVerificationScreen";
-import LocationEnablePromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LocationEnablePromptScreen";
+import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
 import SignUpScreen from "@screens/CUSTOMER/CustomerAuthScreen/SignUpScreen";
 
 const CustomerAuthStack = createStackNavigator<CustomerAuthStackParamList>();

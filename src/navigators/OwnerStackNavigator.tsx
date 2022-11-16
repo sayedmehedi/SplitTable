@@ -20,7 +20,7 @@ import InformationScreen from "@screens/OWNER/OwnerAccountScreen/InformationScre
 import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
-import LocationEnablePromptScreen from "@screens/OWNER/OwnerAuthScreen/LocationEnablePromptScreen";
+import InitialSelectLocationScreen from "@screens/OWNER/OwnerAuthScreen/InitialSelectLocationScreen";
 import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
 import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
 import ClubSliderImagesScreen from "@screens/OWNER/OwnerAccountScreen/ClubSliderImagesScreen";
@@ -112,7 +112,7 @@ const OwnerStackNavigator = () => {
           {showLocationScreen && (
             <OwnerStack.Screen
               options={locationEnableScreenOptions}
-              component={LocationEnablePromptScreen}
+              component={InitialSelectLocationScreen}
               name={OwnerStackRoutes.LOCATION_ENABLE}
             />
           )}

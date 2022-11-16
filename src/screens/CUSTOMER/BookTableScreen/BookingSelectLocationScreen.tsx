@@ -2,36 +2,31 @@ import React from "react";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import MapView, {Marker} from "react-native-maps";
+import {CustomerStackRoutes} from "@constants/routes";
 import MapMarker from "@assets/icons/map-marker.svg";
-import {
-  CustomerStackRoutes,
-  CustomerMainBottomTabRoutes,
-} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
-import AppGradientButton from "@components/AppGradientButton";
+import {isResponseResultError} from "@utils/error-handling";
 import {CompositeScreenProps} from "@react-navigation/native";
-import useGetGeolocationQuery from "@hooks/useGetGeolocationQuery";
+import AppGradientButton from "@components/AppGradientButton";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
+import useGetGeolocationQuery from "@hooks/useGetGeolocationQuery";
+import {View, Text, StyleSheet, ActivityIndicator} from "react-native";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
     CustomerStackParamList,
-    typeof CustomerStackRoutes.LOCATION_ENABLE
+    typeof CustomerStackRoutes.BOOKING_SELECT_LOCATION
   >,
   StackScreenProps<RootStackParamList>
 >;
 
-const LocationEnablePromptScreen = ({navigation}: Props) => {
+export default function BookingSelectLocationScreen({
+  route,
+  navigation,
+}: Props) {
   const toast = useAppToast();
   const [markerCoords, setMarkerCoords] = React.useState<{
     latitude: number;
@@ -42,7 +37,17 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
     mutate: updateProfile,
     error: updateError,
     data: updateResponse,
-  } = useUpdateProfileMutation();
+  } = useUpdateProfileMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        navigation.navigate(CustomerStackRoutes.PAYMENT_AMOUNT, {
+          bookingId: route.params.bookingId,
+          totalAmount: route.params.totalAmount,
+          partialAmount: route.params.partialAmount,
+        });
+      }
+    },
+  });
   useHandleNonFieldError(updateError);
   useHandleResponseResultError(updateResponse);
 
@@ -67,6 +72,7 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
 
   React.useEffect(() => {
     if (!!geolocationData) {
+      console.log("running");
       setMarkerCoords(geolocationData.coords);
     }
   }, [geolocationData?.coords?.latitude, geolocationData?.coords?.longitude]);
@@ -137,34 +143,9 @@ const LocationEnablePromptScreen = ({navigation}: Props) => {
         title={"Enable Location"}
         onPress={handleEnableLocation}
       />
-
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
-            screen: CustomerMainBottomTabRoutes.HOME,
-          });
-        }}>
-        <View
-          style={{
-            padding: splitAppTheme.space[3],
-            marginTop: splitAppTheme.space[5],
-            borderRadius: splitAppTheme.radii.lg,
-            borderWidth: splitAppTheme.borderWidths[2],
-            borderColor: splitAppTheme.colors.blue[300],
-          }}>
-          <Text
-            style={{
-              textAlign: "center",
-              color: splitAppTheme.colors.blue[300],
-              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
-            }}>
-            No, I do it later
-          </Text>
-        </View>
-      </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   mapView: {
@@ -173,5 +154,3 @@ const styles = StyleSheet.create({
     borderRadius: splitAppTheme.radii.lg,
   },
 });
-
-export default LocationEnablePromptScreen;
