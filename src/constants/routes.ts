@@ -34,6 +34,11 @@ export const CustomerStackRoutes = {
   ACCOUNT_SETTING: "AccountSetting",
 } as const;
 
+export const CustomerChatStackRoutes = {
+  CHAT_LIST: "ChatList",
+  CHAT_MESSAGES: "ChatMessages",
+} as const;
+
 export const CustomerAuthStackRoutes = {
   SIGNIN: "Signin",
   SIGNUP: "Signup",

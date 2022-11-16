@@ -47,6 +47,6 @@ export const registerLaravelServices = (container: Container) => {
     .to(UserService);
 
   container
-    .bind<IChatService>(ServiceProviderTypes.UserService)
+    .bind<IChatService>(ServiceProviderTypes.ChatService)
     .to(ChatService);
 };

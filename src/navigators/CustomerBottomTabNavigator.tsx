@@ -7,7 +7,6 @@ import {RouteProp} from "@react-navigation/native";
 import HomeIcon from "@assets/icons/HomeIcon.svg";
 import AccountIcon from "@assets/icons/account.svg";
 import BookingIcon from "@assets/icons/booking.svg";
-import ChatScreen from "@screens/CUSTOMER/ChatScreen";
 import LinearGradient from "react-native-linear-gradient";
 import {CustomerBottomTabParamList} from "@src/navigation";
 import CommonTabHeader from "@components/CommonTabHeader";
@@ -18,6 +17,7 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
+import CustomerChatStackNavigator from "./CustomerChatStackNavigator";
 import CustomerTableScreen from "@screens/CUSTOMER/CustomerTableScreen";
 import CustomerProfileStackNavigator from "./CustomerProfileStackNavigator";
 import {CUSTOMER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
@@ -26,223 +26,6 @@ const CustomerBottomTab =
   createBottomTabNavigator<CustomerBottomTabParamList>();
 
 const CustomerBottomTabNavigator = () => {
-  const homeScreenOptions:
-    | BottomTabNavigationOptions
-    | ((props: {
-        route: RouteProp<
-          CustomerBottomTabParamList,
-          typeof CustomerMainBottomTabRoutes.HOME
-        >;
-        navigation: any;
-      }) => BottomTabNavigationOptions) = React.useMemo(() => {
-    return {
-      tabBarIcon: ({focused}) => (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          <HomeIcon
-            width={30}
-            height={30}
-            fill={
-              focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
-            }
-          />
-
-          <Text
-            style={{
-              fontSize: 10,
-              color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
-            }}>
-            Home
-          </Text>
-        </View>
-      ),
-    };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
-
-  const bookingScreenOptions:
-    | BottomTabNavigationOptions
-    | ((props: {
-        route: RouteProp<
-          CustomerBottomTabParamList,
-          typeof CustomerMainBottomTabRoutes.BOOKING
-        >;
-        navigation: any;
-      }) => BottomTabNavigationOptions) = React.useMemo(() => {
-    return {
-      headerShown: true,
-      header: CommonTabHeader,
-      headerTitle: "My Booking",
-      tabBarIcon: ({focused}) => (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          <BookingIcon
-            width={30}
-            height={30}
-            color={
-              focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
-            }
-          />
-
-          <Text
-            style={{
-              fontSize: 10,
-              color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
-            }}>
-            Booking
-          </Text>
-        </View>
-      ),
-    };
-  }, []);
-
-  const tableScreenOptions:
-    | BottomTabNavigationOptions
-    | ((props: {
-        route: RouteProp<
-          CustomerBottomTabParamList,
-          typeof CustomerMainBottomTabRoutes.TABLE_SCREEN
-        >;
-        navigation: any;
-      }) => BottomTabNavigationOptions) = React.useMemo(() => {
-    return {
-      tabBarIcon: ({focused}) => (
-        <View
-          style={{
-            flex: 1,
-            height: 100,
-            position: "absolute",
-            alignItems: "center",
-          }}>
-          <LinearGradient
-            end={{x: 0, y: 0}}
-            start={{x: 0, y: 1}}
-            colors={["#DF3BC0", "#472BBE"]}
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 30,
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-            <TableIcon
-              height={30}
-              width={30}
-              fill={focused ? splitAppTheme.colors.primary[900] : "none"}
-            />
-          </LinearGradient>
-
-          <Text
-            style={{
-              fontSize: 10,
-              color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
-            }}>
-            Table
-          </Text>
-        </View>
-      ),
-    };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
-
-  const chatScreenOptions:
-    | BottomTabNavigationOptions
-    | ((props: {
-        route: RouteProp<
-          CustomerBottomTabParamList,
-          typeof CustomerMainBottomTabRoutes.CHAT
-        >;
-        navigation: any;
-      }) => BottomTabNavigationOptions) = React.useMemo(() => {
-    return {
-      tabBarIcon: ({focused}) => (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          <ChatIcon
-            height={30}
-            width={30}
-            color={
-              focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
-            }
-          />
-
-          <Text
-            style={{
-              fontSize: 10,
-              color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
-            }}>
-            Chat
-          </Text>
-        </View>
-      ),
-    };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
-
-  const profileStackScreenOptions:
-    | BottomTabNavigationOptions
-    | ((props: {
-        route: RouteProp<
-          CustomerBottomTabParamList,
-          typeof CustomerMainBottomTabRoutes.PROFILE_STACK
-        >;
-        navigation: any;
-      }) => BottomTabNavigationOptions) = React.useMemo(() => {
-    return {
-      tabBarIcon: ({focused}) => (
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flex: 1,
-          }}>
-          <AccountIcon
-            height={30}
-            width={30}
-            color={
-              focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
-            }
-          />
-
-          <Text
-            style={{
-              color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
-              fontSize: 10,
-            }}>
-            Account
-          </Text>
-        </View>
-      ),
-    };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
-
   return (
     <CustomerBottomTab.Navigator
       screenOptions={globalScreenOptions}
@@ -262,11 +45,13 @@ const CustomerBottomTabNavigator = () => {
         component={CustomerTableScreen}
         name={CustomerMainBottomTabRoutes.TABLE_SCREEN}
       />
+
       <CustomerBottomTab.Screen
-        component={ChatScreen}
         options={chatScreenOptions}
+        component={CustomerChatStackNavigator}
         name={CustomerMainBottomTabRoutes.CHAT}
       />
+
       <CustomerBottomTab.Screen
         options={profileStackScreenOptions}
         component={CustomerProfileStackNavigator}
@@ -295,4 +80,211 @@ const globalScreenOptions:
     shadowColor: "#FF3FCB",
     backgroundColor: "#FFFFFF",
   },
+};
+
+const homeScreenOptions:
+  | BottomTabNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBottomTabParamList,
+        typeof CustomerMainBottomTabRoutes.HOME
+      >;
+      navigation: any;
+    }) => BottomTabNavigationOptions) = {
+  tabBarIcon: ({focused}) => (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+      <HomeIcon
+        width={30}
+        height={30}
+        fill={
+          focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900]
+        }
+      />
+
+      <Text
+        style={{
+          fontSize: 10,
+          color: focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900],
+        }}>
+        Home
+      </Text>
+    </View>
+  ),
+};
+
+const bookingScreenOptions:
+  | BottomTabNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBottomTabParamList,
+        typeof CustomerMainBottomTabRoutes.BOOKING
+      >;
+      navigation: any;
+    }) => BottomTabNavigationOptions) = {
+  headerShown: true,
+  header: CommonTabHeader,
+  headerTitle: "My Booking",
+  tabBarIcon: ({focused}) => (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+      <BookingIcon
+        width={30}
+        height={30}
+        color={
+          focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900]
+        }
+      />
+
+      <Text
+        style={{
+          fontSize: 10,
+          color: focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900],
+        }}>
+        Booking
+      </Text>
+    </View>
+  ),
+};
+
+const tableScreenOptions:
+  | BottomTabNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBottomTabParamList,
+        typeof CustomerMainBottomTabRoutes.TABLE_SCREEN
+      >;
+      navigation: any;
+    }) => BottomTabNavigationOptions) = {
+  tabBarIcon: ({focused}) => (
+    <View
+      style={{
+        flex: 1,
+        height: 100,
+        position: "absolute",
+        alignItems: "center",
+      }}>
+      <LinearGradient
+        end={{x: 0, y: 0}}
+        start={{x: 0, y: 1}}
+        colors={["#DF3BC0", "#472BBE"]}
+        style={{
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <TableIcon
+          height={30}
+          width={30}
+          fill={focused ? splitAppTheme.colors.primary[900] : "none"}
+        />
+      </LinearGradient>
+
+      <Text
+        style={{
+          fontSize: 10,
+          color: focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900],
+        }}>
+        Table
+      </Text>
+    </View>
+  ),
+};
+
+const profileStackScreenOptions:
+  | BottomTabNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBottomTabParamList,
+        typeof CustomerMainBottomTabRoutes.PROFILE_STACK
+      >;
+      navigation: any;
+    }) => BottomTabNavigationOptions) = {
+  tabBarIcon: ({focused}) => (
+    <View
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+      }}>
+      <AccountIcon
+        height={30}
+        width={30}
+        color={
+          focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900]
+        }
+      />
+
+      <Text
+        style={{
+          color: focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900],
+          fontSize: 10,
+        }}>
+        Account
+      </Text>
+    </View>
+  ),
+};
+
+const chatScreenOptions:
+  | BottomTabNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerBottomTabParamList,
+        typeof CustomerMainBottomTabRoutes.CHAT
+      >;
+      navigation: any;
+    }) => BottomTabNavigationOptions) = {
+  tabBarIcon: ({focused}) => (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+      <ChatIcon
+        height={30}
+        width={30}
+        color={
+          focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900]
+        }
+      />
+
+      <Text
+        style={{
+          fontSize: 10,
+          color: focused
+            ? splitAppTheme.colors.primary[900]
+            : splitAppTheme.colors.secondary[900],
+        }}>
+        Chat
+      </Text>
+    </View>
+  ),
 };

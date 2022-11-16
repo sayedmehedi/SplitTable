@@ -41,7 +41,7 @@ const queryFn: QueryFunction<GetConversationsResponse, QueryKey> = ({
 };
 
 function useInfiniteGetConversationsQuery(
-  queryParams: GetConversationsQueryParams,
+  queryParams: GetConversationsQueryParams = {},
   options?: UseInfiniteQueryOptions<
     GetConversationsResponse,
     ApplicationError,

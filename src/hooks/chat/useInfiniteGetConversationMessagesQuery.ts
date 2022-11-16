@@ -42,7 +42,7 @@ const queryFn: QueryFunction<GetConversationMessagesResponse, QueryKey> = ({
   );
 };
 
-function useInfiniteGetConversationMessageQuery(
+function useInfiniteGetConversationMessagesQuery(
   queryParams: GetConversationMessagesQueryParams,
   options?: UseInfiniteQueryOptions<
     GetConversationMessagesResponse,
@@ -60,4 +60,4 @@ function useInfiniteGetConversationMessageQuery(
   >([QueryKeys.CHAT, "DETAILS", queryParams], queryFn, options);
 }
 
-export default useInfiniteGetConversationMessageQuery;
+export default useInfiniteGetConversationMessagesQuery;

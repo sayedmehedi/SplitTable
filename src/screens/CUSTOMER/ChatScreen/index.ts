@@ -1,3 +1,3 @@
-import ChatScreen from "./ChatScreen";
+import ChatListScreen from "./ChatListScreen";
 
-export default ChatScreen;
+export default ChatListScreen;

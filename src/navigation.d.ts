@@ -1,4 +1,7 @@
-import {NavigatorScreenParams} from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import {
   RootStackRoutes,
   OwnerStackRoutes,
@@ -10,6 +13,7 @@ import {
   CustomerMainBottomTabRoutes,
   CustomerBookingStackRoutes,
   OwnerAuthStackRoutes,
+  CustomerChatStackRoutes,
 } from "@constants/routes";
 import {AppTableListTypes} from "@constants/table";
 import {
@@ -21,6 +25,8 @@ import {
   SupportedPaymentMethods,
   TableCommonSearchParams,
 } from "./models";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 
 type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.SIGNIN]: undefined;
@@ -59,11 +65,26 @@ type CustomerProfileStackParamList = {
   [CustomerProfileStackRoutes.ACCOUNT]: undefined;
 };
 
+type CustomerChatStackParamList = {
+  [CustomerChatStackRoutes.CHAT_MESSAGES]: {
+    chatId: number;
+    partnerName: string;
+    partnerImage: string;
+  };
+
+  [CustomerChatStackRoutes.CHAT_LIST]: undefined;
+};
+
 type CustomerBottomTabParamList = {
   [CustomerMainBottomTabRoutes.HOME]: undefined;
   [CustomerMainBottomTabRoutes.CHAT]: undefined;
+  [CustomerMainBottomTabRoutes.BOOKING]: undefined;
+  [CustomerMainBottomTabRoutes.CHAT_MESSAGES]: {
+    partnerName: string;
+    partnerImage: string;
+  };
   [CustomerMainBottomTabRoutes.TABLE_SCREEN]: undefined;
-  [CustomerMainBottomTabRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
+  [CustomerMainBottomTabRoutes.CHAT]: NavigatorScreenParams<CustomerChatStackParamList>;
   [CustomerMainBottomTabRoutes.PROFILE_STACK]: NavigatorScreenParams<CustomerProfileStackParamList>;
 };
 
@@ -176,7 +197,6 @@ type CustomerStackParamList = {
     totalAmount: string;
     partialAmount: string;
   };
-  [CustomerStackRoutes.BOOKING]: NavigatorScreenParams<CustomerBookingStackParamList>;
   [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
 
@@ -255,3 +275,17 @@ type RootStackParamList = {
   [RootStackRoutes.OWNER]: NavigatorScreenParams<OwnerStackParamList>;
   [RootStackRoutes.CUSTOMER]: NavigatorScreenParams<CustomerStackParamList>;
 };
+
+type ChatMessagesNavigationType = CompositeNavigationProp<
+  CompositeNavigationProp<
+    CompositeNavigationProp<
+      StackNavigationProp<
+        CustomerChatStackParamList,
+        typeof CustomerChatStackRoutes.CHAT_MESSAGES
+      >,
+      BottomTabNavigationProp<CustomerBottomTabParamList>
+    >,
+    StackNavigationProp<CustomerStackParamList>
+  >,
+  StackNavigationProp<RootStackParamList>
+>;

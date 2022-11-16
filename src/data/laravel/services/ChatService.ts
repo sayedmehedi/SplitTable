@@ -92,7 +92,7 @@ export class ChatService implements IChatService {
   sendMessage(
     data: SendMessageRequest,
   ): Promise<AxiosResponse<SendMessageResponse, GlobalAxiosRequestConfig>> {
-    return this._httpService.post<SendInvitationResponse>("accept-invitation", {
+    return this._httpService.post<SendInvitationResponse>("send-message", {
       receiver_id: data.receiverId,
       message: data.message,
     });
