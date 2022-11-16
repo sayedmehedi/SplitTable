@@ -36,6 +36,7 @@ import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/In
 import BookingSelectLocationScreen from "@screens/CUSTOMER/BookTableScreen/BookingSelectLocationScreen";
 import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
 import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -45,11 +46,11 @@ type NavitaionProps = CompositeNavigationProp<
 >;
 
 const CustomerStackNavigator = () => {
-  const {data: profileData, isLoading: isLoadingProfileData} =
-    useGetProfileQuery();
+  const {data: authData, isLoading: isLoadingProfileData} =
+    useGetAuthDataQuery();
 
   const showLocationScreen =
-    !profileData?.location && !profileData?.latitude && !profileData?.longitude;
+    !authData?.location && !authData?.latitude && !authData?.longitude;
 
   if (isLoadingProfileData) {
     return <Text>Loading...</Text>;
@@ -59,7 +60,7 @@ const CustomerStackNavigator = () => {
     <CustomerStack.Navigator
       id={CUSTOMER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!profileData ? (
+      {!authData ? (
         <React.Fragment>
           <CustomerStack.Screen
             component={OnboardingScreen}

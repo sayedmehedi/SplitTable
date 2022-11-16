@@ -1,7 +1,7 @@
 import React from "react";
 import {Platform, View} from "react-native";
 import AuthTypeProvider from "./AuthTypeProvider";
-import {QueryClient} from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {AppStateStatus, Text} from "react-native";
 import {splitAppNavigationTheme} from "@src/theme";
 import {onlineManager} from "@tanstack/react-query";
@@ -12,7 +12,7 @@ import AuthDataIsLoaded from "@components/AuthDataIsLoaded";
 import BearerTokenAttacher from "@components/BearerTokenAttacher";
 import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {PersistQueryClientProvider} from "@tanstack/react-query-persist-client";
+// import {PersistQueryClientProvider} from "@tanstack/react-query-persist-client";
 import {createAsyncStoragePersister} from "@tanstack/query-async-storage-persister";
 import {
   NavigationContainer,
@@ -91,11 +91,12 @@ function AllTheProviders({children}: React.PropsWithChildren) {
   }
 
   return (
-    <PersistQueryClientProvider
+    <QueryClientProvider
       client={defaultQueryClient}
-      persistOptions={{
-        persister: asyncStoragePersister,
-      }}>
+      // persistOptions={{
+      //   persister: asyncStoragePersister,
+      // }}
+    >
       <NavigationContainer theme={splitAppNavigationTheme}>
         <AuthTypeProvider>
           <AuthDataIsLoaded>
@@ -103,7 +104,7 @@ function AllTheProviders({children}: React.PropsWithChildren) {
           </AuthDataIsLoaded>
         </AuthTypeProvider>
       </NavigationContainer>
-    </PersistQueryClientProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -17,8 +17,8 @@ export type AuthData = {
   status: number;
   user_type: 2 | 3;
   location: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   profile_image: string;
 };
 

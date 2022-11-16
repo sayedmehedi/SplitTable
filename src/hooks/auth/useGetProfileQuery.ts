@@ -1,11 +1,13 @@
 import React from "react";
 import {container} from "@src/appEngine";
 import {QueryKeys} from "@constants/query-keys";
-import {GetProfileDataResponse} from "@src/models";
 import {handleCancelableAxiosPromise} from "@utils/http";
 import {IUserService} from "@core/services/IUserService";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
+import {AuthData, GetProfileDataResponse} from "@src/models";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
+import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
 import {QueryFunction, UseQueryOptions, useQuery} from "@tanstack/react-query";
 
 const service = container.get<IUserService>(ServiceProviderTypes.UserService);
@@ -32,6 +34,8 @@ export default function useGetProfileQuery(
   >,
 ) {
   const optionsRef = React.useRef(options);
+  const {data: authData} = useGetAuthDataQuery();
+  const {mutateAsync: addAuthData} = useAddAuthDataMutation();
 
   React.useEffect(() => {
     optionsRef.current = options;
@@ -42,5 +46,26 @@ export default function useGetProfileQuery(
     ApplicationError,
     GetProfileDataResponse,
     QueryKey
-  >([QueryKeys.PROFILE, userId], queryFn, optionsRef.current);
+  >([QueryKeys.PROFILE, userId], queryFn, {
+    ...optionsRef.current,
+    async onSuccess(data) {
+      const {location, latitude, longitude, name, email, phone, image} = data;
+
+      if (!!authData) {
+        const newAuthData: AuthData = {
+          ...authData,
+          location,
+          latitude,
+          longitude,
+          name,
+          email,
+          phone,
+          profile_image: image,
+        };
+
+        await addAuthData(newAuthData);
+      }
+      optionsRef.current?.onSuccess?.(data);
+    },
+  });
 }
