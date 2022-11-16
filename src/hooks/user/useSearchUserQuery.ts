@@ -8,9 +8,9 @@ import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {SearchUserResponse, SearchUserQueryParams} from "@src/models";
 import {
   QueryFunction,
-  useInfiniteQuery,
+  useQuery,
   QueryFunctionContext,
-  UseInfiniteQueryOptions,
+  UseQueryOptions,
 } from "@tanstack/react-query";
 
 const service = container.get<IUserService>(ServiceProviderTypes.UserService);
@@ -34,10 +34,9 @@ const queryFn: QueryFunction<SearchUserResponse, QueryKey> = ({
 
 export default function useSearchUserQuery(
   queryParams: SearchUserQueryParams,
-  options?: UseInfiniteQueryOptions<
+  options?: UseQueryOptions<
     SearchUserResponse,
     ApplicationError,
-    SearchUserResponse,
     SearchUserResponse,
     QueryKey
   >,
@@ -48,7 +47,7 @@ export default function useSearchUserQuery(
     optionsRef.current = options;
   }, [options]);
 
-  return useInfiniteQuery<
+  return useQuery<
     SearchUserResponse,
     ApplicationError,
     SearchUserResponse,

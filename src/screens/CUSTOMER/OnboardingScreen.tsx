@@ -111,7 +111,10 @@ const OnboardingScreen = ({navigation}: Props) => {
             }}
             end={{x: 0, y: 0}}
             start={{x: 0, y: 1}}
-            colors={["#DF3BC0", "#472BBE"]}>
+            colors={[
+              splitAppTheme.colors.primary[400],
+              splitAppTheme.colors.secondary[400],
+            ]}>
             <View>
               <Text
                 style={{

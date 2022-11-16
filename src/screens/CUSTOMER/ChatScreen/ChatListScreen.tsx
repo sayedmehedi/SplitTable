@@ -27,6 +27,8 @@ import {
   CustomerChatStackParamList,
 } from "@src/navigation";
 import useInfiniteGetConversationsQuery from "@hooks/chat/useInfiniteGetConversationsQuery";
+import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
+import UserSearchInput from "./UserSearchInput";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -129,17 +131,7 @@ const ChatListScreen = ({navigation}: Props) => {
             message
           </Text>
 
-          <TextInput
-            placeholder="Search"
-            style={{
-              height: 44,
-              width: "100%",
-              borderRadius: 8,
-              borderWidth: 1,
-              paddingLeft: 10,
-              borderColor: "#D8D8D8",
-            }}
-          />
+          <UserSearchInput />
         </View>
       </SafeAreaView>
 

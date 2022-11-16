@@ -65,7 +65,7 @@ export default function ProfileImageUploader() {
           },
         },
         {
-          onSuccess(data, variables, context) {
+          onSuccess(data) {
             if (!isResponseResultError(data)) {
               setUploadProgress(0);
               toast.success(data.success);
