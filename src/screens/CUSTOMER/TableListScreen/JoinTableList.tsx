@@ -18,6 +18,7 @@ type Props = {
 } & TableCommonSearchParams;
 
 const JoinTableList = ({onItemPress, ...params}: Props) => {
+  console.log("params in join table", params);
   const {
     refetch,
     isLoading,

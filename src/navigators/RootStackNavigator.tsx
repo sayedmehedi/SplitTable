@@ -15,6 +15,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -51,6 +52,12 @@ const RootStackNavigator = () => {
         component={NotificationListScreen}
         options={notificationListScreenOptions}
         name={RootStackRoutes.NOTIFICATIONS}
+      />
+
+      <RootStack.Screen
+        component={ProfileScreen}
+        options={profileScreenOptions}
+        name={RootStackRoutes.PROFILE}
       />
     </React.Fragment>
   );
@@ -105,3 +112,12 @@ const notificationListScreenOptions:
   header: CommonStackHeader,
   headerTitle: "Notification",
 });
+
+const profileScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<RootStackParamList, typeof RootStackRoutes.PROFILE>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: false,
+};

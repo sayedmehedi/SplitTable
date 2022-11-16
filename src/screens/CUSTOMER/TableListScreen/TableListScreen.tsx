@@ -6,7 +6,6 @@ import {StatusBar, View} from "react-native";
 import SplitTableList from "./SplitTableList";
 import BookedTableList from "./BookedTableList";
 import RecentVisits from "./RecentVisitClubList";
-import {useDisclosure} from "react-use-disclosure";
 import {AppTableListTypes} from "@constants/table";
 import {TableCommonSearchParams} from "@src/models";
 import TableListByClubId from "./TableListByClubId";
@@ -15,9 +14,7 @@ import {StackScreenProps} from "@react-navigation/stack";
 import TableListByLocation from "./TableListByLocation";
 import TableListBySearchTerm from "./TableListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -27,25 +24,24 @@ type Props = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
-const TableListScreen = ({route}: Props) => {
-  const {isOpen: isButtonOpened, toggle: setButtonOpen} = useDisclosure();
-  const [clubSearchTermDraft, setClubSearchTermDraft] = React.useState("");
+const TableListScreen = ({route, navigation}: Props) => {
   const [tableSearchParams, setTableSearchParams] =
     React.useState<TableCommonSearchParams>({});
-  const {isOpen: isClubSearchModalOpen, toggle: setToggleClubSearchModal} =
-    useDisclosure();
 
   React.useEffect(() => {
-    if (route.params.listType === AppTableListTypes.SEARCH_RESULT) {
-      setTableSearchParams(route.params.searchTerm);
-    }
-  }, [route.params.listType]);
-
-  const handleSearchTermChange = (text: string) => {
-    setClubSearchTermDraft(text);
-  };
+    setTableSearchParams(route.params.searchTerm ?? {});
+  }, [JSON.stringify(route.params.searchTerm ?? {})]);
 
   const handleItemPresss = React.useCallback((item: TTableItem) => {}, []);
+
+  const handleJoinTableItemPresss = React.useCallback(
+    (item: TTableItem) => {
+      navigation.navigate(CustomerStackRoutes.JOIN_TABLE_DETAILS, {
+        tableId: item.id,
+      });
+    },
+    [navigation],
+  );
 
   return (
     <View
@@ -56,15 +52,17 @@ const TableListScreen = ({route}: Props) => {
       <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
       {route.params.listType === AppTableListTypes.BY_LOCATION && (
         <TableListByLocation
+          {...tableSearchParams}
           onItemPress={handleItemPresss}
-          locationId={route.params.locationId}
+          locationId={route.params.searchTerm.locationId}
         />
       )}
 
       {route.params.listType === AppTableListTypes.BY_CLUB_ID && (
         <TableListByClubId
-          clubId={route.params.clubId}
+          {...tableSearchParams}
           onItemPress={handleItemPresss}
+          clubId={route.params.searchTerm.clubId}
         />
       )}
 
@@ -80,7 +78,10 @@ const TableListScreen = ({route}: Props) => {
       )}
 
       {route.params.listType === AppTableListTypes.JOIN && (
-        <JoinTableList {...tableSearchParams} onItemPress={handleItemPresss} />
+        <JoinTableList
+          {...tableSearchParams}
+          onItemPress={handleJoinTableItemPresss}
+        />
       )}
 
       {route.params.listType === AppTableListTypes.RECENT_VISIT && (

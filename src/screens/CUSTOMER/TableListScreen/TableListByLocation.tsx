@@ -3,8 +3,12 @@ import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
 import TableListItem from "./TableListItem";
 import {AppTableTypes} from "@constants/table";
-import {TableByLocationItem, TableType} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
+import {
+  TableByLocationItem,
+  TableCommonSearchParams,
+  TableType,
+} from "@src/models";
 import useInfiniteGetTablesByLocationQuery from "@hooks/clubs/useInfiniteGetTablesByLocationQuery";
 import {
   Text,
@@ -18,12 +22,24 @@ import {
 type Props = {
   locationId: number;
   onItemPress: (item: TTableItem) => void;
-};
+} & TableCommonSearchParams;
 
-const TableListByLocation = ({locationId, onItemPress}: Props) => {
+const TableListByLocation = ({
+  locationId,
+  onItemPress,
+  tableType: tableTypeProp,
+  ...params
+}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
     AppTableTypes.BOOKED,
   );
+
+  console.log("tableTypeProp", params);
+  React.useEffect(() => {
+    if (tableTypeProp !== undefined) {
+      setTableType(tableTypeProp);
+    }
+  }, [tableTypeProp]);
 
   const {
     refetch,
@@ -37,6 +53,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
       page: 1,
       locationId,
       tableType,
+      ...params,
     },
     {
       getNextPageParam(lastPage) {
@@ -44,6 +61,7 @@ const TableListByLocation = ({locationId, onItemPress}: Props) => {
           return {
             locationId,
             tableType,
+            ...params,
             page: lastPage.tables.current_page + 1,
           };
         }

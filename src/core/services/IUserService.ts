@@ -18,9 +18,16 @@ import {
   GetFavoriteClubsResponse,
   GetFaqsQueryParams,
   GetFaqsResponse,
+  GetProfileDataResponse,
 } from "@src/models";
 
 export interface IUserService {
+  getProfile(
+    userId?: number,
+  ): CancelablePromise<
+    AxiosResponse<GetProfileDataResponse, GlobalAxiosRequestConfig>
+  >;
+
   getImages(
     params?: GetUserImageQueryParams,
   ): CancelablePromise<

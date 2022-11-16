@@ -4,7 +4,12 @@ import {splitAppTheme} from "@src/theme";
 import TableListItem from "./TableListItem";
 import {AppTableTypes} from "@constants/table";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {BookedTable, SplitTable, TableType} from "@src/models";
+import {
+  BookedTable,
+  SplitTable,
+  TableCommonSearchParams,
+  TableType,
+} from "@src/models";
 import useInfiniteGetTablesByClubIdQuery from "@hooks/clubs/useInfiniteGetTablesByClubIdQuery";
 import {
   Text,
@@ -18,9 +23,9 @@ import {
 type Props = {
   clubId: number;
   onItemPress: (item: TTableItem) => void;
-};
+} & TableCommonSearchParams;
 
-const TableListByClubId = ({clubId, onItemPress}: Props) => {
+const TableListByClubId = ({clubId, onItemPress, ...params}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
     AppTableTypes.BOOKED,
   );
@@ -35,8 +40,9 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
   } = useInfiniteGetTablesByClubIdQuery(
     {
       clubId,
-      page: 1,
       tableType,
+      ...params,
+      page: 1,
     },
     {
       getNextPageParam(lastPage) {
@@ -44,6 +50,7 @@ const TableListByClubId = ({clubId, onItemPress}: Props) => {
           return {
             clubId,
             tableType,
+            ...params,
             page: lastPage.tables.current_page + 1,
           };
         }

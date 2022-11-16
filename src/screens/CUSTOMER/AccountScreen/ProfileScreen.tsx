@@ -9,35 +9,32 @@ import {isCustomerProfile} from "@utils/profile";
 import {
   CustomerMainBottomTabRoutes,
   CustomerStackRoutes,
+  RootStackRoutes,
 } from "@constants/routes";
+import {RootStackParamList} from "@src/navigation";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
+import ProfileImageUploader from "./ProfileImageUploader";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {CompositeScreenProps} from "@react-navigation/native";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 import {
   View,
   Text,
-  Image,
   FlatList,
   TouchableOpacity,
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
-import ProfileImageUploader from "./ProfileImageUploader";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 
-type ProfileScreenProps = CompositeScreenProps<
-  StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.PROFILE>,
-  StackScreenProps<RootStackParamList>
+type ProfileScreenProps = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.PROFILE
 >;
 
-const ProfileScreen = ({navigation}: ProfileScreenProps) => {
-  const toast = useAppToast();
+const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   const queryClient = useQueryClient();
   const pagerRef = React.useRef<FlatList>(null!);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -50,11 +47,9 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
 
-  const {data: profileData, isLoading} = useGetProfileQuery({
-    onError(error) {
-      toast.error(error.non_field_error);
-    },
-  });
+  const {data: profileData, isLoading} = useGetProfileQuery(
+    route.params.userId,
+  );
 
   const setIndex = React.useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -309,9 +304,9 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
-              screen: CustomerMainBottomTabRoutes.CHAT,
-            });
+            // navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
+            //   screen: CustomerMainBottomTabRoutes.CHAT,
+            // });
           }}>
           <LinearGradient
             colors={["#201648", "#7359D1"]}

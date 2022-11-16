@@ -72,13 +72,19 @@ type ClubListScreenCommon = {
 };
 
 export type TableListScreenTypeByLocation = ClubListScreenCommon & {
-  locationId: number;
+  // locationId: number;
   listType: typeof AppTableListTypes.BY_LOCATION;
+  searchTerm: Omit<TableCommonSearchParams, "locationId"> & {
+    locationId: number;
+  };
 };
 
 export type TableListScreenTypeByClubId = ClubListScreenCommon & {
-  clubId: number;
+  // clubId: number;
   listType: typeof AppTableListTypes.BY_CLUB_ID;
+  searchTerm: Omit<TableCommonSearchParams, "clubId"> & {
+    clubId: number;
+  };
 };
 
 export type TableListScreenTypeSearchResult = ClubListScreenCommon & {
@@ -87,12 +93,20 @@ export type TableListScreenTypeSearchResult = ClubListScreenCommon & {
 };
 
 export type TableListScreenTypeRest = ClubListScreenCommon & {
+  // listType: Omit<
+  //   typeof AppTableListTypes[keyof typeof AppTableListTypes],
+  //   | typeof AppTableListTypes.BY_CLUB_ID
+  //   | typeof AppTableListTypes.BY_LOCATION
+  //   | typeof AppTableListTypes.SEARCH_RESULT
+  // >;
+
   listType:
     | typeof AppTableListTypes.ALL
     | typeof AppTableListTypes.SPLIT
     | typeof AppTableListTypes.JOIN
     | typeof AppTableListTypes.BOOKED
     | typeof AppTableListTypes.RECENT_VISIT;
+  searchTerm?: TableCommonSearchParams;
 };
 
 type CustomerStackParamList = {
@@ -111,9 +125,9 @@ type CustomerStackParamList = {
     paymentMethod: SupportedPaymentMethods;
   };
   [CustomerStackRoutes.TABLE_LIST]:
+    | TableListScreenTypeSearchResult
     | TableListScreenTypeByLocation
     | TableListScreenTypeByClubId
-    | TableListScreenTypeSearchResult
     | TableListScreenTypeRest;
   [CustomerStackRoutes.ONBOARDING]: undefined;
   [CustomerStackRoutes.INITIAL_SELECT_LOCATION]: undefined;
@@ -123,7 +137,40 @@ type CustomerStackParamList = {
   [CustomerStackRoutes.TABLE_DETAILS]: {
     tableId: number;
   };
-  [CustomerStackRoutes.TABLE_SEARCH]: undefined;
+  [CustomerStackRoutes.JOIN_TABLE_DETAILS]: {
+    tableId: number;
+  };
+  [CustomerStackRoutes.TABLE_SEARCH]:
+    | {
+        listScreenHeaderTitle: string;
+        initialSearchTerms: Omit<TableCommonSearchParams, "locationId"> & {
+          locationId: number;
+        };
+        listType: typeof AppTableListTypes.BY_LOCATION;
+      }
+    | {
+        listScreenHeaderTitle: string;
+        initialSearchTerms: Omit<TableCommonSearchParams, "clubId"> & {
+          clubId: number;
+        };
+        listType: typeof AppTableListTypes.BY_CLUB_ID;
+      }
+    | {
+        listScreenHeaderTitle: string;
+        initialSearchTerms: TableCommonSearchParams;
+        listType: typeof AppTableListTypes.SEARCH_RESULT;
+      }
+    | {
+        listScreenHeaderTitle: string;
+        initialSearchTerms?: TableCommonSearchParams;
+        listType:
+          | typeof AppTableListTypes.ALL
+          | typeof AppTableListTypes.SPLIT
+          | typeof AppTableListTypes.JOIN
+          | typeof AppTableListTypes.BOOKED
+          | typeof AppTableListTypes.RECENT_VISIT;
+      }
+    | undefined;
   [CustomerStackRoutes.BOOKING_SELECT_LOCATION]: {
     bookingId: number;
     totalAmount: string;
@@ -135,7 +182,6 @@ type CustomerStackParamList = {
 
   [CustomerStackRoutes.FAQ]: undefined;
   [CustomerStackRoutes.LEGAL]: undefined;
-  [CustomerStackRoutes.PROFILE]: undefined;
   [CustomerStackRoutes.FAVORITE]: undefined;
   [CustomerStackRoutes.TRANSACTION]: undefined;
   [CustomerStackRoutes.ACCOUNT_SETTING]: undefined;
@@ -160,7 +206,6 @@ type OwnerAccountStackParamList = {
   [OwnerProfileStackRoutes.FAQ]: undefined;
   [OwnerProfileStackRoutes.LEGAL]: undefined;
   [OwnerProfileStackRoutes.ACCOUNT]: undefined;
-  [OwnerProfileStackRoutes.PROFILE]: undefined;
   [OwnerProfileStackRoutes.FAVORITE]: undefined;
   [OwnerProfileStackRoutes.TRANSACTION]: undefined;
   [OwnerProfileStackRoutes.ACCOUNT_SETTING]: undefined;
@@ -203,6 +248,9 @@ type OwnerStackParamList = {
 
 type RootStackParamList = {
   [RootStackRoutes.INITIAL]: undefined;
+  [RootStackRoutes.PROFILE]: {
+    userId?: number;
+  };
   [RootStackRoutes.NOTIFICATIONS]: undefined;
   [RootStackRoutes.OWNER]: NavigatorScreenParams<OwnerStackParamList>;
   [RootStackRoutes.CUSTOMER]: NavigatorScreenParams<CustomerStackParamList>;

@@ -11,12 +11,13 @@ import {
 } from "react-native";
 import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
 import {AppTableTypes} from "@constants/table";
+import {TableCommonSearchParams} from "@src/models";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
-};
+} & TableCommonSearchParams;
 
-const BookedTableList = ({onItemPress}: Props) => {
+const BookedTableList = ({onItemPress, ...params}: Props) => {
   const {
     refetch,
     isLoading,
@@ -28,12 +29,14 @@ const BookedTableList = ({onItemPress}: Props) => {
     {
       page: 1,
       tableType: AppTableTypes.BOOKED,
+      ...params,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
             tableType: AppTableTypes.BOOKED,
+            ...params,
             page: lastPage.tables.current_page + 1,
           };
         }

@@ -11,12 +11,13 @@ import {
 import GenericListEmpty from "@components/GenericListEmpty";
 import useInfiniteGetRecentViewsQuery from "@hooks/clubs/useInfiniteGetRecentViewsQuery";
 import {splitAppTheme} from "@src/theme";
+import {TableCommonSearchParams} from "@src/models";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
-};
+} & TableCommonSearchParams;
 
-const RecentVisits = ({onItemPress}: Props) => {
+const RecentVisits = ({onItemPress, ...params}: Props) => {
   const {
     refetch,
     isLoading,
@@ -27,11 +28,13 @@ const RecentVisits = ({onItemPress}: Props) => {
   } = useInfiniteGetRecentViewsQuery(
     {
       page: 1,
+      ...params,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.tables.has_more_data) {
           return {
+            ...params,
             page: lastPage.tables.current_page + 1,
           };
         }

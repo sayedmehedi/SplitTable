@@ -13,7 +13,6 @@ import {
   LogoutResponse,
   VerifyEmailRequest,
   VerifyEmailResponse,
-  GetProfileDataResponse,
   GlobalAxiosRequestConfig,
   ResendEmailVerificationCodeRequest,
   ResendEmailVerificationCodeResponse,
@@ -127,24 +126,5 @@ export class AuthService implements IAuthService {
     data: LoginRequest,
   ): Promise<AxiosResponse<LoginResponse, GlobalAxiosRequestConfig>> {
     return this._httpService.post<LoginResponse>("login", data);
-  }
-
-  getProfile() {
-    const controller = new AbortController();
-
-    return new CancelablePromise<
-      AxiosResponse<GetProfileDataResponse, GlobalAxiosRequestConfig>
-    >((resolve, reject, onCancel) => {
-      onCancel(() => {
-        controller.abort();
-      });
-
-      this._httpService
-        .get<GetProfileDataResponse>(`profile`, {
-          signal: controller.signal,
-        })
-        .then(resolve)
-        .catch(reject);
-    });
   }
 }

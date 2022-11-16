@@ -91,9 +91,11 @@ const HomeScreen = ({navigation}: Props) => {
   const handleLocationItemPress = React.useCallback(
     (item: LocationItem) => {
       navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
-        locationId: item.id,
         headerTitle: item.location,
         listType: AppTableListTypes.BY_LOCATION,
+        searchTerm: {
+          locationId: item.id,
+        },
       });
     },
     [navigation],

@@ -73,13 +73,13 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
   useHandleNonFieldError(clubDetailsError);
 
   const {
-    error: infiniteGetResourcesError,
-    data: infiniteGetResourcesResponse,
-    isLoading: isLoadingInfiniteResources,
     refetch,
     isRefetching,
     fetchNextPage,
     isFetchingNextPage,
+    error: infiniteGetResourcesError,
+    data: infiniteGetResourcesResponse,
+    isLoading: isLoadingInfiniteResources,
   } = useInfiniteGetClubReviewsQuery(
     {
       page: 1,

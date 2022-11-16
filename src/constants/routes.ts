@@ -1,6 +1,7 @@
 export const RootStackRoutes = {
   OWNER: "Owner",
   INITIAL: "Initial",
+  PROFILE: "Profile",
   CUSTOMER: "Customer",
   NOTIFICATIONS: "Notifications",
 } as const;
@@ -13,8 +14,9 @@ export const CustomerStackRoutes = {
   CLUB_DETAILS: "ClubDetails",
   TABLE_DETAILS: "TableDetails",
   CUSTOMER_AUTH: "CustomerAuth",
-  INITIAL_SELECT_LOCATION: "InitialSelectLocation",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
+  JOIN_TABLE_DETAILS: "JoinTableDetails",
+  INITIAL_SELECT_LOCATION: "InitialSelectLocation",
 
   PAYMENT_AMOUNT: "PaymentAmount",
   PAYMENT_METHOD: "PaymentMethod",
@@ -27,7 +29,6 @@ export const CustomerStackRoutes = {
 
   FAQ: "Faq",
   LEGAL: "Legal",
-  PROFILE: "Profile",
   FAVORITE: "Favorite",
   TRANSACTION: "Transaction",
   ACCOUNT_SETTING: "AccountSetting",

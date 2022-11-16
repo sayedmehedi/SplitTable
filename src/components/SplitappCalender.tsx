@@ -1,7 +1,7 @@
 import React from "react";
 import {Text} from "react-native";
 import {splitAppTheme} from "@src/theme";
-import {DateData, Theme} from "react-native-calendars/src/types";
+import {DateData, MarkedDates, Theme} from "react-native-calendars/src/types";
 import {Calendar, CalendarProps} from "react-native-calendars";
 
 const theme: Theme = {
@@ -27,7 +27,13 @@ export default function SplitappSingleSelectCalender(props: Props = {}) {
     DateData["dateString"] | null
   >(null);
 
-  const markedDates = React.useMemo(() => {
+  React.useEffect(() => {
+    if (props.initialDate !== undefined) {
+      setSelectedDay(props.initialDate);
+    }
+  }, [props.initialDate]);
+
+  const markedDates: MarkedDates = React.useMemo(() => {
     return selectedDay !== null
       ? {
           [selectedDay]: {

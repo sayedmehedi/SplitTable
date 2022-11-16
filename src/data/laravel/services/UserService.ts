@@ -25,6 +25,7 @@ import {
   ToggleUserImageLikeResponse,
   GetFavoriteClubsQueryParams,
   GetFaqsQueryParams,
+  GetProfileDataResponse,
   GetFaqsResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
@@ -279,5 +280,30 @@ export class UserService implements IUserService {
     const serverData = await parseRnFetchBlobJsonResponse(response);
 
     return serverData;
+  }
+
+  getProfile(userId?: number) {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetProfileDataResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetProfileDataResponse>(`profile`, {
+          signal: controller.signal,
+          params:
+            userId !== undefined
+              ? {
+                  user_id: userId,
+                }
+              : undefined,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
   }
 }

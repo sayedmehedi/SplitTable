@@ -4,6 +4,7 @@ import {StackScreenProps} from "@react-navigation/stack";
 import {
   CustomerProfileStackRoutes,
   CustomerStackRoutes,
+  RootStackRoutes,
 } from "@constants/routes";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useLogoutMutation from "@hooks/auth/useLogoutMutation";
@@ -121,7 +122,7 @@ const AccountScreen = ({navigation}: Props) => {
 
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate(CustomerStackRoutes.PROFILE)}
+          onPress={() => navigation.navigate(RootStackRoutes.PROFILE, {})}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <ProfileIcon />

@@ -28,10 +28,6 @@ export interface IAuthService {
     data: ResetPasswordRequest,
   ): Promise<AxiosResponse<ResetPasswordResponse, GlobalAxiosRequestConfig>>;
 
-  getProfile(): CancelablePromise<
-    AxiosResponse<GetProfileDataResponse, GlobalAxiosRequestConfig>
-  >;
-
   signup(data: SignupRequest): Promise<SignupResponse>;
 
   verifyEmail(

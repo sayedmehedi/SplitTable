@@ -37,6 +37,8 @@ import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndO
 import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
 import BookingSelectLocationScreen from "@screens/CUSTOMER/BookTableScreen/BookingSelectLocationScreen";
 import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
+import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
+import {AppTableListTypes} from "@constants/table";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -94,6 +96,12 @@ const CustomerStackNavigator = () => {
             component={TableDetailsScreen}
             options={tableDetailsScreenOptions}
             name={CustomerStackRoutes.TABLE_DETAILS}
+          />
+
+          <CustomerStack.Screen
+            component={JoinTableDetailsScreen}
+            options={joinTableDetailsScreenOptions}
+            name={CustomerStackRoutes.JOIN_TABLE_DETAILS}
           />
 
           <CustomerStack.Screen
@@ -156,12 +164,6 @@ const CustomerStackNavigator = () => {
               header: CommonStackHeader,
               headerTitleAlign: "center",
             }}>
-            <CustomerStack.Screen
-              component={ProfileScreen}
-              options={profileScreenOptions}
-              name={CustomerStackRoutes.PROFILE}
-            />
-
             <CustomerStack.Screen
               component={TransactionScreen}
               options={transactionScreenOptions}
@@ -303,6 +305,21 @@ const tableDetailsScreenOptions:
   headerShown: false,
 });
 
+const joinTableDetailsScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.JOIN_TABLE_DETAILS
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerTitleAlign: "center",
+  title: "Join Table",
+});
+
 const tableListScreenOptions:
   | StackNavigationOptions
   | ((props: {
@@ -318,7 +335,31 @@ const tableListScreenOptions:
   headerRight: () => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate(CustomerStackRoutes.TABLE_SEARCH);
+        if (route.params.listType === AppTableListTypes.BY_CLUB_ID) {
+          navigation.navigate(CustomerStackRoutes.TABLE_SEARCH, {
+            listType: route.params.listType,
+            initialSearchTerms: route.params.searchTerm,
+            listScreenHeaderTitle: route.params.headerTitle,
+          });
+        } else if (route.params.listType === AppTableListTypes.BY_LOCATION) {
+          navigation.navigate(CustomerStackRoutes.TABLE_SEARCH, {
+            listType: route.params.listType,
+            initialSearchTerms: route.params.searchTerm,
+            listScreenHeaderTitle: route.params.headerTitle,
+          });
+        } else if (route.params.listType === AppTableListTypes.SEARCH_RESULT) {
+          navigation.navigate(CustomerStackRoutes.TABLE_SEARCH, {
+            listType: route.params.listType,
+            initialSearchTerms: route.params.searchTerm,
+            listScreenHeaderTitle: route.params.headerTitle,
+          });
+        } else {
+          navigation.navigate(CustomerStackRoutes.TABLE_SEARCH, {
+            listScreenHeaderTitle: route.params.headerTitle,
+            initialSearchTerms: route.params.searchTerm,
+            listType: route.params.listType,
+          });
+        }
       }}>
       <View>
         <MaterialIcons
@@ -343,17 +384,6 @@ const globalScreenOptions:
   headerShown: false,
 };
 
-const profileScreenOptions:
-  | StackNavigationOptions
-  | ((props: {
-      route: RouteProp<
-        CustomerStackParamList,
-        typeof CustomerStackRoutes.PROFILE
-      >;
-      navigation: NavitaionProps;
-    }) => StackNavigationOptions) = {
-  headerShown: false,
-};
 const transactionScreenOptions:
   | StackNavigationOptions
   | ((props: {

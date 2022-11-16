@@ -2,34 +2,21 @@ import dayjs from "dayjs";
 import React from "react";
 import {TableType} from "@src/models";
 import {splitAppTheme} from "@src/theme";
+import {AppTableListTypes} from "@constants/table";
 import Ripple from "react-native-material-ripple";
 import {Controller, useForm} from "react-hook-form";
-import SplitappSingleSelectCalender from "@components/SplitappCalender";
+import {CustomerStackRoutes} from "@constants/routes";
+import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";
-import {StackNavigationProp} from "@react-navigation/stack";
+import {CompositeScreenProps} from "@react-navigation/native";
+import AppGradientButton from "@components/AppGradientButton";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import {Text, View, ScrollView, StyleSheet} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
-import {
-  CustomerStackRoutes,
-  CustomerMainBottomTabRoutes,
-} from "@constants/routes";
-import {useNavigation, CompositeNavigationProp} from "@react-navigation/native";
-
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerBottomTabParamList,
-} from "@src/navigation";
-import AppGradientButton from "@components/AppGradientButton";
-import {AppTableListTypes} from "@constants/table";
-
-type NavigationProps = CompositeNavigationProp<
-  StackNavigationProp<CustomerStackParamList>,
-  StackNavigationProp<RootStackParamList>
->;
+import SplitappSingleSelectCalender from "@components/SplitappCalender";
+import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 
 type FormValues = {
   date: string | null;
@@ -38,8 +25,15 @@ type FormValues = {
   distance: [number, number] | null;
 };
 
-const TableSearchScreen = () => {
-  const navigation = useNavigation<NavigationProps>();
+type Props = CompositeScreenProps<
+  StackScreenProps<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.TABLE_SEARCH
+  >,
+  StackScreenProps<RootStackParamList>
+>;
+
+const TableSearchScreen = ({route, navigation}: Props) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
@@ -51,7 +45,7 @@ const TableSearchScreen = () => {
   } = useGetLocationsQuery();
   useHandleNonFieldError(locationsError);
 
-  const {control, handleSubmit} = useForm<FormValues>({
+  const {control, handleSubmit, setValue} = useForm<FormValues>({
     defaultValues: {
       date: null,
       distance: null,
@@ -59,6 +53,31 @@ const TableSearchScreen = () => {
       location_id: null,
     },
   });
+
+  React.useEffect(() => {
+    if (route.params?.initialSearchTerms) {
+      const {date, distance, tableType} = route.params.initialSearchTerms;
+
+      if (date !== undefined) {
+        setValue("date", date);
+      }
+
+      if (distance !== undefined) {
+        setValue("distance", distance);
+      }
+
+      if (tableType !== undefined) {
+        setValue("table_type", tableType);
+      }
+    }
+  }, [
+    setValue,
+    route.params?.initialSearchTerms?.date,
+    route.params?.initialSearchTerms?.tableType,
+    route.params?.initialSearchTerms?.locationId,
+    route.params?.initialSearchTerms?.distance?.[0],
+    route.params?.initialSearchTerms?.distance?.[1],
+  ]);
 
   const locationList = React.useMemo(() => {
     return (
@@ -80,16 +99,60 @@ const TableSearchScreen = () => {
       locationIdInt = null;
     }
 
-    navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
-      headerTitle: "Search Result",
-      searchTerm: {
-        date: values.date ?? undefined,
-        distance: values.distance ?? undefined,
-        tableType: values.table_type ?? undefined,
-        locationId: locationIdInt !== null ? locationIdInt : undefined,
-      },
-      listType: AppTableListTypes.SEARCH_RESULT,
-    });
+    if (route.params?.listType !== undefined) {
+      const params =
+        route.params.listType === AppTableListTypes.BY_CLUB_ID
+          ? {
+              headerTitle: route.params.listScreenHeaderTitle,
+              searchTerm: {
+                date: values.date ?? undefined,
+                distance: values.distance ?? undefined,
+                tableType: values.table_type ?? undefined,
+                clubId: route.params.initialSearchTerms.clubId,
+                locationId: locationIdInt !== null ? locationIdInt : undefined,
+              },
+              listType: route.params.listType,
+            }
+          : route.params.listType === AppTableListTypes.BY_LOCATION
+          ? {
+              headerTitle: route.params.listScreenHeaderTitle,
+              searchTerm: {
+                date: values.date ?? undefined,
+                distance: values.distance ?? undefined,
+                tableType: values.table_type ?? undefined,
+                clubId: route.params.initialSearchTerms?.clubId,
+                locationId:
+                  locationIdInt !== null
+                    ? locationIdInt
+                    : route.params.initialSearchTerms.locationId,
+              },
+              listType: route.params.listType,
+            }
+          : {
+              headerTitle: route.params.listScreenHeaderTitle,
+              searchTerm: {
+                date: values.date ?? undefined,
+                distance: values.distance ?? undefined,
+                tableType: values.table_type ?? undefined,
+                clubId: route.params.initialSearchTerms?.clubId,
+                locationId: locationIdInt !== null ? locationIdInt : undefined,
+              },
+              listType: route.params.listType,
+            };
+
+      navigation.navigate(CustomerStackRoutes.TABLE_LIST, params);
+    } else {
+      navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
+        headerTitle: "Search Result",
+        searchTerm: {
+          date: values.date ?? undefined,
+          distance: values.distance ?? undefined,
+          tableType: values.table_type ?? undefined,
+          locationId: locationIdInt !== null ? locationIdInt : undefined,
+        },
+        listType: AppTableListTypes.SEARCH_RESULT,
+      });
+    }
   });
 
   return (
@@ -115,6 +178,7 @@ const TableSearchScreen = () => {
                 dataSet={locationList}
                 loading={isLocationsLoading}
                 containerStyle={{flexGrow: 1, flexShrink: 1}}
+                initialValue={route.params?.initialSearchTerms?.locationId?.toString()}
                 onSelectItem={item => {
                   field.onChange(item?.id ?? "");
                 }}
@@ -257,7 +321,6 @@ const TableSearchScreen = () => {
                   backgroundColor: splitAppTheme.colors.primary[300],
                 }}
                 onValuesChangeFinish={rangeData => {
-                  console.log("range data", rangeData);
                   field.onChange(rangeData);
                 }}
                 values={field.value !== null ? field.value : [0, 100]}
@@ -299,6 +362,7 @@ const TableSearchScreen = () => {
               control={control}
               render={({field}) => (
                 <SplitappSingleSelectCalender
+                  initialDate={field.value ?? undefined}
                   onChange={data => {
                     field.onChange(data.dateString);
                   }}
