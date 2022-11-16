@@ -12,11 +12,16 @@ function useGetGeolocationQuery() {
       return new Promise<GeolocationPosition>((resolve, reject) => {
         Geolocation.requestAuthorization(
           () => {
+            console.log("permission success");
             Geolocation.getCurrentPosition(
               (position: GeolocationPosition) => {
+                console.log("getCurrentPosition success", position);
+
                 resolve(position);
               },
               (error: GeolocationError) => {
+                console.log("getCurrentPosition error", error.message);
+
                 switch (error.code) {
                   case error.PERMISSION_DENIED:
                     Alert.alert("Error", "Permission denied");
@@ -38,6 +43,8 @@ function useGetGeolocationQuery() {
             );
           },
           (error: GeolocationError) => {
+            console.log("permission error", error.message);
+
             switch (error.code) {
               case error.PERMISSION_DENIED:
                 Alert.alert("Error", "Permission denied");

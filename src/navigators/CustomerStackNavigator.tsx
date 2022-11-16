@@ -1,10 +1,11 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import {TouchableOpacity, View} from "react-native";
+import {isSplitTableDetails} from "@utils/table";
+import {Text, TouchableOpacity, View} from "react-native";
+import {AppTableListTypes} from "@constants/table";
 import {CustomerStackRoutes} from "@constants/routes";
-import BookingStackNavigator from "./BookingStackNavigator";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import TableListScreen from "@screens/CUSTOMER/TableListScreen";
 import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
@@ -15,17 +16,14 @@ import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
 import CustomerAuthStackNavigator from "./CustomerAuthStackNavigator";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CompositeNavigationProp, RouteProp} from "@react-navigation/native";
-import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import {isSplitTableDetails} from "@utils/table";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
-import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
@@ -38,7 +36,6 @@ import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/In
 import BookingSelectLocationScreen from "@screens/CUSTOMER/BookTableScreen/BookingSelectLocationScreen";
 import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
 import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
-import {AppTableListTypes} from "@constants/table";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -48,18 +45,21 @@ type NavitaionProps = CompositeNavigationProp<
 >;
 
 const CustomerStackNavigator = () => {
-  const {data: authData} = useGetAuthDataQuery();
-
-  console.log("auth data in CustomerStackNavigator", authData);
+  const {data: profileData, isLoading: isLoadingProfileData} =
+    useGetProfileQuery();
 
   const showLocationScreen =
-    !authData?.location && !authData?.latitude && !authData?.longitude;
+    !profileData?.location && !profileData?.latitude && !profileData?.longitude;
+
+  if (isLoadingProfileData) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <CustomerStack.Navigator
       id={CUSTOMER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!authData ? (
+      {!profileData ? (
         <React.Fragment>
           <CustomerStack.Screen
             component={OnboardingScreen}

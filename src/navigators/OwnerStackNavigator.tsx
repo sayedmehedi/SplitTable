@@ -1,8 +1,8 @@
 import React from "react";
+import {Text} from "react-native";
 import {OwnerStackRoutes} from "@constants/routes";
 import {RouteProp} from "@react-navigation/native";
 import {OwnerStackParamList} from "@src/navigation";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
 import {OWNER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import OwnerAuthStackNavigator from "./OwnerAuthStackNavigator";
@@ -13,19 +13,20 @@ import {
   StackNavigationOptions,
 } from "@react-navigation/stack";
 import MyTablesScreen from "@screens/OWNER/MyTablesScreen";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
+import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
 import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
 import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
 import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
-import InformationScreen from "@screens/OWNER/OwnerAccountScreen/InformationScreen";
 import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
-import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
-import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
-import InitialSelectLocationScreen from "@screens/OWNER/OwnerAuthScreen/InitialSelectLocationScreen";
-import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
-import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
-import ClubSliderImagesScreen from "@screens/OWNER/OwnerAccountScreen/ClubSliderImagesScreen";
 import HolidaysScreen from "@screens/OWNER/OwnerAccountScreen/HolidaysScreen";
 import AddHolidayScreen from "@screens/OWNER/OwnerAccountScreen/AddHolidayScreen";
+import InformationScreen from "@screens/OWNER/OwnerAccountScreen/InformationScreen";
+import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
+import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
+import ClubSliderImagesScreen from "@screens/OWNER/OwnerAccountScreen/ClubSliderImagesScreen";
+import InitialSelectLocationScreen from "@screens/OWNER/OwnerAuthScreen/InitialSelectLocationScreen";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -93,16 +94,21 @@ const upsertTableScreenOptions:
 });
 
 const OwnerStackNavigator = () => {
-  const {data: authData} = useGetAuthDataQuery();
+  const {data: profileData, isLoading: isLoadingProfileData} =
+    useGetProfileQuery();
 
   const showLocationScreen =
-    !authData?.location && !authData?.latitude && !authData?.longitude;
+    !profileData?.location && !profileData?.latitude && !profileData?.longitude;
+
+  if (isLoadingProfileData) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <OwnerStack.Navigator
       id={OWNER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!authData ? (
+      {!profileData ? (
         <OwnerStack.Screen
           component={OwnerAuthStackNavigator}
           name={OwnerStackRoutes.OWNER_AUTH}
