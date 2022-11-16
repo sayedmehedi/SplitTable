@@ -27,6 +27,8 @@ import {
   GetFaqsQueryParams,
   GetProfileDataResponse,
   GetFaqsResponse,
+  SearchUserQueryParams,
+  SearchUserResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -39,6 +41,30 @@ export class UserService implements IUserService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  searchUser(
+    params: SearchUserQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<SearchUserResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<SearchUserResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<SearchUserResponse>(`search-user`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   getFaqs({
     userType,

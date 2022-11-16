@@ -2,7 +2,11 @@ import {Container} from "inversify";
 import {MenuService} from "./services/MenuService";
 import {AuthService} from "./services/AuthService";
 import {ClubService} from "./services/ClubService";
+import {UserService} from "./services/UserService";
+import {ChatService} from "./services/ChatService";
 import {ReviewService} from "./services/ReviewService";
+import {IChatService} from "@core/services/IChatService";
+import {IUserService} from "@core/services/IUserService";
 import {IMenuService} from "@core/services/IMenuService";
 import {IAuthService} from "@core/services/IAuthService";
 import {IClubService} from "@core/services/IClubService";
@@ -12,8 +16,6 @@ import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {ILocationService} from "@core/services/ILocationService";
 import {NotificationService} from "./services/NotificationService";
 import {INotificationService} from "@core/services/INotificationService";
-import {UserService} from "./services/UserService";
-import {IUserService} from "@core/services/IUserService";
 
 export const registerLaravelServices = (container: Container) => {
   container
@@ -43,4 +45,8 @@ export const registerLaravelServices = (container: Container) => {
   container
     .bind<IUserService>(ServiceProviderTypes.UserService)
     .to(UserService);
+
+  container
+    .bind<IChatService>(ServiceProviderTypes.UserService)
+    .to(ChatService);
 };

@@ -9,29 +9,31 @@ import {
   useQueryClient,
   UseMutationOptions,
 } from "@tanstack/react-query";
+import {ApplicationError} from "@core/domain/ApplicationError";
 
 const service = container.get<IUserService>(ServiceProviderTypes.UserService);
 
 function useAddUserImageMutation(
   options: UseMutationOptions<
     AddUserImageResponse,
-    Error,
+    ApplicationError,
     AddUserImageRequest
   > = {},
 ) {
   const queryClient = useQueryClient();
 
-  return useMutation<AddUserImageResponse, Error, AddUserImageRequest>(
-    value => service.addImage(value),
-    {
-      ...options,
-      async onSuccess(_data, _variables, _context) {
-        await queryClient.invalidateQueries([QueryKeys.IMAGE]);
+  return useMutation<
+    AddUserImageResponse,
+    ApplicationError,
+    AddUserImageRequest
+  >(value => service.addImage(value), {
+    ...options,
+    async onSuccess(_data, _variables, _context) {
+      await queryClient.invalidateQueries([QueryKeys.IMAGE]);
 
-        options.onSuccess?.(_data, _variables, _context);
-      },
+      options.onSuccess?.(_data, _variables, _context);
     },
-  );
+  });
 }
 
 export default useAddUserImageMutation;

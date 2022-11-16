@@ -1,5 +1,7 @@
 export const QueryKeys = {
   FAQ: "faq",
+  USER: "user",
+  CHAT: "chat",
   MENU: "menu",
   CLUB: "club",
   IMAGE: "image",

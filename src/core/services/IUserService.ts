@@ -19,9 +19,17 @@ import {
   GetFaqsQueryParams,
   GetFaqsResponse,
   GetProfileDataResponse,
+  SearchUserQueryParams,
+  SearchUserResponse,
 } from "@src/models";
 
 export interface IUserService {
+  searchUser(
+    params: SearchUserQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<SearchUserResponse, GlobalAxiosRequestConfig>
+  >;
+
   getProfile(
     userId?: number,
   ): CancelablePromise<

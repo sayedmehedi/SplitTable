@@ -841,3 +841,83 @@ export type ResetPasswordRequest = {
   password_confirmation: string;
 };
 export type ResetPasswordResponse = ResponseResult;
+
+export interface ConversationItem {
+  id: number;
+  user_name: string;
+  user_image: string;
+  receiver_id: number;
+  is_accepted: number;
+  has_msg: boolean;
+  message: {
+    title: string;
+    created_at: string;
+  };
+}
+
+export interface ConversationMessage {
+  id: number;
+  sender_name: string;
+  sender_image: string;
+  receiver_name: string;
+  receiver_id: number;
+  receiver_image: string;
+  title: string;
+  created_at: string;
+}
+
+type GetConversationsQueryParams = PaginationQueryParams;
+type GetConversationsResponse = {
+  total_unseen_messages: number;
+  messages: SimplePaginatedResponse<ConversationItem>;
+};
+
+type GetConversationMessagesQueryParams = PaginationQueryParams & {
+  messageId: number;
+};
+
+type GetConversationMessagesResponse = {
+  messages: SimplePaginatedResponse<ConversationMessage>;
+  receiver: {
+    id: number;
+    name: string;
+    image: string;
+  };
+};
+
+export interface SeachUserSchema {
+  id: number;
+  name: string;
+  email: string;
+  image: string;
+  location: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+}
+
+type SearchUserQueryParams = PaginationQueryParams & {
+  q: string;
+};
+
+type SearchUserResponse = {
+  users: SimplePaginatedResponse<SeachUserSchema>;
+};
+
+type SendInvitationRequest = {
+  receiverId: number;
+};
+
+type SendInvitationResponse = ResponseResult;
+
+type AcceptInvitationRequest = {
+  receiverId: number;
+};
+
+type AcceptInvitationResponse = ResponseResult;
+
+type SendMessageRequest = {
+  receiverId: number;
+  message: string;
+};
+type SendMessageResponse = ResponseResult;
