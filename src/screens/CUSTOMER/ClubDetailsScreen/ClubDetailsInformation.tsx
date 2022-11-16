@@ -407,8 +407,10 @@ const ClubDetailsInformation = ({clubId}: Props) => {
           onPress={() => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
               listType: AppTableListTypes.BY_CLUB_ID,
-              clubId: clubDetailsResponse.club.id,
               headerTitle: clubDetailsResponse.club.name,
+              searchTerm: {
+                clubId: clubDetailsResponse.club.id,
+              },
             });
           }}>
           <LinearGradient

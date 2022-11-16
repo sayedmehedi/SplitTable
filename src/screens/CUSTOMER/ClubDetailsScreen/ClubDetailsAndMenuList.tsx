@@ -166,9 +166,11 @@ const ClubDetailsAndMenuListScreen = ({clubId, clubName}: Props) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
-              clubId,
               headerTitle: clubName,
               listType: AppTableListTypes.BY_CLUB_ID,
+              searchTerm: {
+                clubId,
+              },
             });
           }}>
           <LinearGradient
