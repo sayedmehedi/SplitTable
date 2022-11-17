@@ -1,5 +1,4 @@
 import {AxiosResponse} from "axios";
-import CancelablePromise from "cancelable-promise";
 import {
   LoginRequest,
   LoginResponse,
@@ -8,19 +7,24 @@ import {
   LogoutResponse,
   VerifyEmailRequest,
   VerifyEmailResponse,
-  GetProfileDataResponse,
   GlobalAxiosRequestConfig,
   ResendEmailVerificationCodeRequest,
   ResendEmailVerificationCodeResponse,
   ResponseResult,
   ResetPasswordRequest,
   ResetPasswordResponse,
+  SocialLoginRequest,
+  SocialLoginResponse,
 } from "@src/models";
 
 export interface IAuthService {
   login(
     data: LoginRequest,
   ): Promise<AxiosResponse<LoginResponse, GlobalAxiosRequestConfig>>;
+
+  socialLogin(
+    data: SocialLoginRequest,
+  ): Promise<AxiosResponse<SocialLoginResponse, GlobalAxiosRequestConfig>>;
 
   logout(): Promise<AxiosResponse<LogoutResponse, GlobalAxiosRequestConfig>>;
 

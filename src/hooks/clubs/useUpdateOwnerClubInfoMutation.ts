@@ -30,11 +30,6 @@ export default function useUpdateOwnerClubInfoMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useMutation<
     UpdateOwnerClubInfoResponse,
@@ -43,7 +38,7 @@ export default function useUpdateOwnerClubInfoMutation(
   >(mutationFunction, {
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([QueryKeys.CLUB, "INFO"]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

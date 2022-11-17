@@ -35,14 +35,8 @@ export default function useLogoutMutation(
     },
   });
 
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<LogoutResponse, ApplicationError>(mutationFunction, {
-    ...optionsRef.current,
+    ...options,
     async onMutate(variables) {
       await deleteAuthData();
       queryClient.removeQueries([]);
@@ -50,7 +44,7 @@ export default function useLogoutMutation(
       changeAuthType(null);
       // queryClient.clear();
 
-      optionsRef.current?.onMutate?.(variables);
+      options?.onMutate?.(variables);
     },
   });
 }

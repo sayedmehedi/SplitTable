@@ -30,20 +30,16 @@ export default function useDeleteOwnerClubMenuMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useMutation<
     DeleteOwnerClubMenuResponse,
     ApplicationError,
     DeleteOwnerClubMenuRequest
   >(mutationFunction, {
+    ...options,
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([QueryKeys.MENU]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

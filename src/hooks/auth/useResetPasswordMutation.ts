@@ -30,15 +30,9 @@ export default function useResetPasswordMutation(
     ResetPasswordRequest
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<
     ResetPasswordResponse,
     ApplicationError,
     ResetPasswordRequest
-  >(loginMutationFunction, optionsRef.current);
+  >(loginMutationFunction, options);
 }

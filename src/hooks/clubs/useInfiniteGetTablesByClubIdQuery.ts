@@ -61,12 +61,6 @@ export default function useInfiniteGetTablesByClubIdQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetSplitTablesByClubIdResponse | GetBookedTablesByClubIdResponse,
     ApplicationError,
@@ -75,6 +69,6 @@ export default function useInfiniteGetTablesByClubIdQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "by-club-id", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

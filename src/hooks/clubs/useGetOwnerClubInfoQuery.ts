@@ -28,15 +28,9 @@ const queryFn: QueryFunction<ClubInfo, QueryKey> = ({
 export default function useGetOwnerClubInfoQuery(
   options?: UseQueryOptions<ClubInfo, ApplicationError, ClubInfo, QueryKey>,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<ClubInfo, ApplicationError, ClubInfo, QueryKey>(
     [QueryKeys.CLUB, "INFO"],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

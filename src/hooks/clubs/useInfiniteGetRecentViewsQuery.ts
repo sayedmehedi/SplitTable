@@ -48,12 +48,6 @@ export default function useInfiniteGetRecentViewsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetRecentViewsReponse,
     ApplicationError,
@@ -62,6 +56,6 @@ export default function useInfiniteGetRecentViewsQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "recent-viewed", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

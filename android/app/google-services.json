@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "279694335608",
+    "project_id": "split-tables-app",
+    "storage_bucket": "split-tables-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279694335608:android:bab6507983435ba517178d",
+        "android_client_info": {
+          "package_name": "com.splittable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279694335608-loc7uludmsqdi8i7g2hfv33nbv63m1ei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.splittable",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "279694335608-iukesl9p12ilraqs6k2nlu63g5rp3m4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc_4dFZZ7cB8LNs-Q6U3UFJMwKFE4JXnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279694335608-iukesl9p12ilraqs6k2nlu63g5rp3m4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

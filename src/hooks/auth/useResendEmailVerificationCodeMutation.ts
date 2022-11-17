@@ -30,15 +30,9 @@ export default function useResendEmailVerificationCodeMutation(
     ResendEmailVerificationCodeRequest
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<
     ResendEmailVerificationCodeResponse,
     ApplicationError,
     ResendEmailVerificationCodeRequest
-  >(mutationFunction, optionsRef.current);
+  >(mutationFunction, options);
 }

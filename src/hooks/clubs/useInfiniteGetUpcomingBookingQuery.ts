@@ -51,12 +51,6 @@ export default function useInfiniteGetUpcomingBookingQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetUpcomingBookingResponse,
     ApplicationError,
@@ -65,6 +59,6 @@ export default function useInfiniteGetUpcomingBookingQuery(
   >(
     [QueryKeys.UPCOMING_BOOKING, "LIST", "infinite", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

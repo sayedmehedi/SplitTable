@@ -1,9 +1,9 @@
 import RNFetchBlob from "rn-fetch-blob";
 import {Axios, AxiosResponse} from "axios";
 import {inject, injectable} from "inversify";
-import CancelablePromise from "cancelable-promise";
 import {ConfigService} from "@config/ConfigService";
 import {IAuthService} from "@core/services/IAuthService";
+import {parseRnFetchBlobJsonResponse} from "@utils/http";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {
   LoginRequest,
@@ -11,16 +11,17 @@ import {
   SignupRequest,
   SignupResponse,
   LogoutResponse,
+  ResponseResult,
+  SocialLoginResponse,
+  SocialLoginRequest,
   VerifyEmailRequest,
   VerifyEmailResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
   GlobalAxiosRequestConfig,
   ResendEmailVerificationCodeRequest,
   ResendEmailVerificationCodeResponse,
-  ResponseResult,
-  ResetPasswordRequest,
-  ResetPasswordResponse,
 } from "@src/models";
-import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -31,6 +32,15 @@ export class AuthService implements IAuthService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+  socialLogin(
+    data: SocialLoginRequest,
+  ): Promise<AxiosResponse<SocialLoginResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<SocialLoginResponse>("social-login", {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+    });
+  }
 
   resetPassword(
     data: ResetPasswordRequest,

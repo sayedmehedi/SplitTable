@@ -87,6 +87,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetOwnerClubHolidaysResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting here");
         controller.abort();
       });
 
@@ -197,6 +198,7 @@ export class ClubService implements IClubService {
       AxiosResponse<ClubInfo, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting here");
         controller.abort();
       });
 
@@ -361,6 +363,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetOwnerTablesResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting here");
         controller.abort();
       });
 
@@ -390,6 +393,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetBookingHistoryResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting here");
         controller.abort();
       });
 
@@ -420,6 +424,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetUpcomingBookingResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting here");
         controller.abort();
       });
 
@@ -468,6 +473,7 @@ export class ClubService implements IClubService {
       >
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting here");
         controller.abort();
       });
 
@@ -515,6 +521,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetTableDetailsResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting book table");
         controller.abort();
       });
 
@@ -538,6 +545,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetClubDetailsResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting club details");
         controller.abort();
       });
 
@@ -566,6 +574,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetTablesBySearchTermResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting tables by search term");
         controller.abort();
       });
 
@@ -629,6 +638,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetTablesByLocationResponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting tables by location");
         controller.abort();
       });
 
@@ -657,6 +667,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetBookedTablesReponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting booked tables");
         controller.abort();
       });
 
@@ -681,6 +692,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetRecentViewsReponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting recent views");
         controller.abort();
       });
 
@@ -701,10 +713,15 @@ export class ClubService implements IClubService {
   > {
     const controller = new AbortController();
 
+    controller.signal.addEventListener("abort", () => {
+      console.log("split table aborted");
+    });
+
     return new CancelablePromise<
       AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting split tables");
         controller.abort();
       });
 
@@ -729,6 +746,7 @@ export class ClubService implements IClubService {
       AxiosResponse<GetSplitTablesReponse, GlobalAxiosRequestConfig>
     >((resolve, reject, onCancel) => {
       onCancel(() => {
+        console.log("aborting join tables");
         controller.abort();
       });
 

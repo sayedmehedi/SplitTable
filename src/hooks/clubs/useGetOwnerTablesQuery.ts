@@ -46,20 +46,10 @@ export default function useGetOwnerTablesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetOwnerTablesResponse,
     ApplicationError,
     GetOwnerTablesResponse,
     QueryKey
-  >(
-    [QueryKeys.TABLE, "LIST", "owner", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.TABLE, "LIST", "owner", queryParams], queryFn, options);
 }

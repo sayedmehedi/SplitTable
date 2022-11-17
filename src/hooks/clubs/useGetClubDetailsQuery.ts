@@ -32,16 +32,10 @@ export default function useGetClubDetailsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetClubDetailsResponse,
     ApplicationError,
     GetClubDetailsResponse,
     QueryKey
-  >([QueryKeys.CLUB, "DETAILS", clubId], queryFn, optionsRef.current);
+  >([QueryKeys.CLUB, "DETAILS", clubId], queryFn, options);
 }

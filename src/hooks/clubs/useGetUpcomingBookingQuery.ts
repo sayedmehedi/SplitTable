@@ -48,20 +48,10 @@ export default function useGetUpcomingBookingQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetUpcomingBookingResponse,
     ApplicationError,
     GetUpcomingBookingResponse,
     QueryKey
-  >(
-    [QueryKeys.UPCOMING_BOOKING, "LIST", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.UPCOMING_BOOKING, "LIST", queryParams], queryFn, options);
 }

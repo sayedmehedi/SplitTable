@@ -48,12 +48,6 @@ export default function useInfiniteGetOwnerTablesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetOwnerTablesResponse,
     ApplicationError,
@@ -62,6 +56,6 @@ export default function useInfiniteGetOwnerTablesQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "owner", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

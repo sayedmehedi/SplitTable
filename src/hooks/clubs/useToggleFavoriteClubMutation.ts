@@ -31,15 +31,9 @@ export default function useToggleFavoriteClubMutation(
     ToggleFavoriteClubRequest
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<
     ToggleFavoriteClubResponse,
     ApplicationError,
     ToggleFavoriteClubRequest
-  >(mutationFunction, optionsRef.current);
+  >(mutationFunction, options);
 }

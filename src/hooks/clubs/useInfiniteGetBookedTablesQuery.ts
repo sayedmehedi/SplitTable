@@ -48,12 +48,6 @@ export default function useInfiniteGetBookedTablesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetBookedTablesReponse,
     ApplicationError,
@@ -62,6 +56,6 @@ export default function useInfiniteGetBookedTablesQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "booked", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

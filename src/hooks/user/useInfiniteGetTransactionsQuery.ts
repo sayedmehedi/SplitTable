@@ -47,20 +47,10 @@ export default function useInfiniteGetTransactionsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetTransactionsResponse,
     ApplicationError,
     GetTransactionsResponse,
     QueryKey
-  >(
-    [QueryKeys.TRANSACTION, "LIST", "infinite", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.TRANSACTION, "LIST", "infinite", queryParams], queryFn, options);
 }

@@ -1,8 +1,7 @@
 import React from "react";
 import {Platform, View} from "react-native";
-import AuthTypeProvider from "./AuthTypeProvider";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {AppStateStatus, Text} from "react-native";
+import AuthTypeProvider from "./AuthTypeProvider";
 import {splitAppNavigationTheme} from "@src/theme";
 import {onlineManager} from "@tanstack/react-query";
 import {focusManager} from "@tanstack/react-query";
@@ -11,7 +10,9 @@ import {useAppState} from "@react-native-community/hooks";
 import AuthDataIsLoaded from "@components/AuthDataIsLoaded";
 import BearerTokenAttacher from "@components/BearerTokenAttacher";
 import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {GoogleSignin} from "@react-native-google-signin/google-signin";
 // import {PersistQueryClientProvider} from "@tanstack/react-query-persist-client";
 import {createAsyncStoragePersister} from "@tanstack/query-async-storage-persister";
 import {
@@ -19,6 +20,11 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+
+GoogleSignin.configure({
+  webClientId:
+    "279694335608-iukesl9p12ilraqs6k2nlu63g5rp3m4g.apps.googleusercontent.com",
+});
 
 onlineManager.setEventListener(setOnline => {
   return NetInfo.addEventListener(state => {

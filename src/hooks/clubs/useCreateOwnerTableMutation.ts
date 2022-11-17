@@ -27,24 +27,20 @@ export default function useCreateOwnerTableMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useMutation<
     CreateOwnerTableResponse,
     ApplicationError,
     CreateOwnerTableRequest
   >(mutationFunction, {
+    ...options,
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([
         QueryKeys.TABLE,
         "LIST",
         "infinite",
       ]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

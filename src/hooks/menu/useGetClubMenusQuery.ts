@@ -47,20 +47,10 @@ export default function useGetClubMenusQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetClubMenusResponse,
     ApplicationError,
     GetClubMenusResponse,
     QueryKey
-  >(
-    [QueryKeys.MENU, "LIST", "by-club-id", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.MENU, "LIST", "by-club-id", queryParams], queryFn, options);
 }

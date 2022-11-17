@@ -29,17 +29,13 @@ export default function useAddClubReviewMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useMutation<
     AddClubReviewResponse,
     ApplicationError,
     AddClubReviewRequest
   >(mutationFunction, {
+    ...options,
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([
         QueryKeys.REVIEW,
@@ -47,7 +43,7 @@ export default function useAddClubReviewMutation(
         "infinite",
         {ownerId: variables.reviewerId},
       ]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

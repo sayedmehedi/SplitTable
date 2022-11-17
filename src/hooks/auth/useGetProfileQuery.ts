@@ -33,13 +33,8 @@ export default function useGetProfileQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
   const {data: authData} = useGetAuthDataQuery();
   const {mutateAsync: addAuthData} = useAddAuthDataMutation();
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useQuery<
     GetProfileDataResponse,
@@ -47,7 +42,7 @@ export default function useGetProfileQuery(
     GetProfileDataResponse,
     QueryKey
   >([QueryKeys.PROFILE, userId], queryFn, {
-    ...optionsRef.current,
+    ...options,
     async onSuccess(data) {
       const {location, latitude, longitude, name, email, phone, image} = data;
 
@@ -65,7 +60,7 @@ export default function useGetProfileQuery(
 
         await addAuthData(newAuthData);
       }
-      optionsRef.current?.onSuccess?.(data);
+      options?.onSuccess?.(data);
     },
   });
 }

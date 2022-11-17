@@ -37,20 +37,10 @@ export default function useGetSplitTablesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetSplitTablesReponse,
     ApplicationError,
     GetSplitTablesReponse,
     QueryKey
-  >(
-    [QueryKeys.TABLE, "LIST", "split", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.TABLE, "LIST", "split", queryParams], queryFn, options);
 }

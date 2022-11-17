@@ -41,16 +41,10 @@ export default function useSearchUserQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     SearchUserResponse,
     ApplicationError,
     SearchUserResponse,
     QueryKey
-  >([QueryKeys.USER, "SEARCH", queryParams], queryFn, optionsRef.current);
+  >([QueryKeys.USER, "SEARCH", queryParams], queryFn, options);
 }

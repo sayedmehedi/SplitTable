@@ -54,12 +54,6 @@ export default function useInfiniteGetTablesBySearchTermQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetTablesBySearchTermResponse,
     ApplicationError,
@@ -68,6 +62,6 @@ export default function useInfiniteGetTablesBySearchTermQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "by-search", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

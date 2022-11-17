@@ -33,18 +33,15 @@ export default function useCreateOwnerClubHolidayMutation(
   const queryClient = useQueryClient();
   const optionsRef = React.useRef(options);
 
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<
     CreateOwnerClubHolidayResponse,
     ApplicationError,
     CreateOwnerClubHolidayRequest
   >(mutationFunction, {
+    ...options,
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([QueryKeys.HOLIDAY]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

@@ -53,12 +53,6 @@ export default function useInfiniteGetNotificationsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetNotificationsResponse,
     ApplicationError,
@@ -67,6 +61,6 @@ export default function useInfiniteGetNotificationsQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "notifications", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

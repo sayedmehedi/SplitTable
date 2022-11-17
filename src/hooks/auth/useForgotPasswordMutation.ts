@@ -26,14 +26,8 @@ const loginMutationFunction: MutationFunction<
 export default function useForgotPasswordMutation(
   options?: UseMutationOptions<ResponseResult, ApplicationError, string>,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<ResponseResult, ApplicationError, string>(
     loginMutationFunction,
-    optionsRef.current,
+    options,
   );
 }

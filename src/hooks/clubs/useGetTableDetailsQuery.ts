@@ -32,16 +32,10 @@ export default function useGetTableDetailsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetTableDetailsResponse,
     ApplicationError,
     GetTableDetailsResponse,
     QueryKey
-  >([QueryKeys.TABLE, "DETAILS", tableId], queryFn, optionsRef.current);
+  >([QueryKeys.TABLE, "DETAILS", tableId], queryFn, options);
 }

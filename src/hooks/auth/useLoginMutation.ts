@@ -26,14 +26,8 @@ const loginMutationFunction: MutationFunction<
 export default function useLoginMutation(
   options?: UseMutationOptions<LoginResponse, ApplicationError, LoginRequest>,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<LoginResponse, ApplicationError, LoginRequest>(
     loginMutationFunction,
-    optionsRef.current,
+    options,
   );
 }

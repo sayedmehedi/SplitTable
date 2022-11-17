@@ -50,20 +50,10 @@ export default function useInfiniteGetFavoritesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetFavoriteClubsResponse,
     ApplicationError,
     GetFavoriteClubsResponse,
     QueryKey
-  >(
-    [QueryKeys.FAVORITE, "LIST", "infinite", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.FAVORITE, "LIST", "infinite", queryParams], queryFn, options);
 }

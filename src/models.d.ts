@@ -921,3 +921,14 @@ type SendMessageRequest = {
   message: string;
 };
 type SendMessageResponse = ResponseResult;
+
+export type SocialLoginRequest = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+export type SocialLoginResponse = ResponseResult<{
+  success: string;
+  user: AuthData;
+}>;

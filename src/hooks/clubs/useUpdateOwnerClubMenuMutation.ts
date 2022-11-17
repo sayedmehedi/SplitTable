@@ -30,11 +30,6 @@ export default function useUpdateOwnerClubMenuMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useMutation<
     UpdateOwnerClubMenuResponse,
@@ -43,7 +38,7 @@ export default function useUpdateOwnerClubMenuMutation(
   >(mutationFunction, {
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([QueryKeys.MENU]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

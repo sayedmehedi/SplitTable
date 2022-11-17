@@ -43,20 +43,10 @@ export default function useGetClubsByLocationQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetTablesByLocationResponse,
     ApplicationError,
     GetTablesByLocationResponse,
     QueryKey
-  >(
-    [QueryKeys.TABLE, "LIST", "by-location", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.TABLE, "LIST", "by-location", queryParams], queryFn, options);
 }

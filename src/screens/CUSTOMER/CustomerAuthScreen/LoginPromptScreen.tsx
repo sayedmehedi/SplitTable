@@ -1,8 +1,11 @@
-import {CustomerAuthStackRoutes} from "@constants/routes";
-import {useDimensions} from "@react-native-community/hooks";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {StackScreenProps} from "@react-navigation/stack";
 import React from "react";
+import {splitAppTheme} from "@src/theme";
+import Feather from "react-native-vector-icons/Feather";
+import LinearGradient from "react-native-linear-gradient";
+import {StackScreenProps} from "@react-navigation/stack";
+import {CustomerAuthStackRoutes} from "@constants/routes";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import {CompositeScreenProps} from "@react-navigation/native";
 import {
   Image,
   Text,
@@ -11,16 +14,15 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Feather from "react-native-vector-icons/Feather";
-
 import {
-  CustomerAuthStackParamList,
-  CustomerStackParamList,
   RootStackParamList,
+  CustomerStackParamList,
+  CustomerAuthStackParamList,
 } from "@src/navigation";
-import {splitAppTheme} from "@src/theme";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useFacobookLoginMutation from "@hooks/auth/useFacobookLoginMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useGoogleLoginMutation from "@hooks/auth/useGoogleLoginMutation";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -34,13 +36,27 @@ type Props = CompositeScreenProps<
 >;
 
 const LoginPromptScreen = ({navigation}: Props) => {
-  const {
-    window: {width},
-  } = useDimensions();
-
   const handleEmailLogin = () => {
     navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
   };
+
+  const {
+    error: fbError,
+    data: fbLoginResponse,
+    mutate: facebookLogin,
+    isLoading: isLogginWithFb,
+  } = useFacobookLoginMutation();
+  useHandleNonFieldError(fbError);
+  useHandleResponseResultError(fbLoginResponse);
+
+  const {
+    error: gglError,
+    data: gglLoginResponse,
+    mutate: googleLogin,
+    isLoading: isLogginWithGgl,
+  } = useGoogleLoginMutation();
+  useHandleNonFieldError(gglError);
+  useHandleResponseResultError(gglLoginResponse);
 
   return (
     <View
@@ -99,6 +115,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
             }}>
             <View>
               <TouchableOpacity
+                disabled={isLogginWithFb || isLogginWithGgl}
                 style={{
                   padding: splitAppTheme.space[4],
                   width: splitAppTheme.sizes.full,
@@ -124,6 +141,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
                 marginTop: splitAppTheme.space[4],
               }}>
               <TouchableOpacity
+                disabled={isLogginWithFb || isLogginWithGgl}
                 style={{
                   padding: splitAppTheme.space[4],
                   width: splitAppTheme.sizes.full,
@@ -183,6 +201,8 @@ const LoginPromptScreen = ({navigation}: Props) => {
                 flexDirection: "row",
               }}>
               <TouchableOpacity
+                disabled={isLogginWithFb || isLogginWithGgl}
+                onPress={() => facebookLogin()}
                 style={{
                   width: 50,
                   height: 50,
@@ -199,6 +219,8 @@ const LoginPromptScreen = ({navigation}: Props) => {
               </TouchableOpacity>
 
               <TouchableOpacity
+                onPress={() => googleLogin()}
+                disabled={isLogginWithFb || isLogginWithGgl}
                 style={{
                   width: 50,
                   height: 50,
@@ -216,6 +238,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
               </TouchableOpacity>
 
               <TouchableOpacity
+                disabled={isLogginWithFb || isLogginWithGgl}
                 style={{
                   width: 50,
                   height: 50,
@@ -252,6 +275,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
 
               <View>
                 <TouchableOpacity
+                  disabled={isLogginWithFb || isLogginWithGgl}
                   onPress={() => {
                     navigation.navigate(CustomerAuthStackRoutes.SIGNUP);
                   }}>

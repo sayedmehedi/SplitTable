@@ -49,20 +49,10 @@ export default function useGetOwnerClubMenusQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetOwnerClubMenusResponse,
     ApplicationError,
     GetOwnerClubMenusResponse,
     QueryKey
-  >(
-    [QueryKeys.MENU, "LIST", "owner", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.MENU, "LIST", "owner", queryParams], queryFn, options);
 }

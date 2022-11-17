@@ -26,14 +26,8 @@ export default function useVerifyEmailMutation(
     VerifyEmailRequest
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<VerifyEmailResponse, ApplicationError, VerifyEmailRequest>(
     mutationFunction,
-    optionsRef.current,
+    options,
   );
 }

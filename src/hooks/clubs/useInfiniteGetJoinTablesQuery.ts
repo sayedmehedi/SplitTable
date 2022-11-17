@@ -48,12 +48,6 @@ export default function useInfiniteGetJoinTablesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetSplitTablesReponse,
     ApplicationError,
@@ -62,6 +56,6 @@ export default function useInfiniteGetJoinTablesQuery(
   >(
     [QueryKeys.TABLE, "LIST", "infinite", "joined", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

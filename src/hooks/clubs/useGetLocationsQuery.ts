@@ -30,16 +30,10 @@ export default function useGetLocationsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetLocationsReposne,
     ApplicationError,
     GetLocationsReposne,
     QueryKey
-  >([QueryKeys.LOCATION, "LIST"], queryFunction, optionsRef.current);
+  >([QueryKeys.LOCATION, "LIST"], queryFunction, options);
 }

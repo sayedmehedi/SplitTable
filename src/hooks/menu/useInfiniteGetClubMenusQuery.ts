@@ -48,12 +48,6 @@ export default function useInfiniteGetClubMenusQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetClubMenusResponse,
     ApplicationError,
@@ -62,6 +56,6 @@ export default function useInfiniteGetClubMenusQuery(
   >(
     [QueryKeys.MENU, "LIST", "infinite", "by-club-id", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

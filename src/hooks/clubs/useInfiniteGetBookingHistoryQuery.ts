@@ -51,12 +51,6 @@ export default function useInfiniteGetBookingHistoryQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetBookingHistoryResponse,
     ApplicationError,
@@ -65,6 +59,6 @@ export default function useInfiniteGetBookingHistoryQuery(
   >(
     [QueryKeys.BOOKING_HISTORY, "LIST", "infinite", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

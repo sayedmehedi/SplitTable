@@ -49,20 +49,10 @@ export default function useInfiniteGetClubReviewsQuery(
     ReviewListQueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetClubReviewsResponse,
     ApplicationError,
     GetClubReviewsResponse,
     ReviewListQueryKey
-  >(
-    [QueryKeys.REVIEW, "LIST", "infinite", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.REVIEW, "LIST", "infinite", queryParams], queryFn, options);
 }

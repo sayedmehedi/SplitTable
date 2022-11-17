@@ -30,20 +30,16 @@ export default function useCreateOwnerClubMenuMutation(
   >,
 ) {
   const queryClient = useQueryClient();
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
 
   return useMutation<
     CreateOwnerClubMenuResponse,
     ApplicationError,
     CreateOwnerClubMenuRequest
   >(mutationFunction, {
+    ...options,
     async onSuccess(data, variables, context) {
       await queryClient.invalidateQueries([QueryKeys.TABLE]);
-      optionsRef.current?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, context);
     },
   });
 }

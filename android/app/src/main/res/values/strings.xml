@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SplitTable</string>
+    <string name="facebook_app_id">830350158376265</string>
+    <string name="facebook_client_token">b4b9b02a8da148d5b1ab1f2bd138e29e</string>
 </resources>

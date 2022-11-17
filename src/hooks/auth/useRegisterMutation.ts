@@ -22,14 +22,8 @@ const mutationFunction: MutationFunction<
 export default function useRegisterMutation(
   options?: UseMutationOptions<SignupResponse, ApplicationError, SignupRequest>,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useMutation<SignupResponse, ApplicationError, SignupRequest>(
     mutationFunction,
-    optionsRef.current,
+    options,
   );
 }

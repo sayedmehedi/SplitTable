@@ -30,20 +30,10 @@ export default function useGetRecentViewsClubsQuery(
     [typeof QueryKeys.TABLE, "LIST", "recent-viewed", GetRecentViewsQueryParams]
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetRecentViewsReponse,
     ApplicationError,
     GetRecentViewsReponse,
     [typeof QueryKeys.TABLE, "LIST", "recent-viewed", GetRecentViewsQueryParams]
-  >(
-    [QueryKeys.TABLE, "LIST", "recent-viewed", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.TABLE, "LIST", "recent-viewed", queryParams], queryFn, options);
 }

@@ -53,20 +53,10 @@ export default function useInfiniteGetOwnerClubHolidays(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetOwnerClubHolidaysResponse,
     ApplicationError,
     GetOwnerClubHolidaysResponse,
     QueryKey
-  >(
-    [QueryKeys.HOLIDAY, "LIST", "infinite", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.HOLIDAY, "LIST", "infinite", queryParams], queryFn, options);
 }

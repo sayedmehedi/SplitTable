@@ -42,20 +42,10 @@ export default function useInfiniteGetFaqsQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetFaqsResponse,
     ApplicationError,
     GetFaqsResponse,
     QueryKey
-  >(
-    [QueryKeys.FAQ, "LIST", "infinite", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.FAQ, "LIST", "infinite", queryParams], queryFn, options);
 }

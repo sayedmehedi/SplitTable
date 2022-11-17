@@ -54,12 +54,6 @@ export default function useInfiniteGetTablesByLocationQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useInfiniteQuery<
     GetTablesByLocationResponse,
     ApplicationError,
@@ -74,6 +68,6 @@ export default function useInfiniteGetTablesByLocationQuery(
   >(
     [QueryKeys.TABLE, "LIST", "INFINITE", "by-location", queryParams],
     queryFn,
-    optionsRef.current,
+    options,
   );
 }

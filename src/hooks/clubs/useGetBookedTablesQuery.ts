@@ -37,20 +37,10 @@ export default function useGetBookedTablesQuery(
     QueryKey
   >,
 ) {
-  const optionsRef = React.useRef(options);
-
-  React.useEffect(() => {
-    optionsRef.current = options;
-  }, [options]);
-
   return useQuery<
     GetBookedTablesReponse,
     ApplicationError,
     GetBookedTablesReponse,
     QueryKey
-  >(
-    [QueryKeys.TABLE, "LIST", "booked", queryParams],
-    queryFn,
-    optionsRef.current,
-  );
+  >([QueryKeys.TABLE, "LIST", "booked", queryParams], queryFn, options);
 }
