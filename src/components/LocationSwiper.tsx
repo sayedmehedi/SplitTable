@@ -45,6 +45,8 @@ const LocationSwiper = ({onItemPress}: Props) => {
   const {data: locationsResponse, isLoading: isLocationLoading} =
     useGetLocationsQuery();
 
+  console.log("locationsResponse", locationsResponse);
+
   const handleItemPress = (item: LocationItem) => {
     onItemPress?.(item);
   };

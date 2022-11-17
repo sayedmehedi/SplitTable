@@ -39,10 +39,10 @@ export default function useLogoutMutation(
     ...options,
     async onMutate(variables) {
       await deleteAuthData();
-      queryClient.removeQueries([]);
+      // queryClient.removeQueries([]);
       // await queryClient.invalidateQueries([QueryKeys.AUTH_DATA]);
+      queryClient.clear();
       changeAuthType(null);
-      // queryClient.clear();
 
       options?.onMutate?.(variables);
     },

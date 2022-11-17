@@ -13,6 +13,8 @@ export default function SplitTables({onItemPress}: Props) {
   const {data: splitTableNEventsResponse, isLoading: isNearbyClubsLoading} =
     useGetSplitTablesQuery();
 
+  console.log("splitTableNEventsResponse", splitTableNEventsResponse);
+
   return (
     <View>
       {isNearbyClubsLoading
