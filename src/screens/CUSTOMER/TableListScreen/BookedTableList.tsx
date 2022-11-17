@@ -1,6 +1,8 @@
 import React from "react";
 import {TTableItem} from "./shared";
 import TableListItem from "./TableListItem";
+import {AppTableTypes} from "@constants/table";
+import {TableCommonSearchParams} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {
   ActivityIndicator,
@@ -10,8 +12,6 @@ import {
   View,
 } from "react-native";
 import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
-import {AppTableTypes} from "@constants/table";
-import {TableCommonSearchParams} from "@src/models";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
@@ -86,7 +86,7 @@ const BookedTableList = ({onItemPress, ...params}: Props) => {
         </View>
       ) : null}
       <FlatList
-        data={clubListData}
+        data={[]}
         onRefresh={refetch}
         refreshing={isRefetching}
         renderItem={renderClubList}

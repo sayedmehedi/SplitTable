@@ -6,6 +6,7 @@ import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import {
   useMutation,
+  useQueryClient,
   MutationFunction,
   UseMutationOptions,
 } from "@tanstack/react-query";
@@ -28,6 +29,12 @@ export default function useLoginMutation(
 ) {
   return useMutation<LoginResponse, ApplicationError, LoginRequest>(
     loginMutationFunction,
-    options,
+    {
+      ...options,
+      async onSuccess(data, variables, context) {
+        // await queryClient.refetchQueries([]);
+        options?.onSuccess?.(data, variables, context);
+      },
+    },
   );
 }

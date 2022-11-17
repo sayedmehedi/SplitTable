@@ -4,15 +4,15 @@ import {LogoutResponse} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {IAuthService} from "@core/services/IAuthService";
-import {AuthTypeContext} from "@providers/AuthTypeProvider";
+// import {AuthTypeContext} from "@providers/AuthTypeProvider";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
 import useDeleteAuthDataMutation from "@hooks/useDeleteAuthDataMutation";
 import {
   useMutation,
+  useQueryClient,
   MutationFunction,
   UseMutationOptions,
-  useQueryClient,
 } from "@tanstack/react-query";
 
 const authService = container.get<IAuthService>(
@@ -27,7 +27,7 @@ export default function useLogoutMutation(
 ) {
   const toast = useAppToast();
   const queryClient = useQueryClient();
-  const {changeAuthType} = React.useContext(AuthTypeContext);
+  // const {changeAuthType} = React.useContext(AuthTypeContext);
 
   const {mutateAsync: deleteAuthData} = useDeleteAuthDataMutation({
     onError(error) {
@@ -39,10 +39,7 @@ export default function useLogoutMutation(
     ...options,
     async onMutate(variables) {
       await deleteAuthData();
-      // queryClient.removeQueries([]);
-      // await queryClient.invalidateQueries([QueryKeys.AUTH_DATA]);
-      queryClient.clear();
-      changeAuthType(null);
+      await queryClient.invalidateQueries([QueryKeys.AUTH_DATA]);
 
       options?.onMutate?.(variables);
     },

@@ -1,9 +1,9 @@
 import React from "react";
 import {BookedTable} from "@src/models";
-import EachRecentVisitsItem from "./EachRecentVisitsItem";
-import useGetRecentViewsClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
-import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
+import EachRecentVisitsItem from "./EachRecentVisitsItem";
+import {ScrollView, Text, TouchableOpacity, View} from "react-native";
+import useGetRecentViewsClubsQuery from "@hooks/clubs/useGetRecentViewedClubsQuery";
 
 type Props = {
   onSeeAll: () => void;

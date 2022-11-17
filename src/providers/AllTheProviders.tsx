@@ -41,8 +41,9 @@ function onAppStateChange(status: AppStateStatus) {
 const defaultQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      cacheTime: 0,
       staleTime: 1000 * 60,
-      cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+      // cacheTime: 1000 * 60 * 60 * 24, // 24 hours
       onError(err: any) {
         Toast.show({
           type: "error",
