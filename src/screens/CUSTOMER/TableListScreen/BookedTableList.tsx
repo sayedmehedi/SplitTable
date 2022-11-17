@@ -86,7 +86,7 @@ const BookedTableList = ({onItemPress, ...params}: Props) => {
         </View>
       ) : null}
       <FlatList
-        data={[]}
+        data={clubListData}
         onRefresh={refetch}
         refreshing={isRefetching}
         renderItem={renderClubList}
