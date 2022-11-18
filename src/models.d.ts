@@ -924,7 +924,7 @@ type SendMessageResponse = ResponseResult;
 
 export type SocialLoginRequest = {
   firstName: string;
-  lastName: string;
+  lastName?: string;
   email: string;
 };
 

@@ -49,11 +49,11 @@ const loginMutationFunction: MutationFunction<
   const userCreds = await auth().signInWithCredential(facebookCredential);
 
   const email = userCreds.user.email as string;
+  const firstName = userCreds.user.displayName as string;
 
   const response = await authService.socialLogin({
     email,
-    lastName: "",
-    firstName: "",
+    firstName,
   });
 
   return response.data;
