@@ -16,6 +16,7 @@ import {
   Dimensions,
   ListRenderItem,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 
@@ -93,8 +94,13 @@ export default function ClubSliderImagesScreen() {
 
   if (isLoadingInfiniteResources) {
     return (
-      <View style={{width: WINDOW_WIDTH}}>
-        <Text>Loading..</Text>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
       </View>
     );
   }

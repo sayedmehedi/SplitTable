@@ -167,7 +167,7 @@ const InitialScreen = ({navigation}: Props) => {
             <Text
               style={{
                 color: "white",
-                fontSize: splitAppTheme.fontSizes.lg,
+                fontSize: splitAppTheme.fontSizes.sm,
               }}>
               Are You
             </Text>
@@ -182,7 +182,7 @@ const InitialScreen = ({navigation}: Props) => {
             <Text
               style={{
                 color: "white",
-                fontSize: splitAppTheme.fontSizes.lg,
+                fontSize: splitAppTheme.fontSizes.sm,
               }}>
               Please Choose One!
             </Text>

@@ -2,7 +2,7 @@ import React from "react";
 import {splitAppTheme} from "@src/theme";
 import {OwnerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
-import {View, Text, ScrollView, Image} from "react-native";
+import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
@@ -24,7 +24,16 @@ export default function TableDetailsScreen({route}: Props) {
   useHandleNonFieldError(tableDetailsError);
 
   if (isTableDetailsLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   if (!tableDetailsResponse) {

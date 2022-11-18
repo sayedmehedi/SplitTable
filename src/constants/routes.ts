@@ -45,6 +45,8 @@ export const CustomerAuthStackRoutes = {
   LOGIN_PROMPT: "LoginPrompt",
   LOCATION_ENABLE: "LocationEnable",
   EMAIL_VERIFICATION: "EmailVerification",
+  FORGOT_PASSWORD: "ForgotPassword",
+  RESET_PASSWORD: "ResetPassword",
 } as const;
 
 export const OwnerAuthStackRoutes = {

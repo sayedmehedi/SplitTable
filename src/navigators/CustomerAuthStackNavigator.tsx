@@ -8,11 +8,14 @@ import {
 import {RouteProp} from "@react-navigation/native";
 import {CustomerAuthStackRoutes} from "@constants/routes";
 import {CUSTOMER_AUTH_STACK_NAVIGATOR_ID} from "@constants/navigators";
+import SignUpScreen from "@screens/CUSTOMER/CustomerAuthScreen/SignUpScreen";
 import EmailLoginScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailLoginScreen";
 import LoginPromptScreen from "@screens/CUSTOMER/CustomerAuthScreen/LoginPromptScreen";
+import ResetPasswordScreen from "@screens/CUSTOMER/CustomerAuthScreen/ResetPasswordScreen";
+import ForgotPasswordScreen from "@screens/CUSTOMER/CustomerAuthScreen/ForgotPasswordScreen";
 import EmailVerificationScreen from "@screens/CUSTOMER/CustomerAuthScreen/EmailVerificationScreen";
-import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
-import SignUpScreen from "@screens/CUSTOMER/CustomerAuthScreen/SignUpScreen";
+import {StatusBar} from "react-native";
+import {splitAppTheme} from "@src/theme";
 
 const CustomerAuthStack = createStackNavigator<CustomerAuthStackParamList>();
 
@@ -41,6 +44,18 @@ const CustomerAuthStackNavigator = () => {
         options={emailVerificationScreenOptions}
         name={CustomerAuthStackRoutes.EMAIL_VERIFICATION}
       />
+
+      <CustomerAuthStack.Screen
+        component={ForgotPasswordScreen}
+        options={forgotPasswordScreenOptions}
+        name={CustomerAuthStackRoutes.FORGOT_PASSWORD}
+      />
+
+      <CustomerAuthStack.Screen
+        component={ResetPasswordScreen}
+        options={resetPasswordScreenOptions}
+        name={CustomerAuthStackRoutes.RESET_PASSWORD}
+      />
     </CustomerAuthStack.Navigator>
   );
 };
@@ -68,7 +83,31 @@ const loginScreenOptions:
       >;
       navigation: any;
     }) => StackNavigationOptions) = {
-  headerTitle: "Sign in",
+  headerTitle: "Sign In",
+};
+
+const forgotPasswordScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerAuthStackParamList,
+        typeof CustomerAuthStackRoutes.FORGOT_PASSWORD
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Forget Password",
+};
+
+const resetPasswordScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerAuthStackParamList,
+        typeof CustomerAuthStackRoutes.RESET_PASSWORD
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Reset Password",
 };
 
 const registerScreenOptions:

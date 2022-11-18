@@ -15,7 +15,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import ProfileScreen from "@screens/CUSTOMER/AccountScreen/ProfileScreen";
+import ProfileScreen from "@screens/ProfileScreen";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -50,8 +50,8 @@ const RootStackNavigator = () => {
 
       <RootStack.Screen
         component={NotificationListScreen}
-        options={notificationListScreenOptions}
         name={RootStackRoutes.NOTIFICATIONS}
+        options={notificationListScreenOptions}
       />
 
       <RootStack.Screen

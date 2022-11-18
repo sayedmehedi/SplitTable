@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Wallet" d="M20,22H3a2.981,2.981,0,0,1-3-2.955V4A4,4,0,0,1,4,0H15.8a4,4,0,0,1,4,4V4.38a2.2,2.2,0,0,1,1.515.687A2.189,2.189,0,0,1,22,6.57V20.03A1.987,1.987,0,0,1,20,22ZM18,11.05a1.991,1.991,0,1,0,2,1.991A2,2,0,0,0,18,11.05ZM3.7,2.19a1.5,1.5,0,0,0-1.5,1.5v.69H17.6V3.69a1.5,1.5,0,0,0-1.5-1.5Z" fill="#ff3fcb"/>
+    </clipPath>
+  </defs>
+  <g id="Group_4766" data-name="Group 4766" transform="translate(-46 -252)">
+    <circle id="Oval" cx="25" cy="25" r="25" transform="translate(46 252)" fill="#ff3fcb" opacity="0.1"/>
+    <g id="icons_notification" data-name="icons/notification" transform="translate(60 266)">
+      <path id="Wallet-2" data-name="Wallet" d="M20,22H3a2.981,2.981,0,0,1-3-2.955V4A4,4,0,0,1,4,0H15.8a4,4,0,0,1,4,4V4.38a2.2,2.2,0,0,1,1.515.687A2.189,2.189,0,0,1,22,6.57V20.03A1.987,1.987,0,0,1,20,22ZM18,11.05a1.991,1.991,0,1,0,2,1.991A2,2,0,0,0,18,11.05ZM3.7,2.19a1.5,1.5,0,0,0-1.5,1.5v.69H17.6V3.69a1.5,1.5,0,0,0-1.5-1.5Z" fill="#ff3fcb"/>
+    </g>
+  </g>
+</svg>

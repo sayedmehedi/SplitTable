@@ -1,16 +1,16 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import {isSplitTableDetails} from "@utils/table";
-import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
-import {StackScreenProps} from "@react-navigation/stack";
-import {View, Text, ScrollView, Image} from "react-native";
-import {CompositeScreenProps} from "@react-navigation/native";
-import EachTableNEventItem from "@components/EachTableNEventItem";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
-import Entypo from "react-native-vector-icons/Entypo";
 import Ripple from "react-native-material-ripple";
+import Entypo from "react-native-vector-icons/Entypo";
+import {StackScreenProps} from "@react-navigation/stack";
+import TableListItem from "./TableListScreen/TableListItem";
+import {CompositeScreenProps} from "@react-navigation/native";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
+import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -29,7 +29,16 @@ export default function JoinTableDetailsScreen({route, navigation}: Props) {
   useHandleNonFieldError(tableDetailsError);
 
   if (isTableDetailsLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   if (!tableDetailsResponse) {
@@ -41,7 +50,7 @@ export default function JoinTableDetailsScreen({route, navigation}: Props) {
       contentContainerStyle={{
         padding: splitAppTheme.space[6],
       }}>
-      <EachTableNEventItem
+      <TableListItem
         item={{
           id: tableDetailsResponse.id,
           date: tableDetailsResponse.date,
@@ -49,6 +58,9 @@ export default function JoinTableDetailsScreen({route, navigation}: Props) {
           image: tableDetailsResponse.image,
           location: tableDetailsResponse.location,
           distance: tableDetailsResponse.distance,
+          total_joined: isSplitTableDetails(tableDetailsResponse)
+            ? tableDetailsResponse.joined_users.length
+            : undefined,
         }}
         onPress={() => {}}
       />

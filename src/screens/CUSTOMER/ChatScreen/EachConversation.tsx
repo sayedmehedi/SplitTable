@@ -1,20 +1,25 @@
 import React from "react";
+import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import {ConversationItem} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import Ripple from "react-native-material-ripple";
 import {isResponseResultError} from "@utils/error-handling";
-import {View, Text, Image, ActivityIndicator} from "react-native";
+import {View, Text, Image, ActivityIndicator, Dimensions} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useAcceptInvitationMutation from "@hooks/chat/useAcceptInvitationMutation";
 
+const {width: WINDOW_WIDTH} = Dimensions.get("window");
+
 const EachConversation = ({
+  myId,
   item,
   onItemPress,
 }: {
   item: ConversationItem;
   onItemPress: (item: ConversationItem) => void;
+  myId: number | undefined;
 }) => {
   const toast = useAppToast();
   const {
@@ -46,7 +51,6 @@ const EachConversation = ({
         marginBottom: 1,
         alignItems: "center",
         flexDirection: "row",
-        paddingHorizontal: 15,
         backgroundColor: "#FFFFFF",
         justifyContent: "space-between",
       }}>
@@ -60,22 +64,32 @@ const EachConversation = ({
 
         <View>
           <Text
-            style={{color: "#023047", fontFamily: "Inter-Bold", fontSize: 15}}>
+            numberOfLines={1}
+            style={{
+              fontSize: 15,
+              color: "#023047",
+              fontFamily: "Inter-Bold",
+              width: WINDOW_WIDTH * 0.5,
+            }}>
             {item.user_name}
           </Text>
 
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 12,
               color: "#023047",
               fontFamily: "Inter-Regular",
+              width: WINDOW_WIDTH * 0.5,
             }}>
             {item.message.title}
           </Text>
         </View>
       </View>
 
-      {item.is_accepted === 0 ? (
+      {item.is_accepted === 0 && myId !== item.receiver_id ? (
+        <Text>Pending</Text>
+      ) : item.is_accepted === 0 ? (
         isAccepting ? (
           <View>
             <ActivityIndicator size={"small"} />

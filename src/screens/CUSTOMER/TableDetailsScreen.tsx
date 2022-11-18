@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import {splitAppTheme} from "@src/theme";
 import {Rating} from "react-native-ratings";
@@ -32,6 +33,7 @@ import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
 import AppGradientButton from "@components/AppGradientButton";
+import dayjs from "dayjs";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -86,7 +88,16 @@ export default function TableDetailsScreen({route, navigation}: Props) {
   }, [tableDetailsResponse]);
 
   if (isTableDetailsLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   if (!tableDetailsResponse) {
@@ -180,7 +191,10 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                     fontSize: splitAppTheme.fontSizes.sm,
                     fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
                   }}>
-                  {tableDetailsResponse.date}
+                  {dayjs(
+                    tableDetailsResponse.date,
+                    "YYYY-MM-DD HH:mm:ss",
+                  ).format("DD MMM, hh:mm A")}
                 </Text>
               </View>
             </View>
@@ -390,30 +404,39 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             </View>
           </View>
 
-          {isSplitTableDetails(tableDetailsResponse) &&
-            tableDetailsResponse.joined_users.length > 0 && (
+          {isSplitTableDetails(tableDetailsResponse) && (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: splitAppTheme.space[4],
+              }}>
               <View
                 style={{
-                  flexDirection: "row",
+                  height: splitAppTheme.sizes[9],
+                  width: splitAppTheme.sizes[9],
+                  borderRadius: splitAppTheme.radii.full,
+                  backgroundColor: "rgba(255, 63, 204, 0.2)",
                   alignItems: "center",
-                  marginBottom: splitAppTheme.space[4],
+                  justifyContent: "center",
                 }}>
+                <PeopleIcon
+                  height={splitAppTheme.sizes[5]}
+                  width={splitAppTheme.sizes[5]}
+                />
+              </View>
+
+              {tableDetailsResponse.joined_users.length === 0 ? (
                 <View
                   style={{
-                    height: splitAppTheme.sizes[9],
-                    width: splitAppTheme.sizes[9],
-                    borderRadius: splitAppTheme.radii.full,
-                    backgroundColor: "rgba(255, 63, 204, 0.2)",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    marginLeft: splitAppTheme.space[3],
                   }}>
-                  <PeopleIcon
-                    height={splitAppTheme.sizes[5]}
-                    width={splitAppTheme.sizes[5]}
-                  />
+                  <Text>No Guest Yet</Text>
                 </View>
-
-                <View
+              ) : (
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
                   style={{
                     flexDirection: "row",
                     marginLeft: splitAppTheme.space[3],
@@ -423,16 +446,17 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                       key={index}
                       source={{uri: user.image}}
                       style={{
-                        width: splitAppTheme.sizes[9],
-                        height: splitAppTheme.sizes[9],
+                        width: splitAppTheme.sizes[8],
+                        height: splitAppTheme.sizes[8],
                         marginRight: splitAppTheme.space[2],
                         borderRadius: splitAppTheme.radii.full,
                       }}
                     />
                   ))}
-                </View>
-              </View>
-            )}
+                </ScrollView>
+              )}
+            </View>
+          )}
 
           <View
             style={{

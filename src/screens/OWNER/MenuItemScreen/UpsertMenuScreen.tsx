@@ -16,6 +16,7 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {
@@ -220,7 +221,16 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
   };
 
   if (isClubInfoLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (

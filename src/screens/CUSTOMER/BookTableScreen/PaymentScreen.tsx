@@ -1,6 +1,6 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, StatusBar} from "react-native";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
 import {CustomerStackRoutes} from "@constants/routes";
@@ -58,13 +58,24 @@ const PaymentScreen = ({navigation, route}: Props) => {
               onPress={() => {
                 field.onChange(route.params.totalAmount);
               }}>
-              <Text>Pay full payment</Text>
+              <Text
+                style={{
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                Pay full payment
+              </Text>
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
                 }}>
-                <Text>${route.params.totalAmount}</Text>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                  }}>
+                  ${route.params.totalAmount}
+                </Text>
 
                 <View
                   style={[
@@ -88,14 +99,25 @@ const PaymentScreen = ({navigation, route}: Props) => {
               onPress={() => {
                 field.onChange(route.params.partialAmount);
               }}>
-              <Text>Pay only 10% payment</Text>
+              <Text
+                style={{
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                Pay only 10% payment
+              </Text>
 
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
                 }}>
-                <Text>${route.params.partialAmount}</Text>
+                <Text
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                  }}>
+                  ${route.params.partialAmount}
+                </Text>
 
                 <View
                   style={[
@@ -120,7 +142,8 @@ const PaymentScreen = ({navigation, route}: Props) => {
               render={({message}) => (
                 <Text
                   style={{
-                    marginTop: 5,
+                    marginVertical: 5,
+                    textAlign: "center",
                     color: splitAppTheme.colors.red[300],
                   }}>
                   {message}

@@ -14,7 +14,13 @@ import CircularProgress from "react-native-circular-progress-indicator";
 import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
 import {View, TouchableOpacity, Image, Alert, Text, Modal} from "react-native";
 
-export default function ProfileImageUploader() {
+export default function ProfileImageUploader({
+  disabled = false,
+  imageUrl,
+}: {
+  disabled?: boolean;
+  imageUrl: string;
+}) {
   const toast = useAppToast();
   const actionSheetRef = React.useRef<ActionSheetRef>(null!);
   const [uploadProgress, setUploadProgress] = React.useState(0);
@@ -115,7 +121,7 @@ export default function ProfileImageUploader() {
   return (
     <View>
       <TouchableOpacity
-        disabled={isUpdating}
+        disabled={disabled || isUpdating}
         onPress={() => {
           if (actionSheetRef.current.isOpen()) {
             actionSheetRef.current.hide();
@@ -136,7 +142,7 @@ export default function ProfileImageUploader() {
         <Image
           style={{height: 150, width: 150, borderRadius: 75}}
           source={{
-            uri: "https://images.pexels.com/photos/1391495/pexels-photo-1391495.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            uri: imageUrl,
           }}
         />
       </TouchableOpacity>

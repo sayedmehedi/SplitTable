@@ -1,14 +1,23 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
-import {MapIcon} from "@constants/iconPath";
 import {
+  BookTableIcon,
+  JoinTableIcon,
+  MapIcon,
+  SplitTableIcon,
+} from "@constants/iconPath";
+import {
+  RootStackRoutes,
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
+import {AppTableListTypes} from "@constants/table";
+import Entypo from "react-native-vector-icons/Entypo";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
+import {useDimensions} from "@react-native-community/hooks";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
@@ -26,9 +35,6 @@ import {
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
-import {useDimensions} from "@react-native-community/hooks";
-import Entypo from "react-native-vector-icons/Entypo";
-import {AppTableListTypes} from "@constants/table";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -49,7 +55,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
   } = useDimensions();
 
   const handleGotoNotifications = () => {
-    navigation.navigate(CustomerStackRoutes.NOTIFICATIONS);
+    navigation.navigate(RootStackRoutes.NOTIFICATIONS);
   };
 
   return (
@@ -208,6 +214,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
               flexDirection: "row",
               alignItems: "center",
               padding: splitAppTheme.space[6],
+              paddingRight: splitAppTheme.space[3],
               borderRadius: splitAppTheme.radii.xl,
               borderWidth: splitAppTheme.borderWidths[2],
               borderColor: splitAppTheme.colors.secondary[400],
@@ -230,7 +237,9 @@ const CustomerTableScreen = ({navigation}: Props) => {
                     width: 55,
                     height: 55,
                     borderRadius: splitAppTheme.radii.full,
-                  }}></LinearGradient>
+                  }}>
+                  <BookTableIcon />
+                </LinearGradient>
               </View>
 
               <View
@@ -258,7 +267,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
 
             <View>
               <Entypo
-                size={50}
+                size={30}
                 name={"chevron-right"}
                 color={splitAppTheme.colors.secondary[500]}
               />
@@ -279,6 +288,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
               flexDirection: "row",
               alignItems: "center",
               padding: splitAppTheme.space[6],
+              paddingRight: splitAppTheme.space[3],
               borderRadius: splitAppTheme.radii.xl,
               borderWidth: splitAppTheme.borderWidths[2],
               borderColor: splitAppTheme.colors.secondary[400],
@@ -301,7 +311,9 @@ const CustomerTableScreen = ({navigation}: Props) => {
                     width: 55,
                     height: 55,
                     borderRadius: splitAppTheme.radii.full,
-                  }}></LinearGradient>
+                  }}>
+                  <SplitTableIcon />
+                </LinearGradient>
               </View>
 
               <View
@@ -322,14 +334,14 @@ const CustomerTableScreen = ({navigation}: Props) => {
                     fontSize: splitAppTheme.fontSizes["md"],
                     fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
                   }}>
-                  Sharing table booking
+                  Share table booking
                 </Text>
               </View>
             </View>
 
             <View>
               <Entypo
-                size={50}
+                size={30}
                 name={"chevron-right"}
                 color={splitAppTheme.colors.secondary[500]}
               />
@@ -350,6 +362,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
               flexDirection: "row",
               alignItems: "center",
               padding: splitAppTheme.space[6],
+              paddingRight: splitAppTheme.space[3],
               borderRadius: splitAppTheme.radii.xl,
               borderWidth: splitAppTheme.borderWidths[2],
               borderColor: splitAppTheme.colors.secondary[400],
@@ -372,7 +385,9 @@ const CustomerTableScreen = ({navigation}: Props) => {
                     width: 55,
                     height: 55,
                     borderRadius: splitAppTheme.radii.full,
-                  }}></LinearGradient>
+                  }}>
+                  <JoinTableIcon />
+                </LinearGradient>
               </View>
 
               <View
@@ -400,7 +415,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
 
             <View>
               <Entypo
-                size={50}
+                size={30}
                 name={"chevron-right"}
                 color={splitAppTheme.colors.secondary[500]}
               />

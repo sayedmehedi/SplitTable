@@ -114,7 +114,13 @@ export default function AddUserPhotoBtn() {
   };
 
   return (
-    <View style={{marginTop: splitAppTheme.space[3]}}>
+    <View
+      style={{
+        marginTop: splitAppTheme.space[3],
+        position: "absolute",
+        bottom: 0,
+        width: splitAppTheme.sizes.full,
+      }}>
       <View>
         <TouchableOpacity
           onPress={() => {

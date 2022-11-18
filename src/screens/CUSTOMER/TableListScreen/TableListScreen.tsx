@@ -32,7 +32,11 @@ const TableListScreen = ({route, navigation}: Props) => {
     setTableSearchParams(route.params.searchTerm ?? {});
   }, [JSON.stringify(route.params.searchTerm ?? {})]);
 
-  const handleItemPresss = React.useCallback((item: TTableItem) => {}, []);
+  const handleItemPresss = React.useCallback((item: TTableItem) => {
+    navigation.navigate(CustomerStackRoutes.TABLE_DETAILS, {
+      tableId: item.id,
+    });
+  }, []);
 
   const handleJoinTableItemPresss = React.useCallback(
     (item: TTableItem) => {

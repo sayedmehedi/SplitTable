@@ -11,6 +11,7 @@ import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {FemaleIcon, MaleIcon} from "@constants/iconPath";
 import {isSplitTableDetails} from "@utils/table";
+import dayjs from "dayjs";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -428,7 +429,9 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               fontSize: splitAppTheme.fontSizes.lg,
               fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
             }}>
-            {tableDetails.date}
+            {dayjs(tableDetails.date, "YYYY-MM-DD HH:mm:ss").format(
+              "DD MMM, hh:mm A",
+            )}
           </Text>
         </View>
 

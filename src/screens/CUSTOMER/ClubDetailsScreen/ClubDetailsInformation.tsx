@@ -10,17 +10,17 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import {AppTableListTypes} from "@constants/table";
 import {CustomerStackRoutes} from "@constants/routes";
-import LinearGradient from "react-native-linear-gradient";
 import {StackNavigationProp} from "@react-navigation/stack";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
+import Fontisto from "react-native-vector-icons/Fontisto";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 dayjs.extend(relativeTime);
 
@@ -53,96 +53,15 @@ const ClubDetailsInformation = ({clubId}: Props) => {
 
   if (isClubDetailsLoading) {
     return (
-      <View>
-        <Text>Loading...</Text>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     <Skeleton height={300} />
-
-    //     <View mx={"6"}>
-    //       <Skeleton
-    //         width={"full"}
-    //         borderRadius={"xl"}
-    //         height={CARD_HEIGHT}
-    //         bg={"tomato"}
-    //         marginTop={CARD_NEGATIVE_MARGIN}
-    //       />
-
-    //       <Skeleton
-    //         height={"12"}
-    //         my={"5"}
-    //         width={"full"}
-    //         borderRadius={"lg"}
-    //         borderWidth={"2"}
-    //         borderColor={"primary.300"}
-    //       />
-
-    //       <HStack space={"2"}>
-    //         <View flex={1}>
-    //           <Skeleton
-    //             height={"12"}
-    //             my={"5"}
-    //             width={"full"}
-    //             borderRadius={"lg"}
-    //             bg={"secondary.300"}
-    //           />
-    //         </View>
-
-    //         <View flex={1}>
-    //           <Skeleton
-    //             height={"12"}
-    //             my={"5"}
-    //             width={"full"}
-    //             borderRadius={"lg"}
-    //             bg={"blue.300"}
-    //           />
-    //         </View>
-
-    //         <View flex={1}>
-    //           <Skeleton
-    //             height={"12"}
-    //             my={"5"}
-    //             width={"full"}
-    //             borderRadius={"lg"}
-    //             bg={"secondary.100"}
-    //           />
-    //         </View>
-    //       </HStack>
-    //     </View>
-
-    //     <View p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Center width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Center>
-    //       ))}
-    //     </View>
-    //   </ScrollView>
-    // );
   }
 
   if (!clubDetailsResponse) {
@@ -175,7 +94,10 @@ const ClubDetailsInformation = ({clubId}: Props) => {
       <View>
         <View
           style={{
+            borderRadius: splitAppTheme.radii.lg,
             marginVertical: splitAppTheme.space[5],
+            borderWidth: splitAppTheme.borderWidths[1],
+            borderColor: splitAppTheme.colors.coolGray[300],
           }}>
           <MapView
             zoomEnabled={false}
@@ -207,20 +129,20 @@ const ClubDetailsInformation = ({clubId}: Props) => {
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              {/* <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: splitAppTheme.space[2],
-                    borderRadius: splitAppTheme.radii.full,
-                    backgroundColor: "rgba(72, 212, 255,0.5)",
-                  }}>
-                  <MaterialIcons
-                    size={22}
-                    name={"phone"}
-                    color={splitAppTheme.colors.blue[300]}
-                  />
-                </View> */}
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: splitAppTheme.space[2],
+                  borderRadius: splitAppTheme.radii.full,
+                  backgroundColor: "rgba(72, 212, 255,0.1)",
+                }}>
+                <MaterialIcons
+                  size={22}
+                  name={"phone"}
+                  color={splitAppTheme.colors.blue[400]}
+                />
+              </View>
 
               <Text
                 style={{
@@ -260,12 +182,12 @@ const ClubDetailsInformation = ({clubId}: Props) => {
                   justifyContent: "center",
                   padding: splitAppTheme.space[2],
                   borderRadius: splitAppTheme.radii.full,
-                  backgroundColor: "rgba(72, 212, 255,0.5)",
+                  backgroundColor: "rgba(72, 212, 255,0.2)",
                 }}>
-                <MaterialIcons
+                <Fontisto
                   size={22}
                   name={"email"}
-                  color={splitAppTheme.colors.blue[300]}
+                  color={splitAppTheme.colors.blue[400]}
                 />
               </View>
 
@@ -307,12 +229,12 @@ const ClubDetailsInformation = ({clubId}: Props) => {
                   justifyContent: "center",
                   padding: splitAppTheme.space[2],
                   borderRadius: splitAppTheme.radii.full,
-                  backgroundColor: "rgba(72, 212, 255,0.5)",
+                  backgroundColor: "rgba(72, 212, 255,0.1)",
                 }}>
-                <MaterialIcons
+                <MaterialCommunityIcons
                   size={22}
-                  name={"shopping-bag"}
-                  color={splitAppTheme.colors.blue[300]}
+                  name={"food-outline"}
+                  color={splitAppTheme.colors.blue[400]}
                 />
               </View>
 
@@ -354,12 +276,12 @@ const ClubDetailsInformation = ({clubId}: Props) => {
                   justifyContent: "center",
                   padding: splitAppTheme.space[2],
                   borderRadius: splitAppTheme.radii.full,
-                  backgroundColor: "rgba(72, 212, 255,0.5)",
+                  backgroundColor: "rgba(72, 212, 255,0.1)",
                 }}>
-                <MaterialIcons
+                <MaterialCommunityIcons
                   size={22}
-                  name={"shopping-bag"}
-                  color={splitAppTheme.colors.blue[300]}
+                  name={"currency-usd"}
+                  color={splitAppTheme.colors.blue[400]}
                 />
               </View>
 
@@ -376,7 +298,7 @@ const ClubDetailsInformation = ({clubId}: Props) => {
               <Text
                 style={{
                   marginLeft: splitAppTheme.space[2],
-                  fontSize: splitAppTheme.fontSizes.md,
+                  fontSize: splitAppTheme.fontSizes.sm,
                   color: splitAppTheme.colors.blue[300],
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                 }}>
@@ -387,7 +309,10 @@ const ClubDetailsInformation = ({clubId}: Props) => {
           </View>
         </View>
 
-        <View>
+        <View
+          style={{
+            paddingBottom: splitAppTheme.space[3],
+          }}>
           <Text
             style={{
               fontSize: splitAppTheme.fontSizes.md,
@@ -396,55 +321,6 @@ const ClubDetailsInformation = ({clubId}: Props) => {
           </Text>
         </View>
       </View>
-
-      <View
-        style={{
-          bottom: 0,
-          width: WINDOW_WIDTH,
-          position: "absolute",
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
-              listType: AppTableListTypes.BY_CLUB_ID,
-              headerTitle: clubDetailsResponse.club.name,
-              searchTerm: {
-                clubId: clubDetailsResponse.club.id,
-              },
-            });
-          }}>
-          <LinearGradient
-            colors={[
-              splitAppTheme.colors.secondary[500],
-              splitAppTheme.colors.primary[500],
-            ]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: splitAppTheme.sizes.full,
-              paddingVertical: splitAppTheme.space[5],
-            }}>
-            <View
-              style={{
-                justifyContent: "center",
-                width: splitAppTheme.sizes.full,
-              }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: splitAppTheme.colors.white,
-                  fontSize: splitAppTheme.fontSizes.lg,
-                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                }}>
-                View This Club Table & Events
-              </Text>
-            </View>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -452,7 +328,7 @@ const ClubDetailsInformation = ({clubId}: Props) => {
 const styles = StyleSheet.create({
   mapStyles: {
     height: 200,
-    borderRadius: 20,
+    borderRadius: splitAppTheme.radii.lg,
   },
   bookButton: {
     width: "100%",

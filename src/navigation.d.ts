@@ -36,6 +36,10 @@ type CustomerAuthStackParamList = {
   [CustomerAuthStackRoutes.EMAIL_VERIFICATION]: {
     email: string;
   };
+  [CustomerAuthStackRoutes.RESET_PASSWORD]: {
+    email: string;
+  };
+  [CustomerAuthStackRoutes.FORGOT_PASSWORD]: undefined;
 };
 
 type OwnerAuthStackParamList = {

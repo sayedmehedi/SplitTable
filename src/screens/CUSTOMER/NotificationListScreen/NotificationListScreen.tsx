@@ -3,17 +3,19 @@ import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import {NotificationItem} from "@src/models";
 import {
-  ActivityIndicator,
-  FlatList,
-  ListRenderItem,
-  StatusBar,
   Text,
   View,
+  FlatList,
+  StatusBar,
+  ListRenderItem,
+  ActivityIndicator,
 } from "react-native";
+import {PaymentIcon} from "@constants/iconPath";
+import {RootStackParamList} from "@src/navigation";
 import {StackScreenProps} from "@react-navigation/stack";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {RootStackParamList} from "@src/navigation";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
@@ -26,20 +28,21 @@ const renderNotificationItem: ListRenderItem<NotificationItem> = ({item}) => (
       flexDirection: "row",
       alignItems: "center",
       borderColor: "#ECECEC",
-      padding: splitAppTheme.space[5],
-      borderWidth: splitAppTheme.sizes[1],
       marginBottom: splitAppTheme.space[5],
       borderRadius: splitAppTheme.radii.xl,
+      paddingVertical: splitAppTheme.space[5],
+      borderWidth: splitAppTheme.borderWidths[2],
+      paddingHorizontal: splitAppTheme.space[3],
     }}>
     <View>
       <View
         style={{
+          alignItems: "center",
+          justifyContent: "center",
           width: splitAppTheme.sizes[16],
           height: splitAppTheme.sizes[16],
           borderRadius: splitAppTheme.radii.full,
           backgroundColor: getNotificationIconBgColor(item),
-          justifyContent: "center",
-          alignItems: "center",
         }}>
         {getNotificationIcon(item)}
       </View>
@@ -58,10 +61,12 @@ const renderNotificationItem: ListRenderItem<NotificationItem> = ({item}) => (
           length: 22,
         })}
       </Text>
+
       <Text
         numberOfLines={3}
         style={{
-          marginLeft: splitAppTheme.space[1],
+          maxWidth: 270,
+          marginTop: splitAppTheme.space[1],
           fontSize: splitAppTheme.fontSizes.sm,
         }}>
         {item.message}
@@ -110,43 +115,15 @@ export default function NotificationListScreen({}: Props) {
 
   if (isLoading) {
     return (
-      <View>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
         <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
 
-        <Text>Loading..</Text>
-        {/* <ScrollView
-          showsVerticalScrollIndicator={false}
-          _contentContainerStyle={{
-            p: 6,
-          }}>
-          {new Array(5).fill(1).map((_, i) => (
-            <Center width={"full"} key={i}>
-              <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-                <Skeleton
-                  height={"24"}
-                  width={"24"}
-                  borderRadius={"sm"}
-                  startColor="coolGray.100"
-                />
-                <VStack flex={"3"} space={"2.5"}>
-                  <Skeleton height={"5"} startColor="amber.300" />
-                  <Skeleton.Text lines={2} />
-
-                  <HStack space="2" alignItems="center">
-                    <Skeleton size={"5"} borderRadius={"full"} />
-                    <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-                    <Skeleton
-                      height={"3"}
-                      flex={"1"}
-                      borderRadius={"full"}
-                      startColor={"indigo.300"}
-                    />
-                  </HStack>
-                </VStack>
-              </HStack>
-            </Center>
-          ))}
-        </ScrollView> */}
+        <ActivityIndicator size={"small"} />
       </View>
     );
   }
@@ -179,14 +156,14 @@ export default function NotificationListScreen({}: Props) {
 
 function getNotificationIconBgColor(notificationItem: NotificationItem) {
   if (notificationItem.style === NotificationStyles.SUCCESS) {
-    return "success.50";
+    return splitAppTheme.colors.success[50];
   }
 
   if (notificationItem.style === NotificationStyles.ERROR) {
-    return "red.50";
+    return splitAppTheme.colors.red[50];
   }
 
-  return "yellow.50";
+  return splitAppTheme.colors.yellow[100];
 }
 
 function getNotificationIconColor(notificationItem: NotificationItem) {
@@ -198,38 +175,34 @@ function getNotificationIconColor(notificationItem: NotificationItem) {
     return splitAppTheme.colors.red[400];
   }
 
-  return splitAppTheme.colors.yellow[400];
+  return splitAppTheme.colors.yellow[500];
 }
 
 function getNotificationIcon(notificationItem: NotificationItem) {
   if (notificationItem.type === NotificationTypes.INVITATION) {
     return (
-      <MaterialCommunityIcons
+      <MaterialIcons
         size={30}
-        name={
-          notificationItem.style === NotificationStyles.SUCCESS
-            ? "check-circle"
-            : "close-circle"
-        }
+        name={"verified-user"}
         color={getNotificationIconColor(notificationItem)}
       />
     );
   }
 
-  if (notificationItem.type === NotificationTypes.PAYMENT) {
+  if (notificationItem.type === NotificationTypes.CANCEL) {
     return (
-      <MaterialCommunityIcons
+      <MaterialIcons
         size={30}
-        name={"toolbox"}
+        name={"cancel"}
         color={getNotificationIconColor(notificationItem)}
       />
     );
   }
 
   return (
-    <MaterialCommunityIcons
+    <MaterialIcons
       size={30}
-      name={"toolbox"}
+      name={"check-circle"}
       color={getNotificationIconColor(notificationItem)}
     />
   );

@@ -13,7 +13,7 @@ import {
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
-import {Clock, MapIcon} from "@constants/iconPath";
+import {Clock, JoinCountIcon, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -21,6 +21,7 @@ import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
+import dayjs from "dayjs";
 
 type Props = {
   item: TTableItem;
@@ -135,14 +136,45 @@ const TableListItem = ({item, onPress}: Props) => {
             justifyContent: "space-around",
             padding: splitAppTheme.space[3],
           }}>
-          <Text
+          <View
             style={{
-              color: "#262B2E",
-              fontSize: splitAppTheme.fontSizes.lg,
-              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}>
-            {truncate(item.name)}
-          </Text>
+            <Text
+              style={{
+                color: "#262B2E",
+                fontSize: splitAppTheme.fontSizes.lg,
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+              }}>
+              {truncate(item.name)}
+            </Text>
+
+            {item.total_joined !== undefined && (
+              <View
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}>
+                <View>
+                  <JoinCountIcon height={15} width={15} />
+                </View>
+
+                <View
+                  style={{
+                    marginLeft: splitAppTheme.space[1],
+                  }}>
+                  <Text
+                    style={{
+                      fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                    }}>
+                    {item.total_joined}
+                  </Text>
+                </View>
+              </View>
+            )}
+          </View>
           <View
             style={{height: 1, backgroundColor: splitAppTheme.colors.gray[300]}}
           />
@@ -185,7 +217,9 @@ const TableListItem = ({item, onPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.sm,
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
                 }}>
-                {item.date}
+                {dayjs(item.date, "YYYY-MM-DD HH:mm:ss").format(
+                  "DD MMM, hh:mm A",
+                )}
               </Text>
             </View>
           </View>

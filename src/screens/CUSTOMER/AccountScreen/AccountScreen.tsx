@@ -36,6 +36,7 @@ import {
   CustomerBottomTabParamList,
   CustomerProfileStackParamList,
 } from "@src/navigation";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -68,7 +69,14 @@ const AccountScreen = ({navigation}: Props) => {
 
   return (
     <ScrollView
-      style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
+      style={{
+        flex: 1,
+        backgroundColor: splitAppTheme.colors.white,
+      }}
+      contentContainerStyle={{
+        paddingBottom: splitAppTheme.space[6],
+        paddingHorizontal: splitAppTheme.space[6],
+      }}>
       <View
         style={{
           height: 90,
@@ -105,13 +113,13 @@ const AccountScreen = ({navigation}: Props) => {
             style={{
               fontSize: 12,
               color: "#8A8D9F",
-              fontFamily: "Satoshi-Regular",
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
             }}>
             {profileData?.location}
           </Text>
           <Text
             style={{
-              fontFamily: "Satoshi-Regular",
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               fontSize: 12,
               color: "#8A8D9F",
             }}>
@@ -125,19 +133,26 @@ const AccountScreen = ({navigation}: Props) => {
           onPress={() => navigation.navigate(RootStackRoutes.PROFILE, {})}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <ProfileIcon />
-            <Text
-              style={{
-                fontSize: 16,
-                marginLeft: 10,
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
-              }}>
-              Profile
-            </Text>
+            <View>
+              <ProfileIcon height={35} width={35} />
+            </View>
+
+            <View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  color: "#262B2E",
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                }}>
+                Profile
+              </Text>
+            </View>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -146,95 +161,115 @@ const AccountScreen = ({navigation}: Props) => {
           }
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <AccountSettingIcon />
+            <View>
+              <AccountSettingIcon height={35} width={35} />
+            </View>
             <Text
               style={{
                 fontSize: 16,
                 marginLeft: 10,
                 color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Account Setting
             </Text>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate(CustomerStackRoutes.TRANSACTION)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <TransactionIcon />
+            <View>
+              <TransactionIcon height={35} width={35} />
+            </View>
             <Text
               style={{
                 fontSize: 16,
                 marginLeft: 10,
                 color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Transaction
             </Text>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate(CustomerStackRoutes.FAVORITE)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <FavouriteIcon />
+            <View>
+              <FavouriteIcon height={35} width={35} />
+            </View>
             <Text
               style={{
                 fontSize: 16,
                 marginLeft: 10,
                 color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Favorite
             </Text>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate(CustomerStackRoutes.FAQ)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <FaqIcon />
+            <View>
+              <FaqIcon height={35} width={35} />
+            </View>
             <Text
               style={{
                 fontSize: 16,
                 marginLeft: 10,
                 color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Faq's
             </Text>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate(CustomerStackRoutes.LEGAL)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <LegalIcon />
+            <View>
+              <LegalIcon height={35} width={35} />
+            </View>
             <Text
               style={{
                 fontSize: 16,
                 marginLeft: 10,
                 color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Legal
             </Text>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -255,20 +290,25 @@ const AccountScreen = ({navigation}: Props) => {
             ]);
           }}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <LogoutIcon />
+            <View>
+              <LogoutIcon height={35} width={35} />
+            </View>
             <Text
               style={{
                 fontSize: 16,
                 marginLeft: 10,
                 color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Logout
             </Text>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
+
         <Text
           style={{
             marginVertical: 5,
@@ -285,6 +325,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     width: "100%",
     paddingVertical: 15,
+    alignItems: "center",
     flexDirection: "row",
     borderBottomWidth: 1,
     borderStyle: "dashed",

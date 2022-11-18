@@ -74,7 +74,16 @@ const TableListBySearchTerm = ({onItemPress, ...params}: Props) => {
   }, [fetchNextPage]);
 
   if (isLoading) {
-    return <Text>Loading..</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (

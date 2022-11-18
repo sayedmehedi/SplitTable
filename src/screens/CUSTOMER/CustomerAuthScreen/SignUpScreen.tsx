@@ -1,4 +1,5 @@
 import React from "react";
+import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
 import DatePicker from "react-native-date-picker";
 import {ErrorMessage} from "@hookform/error-message";
@@ -23,6 +24,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  StatusBar,
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import useRegisterMutation from "@hooks/auth/useRegisterMutation";
@@ -35,7 +37,6 @@ import {
   launchImageLibrary,
   ImagePickerResponse,
 } from "react-native-image-picker";
-import dayjs from "dayjs";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -189,6 +190,11 @@ const SignUpScreen = ({navigation}: Props) => {
         backgroundColor: "#FFFFFF",
         padding: splitAppTheme.space[6],
       }}>
+      <StatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <View style={{flex: 1, marginTop: 20}}>
         <Controller
           name={"image.uri"}
@@ -530,16 +536,18 @@ const SignUpScreen = ({navigation}: Props) => {
           )}
         />
 
-        <AppGradientButton
-          width={"100%"}
-          color={"primary"}
-          touchableOpacityProps={{
-            disabled: isRegisteringUser,
-          }}
-          variant={"solid"}
-          title={"Sign Up"}
-          onPress={handleUserRegistration}
-        />
+        <View style={{marginTop: splitAppTheme.space[2]}}>
+          <AppGradientButton
+            width={"100%"}
+            color={"primary"}
+            touchableOpacityProps={{
+              disabled: isRegisteringUser,
+            }}
+            variant={"solid"}
+            title={"Sign Up"}
+            onPress={handleUserRegistration}
+          />
+        </View>
       </View>
     </ScrollView>
   );

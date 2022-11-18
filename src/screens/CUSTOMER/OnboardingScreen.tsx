@@ -87,7 +87,7 @@ const OnboardingScreen = ({navigation}: Props) => {
   }, []);
 
   const renderEachItem: ListRenderItem<typeof slides[0]> = React.useCallback(
-    ({item}) => {
+    ({item, index}) => {
       return (
         <View>
           <Image
@@ -142,42 +142,92 @@ const OnboardingScreen = ({navigation}: Props) => {
               </Text>
             </View>
 
-            <View
-              style={{
-                width: splitAppTheme.sizes.full,
-                marginBottom: splitAppTheme.space[5],
-              }}>
+            {index === slides.length - 1 ? (
               <View
                 style={{
-                  paddingHorizontal: splitAppTheme.space[6],
+                  width: splitAppTheme.sizes.full,
+                  marginBottom: splitAppTheme.space[5],
                 }}>
-                <TouchableOpacity
+                <View
                   style={{
-                    padding: splitAppTheme.space[4],
-                    borderRadius: splitAppTheme.radii.lg,
-                    backgroundColor: "rgba(255,255,255, 0.3)",
-                  }}
-                  onPress={() => {
-                    if (currentSlideIndex === slides.length - 1) {
+                    paddingHorizontal: splitAppTheme.space[6],
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      padding: splitAppTheme.space[4],
+                      borderRadius: splitAppTheme.radii.lg,
+                      backgroundColor: "rgba(255,255,255, 0.3)",
+                    }}
+                    onPress={() => {
                       navigation.navigate(CustomerStackRoutes.CUSTOMER_AUTH, {
                         screen: CustomerAuthStackRoutes.LOGIN_PROMPT,
                       });
-                    } else {
-                      goToNextSlide();
-                    }
-                  }}>
-                  <Text
-                    style={{
-                      color: "white",
-                      textAlign: "center",
-                      fontSize: splitAppTheme.fontSizes.md,
-                      fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                     }}>
-                    Get Started
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontSize: splitAppTheme.fontSizes.md,
+                        fontFamily:
+                          splitAppTheme.fontConfig.Sathoshi[700].normal,
+                      }}>
+                      Get Started
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            ) : (
+              <View
+                style={{
+                  width: splitAppTheme.sizes.full,
+                  marginBottom: splitAppTheme.space[5],
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingHorizontal: splitAppTheme.space[6],
+                  }}>
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate(CustomerStackRoutes.CUSTOMER_AUTH, {
+                          screen: CustomerAuthStackRoutes.LOGIN_PROMPT,
+                        });
+                      }}>
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Sathoshi[700].normal,
+                        }}>
+                        Skip
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        goToNextSlide();
+                      }}>
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Sathoshi[700].normal,
+                        }}>
+                        Next
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
           </LinearGradient>
         </View>
       );

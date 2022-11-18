@@ -27,8 +27,8 @@ import {
   CustomerChatStackParamList,
 } from "@src/navigation";
 import useInfiniteGetConversationsQuery from "@hooks/chat/useInfiniteGetConversationsQuery";
-import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import UserSearchInput from "./UserSearchInput";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -45,6 +45,7 @@ type Props = CompositeScreenProps<
 >;
 
 const ChatListScreen = ({navigation}: Props) => {
+  const {data: authData, isLoading: isAuthDataLoading} = useGetAuthDataQuery();
   const {
     refetch,
     isRefetching,
@@ -95,27 +96,41 @@ const ChatListScreen = ({navigation}: Props) => {
   const renderEachConversation: ListRenderItem<ConversationItem> =
     React.useCallback(
       ({item}) => (
-        <EachConversation item={item} onItemPress={handleItemPress} />
+        <EachConversation
+          item={item}
+          onItemPress={handleItemPress}
+          myId={authData?.id}
+        />
       ),
-      [handleItemPress],
+      [handleItemPress, authData?.id],
     );
 
-  if (isLoadingInfiniteResources) {
-    return <Text>Loading...</Text>;
+  if (isLoadingInfiniteResources || isAuthDataLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (
     <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
       <SafeAreaView
         style={{
+          paddingBottom: 0,
           padding: splitAppTheme.space[6],
         }}>
         <View>
           <Text
             style={{
-              fontFamily: "SatoshiVariable-Bold",
               fontSize: 22,
               color: "#030819",
+              fontFamily: "SatoshiVariable-Bold",
             }}>
             Chat
           </Text>

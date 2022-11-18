@@ -2,12 +2,12 @@ import {StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
     paddingVertical: 20,
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 0.3,
     borderBottomColor: "#707070",
+    justifyContent: "space-between",
   },
   editText: {
     fontSize: 13,

@@ -19,12 +19,14 @@ import {
   StyleSheet,
   ImageBackground,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import {isResponseResultError} from "@utils/error-handling";
 import useBookTableMutation from "@hooks/useBookTableMutation";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import dayjs from "dayjs";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -192,7 +194,16 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   const total = tax + subtotal + tip - discount;
 
   if (isProfileDataLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (
@@ -203,7 +214,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             height: 300,
             width: "100%",
           }}
-          source={{uri: route.params.tableDetails.image}}>
+          source={require("@assets/images/book-details.jpg")}>
           <SafeAreaView>
             <View
               style={{
@@ -212,7 +223,12 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}>
-              <FontAwesome5 name="chevron-left" size={25} color={"white"} />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <FontAwesome5 name="chevron-left" size={25} color={"white"} />
+              </TouchableOpacity>
               <Text
                 style={{
                   fontSize: 22,
@@ -370,7 +386,10 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   color: "#FFFFFF",
                   fontFamily: "SatoshiVariable-Bold",
                 }}>
-                {route.params.tableDetails.date}
+                {dayjs(
+                  route.params.tableDetails.date,
+                  "YYYY-MM-DD HH:mm:ss",
+                ).format("DD MMM, hh:mm A")}
               </Text>
             </View>
           </View>
@@ -598,8 +617,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             <Text
               style={{
                 fontSize: 30,
-                marginVertical: 10,
                 fontFamily: "SatoshiVariable-Bold",
+                marginVertical: splitAppTheme.space["0.5"],
                 color: splitAppTheme.colors.primary[300],
               }}>
               ${total}

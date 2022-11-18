@@ -207,7 +207,16 @@ const ChatMessagesScreen = ({route}: Props) => {
   };
 
   if (isLoadingInfiniteResources || isProfileLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (
@@ -235,7 +244,7 @@ const ChatMessagesScreen = ({route}: Props) => {
         ItemSeparatorComponent={() => (
           <View
             style={{
-              height: splitAppTheme.space["4"],
+              height: splitAppTheme.space["1"],
             }}
           />
         )}
@@ -249,6 +258,7 @@ const ChatMessagesScreen = ({route}: Props) => {
         <View
           style={[
             {
+              paddingBottom: 30,
               paddingVertical: 15,
               alignItems: "center",
               flexDirection: "row",

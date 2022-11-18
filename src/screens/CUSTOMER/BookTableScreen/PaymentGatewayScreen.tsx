@@ -41,7 +41,16 @@ const PaymentGatewayScreen = ({navigation, route}: Props) => {
     });
 
   if (isPaymentUrlLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   function handleWebViewNavigationStateChange(newNavState: WebViewNavigation) {

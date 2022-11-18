@@ -1,6 +1,7 @@
 export const NotificationTypes = {
   INVITATION: "invitation",
   PAYMENT: "payment",
+  CANCEL: "cancel",
 } as const;
 
 export const NotificationStyles = {

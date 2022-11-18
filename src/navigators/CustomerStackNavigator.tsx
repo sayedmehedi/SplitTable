@@ -1,11 +1,9 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import {isSplitTableDetails} from "@utils/table";
-import {Text, TouchableOpacity, View} from "react-native";
 import {AppTableListTypes} from "@constants/table";
 import {CustomerStackRoutes} from "@constants/routes";
 import CommonStackHeader from "@components/CommonStackHeader";
-import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import TableListScreen from "@screens/CUSTOMER/TableListScreen";
 import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
@@ -16,6 +14,7 @@ import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
 import CustomerAuthStackNavigator from "./CustomerAuthStackNavigator";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CompositeNavigationProp, RouteProp} from "@react-navigation/native";
+import {ActivityIndicator, Text, TouchableOpacity, View} from "react-native";
 import {
   createStackNavigator,
   StackNavigationOptions,
@@ -53,7 +52,16 @@ const CustomerStackNavigator = () => {
     !authData?.location && !authData?.latitude && !authData?.longitude;
 
   if (isLoadingProfileData) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (
@@ -215,7 +223,7 @@ const paymentMethodScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitleAlign: "center",
-  headerTitle: "Select a Payment Method",
+  headerTitle: "Payment Method",
 };
 
 const paymentScreenOptions:
@@ -228,9 +236,9 @@ const paymentScreenOptions:
       navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
   headerShown: true,
-  headerTitle: "Payment",
   header: CommonStackHeader,
   headerTitleAlign: "center",
+  headerTitle: "Payment Option",
 };
 
 const addMenuItemScreenOptions:

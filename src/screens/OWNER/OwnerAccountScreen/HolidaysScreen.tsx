@@ -114,7 +114,16 @@ export default function HolidaysScreen({navigation}: Props) {
   const handleDeleteHoliday = (holidayId: number) => {};
 
   if (isInfiniteResourceLoading) {
-    return <Text>Loading..</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (

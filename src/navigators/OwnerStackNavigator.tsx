@@ -1,5 +1,5 @@
 import React from "react";
-import {Text} from "react-native";
+import {ActivityIndicator, Text, View} from "react-native";
 import {OwnerStackRoutes} from "@constants/routes";
 import {RouteProp} from "@react-navigation/native";
 import {OwnerStackParamList} from "@src/navigation";
@@ -102,7 +102,16 @@ const OwnerStackNavigator = () => {
     !authData?.location && !authData?.latitude && !authData?.longitude;
 
   if (isLoadingProfileData) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (

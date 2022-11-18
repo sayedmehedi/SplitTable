@@ -19,7 +19,14 @@ import AppGradientButton from "@components/AppGradientButton";
 import {StackNavigationProp} from "@react-navigation/stack";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
-import {View, Text, TouchableOpacity, Modal, TextInput} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
@@ -129,7 +136,16 @@ export default function ProfileUpdaterItem({type}: Props) {
   });
 
   if (isLoadingClubInfo) {
-    return <Text>Loading..</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (

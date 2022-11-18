@@ -51,6 +51,8 @@ export default function ProfileUpdaterItem({type}: Props) {
     if (profileDataResponse) {
       setValue("email", profileDataResponse.email);
       setValue("phone", profileDataResponse.phone);
+      setValue("first_name", profileDataResponse.first_name);
+      setValue("last_name", profileDataResponse.last_name);
     }
   }, [profileDataResponse, setValue]);
 
@@ -151,7 +153,6 @@ export default function ProfileUpdaterItem({type}: Props) {
             <TouchableOpacity
               onPress={() => toggle()}
               style={{
-                marginBottom: 20,
                 alignSelf: "flex-end",
               }}>
               <Entypo name="cross" size={30} color={"#023047"} />

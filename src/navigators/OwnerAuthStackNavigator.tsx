@@ -11,7 +11,6 @@ import {OWNER_AUTH_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import SignUpScreen from "@screens/OWNER/OwnerAuthScreen/SignUpScreen";
 import SignInScreen from "@screens/OWNER/OwnerAuthScreen/SignInScreen";
 import EmailVerificationScreen from "@screens/OWNER/OwnerAuthScreen/EmailVerificationScreen";
-import InitialSelectLocationScreen from "@screens/OWNER/OwnerAuthScreen/InitialSelectLocationScreen";
 
 const OwnerAuthStack = createStackNavigator<OwnerAuthStackParamList>();
 

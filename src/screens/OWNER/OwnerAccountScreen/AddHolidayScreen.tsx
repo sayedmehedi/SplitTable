@@ -6,7 +6,14 @@ import {Controller, useForm} from "react-hook-form";
 import AppGradientButton from "@components/AppGradientButton";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import SplitappSingleSelectCalender from "@components/SplitappCalender";
-import {ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
@@ -75,7 +82,16 @@ export default function AddHolidayScreen({navigation}: Props) {
   });
 
   if (isClubInfoLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   if (!clubInfoResponse) {

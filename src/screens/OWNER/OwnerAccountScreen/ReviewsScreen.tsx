@@ -85,45 +85,15 @@ const ReviewsScreen = ({}: FavoriteScreenProps) => {
 
   if (isLoadingInfiniteResources || isAuthDataLoading) {
     return (
-      <View>
-        <Text>Loading..</Text>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     {ListHeaderComponent}
-
-    //     <View p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Center width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Center>
-    //       ))}
-    //     </View>
-    //   </ScrollView>
-    // );
   }
 
   return (

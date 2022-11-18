@@ -12,6 +12,7 @@ import {
   Image,
   StyleSheet,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import {StackScreenProps} from "@react-navigation/stack";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
@@ -318,7 +319,16 @@ export default function UpsertTableScreen({route, navigation}: Props) {
   });
 
   if (route.params.actionMode === "update" && isTableDetailsLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   if (

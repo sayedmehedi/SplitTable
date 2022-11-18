@@ -308,6 +308,8 @@ export type GetClubReviewsQueryParams = PaginationQueryParams & {
 export interface OwnerProfileData {
   id: number;
   name: string;
+  first_name: string;
+  last_name: string;
   phone: string;
   email: string;
   location: string;
@@ -322,6 +324,8 @@ export interface CustomerProfileData {
   id: number;
   image: string;
   name: string;
+  first_name: string;
+  last_name: string;
   phone: string;
   email: string;
   location: string;
@@ -413,7 +417,7 @@ export interface Transaction {
   no_of_guest: number;
   status: "Pending" | "Success" | "Cancelled";
   amount: string;
-  payment_method: string;
+  payment_method: SupportedPaymentMethods;
   user: string;
 }
 
@@ -636,7 +640,7 @@ export interface ClubBooking {
   club_image: string;
   tables: string[];
   is_reviewed: boolean;
-  status: string;
+  status: "Completed" | "Cancelled";
 }
 
 export type GetBookingHistoryResponse = {

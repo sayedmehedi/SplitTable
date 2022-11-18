@@ -71,7 +71,7 @@ const PaymentMethodScreen = ({navigation, route}: Props) => {
                 <CreditCardIcon />
 
                 <View style={{marginLeft: splitAppTheme.space[2]}}>
-                  <Text>Credit card</Text>
+                  <Text>Credit Card (Authorize.net)</Text>
                 </View>
               </View>
 
@@ -91,7 +91,7 @@ const PaymentMethodScreen = ({navigation, route}: Props) => {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.paymentContainer}
               onPress={() => {
                 field.onChange(AppSupportedPaymentMethods.PAYPAL);
@@ -123,7 +123,7 @@ const PaymentMethodScreen = ({navigation, route}: Props) => {
                   },
                 ]}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity
               style={styles.paymentContainer}
@@ -139,7 +139,7 @@ const PaymentMethodScreen = ({navigation, route}: Props) => {
                 <CryptoIcon />
 
                 <View style={{marginLeft: splitAppTheme.space[2]}}>
-                  <Text>Crypto</Text>
+                  <Text>Cryptocurrency</Text>
                 </View>
               </View>
 
@@ -165,7 +165,8 @@ const PaymentMethodScreen = ({navigation, route}: Props) => {
               render={({message}) => (
                 <Text
                   style={{
-                    marginTop: 5,
+                    marginVertical: 5,
+                    textAlign: "center",
                     color: splitAppTheme.colors.red[300],
                   }}>
                   {message}

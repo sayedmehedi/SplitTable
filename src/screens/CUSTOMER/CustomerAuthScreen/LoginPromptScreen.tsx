@@ -112,6 +112,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
           <View
             style={{
               width: splitAppTheme.sizes.full,
+              marginBottom: splitAppTheme.space[2],
             }}>
             <View>
               <TouchableOpacity
@@ -136,7 +137,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
               </TouchableOpacity>
             </View>
 
-            <View
+            {/* <View
               style={{
                 marginTop: splitAppTheme.space[4],
               }}>
@@ -158,7 +159,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
                   Continue with Phone Number
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
           <View

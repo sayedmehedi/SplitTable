@@ -15,6 +15,12 @@ import useInfiniteGetTransactionsQuery from "@hooks/user/useInfiniteGetTransacti
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
+const paymentMethodsExcerpt = {
+  authorize: "Authorize.net",
+  paypal: "Paypal",
+  cryptocurrency: "Cryptocurrency",
+} as const;
+
 const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
   <View
     key={item.id}
@@ -26,10 +32,10 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
       marginVertical: 5,
       alignItems: "center",
       flexDirection: "row",
-      paddingHorizontal: 20,
       backgroundColor: "white",
       borderColor: "#F1F1F1",
       justifyContent: "space-around",
+      paddingHorizontal: splitAppTheme.space[1],
     }}>
     <View style={{alignItems: "center"}}>
       <Text
@@ -94,6 +100,8 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
               backgroundColor:
                 item.status === "Pending"
                   ? splitAppTheme.colors.blue[300]
+                  : item.status === "Success"
+                  ? splitAppTheme.colors.green[300]
                   : splitAppTheme.colors.red[300],
             },
           ]}
@@ -104,6 +112,8 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
             color:
               item.status === "Pending"
                 ? splitAppTheme.colors.blue[300]
+                : item.status === "Success"
+                ? splitAppTheme.colors.green[300]
                 : splitAppTheme.colors.red[300],
             fontFamily: "Satoshi-Regular",
           }}>
@@ -120,7 +130,7 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
           alignSelf: "flex-end",
           fontFamily: "Satoshi-Regular",
         }}>
-        {item.payment_method}
+        {paymentMethodsExcerpt[item.payment_method]}
       </Text>
       <Text
         style={{
@@ -175,45 +185,15 @@ const TransactionScreen = () => {
 
   if (isLoadingInfiniteResources) {
     return (
-      <View>
-        <Text>Loading..</Text>
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     {ListHeaderComponent}
-
-    //     <View p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Center width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Center>
-    //       ))}
-    //     </View>
-    //   </ScrollView>
-    // );
   }
 
   return (

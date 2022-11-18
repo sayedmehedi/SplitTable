@@ -1,6 +1,16 @@
 import PaypalIcon from "@assets/icons/paypal.svg";
 import CreditCardIcon from "@assets/icons/credit-card.svg";
+import JoinCountIcon from "@assets/icons/join-count.svg";
 import CryptoIcon from "@assets/icons/crypto.svg";
+import DistanceIcon from "@assets/icons/distance.svg";
+
+import PaymentIcon from "@assets/icons/payment-notification.svg";
+import SuccessIcon from "@assets/icons/success-notification.svg";
+import CancelIcon from "@assets/icons/cancel-notification.svg";
+
+import BookTableIcon from "@assets/icons/book-table.svg";
+import JoinTableIcon from "@assets/icons/join-table.svg";
+import SplitTableIcon from "@assets/icons/split-table.svg";
 
 import DjIcon from "@assets/icons/dj.svg";
 import DishIcon from "@assets/icons/dish.svg";
@@ -64,4 +74,12 @@ export {
   PaypalIcon,
   CreditCardIcon,
   CryptoIcon,
+  PaymentIcon,
+  SuccessIcon,
+  CancelIcon,
+  JoinCountIcon,
+  DistanceIcon,
+  BookTableIcon,
+  JoinTableIcon,
+  SplitTableIcon,
 };

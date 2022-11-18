@@ -28,6 +28,9 @@ const EachOfferMenuItem = ({item}: Props) => {
           style={{
             width: splitAppTheme.sizes["full"],
             height: splitAppTheme.sizes["full"],
+            borderRadius: splitAppTheme.radii.lg,
+            borderWidth: splitAppTheme.borderWidths[1],
+            borderColor: splitAppTheme.colors.coolGray[300],
           }}
           source={{uri: item.image}}
         />
@@ -53,15 +56,12 @@ const EachOfferMenuItem = ({item}: Props) => {
             maxWidth: "80%",
           }}>
           <Text
-            numberOfLines={3}
             style={{
               color: "#8A8D9F",
               fontSize: splitAppTheme.fontSizes.sm,
               fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
             }}>
-            {truncate(item.details, {
-              length: 30,
-            })}
+            {item.details}
           </Text>
         </View>
 

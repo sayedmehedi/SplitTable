@@ -18,12 +18,17 @@ import {
   NativeScrollEvent,
   ActivityIndicator,
   ListRenderItem,
+  StatusBar,
 } from "react-native";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
-const renderBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem item={item} />
+const renderUpcomingBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
+  <EachBookingItem type={"upcoming"} item={item} />
+);
+
+const renderHistoryBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
+  <EachBookingItem type={"history"} item={item} />
 );
 
 const UpcomingBookingRoute = (props: {}) => {
@@ -77,44 +82,14 @@ const UpcomingBookingRoute = (props: {}) => {
     return (
       <View
         style={{
+          flex: 1,
           width: WINDOW_WIDTH,
+          alignItems: "center",
+          justifyContent: "center",
         }}>
-        <Text>Loading..</Text>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     <Box p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Box width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Box>
-    //       ))}
-    //     </Box>
-    //   </ScrollView>
-    // );
   }
 
   return (
@@ -131,9 +106,9 @@ const UpcomingBookingRoute = (props: {}) => {
         data={resourceListData}
         refreshing={isRefetching}
         keyExtractor={keyExtractor}
-        renderItem={renderBookingItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
+        renderItem={renderUpcomingBookingItem}
         contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
@@ -199,44 +174,14 @@ const HistoryBookingRoute = (props: {}) => {
     return (
       <View
         style={{
+          flex: 1,
           width: WINDOW_WIDTH,
+          alignItems: "center",
+          justifyContent: "center",
         }}>
-        <Text>Loading..</Text>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     <Box p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Box width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Box>
-    //       ))}
-    //     </Box>
-    //   </ScrollView>
-    // );
   }
 
   return (
@@ -253,9 +198,9 @@ const HistoryBookingRoute = (props: {}) => {
         data={resourceListData}
         refreshing={isRefetching}
         keyExtractor={keyExtractor}
-        renderItem={renderBookingItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
+        renderItem={renderHistoryBookingItem}
         contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
@@ -399,6 +344,11 @@ const BookingListScreen = () => {
 
   return (
     <View>
+      <StatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {ListHeaderComponent}
       <FlatList
         horizontal

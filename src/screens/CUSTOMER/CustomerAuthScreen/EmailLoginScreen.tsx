@@ -18,7 +18,7 @@ import {
   CustomerAuthStackParamList,
 } from "@src/navigation";
 import {splitAppTheme} from "@src/theme";
-import {Text, TextInput, View} from "react-native";
+import {StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
 import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
 
 type Props = CompositeScreenProps<
@@ -79,6 +79,11 @@ const EmailLoginScreen = ({navigation}: Props) => {
       style={{
         height: splitAppTheme.sizes.full,
       }}>
+      <StatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <View style={{flex: 1}} />
 
       <View
@@ -144,7 +149,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                           backgroundColor: splitAppTheme.colors.gray[100],
                           paddingVertical: splitAppTheme.space[4],
                         }}>
-                        <Entypo size={30} name={"mail"} color={"black"} />
+                        <Entypo size={22} name={"mail"} color={"black"} />
                       </View>
 
                       <View
@@ -163,7 +168,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                           value={field.value}
                           onChangeText={field.onChange}
                           keyboardType={"email-address"}
-                          placeholder={"Enter Your Name Here"}
+                          placeholder={"Email Address"}
                         />
                       </View>
                     </View>
@@ -217,7 +222,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                           backgroundColor: splitAppTheme.colors.gray[100],
                           paddingVertical: splitAppTheme.space[4],
                         }}>
-                        <FontAwesome5 size={30} name={"lock"} color={"black"} />
+                        <FontAwesome5 size={20} name={"lock"} color={"black"} />
                       </View>
 
                       <View
@@ -275,20 +280,32 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 Remember me
               </CheckView> */}
 
-              <Text
+              <View
                 style={{
-                  fontSize: splitAppTheme.fontSizes.md,
-                  color: splitAppTheme.colors.primary[300],
+                  alignSelf: "flex-end",
                 }}>
-                Forget password?
-              </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(
+                      CustomerAuthStackRoutes.FORGOT_PASSWORD,
+                    );
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: splitAppTheme.fontSizes.md,
+                      color: splitAppTheme.colors.primary[300],
+                    }}>
+                    Forget password?
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <AppGradientButton
               width={"100%"}
               color={"primary"}
               variant={"solid"}
-              title={"Sign in"}
+              title={"Sign In"}
               onPress={handleSignin}
               touchableOpacityProps={{
                 disabled: isLoggingIn,
@@ -304,21 +321,39 @@ const EmailLoginScreen = ({navigation}: Props) => {
         }}
       />
 
-      <Text
+      <View
         style={{
-          textAlign: "center",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
           marginBottom: splitAppTheme.space[5],
-          fontSize: splitAppTheme.fontSizes.md,
-          color: splitAppTheme.colors.primary[300],
         }}>
-        Don't have an account?{" "}
-        <Text
-          style={{
-            color: splitAppTheme.colors.primary[300],
-          }}>
-          Sign Up
-        </Text>
-      </Text>
+        <View>
+          <Text
+            style={{
+              textAlign: "center",
+              alignItems: "center",
+              color: splitAppTheme.colors.black,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            Don't have an account?
+          </Text>
+        </View>
+
+        <View style={{marginLeft: splitAppTheme.space[1]}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(CustomerAuthStackRoutes.SIGNUP);
+            }}>
+            <Text
+              style={{
+                color: splitAppTheme.colors.primary[300],
+              }}>
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };

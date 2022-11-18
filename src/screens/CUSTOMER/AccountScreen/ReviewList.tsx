@@ -62,13 +62,7 @@ export default function ReviewList() {
   const resourceListData = React.useMemo(() => {
     return (
       infiniteGetResourcesResponse?.pages?.flatMap(eachPage => {
-        return (
-          eachPage?.reviews?.data?.map(eachReview => ({
-            ...eachReview,
-            // date: dayjs(eachReview.date, "DD MMM YYYY").fromNow(),
-            date: eachReview.date,
-          })) ?? []
-        );
+        return eachPage?.reviews?.data ?? [];
       }) ?? []
     );
   }, [infiniteGetResourcesResponse?.pages]);
@@ -79,49 +73,23 @@ export default function ReviewList() {
 
   if (isLoadingInfiniteResources) {
     return (
-      <View style={{width: WINDOW_WIDTH}}>
-        <Text>Loading..</Text>
+      <View
+        style={{
+          flex: 1,
+          width: WINDOW_WIDTH,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     {ListHeaderComponent}
-
-    //     <View p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Center width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Center>
-    //       ))}
-    //     </View>
-    //   </ScrollView>
-    // );
   }
 
   return (
-    <View style={{width: WINDOW_WIDTH}}>
+    <View
+      style={{
+        paddingHorizontal: splitAppTheme.space["6"],
+      }}>
       {!isLoadingInfiniteResources &&
         infiniteGetResourcesResponse !== undefined &&
         resourceListData.length > 0 && (
@@ -262,9 +230,6 @@ export default function ReviewList() {
             }}
           />
         )}
-        contentContainerStyle={{
-          paddingHorizontal: splitAppTheme.space["6"],
-        }}
         ListFooterComponent={
           isFetchingNextPage ? (
             <View>

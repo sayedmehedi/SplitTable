@@ -158,12 +158,21 @@ export default function UserSearchInput() {
               />
             </View>
             <View style={{marginLeft: splitAppTheme.space[3]}}>
-              <ScrollViewListItem highlight={text} title={item.title} />
+              <ScrollViewListItem
+                style={{
+                  fontWeight: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}
+                highlight={text}
+                title={item.title}
+              />
 
               <View style={{marginTop: splitAppTheme.space[2]}}>
                 <ScrollViewListItem
                   highlight={text}
-                  title={truncate(item.email)}
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.sm,
+                  }}
+                  title={truncate(item.email, {length: 22})}
                 />
               </View>
             </View>
@@ -195,8 +204,8 @@ export default function UserSearchInput() {
               <Image
                 source={{uri: selectedUser?.image}}
                 style={{
-                  width: 160,
-                  height: 160,
+                  width: splitAppTheme.sizes[24],
+                  height: splitAppTheme.sizes[24],
                   borderRadius: splitAppTheme.radii.full,
                 }}
               />
@@ -216,6 +225,7 @@ export default function UserSearchInput() {
             <View style={{marginTop: splitAppTheme.space[2]}}>
               <Text
                 style={{
+                  textAlign: "center",
                   color: splitAppTheme.colors.white,
                   fontSize: splitAppTheme.fontSizes.sm,
                   fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
@@ -230,10 +240,10 @@ export default function UserSearchInput() {
                 onPress={handleSendInvitation}>
                 <View
                   style={{
-                    borderRadius: splitAppTheme.radii.md,
+                    borderRadius: splitAppTheme.radii.xl,
                     borderColor: splitAppTheme.colors.white,
-                    paddingVertical: splitAppTheme.space[3],
-                    paddingHorizontal: splitAppTheme.space[6],
+                    paddingVertical: splitAppTheme.space[2],
+                    paddingHorizontal: splitAppTheme.space[3],
                     borderWidth: splitAppTheme.borderWidths[2],
                   }}>
                   <Text

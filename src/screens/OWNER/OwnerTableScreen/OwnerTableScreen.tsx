@@ -5,6 +5,7 @@ import {
   StatusBar,
   SafeAreaView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import {useTime} from "react-timer-hook";
 import {splitAppTheme} from "@src/theme";
@@ -82,8 +83,17 @@ const OwnerTableScreen = ({navigation}: Props) => {
     navigation.navigate(RootStackRoutes.NOTIFICATIONS);
   };
 
-  if (isLoadingProfile) {
-    return <Text>Loading..</Text>;
+  if (isLoadingProfile || isLoadingBookedTables || isLoadingUpcomingBooking) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   return (
@@ -200,9 +210,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
 
       <View style={{flex: 1, paddingHorizontal: splitAppTheme.space[6]}}>
         <View style={{marginBottom: splitAppTheme.space[6]}}>
-          {isLoadingBookedTables ? (
-            <Text>Loading...</Text>
-          ) : !getBookedTablesResponse ? (
+          {!getBookedTablesResponse ? (
             <View>
               <View
                 style={{
@@ -311,10 +319,8 @@ const OwnerTableScreen = ({navigation}: Props) => {
           </TouchableOpacity>
         </View>
 
-        {isLoadingUpcomingBooking ? (
-          <Text>Loading...</Text>
-        ) : !getUpcomingBookingResponse ||
-          getUpcomingBookingResponse.bookings.count === 0 ? (
+        {!getUpcomingBookingResponse ||
+        getUpcomingBookingResponse.bookings.count === 0 ? (
           <View>
             <View
               style={{

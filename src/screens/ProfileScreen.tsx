@@ -1,15 +1,13 @@
 import React from "react";
-import ChatList from "./ChatList";
-import PhotoList from "./PhotoList";
-import ReviewList from "./ReviewList";
 import {splitAppTheme} from "@src/theme";
-import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {isCustomerProfile} from "@utils/profile";
+import PhotoList from "./CUSTOMER/AccountScreen/PhotoList";
+import ReviewList from "./CUSTOMER/AccountScreen/ReviewList";
 import {
-  CustomerMainBottomTabRoutes,
-  CustomerStackRoutes,
   RootStackRoutes,
+  CustomerStackRoutes,
+  CustomerMainBottomTabRoutes,
 } from "@constants/routes";
 import {RootStackParamList} from "@src/navigation";
 import Feather from "react-native-vector-icons/Feather";
@@ -18,6 +16,7 @@ import LinearGradient from "react-native-linear-gradient";
 import ProfileImageUploader from "./ProfileImageUploader";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 import {
@@ -25,9 +24,9 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
+  ActivityIndicator,
 } from "react-native";
+import AddUserPhotoBtn from "./CUSTOMER/AccountScreen/AddUserPhotoBtn";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -36,7 +35,6 @@ type ProfileScreenProps = StackScreenProps<
 
 const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   const queryClient = useQueryClient();
-  const pagerRef = React.useRef<FlatList>(null!);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const isFetchingUserImages = useIsFetching({
@@ -47,33 +45,43 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
 
+  const {data: authData, isLoading: isAuthDataLoading} = useGetAuthDataQuery();
   const {data: profileData, isLoading} = useGetProfileQuery(
     route.params.userId,
   );
 
-  const setIndex = React.useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const viewSize = event.nativeEvent.layoutMeasurement.width;
-      const contentOffset = event.nativeEvent.contentOffset.x;
-      const carouselIndex = Math.floor(contentOffset / viewSize);
-      setSelectedIndex(carouselIndex);
-    },
-    [],
-  );
-
   const handlePager = (index: number) => {
-    pagerRef?.current?.scrollToOffset({
-      animated: true,
-      offset: WINDOW_WIDTH * index,
-    });
+    setSelectedIndex(index);
   };
 
   const handleRefresh = async () => {
     await queryClient.refetchQueries([QueryKeys.IMAGE]);
   };
 
-  if (isLoading || !isCustomerProfile(profileData)) {
-    return <Text>Loading..</Text>;
+  if (isLoading || isAuthDataLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
+  }
+
+  if (!isCustomerProfile(profileData)) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <Text>Not a customer profile</Text>
+      </View>
+    );
   }
 
   const ListHeaderComponent = (
@@ -102,10 +110,18 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         style={{
           marginTop: -75,
         }}>
-        <ProfileImageUploader />
+        <ProfileImageUploader
+          imageUrl={profileData.image}
+          disabled={authData?.id !== profileData.id}
+        />
       </View>
 
-      <View style={{alignSelf: "center", alignItems: "center"}}>
+      <View
+        style={{
+          alignSelf: "center",
+          alignItems: "center",
+          marginBottom: splitAppTheme.space[3],
+        }}>
         <Text
           style={{
             fontSize: 26,
@@ -304,9 +320,12 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
 
         <TouchableOpacity
           onPress={() => {
-            // navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
-            //   screen: CustomerMainBottomTabRoutes.CHAT,
-            // });
+            navigation.navigate(RootStackRoutes.CUSTOMER, {
+              screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
+              params: {
+                screen: CustomerMainBottomTabRoutes.CHAT,
+              },
+            });
           }}>
           <LinearGradient
             colors={["#201648", "#7359D1"]}
@@ -329,44 +348,32 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
     </React.Fragment>
   );
 
-  const ListFooterComponent = (
-    <FlatList
-      horizontal
-      pagingEnabled
-      ref={pagerRef}
-      listKey={"pager"}
-      onMomentumScrollEnd={setIndex}
-      showsHorizontalScrollIndicator={false}
-      data={[{key: "photos"}, {key: "reviews"}, {key: "chat"}]}
-      renderItem={({item}) => {
-        switch (item.key) {
-          case "photos":
-            return <PhotoList />;
-
-          case "reviews":
-            return <ReviewList />;
-
-          default:
-            return <ChatList />;
-        }
-      }}
-    />
-  );
-
   return (
-    <View>
+    <View style={{position: "relative", flex: 1}}>
       <FlatList
-        data={[]}
-        renderItem={() => null}
+        nestedScrollEnabled
+        data={[{key: "body"}]}
+        renderItem={() => {
+          if (selectedIndex === 0) {
+            return (
+              <PhotoList
+                isMine={authData?.id === profileData.id}
+                userId={profileData.id}
+              />
+            );
+          }
+
+          return <ReviewList />;
+        }}
         onRefresh={handleRefresh}
         key={"profile-screen-list"}
         listKey={"profile-screen-list"}
         showsVerticalScrollIndicator={false}
         refreshing={isFetchingUserImages == 1}
         ListHeaderComponent={ListHeaderComponent}
-        ListFooterComponent={ListFooterComponent}
-        keyExtractor={(_, i) => i.toString()}
       />
+
+      {authData?.id === profileData.id && <AddUserPhotoBtn />}
     </View>
   );
 };

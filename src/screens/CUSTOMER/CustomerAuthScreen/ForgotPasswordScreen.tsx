@@ -1,14 +1,14 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import {OwnerAuthStackRoutes} from "@constants/routes";
+import {CustomerAuthStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {StyleSheet, Text, View, TextInput} from "react-native";
+import {StyleSheet, Text, View, TextInput, StatusBar} from "react-native";
 import {
   RootStackParamList,
-  OwnerStackParamList,
-  OwnerAuthStackParamList,
+  CustomerStackParamList,
+  CustomerAuthStackParamList,
 } from "@src/navigation";
 import useAppToast from "@hooks/useAppToast";
 import {Controller, useForm} from "react-hook-form";
@@ -21,10 +21,10 @@ import useForgotPasswordMutation from "@hooks/auth/useForgotPasswordMutation";
 type Props = CompositeScreenProps<
   CompositeScreenProps<
     StackScreenProps<
-      OwnerAuthStackParamList,
-      typeof OwnerAuthStackRoutes.FORGOT_PASSWORD
+      CustomerAuthStackParamList,
+      typeof CustomerAuthStackRoutes.FORGOT_PASSWORD
     >,
-    StackScreenProps<OwnerStackParamList>
+    StackScreenProps<CustomerStackParamList>
   >,
   StackScreenProps<RootStackParamList>
 >;
@@ -52,7 +52,7 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
       onSuccess(data) {
         if (!isResponseResultError(data)) {
           toast.success(data.success);
-          navigation.navigate(OwnerAuthStackRoutes.RESET_PASSWORD, {
+          navigation.navigate(CustomerAuthStackRoutes.RESET_PASSWORD, {
             email,
           });
         }
@@ -67,13 +67,42 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
         height: splitAppTheme.sizes.full,
         backgroundColor: splitAppTheme.colors.white,
       }}>
+      <StatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View
         style={{
           width: splitAppTheme.sizes.full,
         }}>
+        <View style={{alignItems: "center"}}>
+          <Text
+            style={{
+              fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            We will send a mail to
+          </Text>
+          <Text
+            style={{
+              fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            the email address you registered
+          </Text>
+          <Text
+            style={{
+              fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+              fontSize: splitAppTheme.fontSizes.md,
+            }}>
+            to regain your password
+          </Text>
+        </View>
+
         <View
           style={{
             alignItems: "center",
+            marginVertical: splitAppTheme.space[4],
           }}>
           <Controller
             name={"email"}
@@ -94,8 +123,8 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
                   }}
                   value={field.value}
                   onChangeText={field.onChange}
+                  placeholder={"Email Address"}
                   keyboardType={"email-address"}
-                  placeholder={"Enter Your Name Here"}
                 />
 
                 <ErrorMessage
@@ -122,9 +151,9 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
           }}>
           <AppGradientButton
             width={"100%"}
+            title={"Send"}
             color={"primary"}
             variant={"solid"}
-            title={"Verify Now"}
             touchableOpacityProps={{
               disabled: isSendingReq,
             }}

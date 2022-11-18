@@ -2,24 +2,15 @@ import React from "react";
 import {ClubMenuItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import EachOfferMenuItem from "./EachOfferMenuItem";
+import {CustomerStackRoutes} from "@constants/routes";
 import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useInfiniteGetClubMenusQuery from "@hooks/menu/useInfiniteGetClubMenusQuery";
-import {
-  Text,
-  View,
-  FlatList,
-  ListRenderItem,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
-import {AppTableListTypes} from "@constants/table";
-import {CustomerStackRoutes} from "@constants/routes";
-import LinearGradient from "react-native-linear-gradient";
 import {StackNavigationProp} from "@react-navigation/stack";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {View, FlatList, ListRenderItem, ActivityIndicator} from "react-native";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
+import useInfiniteGetClubMenusQuery from "@hooks/menu/useInfiniteGetClubMenusQuery";
 
 const keyExtractor = (item: {id: number}) => `menu-${item.id.toString()}`;
 
@@ -84,44 +75,15 @@ const ClubDetailsAndMenuListScreen = ({clubId, clubName}: Props) => {
     return (
       <View
         style={{
+          flex: 1,
           width: WINDOW_WIDTH,
+          alignItems: "center",
+          justifyContent: "center",
+          padding: splitAppTheme.space[3],
         }}>
-        <Text>Loading..</Text>
+        <ActivityIndicator size={"small"} />
       </View>
     );
-    // return (
-    //   <ScrollView>
-    //     <Box p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Box width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Box>
-    //       ))}
-    //     </Box>
-    //   </ScrollView>
-    // );
   }
 
   return (
@@ -130,7 +92,6 @@ const ClubDetailsAndMenuListScreen = ({clubId, clubName}: Props) => {
         flex: 1,
         width: WINDOW_WIDTH,
         padding: splitAppTheme.space["6"],
-        position: "relative",
       }}>
       {isFetchingNextPage ? (
         <View>
@@ -156,55 +117,6 @@ const ClubDetailsAndMenuListScreen = ({clubId, clubName}: Props) => {
         )}
         ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
-
-      <View
-        style={{
-          bottom: 0,
-          width: WINDOW_WIDTH,
-          position: "absolute",
-        }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
-              headerTitle: clubName,
-              listType: AppTableListTypes.BY_CLUB_ID,
-              searchTerm: {
-                clubId,
-              },
-            });
-          }}>
-          <LinearGradient
-            colors={[
-              splitAppTheme.colors.secondary[500],
-              splitAppTheme.colors.primary[500],
-            ]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: splitAppTheme.sizes.full,
-              paddingVertical: splitAppTheme.space[5],
-            }}>
-            <View
-              style={{
-                justifyContent: "center",
-                width: splitAppTheme.sizes.full,
-              }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: splitAppTheme.colors.white,
-                  fontSize: splitAppTheme.fontSizes.lg,
-                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                }}>
-                View This Club Table & Events
-              </Text>
-            </View>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

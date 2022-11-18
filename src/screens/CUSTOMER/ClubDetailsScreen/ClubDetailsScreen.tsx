@@ -5,6 +5,7 @@ import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {Clock, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
+import {useDisclosure} from "react-use-disclosure";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
@@ -35,10 +36,13 @@ import {
   TouchableOpacity,
   ImageBackground,
   ActivityIndicator,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
+import ReviewModal from "@components/ReviewModal";
+import {AppTableListTypes} from "@constants/table";
 
-const WINDOW_DIMEN = Dimensions.get("window");
-const CARD_HEIGHT = 180;
+const CARD_HEIGHT = 100;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
 
 type Props = CompositeScreenProps<
@@ -53,9 +57,12 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
   const toast = useAppToast();
   const queryClient = useQueryClient();
   const pagerRef = React.useRef<FlatList>(null!);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const {isOpen: isReviewModalOpen, toggle: toggleReviewModal} =
+    useDisclosure();
 
   const {
-    screen: {height: SCREEN_HEIGHT, width: SCREEN_WIDTH},
+    window: {width: WINDOW_WIDTH},
   } = useDimensions();
 
   const imageSliderIndexRef = React.useRef(0);
@@ -76,6 +83,16 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
     data: toggleFavoriteClubResponse,
   } = useToggleFavoriteClubMutation();
 
+  const setIndex = React.useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const viewSize = event.nativeEvent.layoutMeasurement.width;
+      const contentOffset = event.nativeEvent.contentOffset.x;
+      const carouselIndex = Math.floor(contentOffset / viewSize);
+      setSelectedIndex(carouselIndex);
+    },
+    [],
+  );
+
   const handleToggleFavorite = React.useCallback(() => {
     toggleFavoriteClub(
       {clubId: route.params.clubId},
@@ -92,10 +109,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
   }, [toggleFavoriteClub]);
 
   const handlePager = (index: number) => {
-    pagerRef?.current?.scrollToOffset({
-      animated: true,
-      offset: SCREEN_WIDTH * index,
-    });
+    setSelectedIndex(index);
   };
 
   const handlePreviousSlide = () => {
@@ -110,7 +124,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
       imageSliderRef?.current?.scrollTo({
         y: 0,
         animated: true,
-        x: SCREEN_WIDTH * imageSliderIndexRef.current,
+        x: WINDOW_WIDTH * imageSliderIndexRef.current,
       });
     }
   };
@@ -128,99 +142,22 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
       imageSliderRef?.current?.scrollTo({
         y: 0,
         animated: true,
-        x: SCREEN_WIDTH * imageSliderIndexRef.current,
+        x: WINDOW_WIDTH * imageSliderIndexRef.current,
       });
     }
   };
 
   if (isClubDetailsLoading) {
-    return <Text>Loading...</Text>;
-    // return (
-    //   <ScrollView>
-    //     <Skeleton height={300} />
-
-    //     <Box mx={"6"}>
-    //       <Skeleton
-    //         width={"full"}
-    //         borderRadius={"xl"}
-    //         height={CARD_HEIGHT}
-    //         bg={"tomato"}
-    //         marginTop={CARD_NEGATIVE_MARGIN}
-    //       />
-
-    //       <Skeleton
-    //         height={"12"}
-    //         my={"5"}
-    //         width={"full"}
-    //         borderRadius={"lg"}
-    //         borderWidth={"2"}
-    //         borderColor={"primary.300"}
-    //       />
-
-    //       <HStack space={"2"}>
-    //         <Box flex={1}>
-    //           <Skeleton
-    //             height={"12"}
-    //             my={"5"}
-    //             width={"full"}
-    //             borderRadius={"lg"}
-    //             bg={"secondary.300"}
-    //           />
-    //         </Box>
-
-    //         <Box flex={1}>
-    //           <Skeleton
-    //             height={"12"}
-    //             my={"5"}
-    //             width={"full"}
-    //             borderRadius={"lg"}
-    //             bg={"blue.300"}
-    //           />
-    //         </Box>
-
-    //         <Box flex={1}>
-    //           <Skeleton
-    //             height={"12"}
-    //             my={"5"}
-    //             width={"full"}
-    //             borderRadius={"lg"}
-    //             bg={"secondary.100"}
-    //           />
-    //         </Box>
-    //       </HStack>
-    //     </Box>
-
-    //     <Box p={6}>
-    //       {new Array(5).fill(1).map((_, i) => (
-    //         <Center width={"full"} key={i}>
-    //           <HStack width={"full"} height={"32"} space={"5"} borderRadius={"md"}>
-    //             <Skeleton
-    //               height={"24"}
-    //               width={"24"}
-    //               borderRadius={"sm"}
-    //               startColor="coolGray.100"
-    //             />
-    //             <VStack flex={"3"} space={"2.5"}>
-    //               <Skeleton height={"5"} startColor="amber.300" />
-    //               <Skeleton.Text lines={2} />
-
-    //               <HStack space="2" alignItems="center">
-    //                 <Skeleton size={"5"} borderRadius={"full"} />
-    //                 <Skeleton height={"3"} flex={"2"} borderRadius={"full"} />
-    //                 <Skeleton
-    //                   height={"3"}
-    //                   flex={"1"}
-    //                   borderRadius={"full"}
-    //                   startColor={"indigo.300"}
-    //                 />
-    //               </HStack>
-    //             </VStack>
-    //           </HStack>
-    //         </Center>
-    //       ))}
-    //     </Box>
-    //   </ScrollView>
-    // );
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <ActivityIndicator size={"small"} />
+      </View>
+    );
   }
 
   if (!clubDetailsResponse) {
@@ -249,8 +186,23 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
       <StatusBar translucent backgroundColor={"transparent"} />
 
       <FlatList
-        data={[]}
-        renderItem={() => null}
+        data={[{key: "body"}]}
+        renderItem={() => {
+          if (selectedIndex === 0) {
+            return (
+              <ClubDetailsAndMenuListScreen
+                clubId={clubDetailsResponse.club.id}
+                clubName={clubDetailsResponse.club.name}
+              />
+            );
+          }
+
+          if (selectedIndex === 1) {
+            return <ClubDetailsAndReviewList clubId={route.params.clubId} />;
+          }
+
+          return <ClubDetailsInformation clubId={route.params.clubId} />;
+        }}
         listKey={"club-details"}
         showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
@@ -296,6 +248,9 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: splitAppTheme.radii.full,
+                      }}
+                      onPress={() => {
+                        navigation.goBack();
                       }}>
                       <FontAwesome5
                         size={22}
@@ -414,7 +369,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
               }}>
               <View
                 style={{
-                  height: CARD_HEIGHT,
+                  // height: CARD_HEIGHT,
                   ...splitAppTheme.shadows[3],
                   padding: splitAppTheme.space[4],
                   marginTop: CARD_NEGATIVE_MARGIN,
@@ -425,7 +380,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                 <Text
                   style={{
                     color: "#030819",
-                    marginBottom: splitAppTheme.space[4],
+                    marginBottom: splitAppTheme.space[1],
                     fontSize: splitAppTheme.fontSizes.xl,
                     fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                   }}>
@@ -507,26 +462,10 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                 </View>
               </View>
 
-              <View>
-                <TouchableOpacity
-                  style={{
-                    padding: splitAppTheme.space[4],
-                    marginVertical: splitAppTheme.space[5],
-                    borderRadius: splitAppTheme.radii["2xl"],
-                    borderWidth: splitAppTheme.borderWidths[2],
-                    borderColor: splitAppTheme.colors.primary[300],
-                  }}>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: splitAppTheme.fontSizes.xl,
-                      color: splitAppTheme.colors.primary[300],
-                      fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
-                    }}>
-                    Book a Table
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <View
+                style={{
+                  marginVertical: splitAppTheme.space[2],
+                }}></View>
 
               <View
                 style={{
@@ -539,18 +478,46 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                     width: splitAppTheme.sizes.full,
                   }}
                   onPress={() => handlePager(0)}>
-                  <LinearGradient
-                    end={{x: 1, y: 0}}
-                    start={{x: 0, y: 0}}
-                    colors={["#472BBE", "#DF3BC0"]}
-                    style={styles.linearGradientButtons}>
-                    <Text
-                      style={{
-                        color: "white",
-                      }}>
-                      Offer Menu
-                    </Text>
-                  </LinearGradient>
+                  {selectedIndex === 0 ? (
+                    <LinearGradient
+                      end={{x: 1, y: 0}}
+                      start={{x: 0, y: 0}}
+                      colors={["#472BBE", "#DF3BC0"]}
+                      style={styles.linearGradientButtons}>
+                      <Text
+                        style={{
+                          color: "white",
+                        }}>
+                        Offer Menu
+                      </Text>
+                    </LinearGradient>
+                  ) : (
+                    <View
+                      style={[
+                        {
+                          height: 40,
+                          borderRadius: 5,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width:
+                            WINDOW_WIDTH * 0.3 -
+                            splitAppTheme.space["6"] * 0.3 -
+                            splitAppTheme.space["3"] * 0.3,
+                        },
+                        {
+                          borderColor: "rgba(229, 7, 167, 0.2)",
+                          borderWidth: splitAppTheme.borderWidths[1],
+                          backgroundColor: "rgba(229, 7, 167, 0.2)",
+                        },
+                      ]}>
+                      <Text
+                        style={{
+                          color: splitAppTheme.colors.primary[400],
+                        }}>
+                        Offer Menu
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -560,18 +527,46 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                     width: splitAppTheme.sizes.full,
                   }}
                   onPress={() => handlePager(1)}>
-                  <LinearGradient
-                    end={{x: 0, y: 0}}
-                    start={{x: 0, y: 1}}
-                    colors={["#402BBC", "#00C1FF"]}
-                    style={styles.linearGradientButtons}>
-                    <Text
-                      style={{
-                        color: "white",
-                      }}>
-                      Reviews
-                    </Text>
-                  </LinearGradient>
+                  {selectedIndex === 1 ? (
+                    <LinearGradient
+                      end={{x: 0, y: 0}}
+                      start={{x: 0, y: 1}}
+                      colors={["#402BBC", "#00C1FF"]}
+                      style={styles.linearGradientButtons}>
+                      <Text
+                        style={{
+                          color: "white",
+                        }}>
+                        Reviews
+                      </Text>
+                    </LinearGradient>
+                  ) : (
+                    <View
+                      style={[
+                        {
+                          height: 40,
+                          borderRadius: 5,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width:
+                            WINDOW_WIDTH * 0.3 -
+                            splitAppTheme.space["6"] * 0.3 -
+                            splitAppTheme.space["3"] * 0.3,
+                        },
+                        {
+                          borderColor: "rgba(0, 174, 230, 0.2)",
+                          borderWidth: splitAppTheme.borderWidths[1],
+                          backgroundColor: "rgba(0, 174, 230, 0.2)",
+                        },
+                      ]}>
+                      <Text
+                        style={{
+                          color: splitAppTheme.colors.blue[400],
+                        }}>
+                        Reviews
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -580,57 +575,154 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                     width: splitAppTheme.sizes.full,
                   }}
                   onPress={() => handlePager(2)}>
-                  <LinearGradient
-                    end={{x: 1, y: 0}}
-                    start={{x: 0, y: 0}}
-                    colors={["#201648", "#7359D1"]}
-                    style={styles.linearGradientButtons}>
-                    <Text
-                      style={{
-                        color: "white",
-                      }}>
-                      Information
-                    </Text>
-                  </LinearGradient>
+                  {selectedIndex === 2 ? (
+                    <LinearGradient
+                      end={{x: 1, y: 0}}
+                      start={{x: 0, y: 0}}
+                      colors={["#201648", "#7359D1"]}
+                      style={styles.linearGradientButtons}>
+                      <Text
+                        style={{
+                          color: "white",
+                        }}>
+                        Information
+                      </Text>
+                    </LinearGradient>
+                  ) : (
+                    <View
+                      style={[
+                        {
+                          height: 40,
+                          borderRadius: 5,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width:
+                            WINDOW_WIDTH * 0.3 -
+                            splitAppTheme.space["6"] * 0.3 -
+                            splitAppTheme.space["3"] * 0.3,
+                        },
+                        {
+                          borderColor: "rgba(106, 79, 200, 0.2)",
+                          borderWidth: splitAppTheme.borderWidths[1],
+                          backgroundColor: "rgba(106, 79, 200, 0.2)",
+                        },
+                      ]}>
+                      <Text
+                        style={{
+                          color: splitAppTheme.colors.secondary[400],
+                        }}>
+                        Information
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         }
-        ListFooterComponent={
-          <FlatList
-            horizontal
-            pagingEnabled
-            ref={pagerRef}
-            listKey={"club-details-pager"}
-            showsHorizontalScrollIndicator={false}
-            data={["menu", "reviews", "information"]}
-            renderItem={({item}) => {
-              switch (item) {
-                case "information":
-                  return (
-                    <ClubDetailsInformation clubId={route.params.clubId} />
-                  );
-                case "reviews":
-                  return (
-                    <ClubDetailsAndReviewList clubId={route.params.clubId} />
-                  );
-                default:
-                  return (
-                    <ClubDetailsAndMenuListScreen
-                      clubId={clubDetailsResponse.club.id}
-                      clubName={clubDetailsResponse.club.name}
-                    />
-                  );
-              }
-            }}
-            keyExtractor={(_, i) => i.toString()}
-          />
-        }
-        ListFooterComponentStyle={{
-          height: SCREEN_HEIGHT,
-        }}
       />
+
+      <ReviewModal
+        open={isReviewModalOpen}
+        onClose={toggleReviewModal}
+        reviewerId={clubDetailsResponse.club.owner_id}
+      />
+
+      <View style={{marginTop: splitAppTheme.sizes[16]}}></View>
+
+      {selectedIndex === 1 ? (
+        <View
+          style={{
+            bottom: 0,
+            width: WINDOW_WIDTH,
+            position: "absolute",
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              toggleReviewModal();
+            }}>
+            <LinearGradient
+              colors={[
+                splitAppTheme.colors.blue[500],
+                splitAppTheme.colors.secondary[500],
+              ]}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                paddingVertical: splitAppTheme.space[5],
+              }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  width: splitAppTheme.sizes.full,
+                }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  Write your Review
+                </Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View
+          style={{
+            bottom: 0,
+            position: "absolute",
+            width: WINDOW_WIDTH,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(CustomerStackRoutes.TABLE_LIST, {
+                headerTitle: clubDetailsResponse.club.name,
+                listType: AppTableListTypes.BY_CLUB_ID,
+                searchTerm: {
+                  clubId: clubDetailsResponse.club.id,
+                },
+              });
+            }}>
+            <LinearGradient
+              colors={[
+                splitAppTheme.colors.secondary[500],
+                splitAppTheme.colors.primary[500],
+              ]}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: splitAppTheme.sizes.full,
+                paddingVertical: splitAppTheme.space[5],
+              }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  width: splitAppTheme.sizes.full,
+                }}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: splitAppTheme.colors.white,
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                  }}>
+                  View This Club Table & Events
+                </Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -649,7 +741,7 @@ const styles = StyleSheet.create({
   },
   ImageBackground: {
     height: 300,
-    width: WINDOW_DIMEN.width * 1,
+    width: Dimensions.get("window").width * 1,
   },
   linearGradientButtons: {
     flex: 1,
