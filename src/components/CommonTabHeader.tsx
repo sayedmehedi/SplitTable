@@ -15,7 +15,7 @@ const headerBackground = () => (
     style={{
       elevation: 20,
       backgroundColor: splitAppTheme.colors.white,
-      shadowColor: splitAppTheme.colors.primary[900],
+      shadowColor: splitAppTheme.colors.primary[400],
     }}
   />
 );

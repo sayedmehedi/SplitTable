@@ -19,6 +19,7 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
+import OwnerBottomTabBar from "@components/OwnerBottomTabBar";
 
 const OwnerMainBotoomTab = createBottomTabNavigator<OwnerBottomTabParamList>();
 
@@ -41,12 +42,12 @@ const OwnerBottomTabNavigator = () => {
             justifyContent: "center",
           }}>
           <AccountIcon
-            height={30}
-            width={30}
+            height={22}
+            width={22}
             color={
               focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400]
             }
           />
 
@@ -54,15 +55,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400],
             }}>
             Account
           </Text>
         </View>
       ),
     };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[400], splitAppTheme.colors.secondary[400]]);
 
   const menuScreenOptions:
     | BottomTabNavigationOptions
@@ -85,12 +86,12 @@ const OwnerBottomTabNavigator = () => {
             justifyContent: "center",
           }}>
           <MenuIcon
-            width={30}
-            height={30}
+            width={22}
+            height={22}
             color={
               focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400]
             }
           />
 
@@ -98,15 +99,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400],
             }}>
             Menu
           </Text>
         </View>
       ),
     };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[400], splitAppTheme.colors.secondary[400]]);
 
   const tableAddScreenOptions:
     | BottomTabNavigationOptions
@@ -137,7 +138,7 @@ const OwnerBottomTabNavigator = () => {
               alignItems: "center",
               justifyContent: "center",
             }}>
-            <Entypo name="plus" size={30} color={"white"} />
+            <Entypo name="plus" size={22} color={"white"} />
           </LinearGradient>
         </View>
       ),
@@ -162,12 +163,12 @@ const OwnerBottomTabNavigator = () => {
             justifyContent: "center",
           }}>
           <RedTable
-            width={30}
-            height={30}
+            width={22}
+            height={22}
             color={
               focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400]
             }
           />
 
@@ -175,15 +176,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400],
             }}>
             Home
           </Text>
         </View>
       ),
     };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[400], splitAppTheme.colors.secondary[400]]);
 
   const ownerBookingScreenOptions:
     | BottomTabNavigationOptions
@@ -206,12 +207,12 @@ const OwnerBottomTabNavigator = () => {
             justifyContent: "center",
           }}>
           <BookingIcon
-            height={30}
-            width={30}
+            height={22}
+            width={22}
             color={
               focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900]
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400]
             }
           />
 
@@ -219,15 +220,15 @@ const OwnerBottomTabNavigator = () => {
             style={{
               fontSize: 10,
               color: focused
-                ? splitAppTheme.colors.primary[900]
-                : splitAppTheme.colors.secondary[900],
+                ? splitAppTheme.colors.primary[400]
+                : splitAppTheme.colors.secondary[400],
             }}>
             Booking
           </Text>
         </View>
       ),
     };
-  }, [splitAppTheme.colors.primary[900], splitAppTheme.colors.secondary[900]]);
+  }, [splitAppTheme.colors.primary[400], splitAppTheme.colors.secondary[400]]);
 
   const globalScreenOptions:
     | BottomTabNavigationOptions
@@ -241,6 +242,8 @@ const OwnerBottomTabNavigator = () => {
     return {
       headerShown: false,
       tabBarShowLabel: false,
+      headerShadowVisible: true,
+
       tabBarStyle: {
         height: 60,
         elevation: 20,
@@ -252,6 +255,7 @@ const OwnerBottomTabNavigator = () => {
 
   return (
     <OwnerMainBotoomTab.Navigator
+      tabBar={OwnerBottomTabBar}
       id={OWNER_MAIN_BOTTOM_TAB_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
       <OwnerMainBotoomTab.Screen
@@ -265,11 +269,11 @@ const OwnerBottomTabNavigator = () => {
         name={OwnerMainBottomTabRoutes.OWNER_BOOKING}
       />
 
-      <OwnerMainBotoomTab.Screen
+      {/* <OwnerMainBotoomTab.Screen
         component={OwnerTableScreen}
         options={tableAddScreenOptions}
         name={OwnerMainBottomTabRoutes.TABLE_ADD}
-      />
+      /> */}
 
       <OwnerMainBotoomTab.Screen
         component={MenuListScreen}

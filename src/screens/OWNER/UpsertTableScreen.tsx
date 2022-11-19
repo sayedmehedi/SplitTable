@@ -893,12 +893,12 @@ export default function UpsertTableScreen({route, navigation}: Props) {
             <React.Fragment>
               <View style={styles.SectionStyle}>
                 <TextInput
-                  value={`${field.value}`}
                   keyboardType="numeric"
                   onBlur={field.onBlur}
                   placeholder={"Age limit"}
-                  style={{flex: 1, paddingLeft: 20}}
                   onChangeText={field.onChange}
+                  value={`${field.value ?? ""}`}
+                  style={{flex: 1, paddingLeft: 20}}
                 />
               </View>
 

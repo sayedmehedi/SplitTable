@@ -1,8 +1,8 @@
 import React from "react";
-import {ActivityIndicator, Text, View} from "react-native";
 import {OwnerStackRoutes} from "@constants/routes";
 import {RouteProp} from "@react-navigation/native";
 import {OwnerStackParamList} from "@src/navigation";
+import {ActivityIndicator, View} from "react-native";
 import CommonStackHeader from "@components/CommonStackHeader";
 import {OWNER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import OwnerAuthStackNavigator from "./OwnerAuthStackNavigator";
@@ -13,7 +13,6 @@ import {
   StackNavigationOptions,
 } from "@react-navigation/stack";
 import MyTablesScreen from "@screens/OWNER/MyTablesScreen";
-import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import UpsertTableScreen from "@screens/OWNER/UpsertTableScreen";
 import TableDetailsScreen from "@screens/OWNER/TableDetailsScreen";
 import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
