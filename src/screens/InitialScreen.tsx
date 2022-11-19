@@ -19,6 +19,7 @@ import {
   NativeSyntheticEvent,
   ScrollView as RNScrollView,
 } from "react-native";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const sliderImage = [
   {
@@ -93,7 +94,7 @@ const InitialScreen = ({navigation}: Props) => {
 
   return (
     <>
-      <StatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
       <View
         style={{
           flex: 1,

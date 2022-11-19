@@ -20,6 +20,7 @@ import {
   ListRenderItem,
   StatusBar,
 } from "react-native";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
@@ -344,7 +345,7 @@ const BookingListScreen = () => {
 
   return (
     <View>
-      <StatusBar
+      <FocusAwareStatusBar
         barStyle={"dark-content"}
         backgroundColor={splitAppTheme.colors.white}
       />

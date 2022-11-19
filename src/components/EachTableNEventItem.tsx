@@ -21,6 +21,7 @@ import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
+import dayjs from "dayjs";
 
 type Props = {
   item: BookedTable;
@@ -183,7 +184,9 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
               style={{
                 marginLeft: splitAppTheme.space[2],
               }}>
-              {item.date}
+              {dayjs(item.date, "YYYY-MM-DD HH:mm:ss").format(
+                "DD MMM, hh:mm A",
+              )}
             </Text>
           </View>
 

@@ -19,6 +19,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = StackScreenProps<RootStackParamList>;
 
@@ -121,7 +122,10 @@ export default function NotificationListScreen({}: Props) {
           alignItems: "center",
           justifyContent: "center",
         }}>
-        <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+        <FocusAwareStatusBar
+          barStyle={"dark-content"}
+          backgroundColor={"white"}
+        />
 
         <ActivityIndicator size={"small"} />
       </View>
@@ -130,7 +134,10 @@ export default function NotificationListScreen({}: Props) {
 
   return (
     <View>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={"white"}
+      />
 
       {isFetchingNextPage ? (
         <View>

@@ -36,6 +36,7 @@ import {
   OwnerStackParamList,
   OwnerBottomTabParamList,
 } from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -101,8 +102,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
       contentContainerStyle={{
         backgroundColor: "#FFFFFF",
       }}>
-      <StatusBar
-        translucent={false}
+      <FocusAwareStatusBar
         barStyle={"light-content"}
         backgroundColor={splitAppTheme.colors.secondary[600]}
       />

@@ -7,6 +7,7 @@ import {StackScreenProps} from "@react-navigation/stack";
 import MyTableList from "@components/owner/MyTableList";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.MY_TABLES>,
@@ -22,7 +23,10 @@ const MyTablesScreen = ({route}: Props) => {
         position: "relative",
         height: splitAppTheme.sizes.full,
       }}>
-      <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
+      <FocusAwareStatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+      />
 
       <MyTableList onItemPress={handleItemPresss} />
     </View>

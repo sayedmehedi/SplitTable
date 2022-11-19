@@ -5,6 +5,7 @@ import {splitAppTheme} from "@src/theme";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import {Image, Pressable, Text, View} from "react-native";
 import {Clock, DistanceIcon, JoinCountIcon, MapIcon} from "@constants/iconPath";
+import dayjs from "dayjs";
 
 type Props = {
   item: SplitTable;
@@ -79,7 +80,9 @@ const EachSplitTableNEventItem = ({item, onPress}: Props) => {
                 fontSize: splitAppTheme.fontSizes.sm,
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
               }}>
-              {truncate(item.date)}
+              {dayjs(item.date, "YYYY-MM-DD HH:mm:ss").format(
+                "DD MMM, hh:mm A",
+              )}
             </Text>
           </View>
 

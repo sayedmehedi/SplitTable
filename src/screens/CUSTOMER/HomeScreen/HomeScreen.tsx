@@ -37,6 +37,7 @@ import {
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -137,7 +138,7 @@ const HomeScreen = ({navigation}: Props) => {
           }}
         />
       }>
-      <StatusBar
+      <FocusAwareStatusBar
         translucent={false}
         barStyle={"light-content"}
         backgroundColor={splitAppTheme.colors.secondary[600]}

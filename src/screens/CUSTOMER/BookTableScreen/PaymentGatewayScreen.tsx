@@ -3,6 +3,8 @@ import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
+import {QueryKeys} from "@constants/query-keys";
+import {useQueryClient} from "@tanstack/react-query";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useGetPaymentUrlQuery from "@hooks/useGetPaymentUrlQuery";
@@ -30,6 +32,7 @@ const INJECTED_JAVASCRIPT = `(function() {
 })();`;
 
 const PaymentGatewayScreen = ({navigation, route}: Props) => {
+  const queryClient = useQueryClient();
   const webviewRef = React.useRef<WebView>(null!);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -87,12 +90,13 @@ const PaymentGatewayScreen = ({navigation, route}: Props) => {
     }
   }
 
-  function handleMessage(event: WebViewMessageEvent) {
+  async function handleMessage(event: WebViewMessageEvent) {
     const payload = event.nativeEvent.data as "success" | "error";
 
     switch (payload) {
       case "success":
         {
+          await queryClient.invalidateQueries([QueryKeys.UPCOMING_BOOKING]);
           navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
             screen: CustomerMainBottomTabRoutes.HOME,
           });

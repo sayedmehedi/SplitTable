@@ -37,6 +37,7 @@ import {
   launchImageLibrary,
   ImagePickerResponse,
 } from "react-native-image-picker";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -190,7 +191,7 @@ const SignUpScreen = ({navigation}: Props) => {
         backgroundColor: "#FFFFFF",
         padding: splitAppTheme.space[6],
       }}>
-      <StatusBar
+      <FocusAwareStatusBar
         barStyle={"dark-content"}
         backgroundColor={splitAppTheme.colors.white}
       />

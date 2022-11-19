@@ -22,6 +22,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import {splitAppTheme} from "@src/theme";
+import dayjs from "dayjs";
 
 type Props = {
   item: BookedTable;
@@ -170,7 +171,9 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
                 fontSize: splitAppTheme.fontSizes.sm,
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
-              {item.date}
+              {dayjs(item.date, "YYYY-MM-DD HH:mm:ss").format(
+                "DD MMM, hh:mm A",
+              )}
             </Text>
           </View>
         </View>

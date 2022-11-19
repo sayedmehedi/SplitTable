@@ -43,6 +43,7 @@ import ReviewModal from "@components/ReviewModal";
 import {AppTableListTypes} from "@constants/table";
 import useShareResourceMutation from "@hooks/useShareResourceMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const CARD_HEIGHT = 100;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
@@ -184,7 +185,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
       style={{
         flex: 1,
       }}>
-      <StatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
 
       <FlatList
         data={[{key: "body"}]}

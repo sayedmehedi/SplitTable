@@ -15,6 +15,7 @@ import TableListByLocation from "./TableListByLocation";
 import TableListBySearchTerm from "./TableListBySearchTerm";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -53,7 +54,10 @@ const TableListScreen = ({route, navigation}: Props) => {
         position: "relative",
         height: splitAppTheme.sizes.full,
       }}>
-      <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
+      <FocusAwareStatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+      />
       {route.params.listType === AppTableListTypes.BY_LOCATION && (
         <TableListByLocation
           {...tableSearchParams}

@@ -95,13 +95,7 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
   const resourceListData = React.useMemo(() => {
     return (
       infiniteGetResourcesResponse?.pages?.flatMap(eachPage => {
-        return (
-          eachPage?.reviews?.data?.map(eachReview => ({
-            ...eachReview,
-            // date: dayjs(eachReview.date, "DD MMM YYYY").fromNow(),
-            date: eachReview.date,
-          })) ?? []
-        );
+        return eachPage?.reviews?.data ?? [];
       }) ?? []
     );
   }, [infiniteGetResourcesResponse?.pages]);

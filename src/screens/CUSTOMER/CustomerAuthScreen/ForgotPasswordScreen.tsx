@@ -17,6 +17,7 @@ import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useForgotPasswordMutation from "@hooks/auth/useForgotPasswordMutation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -67,7 +68,7 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
         height: splitAppTheme.sizes.full,
         backgroundColor: splitAppTheme.colors.white,
       }}>
-      <StatusBar
+      <FocusAwareStatusBar
         barStyle={"dark-content"}
         backgroundColor={splitAppTheme.colors.white}
       />

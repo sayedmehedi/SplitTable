@@ -35,6 +35,7 @@ import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
 import useShareResourceMutation from "@hooks/useShareResourceMutation";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -114,7 +115,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
 
   return (
     <ScrollView>
-      <StatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
       <ImageBackground source={{uri: tableDetailsResponse.image}}>
         <SafeAreaView
           style={{

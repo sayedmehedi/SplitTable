@@ -19,7 +19,11 @@ import {
   CustomerStackParamList,
   CustomerAuthStackParamList,
 } from "@src/navigation";
+import useAppToast from "@hooks/useAppToast";
+import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import useFacobookLoginMutation from "@hooks/auth/useFacobookLoginMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useGoogleLoginMutation from "@hooks/auth/useGoogleLoginMutation";
@@ -36,16 +40,28 @@ type Props = CompositeScreenProps<
 >;
 
 const LoginPromptScreen = ({navigation}: Props) => {
+  const toast = useAppToast();
   const handleEmailLogin = () => {
     navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
   };
+  const {mutate: setAuthData} = useAddAuthDataMutation();
 
   const {
     error: fbError,
     data: fbLoginResponse,
     mutate: facebookLogin,
     isLoading: isLogginWithFb,
-  } = useFacobookLoginMutation();
+  } = useFacobookLoginMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        setAuthData(data.user, {
+          onSuccess() {
+            toast.success(data.success);
+          },
+        });
+      }
+    },
+  });
   useHandleNonFieldError(fbError);
   useHandleResponseResultError(fbLoginResponse);
 
@@ -54,7 +70,17 @@ const LoginPromptScreen = ({navigation}: Props) => {
     data: gglLoginResponse,
     mutate: googleLogin,
     isLoading: isLogginWithGgl,
-  } = useGoogleLoginMutation();
+  } = useGoogleLoginMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        setAuthData(data.user, {
+          onSuccess() {
+            toast.success(data.success);
+          },
+        });
+      }
+    },
+  });
   useHandleNonFieldError(gglError);
   useHandleResponseResultError(gglLoginResponse);
 
@@ -63,7 +89,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
       style={{
         flex: 1,
       }}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" />
+      <FocusAwareStatusBar translucent backgroundColor="transparent" />
 
       <LinearGradient
         style={{

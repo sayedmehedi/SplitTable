@@ -21,6 +21,7 @@ import {
 } from "react-native";
 import {splitAppTheme} from "@src/theme";
 import LinearGradient from "react-native-linear-gradient";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const slides = [
   {
@@ -241,7 +242,7 @@ const OnboardingScreen = ({navigation}: Props) => {
 
   return (
     <SafeAreaView style={styles.safeareaBox}>
-      <StatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
 
       <FlatList
         ref={ref}

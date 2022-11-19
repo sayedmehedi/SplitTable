@@ -1,4 +1,5 @@
 import React from "react";
+import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import {ErrorMessage} from "@hookform/error-message";
 import {Controller, useForm} from "react-hook-form";
@@ -17,9 +18,9 @@ import {
   CustomerStackParamList,
   CustomerAuthStackParamList,
 } from "@src/navigation";
-import {splitAppTheme} from "@src/theme";
-import {StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
 import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {Text, TextInput, TouchableOpacity, View} from "react-native";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -79,9 +80,10 @@ const EmailLoginScreen = ({navigation}: Props) => {
       style={{
         height: splitAppTheme.sizes.full,
       }}>
-      <StatusBar
+      <FocusAwareStatusBar
+        animated
         barStyle={"dark-content"}
-        backgroundColor={splitAppTheme.colors.white}
+        backgroundColor="#fff"
       />
 
       <View style={{flex: 1}} />
