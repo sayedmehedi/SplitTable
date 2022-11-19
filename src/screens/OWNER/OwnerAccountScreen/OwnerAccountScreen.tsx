@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  ScrollView,
 } from "react-native";
 import {
   FaqIcon,
@@ -63,7 +64,9 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
       <View
         style={{
           height: 90,
@@ -288,7 +291,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           App Version V1.0
         </Text>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
