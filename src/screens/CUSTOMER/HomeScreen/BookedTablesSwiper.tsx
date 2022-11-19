@@ -14,8 +14,6 @@ export default function BookedTablesSwiper({onItemPress}: Props) {
   const {data: tableNEventsResponse, isLoading: isPopularClubsLoading} =
     useGetBookedTablesQuery();
 
-  console.log("tableNEventsResponse", tableNEventsResponse);
-
   return (
     <ScrollView
       horizontal

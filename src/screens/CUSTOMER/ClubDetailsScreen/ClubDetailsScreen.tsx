@@ -41,6 +41,8 @@ import {
 } from "react-native";
 import ReviewModal from "@components/ReviewModal";
 import {AppTableListTypes} from "@constants/table";
+import useShareResourceMutation from "@hooks/useShareResourceMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 const CARD_HEIGHT = 100;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
@@ -82,16 +84,15 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
     isLoading: isTogglingFavorite,
     data: toggleFavoriteClubResponse,
   } = useToggleFavoriteClubMutation();
+  useHandleNonFieldError(toggleFavoriteError);
+  useHandleResponseResultError(toggleFavoriteClubResponse);
 
-  const setIndex = React.useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const viewSize = event.nativeEvent.layoutMeasurement.width;
-      const contentOffset = event.nativeEvent.contentOffset.x;
-      const carouselIndex = Math.floor(contentOffset / viewSize);
-      setSelectedIndex(carouselIndex);
-    },
-    [],
-  );
+  const {
+    error: shareResourceError,
+    mutate: shareResource,
+    isLoading: isSharing,
+  } = useShareResourceMutation();
+  useHandleNonFieldError(shareResourceError);
 
   const handleToggleFavorite = React.useCallback(() => {
     toggleFavoriteClub(
@@ -262,6 +263,14 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                     <View style={{flexDirection: "row"}}>
                       <View>
                         <TouchableOpacity
+                          disabled={isSharing}
+                          onPress={() => {
+                            shareResource({
+                              url: clubDetailsResponse.club.images[0],
+                              title: clubDetailsResponse.club.name,
+                              message: `Club: ${clubDetailsResponse.club.name}\nLocation: ${clubDetailsResponse.club.location}\nOpening hour: ${clubDetailsResponse.club.opening_time} - ${clubDetailsResponse.club.closing_time}`,
+                            });
+                          }}
                           style={{
                             alignItems: "center",
                             justifyContent: "center",

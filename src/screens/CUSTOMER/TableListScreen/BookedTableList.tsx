@@ -4,13 +4,7 @@ import TableListItem from "./TableListItem";
 import {AppTableTypes} from "@constants/table";
 import {TableCommonSearchParams} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {
-  ActivityIndicator,
-  FlatList,
-  ListRenderItem,
-  Text,
-  View,
-} from "react-native";
+import {View, FlatList, ListRenderItem, ActivityIndicator} from "react-native";
 import useInfiniteGetBookedTablesQuery from "@hooks/clubs/useInfiniteGetBookedTablesQuery";
 
 type Props = {

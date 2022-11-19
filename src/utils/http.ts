@@ -1,11 +1,11 @@
 import {Container} from "inversify";
-import axios, {AxiosError, AxiosInstance, AxiosResponse} from "axios";
+import {FetchBlobResponse} from "rn-fetch-blob";
 import CancelablePromise from "cancelable-promise";
 import {ConfigService} from "@config/ConfigService";
 import {ApplicationError} from "@core/domain/ApplicationError";
 import {ServiceProviderTypes} from "@core/serviceProviderTypes";
+import axios, {AxiosError, AxiosInstance, AxiosResponse} from "axios";
 import {GlobalAxiosRequestConfig, ServerErrorType} from "@src/models";
-import {FetchBlobResponse} from "rn-fetch-blob";
 
 export default function registerHttpClient(container: Container) {
   container

@@ -1,10 +1,12 @@
 import React from "react";
 import {Platform, View} from "react-native";
+import Toast from "react-native-toast-message";
 import {AppStateStatus, Text} from "react-native";
 import AuthTypeProvider from "./AuthTypeProvider";
 import {splitAppNavigationTheme} from "@src/theme";
 import {onlineManager} from "@tanstack/react-query";
 import {focusManager} from "@tanstack/react-query";
+import SplashScreen from "react-native-splash-screen";
 import {useFlipper} from "@react-navigation/devtools";
 import {useAppState} from "@react-native-community/hooks";
 import AuthDataIsLoaded from "@components/AuthDataIsLoaded";
@@ -19,7 +21,6 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from "@react-navigation/native";
-import Toast from "react-native-toast-message";
 
 GoogleSignin.configure({
   webClientId:
@@ -75,6 +76,12 @@ function AllTheProviders({children}: React.PropsWithChildren) {
   React.useEffect(() => {
     onAppStateChange(appState);
   }, [appState]);
+
+  React.useEffect(() => {
+    if (!isConnected || !isInternetReachable) {
+      SplashScreen.hide();
+    }
+  }, [isConnected, isInternetReachable]);
 
   if (!isConnected) {
     return (

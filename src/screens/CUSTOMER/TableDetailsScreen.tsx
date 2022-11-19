@@ -2,38 +2,39 @@ import React from "react";
 import {
   View,
   Text,
-  ScrollView,
-  StatusBar,
-  ImageBackground,
-  SafeAreaView,
-  TouchableOpacity,
   Image,
+  StatusBar,
+  ScrollView,
+  SafeAreaView,
+  ImageBackground,
+  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
 import {Rating} from "react-native-ratings";
 import {
-  CalendarIcon,
   Clock,
-  DishIcon,
   DjIcon,
-  FemaleIcon,
-  GroupIcon,
-  MaleIcon,
   MapIcon,
-  MapMarkerPrimaryIcon,
+  DishIcon,
+  MaleIcon,
   PeopleIcon,
+  GroupIcon,
+  FemaleIcon,
+  CalendarIcon,
+  MapMarkerPrimaryIcon,
 } from "@constants/iconPath";
 import {CustomerStackRoutes} from "@constants/routes";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
+import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
+import useShareResourceMutation from "@hooks/useShareResourceMutation";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
-import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
-import AppGradientButton from "@components/AppGradientButton";
-import dayjs from "dayjs";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -50,6 +51,13 @@ export default function TableDetailsScreen({route, navigation}: Props) {
     error: tableDetailsError,
   } = useGetTableDetailsQuery(route.params.tableId);
   useHandleNonFieldError(tableDetailsError);
+
+  const {
+    error: shareResourceError,
+    mutate: shareResource,
+    isLoading: isSharing,
+  } = useShareResourceMutation();
+  useHandleNonFieldError(shareResourceError);
 
   const handleBookTable = () => {
     if (tableDetailsResponse) {
@@ -132,7 +140,22 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             </View>
 
             <View>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <TouchableOpacity
+                disabled={isSharing}
+                onPress={() => {
+                  shareResource({
+                    url: tableDetailsResponse.image,
+                    title: tableDetailsResponse.name,
+                    message: `Table: ${tableDetailsResponse.name}\nClub: ${
+                      tableDetailsResponse.club_name
+                    }\nDate: ${dayjs(
+                      tableDetailsResponse.date,
+                      "YYYY-MM-DD HH:mm:ss",
+                    ).format("DD MMM, hh:mm A")}\nLocation: ${
+                      tableDetailsResponse.location
+                    }\n`,
+                  });
+                }}>
                 <Entypo
                   name={"share"}
                   size={splitAppTheme.sizes[8]}

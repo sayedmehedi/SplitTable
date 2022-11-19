@@ -14,8 +14,6 @@ export default function RecentVisitsSwiper({onItemPress, onSeeAll}: Props) {
   const {data: recentVisitClubsResponse, isLoading: isRecentVisitClubsLoading} =
     useGetRecentViewsClubsQuery();
 
-  console.log("recentVisitClubsResponse", recentVisitClubsResponse);
-
   return !isRecentVisitClubsLoading &&
     recentVisitClubsResponse?.tables?.data?.length === 0 ? (
     <View

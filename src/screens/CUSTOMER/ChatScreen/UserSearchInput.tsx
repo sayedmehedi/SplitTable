@@ -158,13 +158,7 @@ export default function UserSearchInput() {
               />
             </View>
             <View style={{marginLeft: splitAppTheme.space[3]}}>
-              <ScrollViewListItem
-                style={{
-                  fontWeight: splitAppTheme.fontConfig.Roboto[500].normal,
-                }}
-                highlight={text}
-                title={item.title}
-              />
+              <ScrollViewListItem highlight={text} title={item.title} />
 
               <View style={{marginTop: splitAppTheme.space[2]}}>
                 <ScrollViewListItem
