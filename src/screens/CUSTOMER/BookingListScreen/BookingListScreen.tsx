@@ -346,8 +346,8 @@ const BookingListScreen = () => {
   return (
     <View>
       <FocusAwareStatusBar
-        barStyle={"dark-content"}
-        backgroundColor={splitAppTheme.colors.white}
+      // barStyle={"dark-content"}
+      // backgroundColor={splitAppTheme.colors.white}
       />
 
       {ListHeaderComponent}

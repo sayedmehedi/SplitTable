@@ -82,8 +82,8 @@ const EmailLoginScreen = ({navigation}: Props) => {
       }}>
       <FocusAwareStatusBar
         animated
-        barStyle={"dark-content"}
-        backgroundColor="#fff"
+        // barStyle={"dark-content"}
+        // backgroundColor="#fff"
       />
 
       <View style={{flex: 1}} />

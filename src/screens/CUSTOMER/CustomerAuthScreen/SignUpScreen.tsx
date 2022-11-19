@@ -192,8 +192,8 @@ const SignUpScreen = ({navigation}: Props) => {
         padding: splitAppTheme.space[6],
       }}>
       <FocusAwareStatusBar
-        barStyle={"dark-content"}
-        backgroundColor={splitAppTheme.colors.white}
+      // barStyle={"dark-content"}
+      // backgroundColor={splitAppTheme.colors.white}
       />
 
       <View style={{flex: 1, marginTop: 20}}>

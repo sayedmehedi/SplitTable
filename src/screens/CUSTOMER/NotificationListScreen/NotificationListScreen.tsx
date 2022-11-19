@@ -123,8 +123,8 @@ export default function NotificationListScreen({}: Props) {
           justifyContent: "center",
         }}>
         <FocusAwareStatusBar
-          barStyle={"dark-content"}
-          backgroundColor={"white"}
+        // barStyle={"dark-content"}
+        // backgroundColor={"white"}
         />
 
         <ActivityIndicator size={"small"} />
@@ -135,8 +135,8 @@ export default function NotificationListScreen({}: Props) {
   return (
     <View>
       <FocusAwareStatusBar
-        barStyle={"dark-content"}
-        backgroundColor={"white"}
+      // barStyle={"dark-content"}
+      // backgroundColor={"white"}
       />
 
       {isFetchingNextPage ? (

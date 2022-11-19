@@ -55,8 +55,8 @@ const TableListScreen = ({route, navigation}: Props) => {
         height: splitAppTheme.sizes.full,
       }}>
       <FocusAwareStatusBar
-        backgroundColor={"white"}
-        barStyle={"dark-content"}
+      // backgroundColor={"white"}
+      // barStyle={"dark-content"}
       />
       {route.params.listType === AppTableListTypes.BY_LOCATION && (
         <TableListByLocation

@@ -24,8 +24,8 @@ const MyTablesScreen = ({route}: Props) => {
         height: splitAppTheme.sizes.full,
       }}>
       <FocusAwareStatusBar
-        backgroundColor={"white"}
-        barStyle={"dark-content"}
+      // backgroundColor={"white"}
+      // barStyle={"dark-content"}
       />
 
       <MyTableList onItemPress={handleItemPresss} />
