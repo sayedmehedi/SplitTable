@@ -116,11 +116,11 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
                 <TextInput
                   onBlur={field.onBlur}
                   style={{
+                    height: 50,
                     padding: splitAppTheme.space[4],
                     width: splitAppTheme.sizes.full,
-                    borderTopRightRadius: splitAppTheme.radii.lg,
                     backgroundColor: splitAppTheme.colors.gray[100],
-                    borderBottomRightRadius: splitAppTheme.radii.lg,
+                    borderRadius: splitAppTheme.radii.lg,
                   }}
                   value={field.value}
                   onChangeText={field.onChange}

@@ -467,5 +467,7 @@ const paymentGatewayScreenOptions:
       >;
       navigation: NavitaionProps;
     }) => StackNavigationOptions) = {
-  headerShown: false,
+  headerShown: true,
+  headerTitle: "Payment",
+  header: CommonStackHeader,
 };

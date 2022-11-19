@@ -16,7 +16,7 @@ import {
 import useAppToast from "@hooks/useAppToast";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
-import {isResponseResultError} from "@utils/error-handling";
+import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useResetPasswordMutation from "@hooks/auth/useResetPasswordMutation";
@@ -40,11 +40,12 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
     isLoading: isSendingReq,
     data: fotgotPasswordResponse,
     error: sendReqError,
+    isError: isSendError,
   } = useResetPasswordMutation();
   useHandleNonFieldError(sendReqError);
   useHandleResponseResultError(fotgotPasswordResponse);
 
-  const {control, handleSubmit, setValue} = useForm({
+  const {control, handleSubmit, setValue, setError} = useForm({
     defaultValues: {
       otp: "",
       email: "",
@@ -56,6 +57,12 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
   React.useEffect(() => {
     setValue("email", route.params.email);
   }, [route.params.email, setValue]);
+
+  React.useEffect(() => {
+    if (isSendError) {
+      addServerErrors(sendReqError.field_errors, setError);
+    }
+  }, [sendReqError, isSendError, setError]);
 
   const handleVerify = handleSubmit(values => {
     resetPassword(values, {
@@ -105,7 +112,6 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
           <Text
             style={{
               color: splitAppTheme.colors.blue[300],
-              marginVertical: splitAppTheme.space[2],
               fontSize: splitAppTheme.fontSizes["md"],
               fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
             }}>
@@ -156,12 +162,12 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
           control={control}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
-              <View>
+              <View style={styles.SectionStyle}>
                 <TextInput
                   secureTextEntry
-                  placeholder="Password"
                   value={field.value}
                   onBlur={field.onBlur}
+                  placeholder="New Password"
                   onChangeText={field.onChange}
                   style={{flex: 1, paddingLeft: 20}}
                 />
@@ -192,13 +198,13 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
           }}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
-              <View>
+              <View style={styles.SectionStyle}>
                 <TextInput
                   secureTextEntry
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}
-                  placeholder="Confirm Password"
+                  placeholder="Confirm New Password"
                   style={{flex: 1, paddingLeft: 20}}
                 />
               </View>
@@ -223,12 +229,13 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
         <View
           style={{
             width: splitAppTheme.sizes.full,
+            marginTop: splitAppTheme.space[3],
           }}>
           <AppGradientButton
             width={"100%"}
             color={"primary"}
             variant={"solid"}
-            title={"Verify Now"}
+            title={"Reset Password"}
             onPress={handleVerify}
             touchableOpacityProps={{
               disabled: isSendingReq,
@@ -241,7 +248,7 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  otpInput: {width: "100%", height: 170, backgroundColor: "white"},
+  otpInput: {width: "100%", height: 100, backgroundColor: "white"},
   borderStyleBase: {
     width: 30,
     height: 45,
@@ -269,6 +276,16 @@ const styles = StyleSheet.create({
     borderColor: "#03DAC6",
     backgroundColor: "#F4F5F7",
     color: splitAppTheme.colors.primary[300],
+  },
+
+  SectionStyle: {
+    height: 50,
+    marginTop: 10,
+    borderRadius: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    backgroundColor: "#F4F5F7",
   },
 });
 

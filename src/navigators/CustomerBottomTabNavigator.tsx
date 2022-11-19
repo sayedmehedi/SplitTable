@@ -91,34 +91,36 @@ const homeScreenOptions:
       >;
       navigation: any;
     }) => BottomTabNavigationOptions) = {
-  tabBarIcon: ({focused}) => (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}>
-      <HomeIcon
-        width={30}
-        height={30}
-        fill={
-          focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900]
-        }
-      />
-
-      <Text
+  tabBarIcon: ({focused}) => {
+    return (
+      <View
         style={{
-          fontSize: 10,
-          color: focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900],
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
         }}>
-        Home
-      </Text>
-    </View>
-  ),
+        <HomeIcon
+          width={22}
+          height={22}
+          fill={
+            focused
+              ? splitAppTheme.colors.primary[400]
+              : splitAppTheme.colors.secondary[400]
+          }
+        />
+
+        <Text
+          style={{
+            fontSize: 10,
+            color: focused
+              ? splitAppTheme.colors.primary[400]
+              : splitAppTheme.colors.secondary[400],
+          }}>
+          Home
+        </Text>
+      </View>
+    );
+  },
 };
 
 const bookingScreenOptions:
@@ -141,12 +143,12 @@ const bookingScreenOptions:
         justifyContent: "center",
       }}>
       <BookingIcon
-        width={30}
-        height={30}
+        width={22}
+        height={22}
         color={
           focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900]
+            ? splitAppTheme.colors.primary[400]
+            : splitAppTheme.colors.secondary[400]
         }
       />
 
@@ -154,8 +156,8 @@ const bookingScreenOptions:
         style={{
           fontSize: 10,
           color: focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900],
+            ? splitAppTheme.colors.primary[400]
+            : splitAppTheme.colors.secondary[400],
         }}>
         Booking
       </Text>
@@ -194,16 +196,14 @@ const tableScreenOptions:
         <TableIcon
           height={30}
           width={30}
-          fill={focused ? splitAppTheme.colors.primary[900] : "none"}
+          fill={focused ? splitAppTheme.colors.primary[400] : "none"}
         />
       </LinearGradient>
 
       <Text
         style={{
           fontSize: 10,
-          color: focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900],
+          color: splitAppTheme.colors.black,
         }}>
         Table
       </Text>
@@ -220,34 +220,37 @@ const profileStackScreenOptions:
       >;
       navigation: any;
     }) => BottomTabNavigationOptions) = {
-  tabBarIcon: ({focused}) => (
-    <View
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        flex: 1,
-      }}>
-      <AccountIcon
-        height={30}
-        width={30}
-        color={
-          focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900]
-        }
-      />
-
-      <Text
+  tabBarIcon: ({focused}) => {
+    console.log("focused profile", focused);
+    return (
+      <View
         style={{
-          color: focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900],
-          fontSize: 10,
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1,
         }}>
-        Account
-      </Text>
-    </View>
-  ),
+        <AccountIcon
+          height={20}
+          width={20}
+          color={
+            focused
+              ? splitAppTheme.colors.primary[400]
+              : splitAppTheme.colors.secondary[400]
+          }
+        />
+
+        <Text
+          style={{
+            color: focused
+              ? splitAppTheme.colors.primary[400]
+              : splitAppTheme.colors.secondary[400],
+            fontSize: 10,
+          }}>
+          Account
+        </Text>
+      </View>
+    );
+  },
 };
 
 const chatScreenOptions:
@@ -267,12 +270,12 @@ const chatScreenOptions:
         justifyContent: "center",
       }}>
       <ChatIcon
-        height={30}
-        width={30}
+        width={20}
+        height={20}
         color={
           focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900]
+            ? splitAppTheme.colors.primary[400]
+            : splitAppTheme.colors.secondary[400]
         }
       />
 
@@ -280,8 +283,8 @@ const chatScreenOptions:
         style={{
           fontSize: 10,
           color: focused
-            ? splitAppTheme.colors.primary[900]
-            : splitAppTheme.colors.secondary[900],
+            ? splitAppTheme.colors.primary[400]
+            : splitAppTheme.colors.secondary[400],
         }}>
         Chat
       </Text>

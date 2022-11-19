@@ -2,14 +2,18 @@ import React from "react";
 import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
 import DatePicker from "react-native-date-picker";
+import {makeGenderLabelFromValue} from "@utils/auth";
 import {ErrorMessage} from "@hookform/error-message";
 import {useDisclosure} from "react-use-disclosure";
 import {Controller, useForm} from "react-hook-form";
+import {AuthGender, GenderType} from "@constants/auth";
+import ModalSelector from "react-native-modal-selector";
 import {CustomerAuthStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {
   RootStackParamList,
   CustomerStackParamList,
@@ -19,12 +23,11 @@ import {
   Text,
   View,
   Alert,
+  Image,
   TextInput,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
-  StatusBar,
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import useRegisterMutation from "@hooks/auth/useRegisterMutation";
@@ -37,7 +40,6 @@ import {
   launchImageLibrary,
   ImagePickerResponse,
 } from "react-native-image-picker";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -63,6 +65,7 @@ type FormValues = {
   dob: Date | null;
   password: string;
   password_confirmation: string;
+  gender: GenderType | null;
 };
 
 const maximumDob = dayjs().subtract(18, "years").toDate();
@@ -84,6 +87,7 @@ const SignUpScreen = ({navigation}: Props) => {
       phone: "",
       email: "",
       dob: null,
+      gender: null,
       password: "",
       password_confirmation: "",
     },
@@ -377,6 +381,96 @@ const SignUpScreen = ({navigation}: Props) => {
                   toggle();
                 }}
               />
+
+              <ErrorMessage
+                errors={errors}
+                name={field.name}
+                render={({message}) => (
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      color: splitAppTheme.colors.red[300],
+                    }}>
+                    {message}
+                  </Text>
+                )}
+              />
+            </React.Fragment>
+          )}
+        />
+
+        <Controller
+          name={"gender"}
+          rules={{
+            required: "This field is required",
+          }}
+          control={control}
+          render={({field, formState: {errors}}) => (
+            <React.Fragment>
+              <ModalSelector
+                data={[
+                  {
+                    key: 1,
+                    label: makeGenderLabelFromValue(AuthGender.MEN),
+                    value: AuthGender.MEN,
+                  },
+                  {
+                    key: 2,
+                    label: makeGenderLabelFromValue(AuthGender.WOMEN),
+                    value: AuthGender.WOMEN,
+                  },
+                  {
+                    key: 3,
+                    label: makeGenderLabelFromValue(AuthGender.OTHER),
+                    value: AuthGender.OTHER,
+                  },
+                ]}
+                supportedOrientations={["landscape"]}
+                onChange={option => {
+                  // this.setState({textInputValue: option.label});
+                  field.onChange(option.value);
+                }}>
+                {/* <TouchableOpacity
+                onPress={() => {
+                  Alert.prompt("Select Gender", "Please select your gender", [
+                    {
+                      text: "Male",
+                      onPress() {
+                        field.onChange(AuthGender.MEN);
+                      },
+                    },
+                    {
+                      text: "Female",
+                      onPress() {
+                        field.onChange(AuthGender.WOMEN);
+                      },
+                    },
+                    {
+                      text: "Other",
+                      onPress() {
+                        field.onChange(AuthGender.OTHER);
+                      },
+                    },
+                  ]);
+                }}
+                
+                > */}
+                <View style={styles.SectionStyle}>
+                  <View
+                    style={{
+                      width: "100%",
+                      paddingLeft: 20,
+                      justifyContent: "flex-start",
+                    }}>
+                    <Text>
+                      {field.value === null
+                        ? "Gender"
+                        : makeGenderLabelFromValue(field.value)}
+                    </Text>
+                  </View>
+                </View>
+                {/* </TouchableOpacity> */}
+              </ModalSelector>
 
               <ErrorMessage
                 errors={errors}

@@ -145,11 +145,12 @@ const EmailLoginScreen = ({navigation}: Props) => {
                       }}>
                       <View
                         style={{
+                          height: 50,
                           paddingLeft: splitAppTheme.space[2],
+                          paddingVertical: splitAppTheme.space[4],
                           borderTopLeftRadius: splitAppTheme.radii.lg,
                           borderBottomLeftRadius: splitAppTheme.radii.lg,
                           backgroundColor: splitAppTheme.colors.gray[100],
-                          paddingVertical: splitAppTheme.space[4],
                         }}>
                         <Entypo size={22} name={"mail"} color={"black"} />
                       </View>
@@ -161,6 +162,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                         <TextInput
                           onBlur={field.onBlur}
                           style={{
+                            height: 50,
                             padding: splitAppTheme.space[4],
                             width: splitAppTheme.sizes.full,
                             borderTopRightRadius: splitAppTheme.radii.lg,
@@ -223,6 +225,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                           borderBottomLeftRadius: splitAppTheme.radii.lg,
                           backgroundColor: splitAppTheme.colors.gray[100],
                           paddingVertical: splitAppTheme.space[4],
+                          height: 50,
                         }}>
                         <FontAwesome5 size={20} name={"lock"} color={"black"} />
                       </View>
@@ -234,6 +237,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                         <TextInput
                           onBlur={field.onBlur}
                           style={{
+                            height: 50,
                             padding: splitAppTheme.space[4],
                             width: splitAppTheme.sizes.full,
                             borderTopRightRadius: splitAppTheme.radii.lg,
