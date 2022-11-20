@@ -19,6 +19,7 @@ import useInfiniteGetUpcomingBookingQuery from "@hooks/clubs/useInfiniteGetUpcom
 import {splitAppTheme} from "@src/theme";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookingHistoryQuery";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
@@ -42,6 +43,13 @@ const UpcomingBookingRoute = ({
   } = useDimensions();
 
   const {
+    data: clubInfoData,
+    isLoading: isClubInfoLoading,
+    error: clubInfoError,
+  } = useGetOwnerClubInfoQuery();
+  useHandleNonFieldError(clubInfoError);
+
+  const {
     refetch,
     isRefetching,
     fetchNextPage,
@@ -52,8 +60,10 @@ const UpcomingBookingRoute = ({
   } = useInfiniteGetUpcomingBookingQuery(
     {
       page: 1,
+      clubId: clubInfoData?.id,
     },
     {
+      enabled: !isClubInfoLoading && clubInfoData?.id !== undefined,
       getNextPageParam(lastPage) {
         if (lastPage.bookings.has_more_data) {
           return {
@@ -83,7 +93,7 @@ const UpcomingBookingRoute = ({
     };
   }, [splitAppTheme.space[6]]);
 
-  if (isLoadingInfiniteResources) {
+  if (isLoadingInfiniteResources || isClubInfoLoading) {
     return (
       <View
         style={{
@@ -138,6 +148,12 @@ const HistoryBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+  const {
+    data: clubInfoData,
+    isLoading: isClubInfoLoading,
+    error: clubInfoError,
+  } = useGetOwnerClubInfoQuery();
+  useHandleNonFieldError(clubInfoError);
 
   const {
     refetch,
@@ -150,8 +166,10 @@ const HistoryBookingRoute = ({
   } = useInfiniteGetBookingHistoryQuery(
     {
       page: 1,
+      clubId: clubInfoData?.id,
     },
     {
+      enabled: !isClubInfoLoading && clubInfoData?.id !== undefined,
       getNextPageParam(lastPage) {
         if (lastPage.bookings.has_more_data) {
           return {
@@ -181,7 +199,7 @@ const HistoryBookingRoute = ({
     };
   }, [splitAppTheme.space[6]]);
 
-  if (isLoadingInfiniteResources) {
+  if (isLoadingInfiniteResources || isClubInfoLoading) {
     return (
       <View
         style={{

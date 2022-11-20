@@ -44,6 +44,7 @@ export default function useGetProfileQuery(
   >([QueryKeys.PROFILE, userId], queryFn, {
     ...options,
     async onSuccess(data) {
+      console.log("profile query success", data);
       const {location, latitude, longitude, name, email, phone, image} = data;
 
       if (!!authData) {

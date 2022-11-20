@@ -38,6 +38,7 @@ import {
 } from "@src/navigation";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import GenericListEmpty from "@components/GenericListEmpty";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -54,7 +55,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
   const {
     window: {height: WINDOW_HEIGHT},
   } = useDimensions();
-  const {hours, minutes, seconds} = useTime({});
+  const {hours} = useTime({});
   const {data: authData} = useGetAuthDataQuery();
   const {
     data: profileData,
@@ -62,30 +63,53 @@ const OwnerTableScreen = ({navigation}: Props) => {
     error: getProfileError,
   } = useGetProfileQuery();
   useHandleNonFieldError(getProfileError);
+  const {
+    data: clubInfoData,
+    isLoading: isClubInfoLoading,
+    error: clubInfoError,
+  } = useGetOwnerClubInfoQuery();
+  useHandleNonFieldError(clubInfoError);
 
   const {
     data: getBookedTablesResponse,
     isLoading: isLoadingBookedTables,
     error: getBookTablesError,
-  } = useGetTablesBySearchTermQuery({
-    paginate: 3,
-  });
+  } = useGetTablesBySearchTermQuery(
+    {
+      paginate: 3,
+      clubId: clubInfoData?.id,
+    },
+    {
+      enabled: !isClubInfoLoading && clubInfoData?.id !== undefined,
+    },
+  );
   useHandleNonFieldError(getBookTablesError);
 
   const {
     data: getUpcomingBookingResponse,
     isLoading: isLoadingUpcomingBooking,
     error: getUpcomingBookingError,
-  } = useGetUpcomingBookingQuery({
-    paginate: 3,
-  });
+  } = useGetUpcomingBookingQuery(
+    {
+      paginate: 3,
+      clubId: clubInfoData?.id,
+    },
+    {
+      enabled: !isClubInfoLoading && clubInfoData?.id !== undefined,
+    },
+  );
   useHandleNonFieldError(getUpcomingBookingError);
 
   const handleGotoNotifications = () => {
     navigation.navigate(RootStackRoutes.NOTIFICATIONS);
   };
 
-  if (isLoadingProfile || isLoadingBookedTables || isLoadingUpcomingBooking) {
+  if (
+    isLoadingProfile ||
+    isLoadingBookedTables ||
+    isLoadingUpcomingBooking ||
+    isClubInfoLoading
+  ) {
     return (
       <View
         style={{
@@ -339,7 +363,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
               <View
                 key={booking.id}
                 style={{marginBottom: splitAppTheme.space[3]}}>
-                <EachBookingItem item={booking} />
+                <EachBookingItem item={booking} type={"upcoming"} />
               </View>
             ))}
           </View>

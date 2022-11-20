@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import useInfiniteGetTransactionsQuery from "@hooks/user/useInfiniteGetTransactionsQuery";
+import GenericListEmpty from "@components/GenericListEmpty";
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
@@ -202,10 +203,6 @@ const TransactionScreen = () => {
         <View style={{alignItems: "center", justifyContent: "center"}}>
           <ActivityIndicator size={"small"} />
         </View>
-      ) : resourceListData.length === 0 ? (
-        <View style={{alignItems: "center", justifyContent: "center"}}>
-          <Text>No Data</Text>
-        </View>
       ) : null}
 
       <FlatList<Transaction>
@@ -226,6 +223,7 @@ const TransactionScreen = () => {
         contentContainerStyle={{
           padding: splitAppTheme.space["6"],
         }}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>
   );

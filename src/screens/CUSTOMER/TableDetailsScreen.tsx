@@ -122,7 +122,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             height: 300,
             width: splitAppTheme.sizes.full,
             paddingTop: splitAppTheme.space[12],
-            paddingHorizontal: splitAppTheme.space[6],
+            paddingHorizontal: splitAppTheme.space[3],
           }}>
           <View
             style={{
@@ -134,7 +134,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Entypo
                   name={"chevron-left"}
-                  size={splitAppTheme.sizes[8]}
+                  size={splitAppTheme.sizes[10]}
                   color={splitAppTheme.colors.white}
                 />
               </TouchableOpacity>

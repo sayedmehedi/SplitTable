@@ -10,15 +10,15 @@ import TableSearchScreen from "@screens/CUSTOMER/TableSearchScreen";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
+import {ActivityIndicator, TouchableOpacity, View} from "react-native";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CompositeNavigationProp, RouteProp} from "@react-navigation/native";
-import {ActivityIndicator, Text, TouchableOpacity, View} from "react-native";
 import {
   createStackNavigator,
   StackNavigationOptions,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
@@ -43,8 +43,12 @@ type NavitaionProps = CompositeNavigationProp<
 >;
 
 const CustomerStackNavigator = () => {
-  const {data: authData, isLoading: isLoadingProfileData} =
-    useGetAuthDataQuery();
+  const {data: authData, isLoading: isLoadingProfileData} = useGetProfileQuery(
+    undefined,
+    {
+      onError() {},
+    },
+  );
 
   const showLocationScreen =
     !authData?.location && !authData?.latitude && !authData?.longitude;

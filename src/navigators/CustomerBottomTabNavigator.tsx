@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import ChatIcon from "@assets/icons/chat.svg";
-import TableIcon from "@assets/icons/table.svg";
+import TableIcon from "@assets/icons/table-ico.svg";
 import {RouteProp} from "@react-navigation/native";
 import HomeIcon from "@assets/icons/HomeIcon.svg";
 import AccountIcon from "@assets/icons/account.svg";

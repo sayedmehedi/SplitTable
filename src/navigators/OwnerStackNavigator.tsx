@@ -26,6 +26,7 @@ import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScre
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import ClubSliderImagesScreen from "@screens/OWNER/OwnerAccountScreen/ClubSliderImagesScreen";
 import InitialSelectLocationScreen from "@screens/OWNER/OwnerAuthScreen/InitialSelectLocationScreen";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -94,8 +95,12 @@ const upsertTableScreenOptions:
 });
 
 const OwnerStackNavigator = () => {
-  const {data: authData, isLoading: isLoadingProfileData} =
-    useGetAuthDataQuery();
+  const {data: authData, isLoading: isLoadingProfileData} = useGetProfileQuery(
+    undefined,
+    {
+      onError() {},
+    },
+  );
 
   const showLocationScreen =
     !authData?.location && !authData?.latitude && !authData?.longitude;

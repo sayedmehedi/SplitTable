@@ -1,7 +1,6 @@
 import React from "react";
-import {splitAppTheme} from "@src/theme";
 import {Image, Text, View} from "react-native";
-import emptyListStateImage from "@assets/empty-list.png";
+import EmptyListStateImage from "@assets/empty-list.svg";
 import {useDimensions, useImageDimensions} from "@react-native-community/hooks";
 
 type Props = {
@@ -39,14 +38,7 @@ const GenericListEmpty = ({
         alignItems: "center",
         justifyContent: "center",
       }}>
-      <Image
-        resizeMode={"contain"}
-        style={{
-          width: IMAGE_WIDTH,
-          height: IMAGE_HEIGHT,
-        }}
-        source={emptyListStateImage}
-      />
+      <EmptyListStateImage />
     </View>
   );
 };
