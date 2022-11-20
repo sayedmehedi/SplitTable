@@ -87,7 +87,7 @@ const EachConversation = ({
         </View>
       </View>
 
-      {item.is_accepted === 0 && myId !== item.receiver_id ? (
+      {item.is_accepted === 0 && myId !== item.sender_id ? (
         isAccepting ? (
           <View>
             <ActivityIndicator size={"small"} />
@@ -103,7 +103,7 @@ const EachConversation = ({
             </Text>
           </Ripple>
         )
-      ) : item.is_accepted === 0 && myId === item.receiver_id ? (
+      ) : item.is_accepted === 0 && myId === item.sender_id ? (
         <Text>Pending</Text>
       ) : (
         <Text

@@ -25,7 +25,7 @@ const slides = [
   {
     id: "1",
     image: require("@assets/onboarding1.jpg"),
-    title: "Choose Nearest Club/Bar",
+    title: "Joining Tables",
     subtitle:
       "Reference site about Lorem Ipsum,giving information origins as well as a random",
   },

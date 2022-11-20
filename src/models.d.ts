@@ -851,6 +851,7 @@ export interface ConversationItem {
   user_name: string;
   user_image: string;
   receiver_id: number;
+  sender_id: number;
   is_accepted: number;
   has_msg: boolean;
   message: {

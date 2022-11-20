@@ -9,6 +9,7 @@ import {
 import {CustomerChatStackRoutes} from "@constants/routes";
 import Entypo from "react-native-vector-icons/Entypo";
 import {splitAppTheme} from "@src/theme";
+import truncate from "lodash.truncate";
 
 type RtProp = RouteProp<
   CustomerChatStackParamList,
@@ -30,6 +31,7 @@ export default function ChatMessagesAppBar({
             flexDirection: "row",
             alignItems: "center",
             padding: splitAppTheme.space[6],
+            paddingLeft: splitAppTheme.space[1],
             backgroundColor: splitAppTheme.colors.white,
           },
           splitAppTheme.shadows[9],
@@ -63,11 +65,14 @@ export default function ChatMessagesAppBar({
             flex: 1,
           }}>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: splitAppTheme.fontSizes["xl"],
               fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
             }}>
-            {route.params.partnerName}
+            {truncate(route.params.partnerName, {
+              length: 22,
+            })}
           </Text>
 
           <Text
