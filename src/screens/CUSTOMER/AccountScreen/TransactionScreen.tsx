@@ -224,7 +224,7 @@ const TransactionScreen = () => {
           />
         )}
         contentContainerStyle={{
-          paddingHorizontal: splitAppTheme.space["6"],
+          padding: splitAppTheme.space["6"],
         }}
       />
     </View>

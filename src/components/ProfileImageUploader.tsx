@@ -148,23 +148,40 @@ export default function ProfileImageUploader({
       </TouchableOpacity>
 
       <ActionSheet ref={actionSheetRef}>
-        <TouchableOpacity onPress={handleTakePicture} disabled={isUpdating}>
-          <View
-            style={{
-              padding: splitAppTheme.space[3],
-            }}>
-            <Text>Take photo</Text>
-          </View>
-        </TouchableOpacity>
+        <View
+          style={{
+            paddingTop: splitAppTheme.space[3],
+          }}>
+          <TouchableOpacity onPress={handleTakePicture}>
+            <View
+              style={{
+                padding: splitAppTheme.space[3],
+              }}>
+              <Text
+                style={{
+                  fontSize: splitAppTheme.fontSizes.md,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                Take photo
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleSelectImage} disabled={isUpdating}>
-          <View
-            style={{
-              padding: splitAppTheme.space[3],
-            }}>
-            <Text>Select photo</Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleSelectImage}>
+            <View
+              style={{
+                padding: splitAppTheme.space[3],
+              }}>
+              <Text
+                style={{
+                  fontSize: splitAppTheme.fontSizes.md,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                Select photo
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </ActionSheet>
 
       <Modal visible={isUpdating} transparent>

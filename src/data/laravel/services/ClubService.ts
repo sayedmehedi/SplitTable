@@ -253,7 +253,7 @@ export class ClubService implements IClubService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && payload! == undefined) {
+      } else if (typeof payload !== "object" && payload !== undefined) {
         acc.push({
           name: fieldName,
           data: `${payload}`,
@@ -262,6 +262,8 @@ export class ClubService implements IClubService {
 
       return acc;
     }, [] as {name: keyof typeof data; type?: string; filename?: string; data: string}[]);
+
+    console.log("update owner table formattedPayload", formattedPayload);
 
     const response = await RNFetchBlob.config({
       trusty: true,
@@ -318,7 +320,7 @@ export class ClubService implements IClubService {
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
           });
         }
-      } else if (typeof payload !== "object" && payload! == undefined) {
+      } else if (typeof payload !== "object" && payload !== undefined) {
         acc.push({
           name: fieldName,
           data: `${payload}`,
@@ -327,7 +329,6 @@ export class ClubService implements IClubService {
 
       return acc;
     }, [] as {name: keyof typeof data; type?: string; filename?: string; data: string}[]);
-
     const response = await RNFetchBlob.config({
       trusty: true,
       timeout: 5000,

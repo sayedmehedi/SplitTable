@@ -2,15 +2,13 @@ import React from "react";
 import {splitAppTheme} from "@src/theme";
 import {ConversationItem} from "@src/models";
 import EachConversation from "./EachConversation";
-import {TextInput} from "react-native-gesture-handler";
 import {StackScreenProps} from "@react-navigation/stack";
+import {CustomerChatStackRoutes} from "@constants/routes";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {
-  CustomerChatStackRoutes,
-  CustomerMainBottomTabRoutes,
-} from "@constants/routes";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
+import useInfiniteGetConversationsQuery from "@hooks/chat/useInfiniteGetConversationsQuery";
 import {
   View,
   Text,
@@ -26,9 +24,7 @@ import {
   CustomerBottomTabParamList,
   CustomerChatStackParamList,
 } from "@src/navigation";
-import useInfiniteGetConversationsQuery from "@hooks/chat/useInfiniteGetConversationsQuery";
 import UserSearchInput from "./UserSearchInput";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -98,8 +94,8 @@ const ChatListScreen = ({navigation}: Props) => {
       ({item}) => (
         <EachConversation
           item={item}
-          onItemPress={handleItemPress}
           myId={authData?.id}
+          onItemPress={handleItemPress}
         />
       ),
       [handleItemPress, authData?.id],

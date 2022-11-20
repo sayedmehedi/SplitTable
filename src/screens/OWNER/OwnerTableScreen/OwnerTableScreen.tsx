@@ -24,8 +24,8 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import EachBookingItem from "../OwnerBookingListScreen/EachBookingItem";
-import useGetBookedTablesQuery from "@hooks/clubs/useGetBookedTablesQuery";
 import useGetUpcomingBookingQuery from "@hooks/clubs/useGetUpcomingBookingQuery";
+import useGetTablesBySearchTermQuery from "@hooks/clubs/useGetTablesBySearchTermQuery";
 import {
   RootStackRoutes,
   OwnerStackRoutes,
@@ -37,6 +37,7 @@ import {
   OwnerBottomTabParamList,
 } from "@src/navigation";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import GenericListEmpty from "@components/GenericListEmpty";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -53,7 +54,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
   const {
     window: {height: WINDOW_HEIGHT},
   } = useDimensions();
-  const {hours} = useTime({format: "12-hour"});
+  const {hours, minutes, seconds} = useTime({});
   const {data: authData} = useGetAuthDataQuery();
   const {
     data: profileData,
@@ -66,7 +67,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
     data: getBookedTablesResponse,
     isLoading: isLoadingBookedTables,
     error: getBookTablesError,
-  } = useGetBookedTablesQuery({
+  } = useGetTablesBySearchTermQuery({
     paginate: 3,
   });
   useHandleNonFieldError(getBookTablesError);
@@ -99,8 +100,10 @@ const OwnerTableScreen = ({navigation}: Props) => {
 
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        backgroundColor: "#FFFFFF",
+        paddingBottom: splitAppTheme.space[8],
+        backgroundColor: splitAppTheme.colors.white,
       }}>
       <FocusAwareStatusBar
         barStyle={"light-content"}
@@ -188,6 +191,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
+                      marginTop: splitAppTheme.space[3],
                     }}>
                     <MapIcon height={16} width={16} color={"white"} />
                     <Text
@@ -242,7 +246,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
                     fontSize: splitAppTheme.fontSizes.xl,
                     fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                   }}>
-                  Table & Events
+                  Club Table & Events
                 </Text>
 
                 <TouchableOpacity
@@ -261,26 +265,33 @@ const OwnerTableScreen = ({navigation}: Props) => {
                 </TouchableOpacity>
               </View>
 
-              {getBookedTablesResponse.tables.data.map(bookedTable => (
-                <View
-                  key={bookedTable.id}
-                  style={{marginTop: splitAppTheme.space[5]}}>
-                  <EachTableNEventItem
-                    item={bookedTable}
-                    onPress={table => {
-                      navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
-                        tableId: table.id,
-                      });
-                    }}
-                    onUpdatePress={table => {
-                      navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
-                        actionMode: "update",
-                        tableId: table.id,
-                      });
-                    }}
-                  />
-                </View>
-              ))}
+              {!getBookedTablesResponse ||
+              getBookedTablesResponse.tables.data.length === 0 ? (
+                <GenericListEmpty width={300} height={300} />
+              ) : (
+                getBookedTablesResponse.tables.data.map(bookedTable => (
+                  <View
+                    key={bookedTable.id}
+                    style={{marginTop: splitAppTheme.space[5]}}>
+                    <EachTableNEventItem
+                      item={bookedTable}
+                      onPress={table => {
+                        if (table.total_joined !== undefined) {
+                          navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
+                            tableId: table.id,
+                          });
+                        }
+                      }}
+                      onUpdatePress={table => {
+                        navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
+                          actionMode: "update",
+                          tableId: table.id,
+                        });
+                      }}
+                    />
+                  </View>
+                ))
+              )}
             </View>
           )}
         </View>
@@ -290,7 +301,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            marginVertical: splitAppTheme.space[5],
+            marginVertical: splitAppTheme.space[3],
           }}>
           <Text
             style={{
@@ -298,7 +309,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
               fontSize: splitAppTheme.fontSizes.xl,
               fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
             }}>
-            Upcomming Booking
+            Upcoming Booking
           </Text>
 
           <TouchableOpacity
@@ -321,21 +332,13 @@ const OwnerTableScreen = ({navigation}: Props) => {
 
         {!getUpcomingBookingResponse ||
         getUpcomingBookingResponse.bookings.count === 0 ? (
-          <View>
-            <View
-              style={{
-                justifyContent: "center",
-                marginVertical: splitAppTheme.space[6],
-              }}>
-              <Text style={{textAlign: "center"}}>No Booking Yet</Text>
-            </View>
-          </View>
+          <GenericListEmpty width={300} height={300} />
         ) : (
           <View>
             {getUpcomingBookingResponse.bookings.data.map(booking => (
               <View
                 key={booking.id}
-                style={{marginTop: splitAppTheme.space[5]}}>
+                style={{marginBottom: splitAppTheme.space[3]}}>
                 <EachBookingItem item={booking} />
               </View>
             ))}

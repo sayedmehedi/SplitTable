@@ -16,6 +16,12 @@ import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
+const paymentMethodsExcerpt = {
+  authorize: "Authorize.net",
+  paypal: "Paypal",
+  cryptocurrency: "Cryptocurrency",
+} as const;
+
 const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
   <View
     key={item.id}
@@ -27,10 +33,10 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
       marginVertical: 5,
       alignItems: "center",
       flexDirection: "row",
-      paddingHorizontal: 20,
       backgroundColor: "white",
       borderColor: "#F1F1F1",
       justifyContent: "space-around",
+      paddingHorizontal: splitAppTheme.space[1],
     }}>
     <View style={{alignItems: "center"}}>
       <Text
@@ -95,6 +101,8 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
               backgroundColor:
                 item.status === "Pending"
                   ? splitAppTheme.colors.blue[300]
+                  : item.status === "Success"
+                  ? splitAppTheme.colors.green[300]
                   : splitAppTheme.colors.red[300],
             },
           ]}
@@ -105,6 +113,8 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
             color:
               item.status === "Pending"
                 ? splitAppTheme.colors.blue[300]
+                : item.status === "Success"
+                ? splitAppTheme.colors.green[300]
                 : splitAppTheme.colors.red[300],
             fontFamily: "Satoshi-Regular",
           }}>
@@ -121,7 +131,7 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
           alignSelf: "flex-end",
           fontFamily: "Satoshi-Regular",
         }}>
-        {item.payment_method}
+        {paymentMethodsExcerpt[item.payment_method]}
       </Text>
       <Text
         style={{
@@ -220,7 +230,7 @@ const TransactionScreen = () => {
           />
         )}
         contentContainerStyle={{
-          paddingHorizontal: splitAppTheme.space["6"],
+          padding: splitAppTheme.space["6"],
         }}
       />
     </View>

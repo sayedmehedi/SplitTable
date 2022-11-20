@@ -38,7 +38,7 @@ export default function useCreateOwnerClubMenuMutation(
   >(mutationFunction, {
     ...options,
     async onSuccess(data, variables, context) {
-      await queryClient.invalidateQueries([QueryKeys.TABLE]);
+      await queryClient.invalidateQueries([QueryKeys.MENU]);
       options?.onSuccess?.(data, variables, context);
     },
   });

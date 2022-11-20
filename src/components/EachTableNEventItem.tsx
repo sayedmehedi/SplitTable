@@ -71,7 +71,7 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
       onPress={handlePress}>
       <View
         style={{
-          flex: 1.5,
+          flex: 3,
         }}>
         <ImageBackground
           style={{

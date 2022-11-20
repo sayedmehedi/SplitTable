@@ -241,23 +241,42 @@ export default function CustomerSignupForm({
               </TouchableOpacity>
 
               <ActionSheet ref={actionSheetRef}>
-                <TouchableOpacity onPress={handleTakePicture}>
-                  <View
-                    style={{
-                      padding: splitAppTheme.space[3],
-                    }}>
-                    <Text>Take photo</Text>
-                  </View>
-                </TouchableOpacity>
+                <View
+                  style={{
+                    paddingTop: splitAppTheme.space[3],
+                  }}>
+                  <TouchableOpacity onPress={handleTakePicture}>
+                    <View
+                      style={{
+                        padding: splitAppTheme.space[3],
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Roboto[500].normal,
+                        }}>
+                        Take photo
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleSelectImage}>
-                  <View
-                    style={{
-                      padding: splitAppTheme.space[3],
-                    }}>
-                    <Text>Select photo</Text>
-                  </View>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={handleSelectImage}>
+                    <View
+                      style={{
+                        padding: splitAppTheme.space[3],
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Roboto[500].normal,
+                        }}>
+                        Select photo
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </ActionSheet>
             </React.Fragment>
           )}
@@ -423,31 +442,6 @@ export default function CustomerSignupForm({
                   // this.setState({textInputValue: option.label});
                   field.onChange(option.value);
                 }}>
-                {/* <TouchableOpacity
-              onPress={() => {
-                Alert.prompt("Select Gender", "Please select your gender", [
-                  {
-                    text: "Male",
-                    onPress() {
-                      field.onChange(AuthGender.MEN);
-                    },
-                  },
-                  {
-                    text: "Female",
-                    onPress() {
-                      field.onChange(AuthGender.WOMEN);
-                    },
-                  },
-                  {
-                    text: "Other",
-                    onPress() {
-                      field.onChange(AuthGender.OTHER);
-                    },
-                  },
-                ]);
-              }}
-              
-              > */}
                 <View style={styles.SectionStyle}>
                   <View
                     style={{
@@ -462,7 +456,6 @@ export default function CustomerSignupForm({
                     </Text>
                   </View>
                 </View>
-                {/* </TouchableOpacity> */}
               </ModalSelector>
 
               <ErrorMessage

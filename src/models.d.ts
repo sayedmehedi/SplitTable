@@ -264,7 +264,7 @@ export interface ClubMenuItem {
   qty: number;
   image: string;
   details: string;
-  status: number;
+  status: 0 | 1;
 }
 
 export interface GetClubMenusResponse {

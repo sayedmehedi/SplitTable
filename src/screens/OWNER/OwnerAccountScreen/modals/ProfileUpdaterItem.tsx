@@ -1,23 +1,35 @@
 import React from "react";
 import styles from "../styles";
 import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
 import {useDisclosure} from "react-use-disclosure";
 import {Controller, useForm} from "react-hook-form";
+import MapView, {Marker} from "react-native-maps";
+import MapMarker from "@assets/icons/map-marker.svg";
 import Entypo from "react-native-vector-icons/Entypo";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import Feather from "react-native-vector-icons/Feather";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AppGradientButton from "@components/AppGradientButton";
-import {View, Text, TouchableOpacity, Modal, TextInput} from "react-native";
-import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
+import {isResponseResultError} from "@utils/error-handling";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import useGetGeolocationQuery from "@hooks/useGetGeolocationQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {addServerErrors, isResponseResultError} from "@utils/error-handling";
-import useAppToast from "@hooks/useAppToast";
+import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 
 type Props = {
-  type: "name" | "phone" | "email" | "password";
+  type: "name" | "phone" | "email" | "password" | "address";
 };
 
 type FormValues = {
@@ -28,6 +40,8 @@ type FormValues = {
   password: string;
   password_confirmation: string;
   phone: string;
+  latitude: string | null;
+  longitude: string | null;
 };
 
 export default function ProfileUpdaterItem({type}: Props) {
@@ -35,7 +49,7 @@ export default function ProfileUpdaterItem({type}: Props) {
   const {isOpen, toggle} = useDisclosure();
   const {data: profileDataResponse} = useGetProfileQuery();
 
-  const {setValue, control, handleSubmit} = useForm<FormValues>({
+  const {setValue, control, handleSubmit, watch} = useForm<FormValues>({
     defaultValues: {
       phone: "",
       email: "",
@@ -44,24 +58,72 @@ export default function ProfileUpdaterItem({type}: Props) {
       first_name: "",
       old_password: "",
       password_confirmation: "",
+      latitude: null,
+      longitude: null,
     },
   });
+
+  const lat = watch("latitude");
+  const lng = watch("longitude");
 
   React.useEffect(() => {
     if (profileDataResponse) {
       setValue("email", profileDataResponse.email);
       setValue("phone", profileDataResponse.phone);
     }
+
+    if (profileDataResponse?.latitude) {
+      setValue("latitude", profileDataResponse.latitude);
+    }
+
+    if (profileDataResponse?.longitude) {
+      setValue("longitude", profileDataResponse.longitude);
+    }
   }, [profileDataResponse, setValue]);
 
   const {
     mutate: updateProfile,
-    isLoading: isUpdating,
+    data: updateProfileResponse,
+    isLoading: isUpdatingProfile,
     error: updateProfileError,
     // isError: isUpdateProfileError,
   } = useUpdateProfileMutation();
-
   useHandleNonFieldError(updateProfileError);
+  useHandleResponseResultError(updateProfileResponse);
+
+  const {
+    data: geolocationData,
+    error: geolocationError,
+    isLoading: isGeolocationLoading,
+  } = useGetGeolocationQuery();
+  useHandleNonFieldError(geolocationError);
+
+  React.useEffect(() => {
+    if (!!geolocationData) {
+      setValue("latitude", `${geolocationData.coords.latitude}`);
+      setValue("longitude", `${geolocationData.coords.longitude}`);
+    }
+  }, [
+    setValue,
+    geolocationData?.coords?.latitude,
+    geolocationData?.coords?.longitude,
+  ]);
+
+  const markerCoordinates = React.useMemo(() => {
+    return {
+      latitude: lat ? parseFloat(lat) : 0,
+      longitude: lng ? parseFloat(lng) : 0,
+    };
+  }, [lat, lng]);
+
+  const initialRegion = React.useMemo(() => {
+    return {
+      latitudeDelta: 0.04,
+      longitudeDelta: 0.05,
+      latitude: geolocationData?.coords.latitude ?? 0,
+      longitude: geolocationData?.coords.longitude ?? 0,
+    };
+  }, [geolocationData?.coords?.latitude, geolocationData?.coords?.longitude]);
 
   const handleProfileUpdate = handleSubmit(values => {
     updateProfile(
@@ -77,6 +139,11 @@ export default function ProfileUpdaterItem({type}: Props) {
         : type === "email"
         ? {
             email: values.email,
+          }
+        : type === "address"
+        ? {
+            latitude: values.latitude ?? undefined,
+            longitude: values.longitude ?? undefined,
           }
         : {
             password: values.password,
@@ -121,7 +188,11 @@ export default function ProfileUpdaterItem({type}: Props) {
 
           {type === "password" && (
             <React.Fragment>
-              <EvilIcons name="lock" size={30} color={"#707070"} />
+              <MaterialCommunityIcons
+                name="lock-check-outline"
+                size={20}
+                color={"#707070"}
+              />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 Update Password
@@ -138,6 +209,20 @@ export default function ProfileUpdaterItem({type}: Props) {
               </Text>
             </React.Fragment>
           )}
+
+          {type === "address" && (
+            <React.Fragment>
+              <MaterialCommunityIcons
+                name="map-marker-outline"
+                size={20}
+                color={"#707070"}
+              />
+
+              <Text style={{marginLeft: 10, color: "#707070"}}>
+                {profileDataResponse?.location}
+              </Text>
+            </React.Fragment>
+          )}
         </View>
 
         <TouchableOpacity onPress={() => toggle()}>
@@ -147,7 +232,7 @@ export default function ProfileUpdaterItem({type}: Props) {
 
       <Modal transparent visible={isOpen} onRequestClose={() => toggle()}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
+          <View style={[styles.modalView, {padding: splitAppTheme.space[4]}]}>
             <TouchableOpacity
               onPress={() => toggle()}
               style={{
@@ -168,6 +253,8 @@ export default function ProfileUpdaterItem({type}: Props) {
                 ? "Update Phone"
                 : type === "email"
                 ? "Update Email"
+                : type === "address"
+                ? "Update Address"
                 : "Update Password"}
             </Text>
 
@@ -230,6 +317,50 @@ export default function ProfileUpdaterItem({type}: Props) {
               </View>
             )}
 
+            {type === "address" && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginVertical: splitAppTheme.space[4],
+                }}>
+                {isGeolocationLoading ? (
+                  <View
+                    style={{
+                      height: 200,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: splitAppTheme.sizes.full,
+                    }}>
+                    <ActivityIndicator size={"small"} />
+                  </View>
+                ) : (
+                  !!geolocationData && (
+                    <MapView
+                      initialRegion={initialRegion}
+                      style={{
+                        height: 200,
+                        width: splitAppTheme.sizes.full,
+                        borderRadius: splitAppTheme.radii.lg,
+                      }}>
+                      {!!markerCoordinates && (
+                        <Marker
+                          draggable
+                          coordinate={markerCoordinates}
+                          onDragEnd={e => {
+                            const {latitude, longitude} =
+                              e.nativeEvent.coordinate;
+                            setValue("latitude", `${latitude}`);
+                            setValue("longitude", `${longitude}`);
+                          }}>
+                          <MapMarker />
+                        </Marker>
+                      )}
+                    </MapView>
+                  )
+                )}
+              </View>
+            )}
+
             {type === "email" && (
               <View style={{flexDirection: "row"}}>
                 <View style={{flex: 1}}>
@@ -253,7 +384,7 @@ export default function ProfileUpdaterItem({type}: Props) {
 
             {type === "password" && (
               <View style={{width: "100%"}}>
-                <View>
+                <View style={{marginTop: splitAppTheme.space[3]}}>
                   <Controller
                     control={control}
                     name={"old_password"}
@@ -262,7 +393,12 @@ export default function ProfileUpdaterItem({type}: Props) {
                         <TextInput
                           secureTextEntry
                           value={field.value}
-                          style={styles.modalInput}
+                          style={[
+                            styles.modalInput,
+                            {
+                              marginVertical: splitAppTheme.space[2],
+                            },
+                          ]}
                           placeholder={"Old Password"}
                           onChangeText={field.onChange}
                         />
@@ -281,7 +417,12 @@ export default function ProfileUpdaterItem({type}: Props) {
                           secureTextEntry
                           value={field.value}
                           placeholder={"Password"}
-                          style={styles.modalInput}
+                          style={[
+                            styles.modalInput,
+                            {
+                              marginVertical: splitAppTheme.space[2],
+                            },
+                          ]}
                           onChangeText={field.onChange}
                         />
                       );
@@ -298,7 +439,13 @@ export default function ProfileUpdaterItem({type}: Props) {
                         <TextInput
                           secureTextEntry
                           value={field.value}
-                          style={styles.modalInput}
+                          style={[
+                            styles.modalInput,
+                            {
+                              marginVertical: splitAppTheme.space[2],
+                              marginBottom: splitAppTheme.space[3],
+                            },
+                          ]}
                           onChangeText={field.onChange}
                           placeholder={"Confirm Password"}
                         />
@@ -309,7 +456,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               </View>
             )}
 
-            <View style={{marginTop: 10}}>
+            <View>
               <AppGradientButton
                 width={290}
                 title={"Update"}
@@ -317,7 +464,7 @@ export default function ProfileUpdaterItem({type}: Props) {
                 variant={"solid"}
                 onPress={handleProfileUpdate}
                 touchableOpacityProps={{
-                  disabled: isUpdating,
+                  disabled: isUpdatingProfile,
                 }}
                 textProps={{
                   style: {

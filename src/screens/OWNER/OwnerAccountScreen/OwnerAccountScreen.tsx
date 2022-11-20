@@ -1,18 +1,24 @@
 import React from "react";
+import {splitAppTheme} from "@src/theme";
 import {OwnerStackRoutes} from "@constants/routes";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
+import {version as AppVersion} from "../../../../app.json";
+import GenericListEmpty from "@components/GenericListEmpty";
 import {CompositeScreenProps} from "@react-navigation/native";
+import useLogoutMutation from "@hooks/auth/useLogoutMutation";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {
   View,
   Text,
   Image,
+  Alert,
   StyleSheet,
+  ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
-  ScrollView,
 } from "react-native";
 import {
   FaqIcon,
@@ -30,9 +36,6 @@ import {
   OwnerBottomTabParamList,
   OwnerAccountStackParamList,
 } from "@src/navigation";
-import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
-import useLogoutMutation from "@hooks/auth/useLogoutMutation";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -49,13 +52,17 @@ type OwnerAccountScreenProps = CompositeScreenProps<
 >;
 
 const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
-  const {data: profileData, error, isLoading} = useGetProfileQuery();
-  useHandleNonFieldError(error);
+  const {
+    data: clubInfoData,
+    error: clubInfoError,
+    isLoading: isClubInfoLoading,
+  } = useGetOwnerClubInfoQuery();
+  useHandleNonFieldError(clubInfoError);
 
   const {mutate: logout, error: logoutError} = useLogoutMutation();
   useHandleNonFieldError(logoutError);
 
-  if (isLoading) {
+  if (isClubInfoLoading) {
     return (
       <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
         <ActivityIndicator size={"small"} />
@@ -63,30 +70,41 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
     );
   }
 
+  if (!clubInfoData) {
+    return <GenericListEmpty height={300} width={300} />;
+  }
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      style={{flex: 1, backgroundColor: "#FFFFFF", paddingHorizontal: 20}}>
+      style={{
+        flex: 1,
+        backgroundColor: splitAppTheme.colors.white,
+      }}
+      contentContainerStyle={{
+        paddingBottom: splitAppTheme.space[6],
+        paddingHorizontal: splitAppTheme.space[6],
+      }}>
       <View
         style={{
           height: 90,
+          padding: 10,
           width: "100%",
-          borderWidth: 1,
-          borderColor: "#DBDBDB",
           borderRadius: 5,
           marginVertical: 20,
-          flexDirection: "row",
           alignItems: "center",
-          padding: 10,
+          flexDirection: "row",
+          borderColor: "#DBDBDB",
+          borderWidth: splitAppTheme.borderWidths[1],
         }}>
         <Image
           style={{
-            height: 60,
             width: 60,
+            height: 60,
             borderRadius: 30,
           }}
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/219/219986.png",
+            uri: clubInfoData.slider_images[0],
           }}
         />
 
@@ -97,7 +115,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
               fontSize: 16,
               color: "#030819",
             }}>
-            Jewel Night Club
+            {clubInfoData.name}
           </Text>
           <Text
             style={{
@@ -105,7 +123,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
               fontSize: 12,
               color: "#8A8D9F",
             }}>
-            Las Vegas, NV 98109
+            {clubInfoData.location}
           </Text>
           <Text
             style={{
@@ -113,7 +131,8 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
               fontSize: 12,
               color: "#8A8D9F",
             }}>
-            Member Since June 2022
+            Opening hour: {clubInfoData.opening_time} -{" "}
+            {clubInfoData.closing_time}
           </Text>
         </View>
       </View>
@@ -123,32 +142,41 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           onPress={() => navigation.navigate(OwnerStackRoutes.INFORMATION)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <InfoIcon />
-            <Text
-              style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
-                fontSize: 16,
-                marginLeft: 10,
-              }}>
-              Information
-            </Text>
+            <View>
+              <InfoIcon height={35} width={35} />
+            </View>
+
+            <View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                  color: "#262B2E",
+                  fontFamily: "Satoshi-Regular",
+                }}>
+                Information
+              </Text>
+            </View>
           </View>
 
-          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate(OwnerStackRoutes.ACCOUNT_SETTING)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <AccountSettingIcon />
+            <View>
+              <AccountSettingIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Account Setting
             </Text>
@@ -161,13 +189,15 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           onPress={() => navigation.navigate(OwnerStackRoutes.TRANSACTION)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <TransactionIcon />
+            <View>
+              <TransactionIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Transaction
             </Text>
@@ -180,13 +210,15 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           onPress={() => navigation.navigate(OwnerStackRoutes.REVIEWS)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <ReviewIcon />
+            <View>
+              <ReviewIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Reviews
             </Text>
@@ -199,13 +231,15 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           onPress={() => navigation.navigate(OwnerStackRoutes.HOLIDAYS)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <HolidayIcon />
+            <View>
+              <HolidayIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Holidays
             </Text>
@@ -217,13 +251,15 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           onPress={() => navigation.navigate(OwnerStackRoutes.FAQ)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <FaqIcon />
+            <View>
+              <FaqIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Faq's
             </Text>
@@ -236,13 +272,15 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           onPress={() => navigation.navigate(OwnerStackRoutes.LEGAL)}
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <LegalIcon />
+            <View>
+              <LegalIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Legal
             </Text>
@@ -269,13 +307,15 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
             ]);
           }}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <LogoutIcon />
+            <View>
+              <LogoutIcon height={35} width={35} />
+            </View>
             <Text
               style={{
-                color: "#262B2E",
-                fontFamily: "Satoshi-Regular",
                 fontSize: 16,
                 marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
               }}>
               Logout
             </Text>
@@ -285,10 +325,10 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         </TouchableOpacity>
         <Text
           style={{
-            marginVertical: 5,
             alignSelf: "center",
+            marginVertical: splitAppTheme.space[3],
           }}>
-          App Version V1.0
+          App Version {AppVersion}
         </Text>
       </View>
     </ScrollView>
@@ -297,12 +337,13 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    flexDirection: "row",
     width: "100%",
+    paddingVertical: 15,
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 1,
     borderStyle: "dashed",
     borderColor: "#C8C8D3",
-    paddingVertical: 15,
     justifyContent: "space-between",
   },
 });

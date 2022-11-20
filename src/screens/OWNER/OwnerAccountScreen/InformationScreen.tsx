@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Image,
@@ -5,12 +6,11 @@ import {
   Dimensions,
   ListRenderItem,
 } from "react-native";
-import React from "react";
 import {OwnerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
 import InformationUpdaterItem from "./modals/InformationUpdaterItem";
+import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
 
 const screenWidth = Dimensions.get("screen").width;
 

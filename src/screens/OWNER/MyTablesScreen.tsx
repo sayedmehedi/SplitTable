@@ -6,16 +6,35 @@ import {TTableItem} from "@components/owner/shared";
 import {StackScreenProps} from "@react-navigation/stack";
 import MyTableList from "@components/owner/MyTableList";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.MY_TABLES>,
   StackScreenProps<RootStackParamList>
 >;
 
-const MyTablesScreen = ({route}: Props) => {
-  const handleItemPresss = React.useCallback((item: TTableItem) => {}, []);
+const MyTablesScreen = ({route, navigation}: Props) => {
+  const handleItemPresss = React.useCallback(
+    (table: TTableItem) => {
+      if (table.total_joined !== undefined) {
+        navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
+          tableId: table.id,
+        });
+      }
+    },
+    [navigation],
+  );
+
+  const handleUpdatePress = React.useCallback(
+    (table: TTableItem) => {
+      navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
+        actionMode: "update",
+        tableId: table.id,
+      });
+    },
+    [navigation],
+  );
 
   return (
     <View
@@ -28,7 +47,10 @@ const MyTablesScreen = ({route}: Props) => {
       // barStyle={"dark-content"}
       />
 
-      <MyTableList onItemPress={handleItemPresss} />
+      <MyTableList
+        onItemPress={handleItemPresss}
+        onUpdatePress={handleUpdatePress}
+      />
     </View>
   );
 };

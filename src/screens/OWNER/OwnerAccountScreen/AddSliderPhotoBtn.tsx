@@ -113,7 +113,13 @@ export default function AddSliderPhotoBtn() {
   };
 
   return (
-    <View style={{marginTop: splitAppTheme.space[3]}}>
+    <View
+      style={{
+        marginTop: splitAppTheme.space[3],
+        position: "absolute",
+        width: "100%",
+        bottom: 0,
+      }}>
       <View>
         <TouchableOpacity
           onPress={() => {
@@ -149,7 +155,7 @@ export default function AddSliderPhotoBtn() {
                     fontSize: splitAppTheme.fontSizes.lg,
                     fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
                   }}>
-                  Add Your Photo
+                  Add Slider Images
                 </Text>
               </View>
             </View>
@@ -158,23 +164,40 @@ export default function AddSliderPhotoBtn() {
       </View>
 
       <ActionSheet ref={actionSheetRef}>
-        <TouchableOpacity onPress={handleTakePicture} disabled={isUploading}>
-          <View
-            style={{
-              padding: splitAppTheme.space[3],
-            }}>
-            <Text>Take photo</Text>
-          </View>
-        </TouchableOpacity>
+        <View
+          style={{
+            paddingTop: splitAppTheme.space[3],
+          }}>
+          <TouchableOpacity onPress={handleTakePicture}>
+            <View
+              style={{
+                padding: splitAppTheme.space[3],
+              }}>
+              <Text
+                style={{
+                  fontSize: splitAppTheme.fontSizes.md,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                Take photo
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleSelectImage} disabled={isUploading}>
-          <View
-            style={{
-              padding: splitAppTheme.space[3],
-            }}>
-            <Text>Select photo</Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleSelectImage}>
+            <View
+              style={{
+                padding: splitAppTheme.space[3],
+              }}>
+              <Text
+                style={{
+                  fontSize: splitAppTheme.fontSizes.md,
+                  fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                }}>
+                Select photo
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </ActionSheet>
 
       <Modal visible={isUploading} transparent>

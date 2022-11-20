@@ -76,7 +76,9 @@ const MenuListScreen = ({navigation}: Props) => {
   );
 
   const renderItem: ListRenderItem<ClubMenuItemOwnerSide> = React.useCallback(
-    ({item}) => <EachMenuItem item={item} onPress={handleEdit} />,
+    ({item, index}) => (
+      <EachMenuItem item={item} onPress={handleEdit} index={index} />
+    ),
     [handleEdit],
   );
 
@@ -107,7 +109,8 @@ const MenuListScreen = ({navigation}: Props) => {
 
       <FlatList
         ListHeaderComponentStyle={{
-          paddingBottom: splitAppTheme.space[3],
+          paddingTop: splitAppTheme.space[3],
+          paddingHorizontal: splitAppTheme.space[6],
         }}
         onRefresh={refetch}
         data={resourceListData}
@@ -121,16 +124,25 @@ const MenuListScreen = ({navigation}: Props) => {
                 actionMode: "create",
               })
             }>
-            <Text style={{color: "#FF3FCB"}}>+ Add Menu Item</Text>
+            <Text
+              style={{
+                color: splitAppTheme.colors.primary[300],
+                fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+              }}>
+              + Add Menu Item
+            </Text>
           </TouchableOpacity>
         }
         onEndReached={handleFetchNextPage}
         ListFooterComponentStyle={{
           backgroundColor: splitAppTheme.colors.white,
         }}
+        // ItemSeparatorComponent={() => (
+        //   <View style={{height: splitAppTheme.space[4]}} />
+        // )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          padding: splitAppTheme.space[6],
+          paddingBottom: splitAppTheme.space[6],
         }}
         ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
@@ -142,11 +154,11 @@ const styles = StyleSheet.create({
   addMenuButton: {
     height: 50,
     width: "100%",
-    borderWidth: 2,
-    borderColor: "#FF3FCB",
-    justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
+    justifyContent: "center",
+    borderRadius: splitAppTheme.radii.xl,
+    borderWidth: splitAppTheme.borderWidths[2],
+    borderColor: splitAppTheme.colors.primary[300],
   },
 });
 

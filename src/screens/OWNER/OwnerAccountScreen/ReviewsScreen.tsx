@@ -19,6 +19,7 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
 import useInfiniteGetClubReviewsQuery from "@hooks/review/useInfiniteGetClubReviewsQuery";
+import GenericListEmpty from "@components/GenericListEmpty";
 
 type FavoriteScreenProps = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.REVIEWS>,
@@ -107,7 +108,7 @@ const ReviewsScreen = ({}: FavoriteScreenProps) => {
               alignItems: "center",
               justifyContent: "space-between",
               marginTop: splitAppTheme.space[6],
-              marginHorizontal: splitAppTheme.space[6],
+              margin: splitAppTheme.space[6],
             }}>
             <View
               style={{
@@ -223,6 +224,12 @@ const ReviewsScreen = ({}: FavoriteScreenProps) => {
           </View>
         )}
 
+      {isFetchingNextPage ? (
+        <View>
+          <ActivityIndicator size={"small"} />
+        </View>
+      ) : null}
+
       <FlatList
         key={"user-reviews"}
         data={resourceListData}
@@ -237,19 +244,9 @@ const ReviewsScreen = ({}: FavoriteScreenProps) => {
           />
         )}
         contentContainerStyle={{
-          paddingHorizontal: splitAppTheme.space["6"],
+          padding: splitAppTheme.space["6"],
         }}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <View>
-              <ActivityIndicator size={"small"} />
-            </View>
-          ) : resourceListData.length === 0 ? (
-            <View style={{alignItems: "center", justifyContent: "center"}}>
-              <Text>No Data</Text>
-            </View>
-          ) : null
-        }
+        ListEmptyComponent={<GenericListEmpty width={300} height={300} />}
       />
     </View>
   );

@@ -22,11 +22,21 @@ import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookin
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
-const renderBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem item={item} />
+const renderUpcomingBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
+  <EachBookingItem type={"upcoming"} item={item} />
 );
 
-const UpcomingBookingRoute = (props: {}) => {
+const renderHistoryBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
+  <EachBookingItem type={"history"} item={item} />
+);
+
+const UpcomingBookingRoute = ({
+  ListHeaderComponent,
+}: {
+  ListHeaderComponent:
+    | React.ComponentType<any>
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+}) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
@@ -100,9 +110,10 @@ const UpcomingBookingRoute = (props: {}) => {
         data={resourceListData}
         refreshing={isRefetching}
         keyExtractor={keyExtractor}
-        renderItem={renderBookingItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
+        renderItem={renderUpcomingBookingItem}
+        ListHeaderComponent={ListHeaderComponent}
         contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
@@ -117,7 +128,13 @@ const UpcomingBookingRoute = (props: {}) => {
   );
 };
 
-const HistoryBookingRoute = (props: {}) => {
+const HistoryBookingRoute = ({
+  ListHeaderComponent,
+}: {
+  ListHeaderComponent:
+    | React.ComponentType<any>
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+}) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
@@ -191,9 +208,10 @@ const HistoryBookingRoute = (props: {}) => {
         data={resourceListData}
         refreshing={isRefetching}
         keyExtractor={keyExtractor}
-        renderItem={renderBookingItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
+        renderItem={renderHistoryBookingItem}
+        ListHeaderComponent={ListHeaderComponent}
         contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
@@ -239,8 +257,7 @@ const OwnerBookingListScreen = () => {
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingTop: splitAppTheme.space[6],
-        paddingHorizontal: splitAppTheme.space[6],
+        paddingBottom: splitAppTheme.space[6],
       }}>
       <View
         style={{
@@ -336,26 +353,12 @@ const OwnerBookingListScreen = () => {
   );
 
   return (
-    <View>
-      {ListHeaderComponent}
-      <FlatList
-        horizontal
-        pagingEnabled
-        ref={pagerRef}
-        listKey={"pager"}
-        onMomentumScrollEnd={setIndex}
-        showsHorizontalScrollIndicator={false}
-        data={[{key: "upcoming"}, {key: "history"}]}
-        renderItem={({item}) => {
-          switch (item.key) {
-            case "upcoming":
-              return <UpcomingBookingRoute />;
-
-            default:
-              return <HistoryBookingRoute />;
-          }
-        }}
-      />
+    <View style={{flex: 1}}>
+      {selectedIndex === 0 ? (
+        <UpcomingBookingRoute ListHeaderComponent={ListHeaderComponent} />
+      ) : (
+        <HistoryBookingRoute ListHeaderComponent={ListHeaderComponent} />
+      )}
     </View>
   );
 };

@@ -9,16 +9,17 @@ import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
+import {AuthTypeNum} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
-import ProfileImageUploader from "../components/ProfileImageUploader";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
+import ProfileImageUploader from "../components/ProfileImageUploader";
 import {
   View,
   Text,
@@ -221,8 +222,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         style={{
           marginVertical: 10,
           flexDirection: "row",
-          justifyContent: "space-between",
           paddingHorizontal: splitAppTheme.space[6],
+          justifyContent:
+            authData?.user_type === AuthTypeNum.CUSTOMER
+              ? "space-between"
+              : "space-around",
         }}>
         <TouchableOpacity onPress={() => handlePager(0)}>
           {selectedIndex === 0 ? (
@@ -318,32 +322,34 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(RootStackRoutes.CUSTOMER, {
-              screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
-              params: {
-                screen: CustomerMainBottomTabRoutes.CHAT,
-              },
-            });
-          }}>
-          <LinearGradient
-            colors={["#201648", "#7359D1"]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={{
-              height: 40,
-              borderRadius: 5,
-              alignItems: "center",
-              justifyContent: "center",
-              width:
-                WINDOW_WIDTH * 0.3 -
-                splitAppTheme.space["6"] * 0.3 -
-                splitAppTheme.space["3"] * 0.3,
+        {authData?.user_type === AuthTypeNum.CUSTOMER && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(RootStackRoutes.CUSTOMER, {
+                screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
+                params: {
+                  screen: CustomerMainBottomTabRoutes.CHAT,
+                },
+              });
             }}>
-            <Text style={{color: "white"}}>Chat</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={["#201648", "#7359D1"]}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}
+              style={{
+                height: 40,
+                borderRadius: 5,
+                alignItems: "center",
+                justifyContent: "center",
+                width:
+                  WINDOW_WIDTH * 0.3 -
+                  splitAppTheme.space["6"] * 0.3 -
+                  splitAppTheme.space["3"] * 0.3,
+              }}>
+              <Text style={{color: "white"}}>Chat</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
       </View>
     </React.Fragment>
   );

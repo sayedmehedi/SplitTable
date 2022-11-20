@@ -7,20 +7,19 @@ import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookingHistoryQuery";
 import useInfiniteGetUpcomingBookingQuery from "@hooks/clubs/useInfiniteGetUpcomingBookingQuery";
 import {
   View,
   Text,
   FlatList,
+  ListRenderItem,
   TouchableOpacity,
-  NativeSyntheticEvent,
   NativeScrollEvent,
   ActivityIndicator,
-  ListRenderItem,
-  StatusBar,
+  NativeSyntheticEvent,
 } from "react-native";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
@@ -32,7 +31,13 @@ const renderHistoryBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
   <EachBookingItem type={"history"} item={item} />
 );
 
-const UpcomingBookingRoute = (props: {}) => {
+const UpcomingBookingRoute = ({
+  ListHeaderComponent,
+}: {
+  ListHeaderComponent:
+    | React.ComponentType<any>
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+}) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
@@ -110,6 +115,7 @@ const UpcomingBookingRoute = (props: {}) => {
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
         renderItem={renderUpcomingBookingItem}
+        ListHeaderComponent={ListHeaderComponent}
         contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
@@ -124,7 +130,13 @@ const UpcomingBookingRoute = (props: {}) => {
   );
 };
 
-const HistoryBookingRoute = (props: {}) => {
+const HistoryBookingRoute = ({
+  ListHeaderComponent,
+}: {
+  ListHeaderComponent:
+    | React.ComponentType<any>
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+}) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
@@ -202,6 +214,7 @@ const HistoryBookingRoute = (props: {}) => {
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
         renderItem={renderHistoryBookingItem}
+        ListHeaderComponent={ListHeaderComponent}
         contentContainerStyle={flatlistContentContainerStyle}
         ItemSeparatorComponent={() => (
           <View
@@ -232,23 +245,12 @@ const BookingListScreen = () => {
     setSelectedIndex(index);
   };
 
-  const setIndex = React.useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const viewSize = event.nativeEvent.layoutMeasurement.width;
-      const contentOffset = event.nativeEvent.contentOffset.x;
-      const carouselIndex = Math.floor(contentOffset / viewSize);
-      setSelectedIndex(carouselIndex);
-    },
-    [],
-  );
-
   const ListHeaderComponent = (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingTop: splitAppTheme.space[6],
-        paddingHorizontal: splitAppTheme.space[6],
+        paddingBottom: splitAppTheme.space[6],
       }}>
       <View
         style={{
@@ -344,31 +346,17 @@ const BookingListScreen = () => {
   );
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <FocusAwareStatusBar
         barStyle={"dark-content"}
         // backgroundColor={splitAppTheme.colors.white}
       />
 
-      {ListHeaderComponent}
-      <FlatList
-        horizontal
-        pagingEnabled
-        ref={pagerRef}
-        listKey={"pager"}
-        onMomentumScrollEnd={setIndex}
-        showsHorizontalScrollIndicator={false}
-        data={[{key: "upcoming"}, {key: "history"}]}
-        renderItem={({item}) => {
-          switch (item.key) {
-            case "upcoming":
-              return <UpcomingBookingRoute />;
-
-            default:
-              return <HistoryBookingRoute />;
-          }
-        }}
-      />
+      {selectedIndex === 0 ? (
+        <UpcomingBookingRoute ListHeaderComponent={ListHeaderComponent} />
+      ) : (
+        <HistoryBookingRoute ListHeaderComponent={ListHeaderComponent} />
+      )}
     </View>
   );
 };

@@ -5,6 +5,7 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import ProfileUpdaterItem from "./modals/ProfileUpdaterItem";
+import ClubInfoUpdaterItem from "./modals/ClubInfoUpdaterItem";
 
 const AccountSettingScreen = () => {
   return (
@@ -13,11 +14,19 @@ const AccountSettingScreen = () => {
         style={{paddingHorizontal: 12, backgroundColor: "#FFFFFF", flex: 1}}>
         <ProfileUpdaterItem type="name" />
 
+        <ClubInfoUpdaterItem type="name" />
+
+        <ClubInfoUpdaterItem type="job_role" />
+
         <ProfileUpdaterItem type="phone" />
 
         <ProfileUpdaterItem type="email" />
 
         <ProfileUpdaterItem type="password" />
+
+        <ClubInfoUpdaterItem type="location" />
+
+        <ProfileUpdaterItem type="address" />
 
         {/* 
 

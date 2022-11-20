@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "96%",
-    height: "40%",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -51,10 +50,10 @@ const styles = StyleSheet.create({
     height: 40,
     width: "100%",
     borderWidth: 1,
-    borderColor: "#C9C9C9",
     borderRadius: 8,
-    textAlign: "center",
     marginVertical: 20,
+    textAlign: "center",
+    borderColor: "#C9C9C9",
   },
   updateButton: {
     width: 270,

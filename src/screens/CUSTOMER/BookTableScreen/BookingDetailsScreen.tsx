@@ -174,8 +174,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
     : 0;
 
   const wholetableBookingCost = isBookedTableDetails(route.params.tableDetails)
-    ? route.params.tableDetails.total_seat *
-      parseFloat(route.params.tableDetails.price)
+    ? parseFloat(route.params.tableDetails.price)
     : 0;
 
   const menuTotal = React.useMemo(() => {
@@ -635,24 +634,27 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                     tip,
                     discount,
                     // @ts-ignore
-                    menuId: Object.keys(menus),
+                    menuId: Object.keys(menus).filter(menuId => {
+                      const menu = menus[parseInt(menuId)];
+                      return menu.purchaseQty !== 0;
+                    }),
                     tableId: [route.params.tableDetails.id],
                     clubId: route.params.tableDetails.club_id,
-                    menSeat:
-                      route.params.menGuestCount > 0
-                        ? {
-                            [route.params.tableDetails.id]:
-                              route.params.menGuestCount,
-                          }
-                        : {},
-                    womenSeat:
-                      route.params.womenGuestCount > 0
-                        ? {
-                            [route.params.tableDetails.id]:
-                              route.params.womenGuestCount,
-                          }
-                        : {},
-                    qty: Object.values(menus).map(menu => menu.purchaseQty),
+                    menSeat: isSplitTableDetails(route.params.tableDetails)
+                      ? {
+                          [route.params.tableDetails.id]:
+                            route.params.menGuestCount,
+                        }
+                      : {},
+                    womenSeat: isSplitTableDetails(route.params.tableDetails)
+                      ? {
+                          [route.params.tableDetails.id]:
+                            route.params.womenGuestCount,
+                        }
+                      : {},
+                    qty: Object.values(menus)
+                      .filter(menu => menu.purchaseQty !== 0)
+                      .map(menu => menu.purchaseQty),
                   },
                   {
                     onSuccess(data) {

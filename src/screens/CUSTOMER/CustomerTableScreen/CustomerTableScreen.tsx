@@ -49,7 +49,7 @@ type Props = CompositeScreenProps<
 >;
 
 const CustomerTableScreen = ({navigation}: Props) => {
-  const {hours} = useTime({format: "12-hour"});
+  const {hours} = useTime({});
   const {data: authData} = useGetAuthDataQuery();
   const {
     window: {height: WINDOW_HEIGHT},

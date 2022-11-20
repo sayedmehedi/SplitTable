@@ -31,6 +31,8 @@ import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 import useUpdateOwnerClubInfoMutation from "@hooks/clubs/useUpdateOwnerClubInfoMutation";
+import {Clock, MenuIcon} from "@constants/iconPath";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = {
   type: "time" | "cuisine" | "cost" | "about" | "slider";
@@ -154,7 +156,7 @@ export default function ProfileUpdaterItem({type}: Props) {
         <View style={{flexDirection: "row", alignItems: "center"}}>
           {type === "time" && (
             <React.Fragment>
-              <AntDesign name="user" size={20} color={"#707070"} />
+              <Clock height={20} width={20} color={"#707070"} />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 Open:
@@ -175,7 +177,7 @@ export default function ProfileUpdaterItem({type}: Props) {
 
           {type === "cuisine" && (
             <React.Fragment>
-              <Feather name="phone" size={20} color={"#707070"} />
+              <MenuIcon height={20} width={20} color={"#707070"} />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 Cusines: {clubInfoData?.cuisine}
@@ -185,7 +187,11 @@ export default function ProfileUpdaterItem({type}: Props) {
 
           {type === "cost" && (
             <React.Fragment>
-              <EvilIcons name="lock" size={30} color={"#707070"} />
+              <MaterialCommunityIcons
+                size={20}
+                name="currency-usd"
+                color={"#707070"}
+              />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 Average Cost: ${clubInfoData?.min_avg_cost ?? 0} - $
@@ -196,7 +202,11 @@ export default function ProfileUpdaterItem({type}: Props) {
 
           {type === "about" && (
             <React.Fragment>
-              <Fontisto name="email" size={20} color={"#707070"} />
+              <MaterialCommunityIcons
+                name="information-outline"
+                size={20}
+                color={"#707070"}
+              />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 Abount Club/Bar - Max 500 word
@@ -206,7 +216,11 @@ export default function ProfileUpdaterItem({type}: Props) {
 
           {type === "slider" && (
             <React.Fragment>
-              <Fontisto name="email" size={20} color={"#707070"} />
+              <MaterialCommunityIcons
+                name="file-image"
+                size={20}
+                color={"#707070"}
+              />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 Slider image - max 10/10
@@ -232,11 +246,12 @@ export default function ProfileUpdaterItem({type}: Props) {
         visible={isModalOpen}
         onRequestClose={() => toggleModal()}>
         <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
+          <View style={[styles.modalView, {}]}>
             <TouchableOpacity
               onPress={() => toggleModal()}
               style={{
                 margin: 20,
+                marginLeft: "auto",
               }}>
               <Entypo name="cross" size={30} color={"#023047"} />
             </TouchableOpacity>
@@ -407,7 +422,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               <View
                 style={{
                   width: "100%",
-                  padding: splitAppTheme.space[3],
+                  paddingHorizontal: splitAppTheme.space[3],
                 }}>
                 <Controller
                   name={"cuisine"}
@@ -482,7 +497,12 @@ export default function ProfileUpdaterItem({type}: Props) {
                           value={field.value}
                           placeholder={"About"}
                           textAlignVertical={"top"}
-                          style={styles.modalInput}
+                          style={[
+                            styles.modalInput,
+                            {
+                              height: 200,
+                            },
+                          ]}
                           onChangeText={field.onChange}
                         />
                       );
@@ -492,7 +512,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               </View>
             )}
 
-            <View style={{marginTop: 10}}>
+            <View style={{paddingBottom: splitAppTheme.space[4]}}>
               <AppGradientButton
                 width={290}
                 title={"Update"}

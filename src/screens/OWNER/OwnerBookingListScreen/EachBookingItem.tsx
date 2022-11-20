@@ -5,7 +5,13 @@ import ReviewModal from "@components/ReviewModal";
 import {useDisclosure} from "react-use-disclosure";
 import {Image, Text, TouchableOpacity, View} from "react-native";
 
-const EachBookingItem = ({item}: {item: ClubBooking}) => {
+const EachBookingItem = ({
+  item,
+  type,
+}: {
+  item: ClubBooking;
+  type: "upcoming" | "history";
+}) => {
   const {toggle, isOpen} = useDisclosure();
 
   return (
@@ -28,7 +34,7 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
           borderRadius: splitAppTheme.radii.full,
         }}
         source={{
-          uri: item.club_image,
+          uri: item.user_image,
         }}
       />
 
@@ -51,31 +57,6 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
                 fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
               }}>
               {item.date}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}>
-            <View
-              style={{
-                width: splitAppTheme.sizes[2],
-                height: splitAppTheme.sizes[2],
-                borderRadius: splitAppTheme.radii.full,
-                backgroundColor: splitAppTheme.colors.blue[300],
-              }}
-            />
-
-            <Text
-              style={{
-                color: "#8A8D9F",
-                marginLeft: splitAppTheme.space[1],
-                fontSize: splitAppTheme.fontSizes.xs,
-                fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
-              }}>
-              {item.no_of_guest} Guest
             </Text>
           </View>
 
@@ -106,10 +87,30 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
             fontSize: splitAppTheme.fontSizes.md,
             fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
           }}>
-          {item.tables?.join(", ")}
+          {item.tables.join(", ")}
         </Text>
 
-        <ReviewModal open={isOpen} onClose={toggle} reviewerId={item.user_id} />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: splitAppTheme.space["0.5"],
+          }}>
+          <Text
+            style={{
+              color: "#8A8D9F",
+              fontSize: splitAppTheme.fontSizes.xs,
+              fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+            }}>
+            {item.no_of_guest} Guest
+          </Text>
+        </View>
+
+        <ReviewModal
+          open={isOpen}
+          onClose={toggle}
+          reviewerId={item.owner_id}
+        />
 
         <View
           style={{
@@ -127,7 +128,10 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
                 width: splitAppTheme.sizes[2],
                 height: splitAppTheme.sizes[2],
                 borderRadius: splitAppTheme.radii.full,
-                backgroundColor: splitAppTheme.colors.green[300],
+                backgroundColor:
+                  item.status === "Cancelled"
+                    ? splitAppTheme.colors.red[300]
+                    : splitAppTheme.colors.green[300],
               }}
             />
 
@@ -135,14 +139,17 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
               style={{
                 marginLeft: splitAppTheme.space[1],
                 fontSize: splitAppTheme.fontSizes.xs,
-                color: splitAppTheme.colors.green[300],
                 fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                color:
+                  item.status === "Cancelled"
+                    ? splitAppTheme.colors.red[300]
+                    : splitAppTheme.colors.green[300],
               }}>
-              {item.status}
+              {type === "upcoming" ? "Upcoming" : item.status}
             </Text>
           </View>
 
-          {!item.is_reviewed && (
+          {type === "history" && !item.is_reviewed && (
             <TouchableOpacity onPress={() => toggle()}>
               <Text
                 style={{
@@ -156,17 +163,19 @@ const EachBookingItem = ({item}: {item: ClubBooking}) => {
             </TouchableOpacity>
           )}
 
-          <TouchableOpacity>
-            <Text
-              style={{
-                textDecorationLine: "underline",
-                fontSize: splitAppTheme.fontSizes.xs,
-                color: splitAppTheme.colors.red[300],
-                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
-              }}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
+          {type === "upcoming" && (
+            <TouchableOpacity>
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontSize: splitAppTheme.fontSizes.xs,
+                  color: splitAppTheme.colors.red[300],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>

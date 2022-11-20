@@ -1,22 +1,13 @@
 import React from "react";
 import {TTableItem} from "./shared";
 import truncate from "lodash.truncate";
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  ImageBackground,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import {View, Text, Pressable, StyleSheet, ImageBackground} from "react-native";
+import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import {QueryKeys} from "@constants/query-keys";
 import {Clock, MapIcon} from "@constants/iconPath";
 import {useQueryClient} from "@tanstack/react-query";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
@@ -185,7 +176,9 @@ const TableListItem = ({item, onPress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.sm,
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
                 }}>
-                {item.date}
+                {dayjs(item.date, "YYYY-MM-DD HH:mm:ss").format(
+                  "DD MMM, hh:mm A",
+                )}
               </Text>
             </View>
           </View>

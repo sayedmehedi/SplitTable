@@ -1,17 +1,18 @@
 import React from "react";
+import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
+import {isSplitTableDetails} from "@utils/table";
 import {View, Text, StyleSheet} from "react-native";
 import {useDisclosure} from "react-use-disclosure";
 import {CustomerStackRoutes} from "@constants/routes";
 import LinearGradient from "react-native-linear-gradient";
+import {FemaleIcon, MaleIcon} from "@constants/iconPath";
 import {StackScreenProps} from "@react-navigation/stack";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {FemaleIcon, MaleIcon} from "@constants/iconPath";
-import {isSplitTableDetails} from "@utils/table";
-import dayjs from "dayjs";
+import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -22,6 +23,7 @@ type Props = CompositeScreenProps<
 >;
 
 const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
+  const toast = useAppToast();
   const {
     open: addMenu,
     close: removeMenu,
@@ -437,6 +439,15 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
 
         <TouchableOpacity
           onPress={() => {
+            if (
+              isSplitTableDetails(route.params.tableDetails) &&
+              menGuestCount === 0 &&
+              womenGuestCount === 0
+            ) {
+              toast.error("Please add at least one seat");
+              return;
+            }
+
             if (wantToAddMenu) {
               navigation.navigate(CustomerStackRoutes.ADD_MENU_ITEM, {
                 menGuestCount,

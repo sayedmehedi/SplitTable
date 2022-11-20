@@ -47,15 +47,6 @@ const GenericListEmpty = ({
         }}
         source={emptyListStateImage}
       />
-      <Text
-        style={{
-          textAlign: "center",
-          marginTop: splitAppTheme.space[3],
-          fontSize: splitAppTheme.fontSizes.lg,
-          fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
-        }}>
-        No Data
-      </Text>
     </View>
   );
 };

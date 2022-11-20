@@ -148,12 +148,13 @@ function AccountButton({color}: {color: string}) {
         alignItems: "center",
         justifyContent: "center",
       }}>
-      <AccountIcon height={20} width={20} color={color} />
+      <AccountIcon height={22} width={22} color={color} />
 
       <Text
         style={{
           color,
-          fontSize: splitAppTheme.fontSizes["2xs"],
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
         }}>
         Account
       </Text>
@@ -169,12 +170,13 @@ function BookingButton({color}: {color: string}) {
         alignItems: "center",
         justifyContent: "center",
       }}>
-      <BookingIcon height={20} width={20} color={color} />
+      <BookingIcon height={22} width={22} color={color} />
 
       <Text
         style={{
           color,
-          fontSize: splitAppTheme.fontSizes["2xs"],
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
         }}>
         Booking
       </Text>
@@ -190,12 +192,13 @@ function MenuButton({color}: {color: string}) {
         alignItems: "center",
         justifyContent: "center",
       }}>
-      <MenuIcon height={20} width={20} color={color} />
+      <MenuIcon height={22} width={22} color={color} />
 
       <Text
         style={{
           color,
-          fontSize: splitAppTheme.fontSizes["2xs"],
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
         }}>
         Menu
       </Text>
@@ -216,9 +219,10 @@ function HomeButton({color}: {color: string}) {
       <Text
         style={{
           color: color,
-          fontSize: splitAppTheme.fontSizes["2xs"],
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
         }}>
-        Home
+        Table
       </Text>
     </View>
   );
@@ -244,7 +248,7 @@ function TableAddButton({}: {}) {
           alignItems: "center",
           justifyContent: "center",
         }}>
-        <Entypo name="plus" size={22} color={"white"} />
+        <Entypo name="plus" size={30} color={"white"} />
       </LinearGradient>
     </View>
   );

@@ -111,7 +111,8 @@ const homeScreenOptions:
 
         <Text
           style={{
-            fontSize: 10,
+            fontSize: splitAppTheme.fontSizes["xs"],
+            fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
             color: focused
               ? splitAppTheme.colors.primary[400]
               : splitAppTheme.colors.secondary[400],
@@ -154,7 +155,8 @@ const bookingScreenOptions:
 
       <Text
         style={{
-          fontSize: 10,
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
           color: focused
             ? splitAppTheme.colors.primary[400]
             : splitAppTheme.colors.secondary[400],
@@ -202,7 +204,8 @@ const tableScreenOptions:
 
       <Text
         style={{
-          fontSize: 10,
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
           color: splitAppTheme.colors.black,
         }}>
         Table
@@ -244,7 +247,8 @@ const profileStackScreenOptions:
             color: focused
               ? splitAppTheme.colors.primary[400]
               : splitAppTheme.colors.secondary[400],
-            fontSize: 10,
+            fontSize: splitAppTheme.fontSizes["xs"],
+            fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
           }}>
           Account
         </Text>
@@ -281,7 +285,8 @@ const chatScreenOptions:
 
       <Text
         style={{
-          fontSize: 10,
+          fontSize: splitAppTheme.fontSizes["xs"],
+          fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
           color: focused
             ? splitAppTheme.colors.primary[400]
             : splitAppTheme.colors.secondary[400],

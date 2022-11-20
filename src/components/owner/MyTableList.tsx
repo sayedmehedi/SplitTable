@@ -15,12 +15,14 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
+import EachTableNEventItem from "@screens/OWNER/OwnerTableScreen/EachTableNEventItem";
 
 type Props = {
   onItemPress: (item: TTableItem) => void;
+  onUpdatePress: (item: TTableItem) => void;
 };
 
-const MyTableList = ({onItemPress}: Props) => {
+const MyTableList = ({onItemPress, onUpdatePress}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
     AppTableTypes.BOOKED,
   );
@@ -66,7 +68,7 @@ const MyTableList = ({onItemPress}: Props) => {
   const renderTableItem: ListRenderItem<TableByLocationItem> =
     React.useCallback(
       ({item}) => (
-        <TableListItem
+        <EachTableNEventItem
           item={{
             id: item.id,
             date: item.date,
@@ -74,12 +76,14 @@ const MyTableList = ({onItemPress}: Props) => {
             image: item.image,
             location: item.location,
             distance: item.distance,
-            total_joined: item.total_joined,
+            total_joined:
+              "total_joined" in item ? item.total_joined : undefined,
           }}
           onPress={onItemPress}
+          onUpdatePress={onUpdatePress}
         />
       ),
-      [onItemPress],
+      [onItemPress, onUpdatePress],
     );
 
   const handleFetchNextPage = React.useCallback(() => {
@@ -101,73 +105,6 @@ const MyTableList = ({onItemPress}: Props) => {
 
   return (
     <View>
-      <View
-        style={{
-          flexDirection: "row",
-          padding: splitAppTheme.space[6],
-        }}>
-        <View
-          style={{
-            flex: 1,
-          }}>
-          <TouchableOpacity onPress={() => setTableType(AppTableTypes.BOOKED)}>
-            <View
-              style={{
-                padding: splitAppTheme.space[3],
-                borderRadius: splitAppTheme.radii.md,
-                borderWidth: splitAppTheme.borderWidths[2],
-                borderColor: splitAppTheme.colors.blue[300],
-                backgroundColor:
-                  tableType === AppTableTypes.BOOKED
-                    ? splitAppTheme.colors.blue[300]
-                    : splitAppTheme.colors.white,
-              }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: splitAppTheme.fontSizes.lg,
-                  fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
-                  color:
-                    tableType === AppTableTypes.BOOKED
-                      ? splitAppTheme.colors.white
-                      : splitAppTheme.colors.blue[300],
-                }}>
-                Book Table
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{flex: 1, marginLeft: splitAppTheme.space[3]}}>
-          <TouchableOpacity onPress={() => setTableType(AppTableTypes.SPLIT)}>
-            <View
-              style={{
-                padding: splitAppTheme.space[3],
-                borderRadius: splitAppTheme.radii.md,
-                borderWidth: splitAppTheme.borderWidths[2],
-                borderColor: splitAppTheme.colors.secondary[300],
-                backgroundColor:
-                  tableType === AppTableTypes.SPLIT
-                    ? splitAppTheme.colors.secondary[300]
-                    : splitAppTheme.colors.white,
-              }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: splitAppTheme.fontSizes.lg,
-                  fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
-                  color:
-                    tableType === AppTableTypes.SPLIT
-                      ? splitAppTheme.colors.white
-                      : splitAppTheme.colors.secondary[300],
-                }}>
-                Split Table
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator size={"small"} />
@@ -181,10 +118,83 @@ const MyTableList = ({onItemPress}: Props) => {
         renderItem={renderTableItem}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <View
+            style={{
+              flexDirection: "row",
+              paddingVertical: splitAppTheme.space[6],
+            }}>
+            <View
+              style={{
+                flex: 1,
+              }}>
+              <TouchableOpacity
+                onPress={() => setTableType(AppTableTypes.BOOKED)}>
+                <View
+                  style={{
+                    padding: splitAppTheme.space[3],
+                    borderRadius: splitAppTheme.radii.md,
+                    borderWidth: splitAppTheme.borderWidths[2],
+                    borderColor: splitAppTheme.colors.blue[300],
+                    backgroundColor:
+                      tableType === AppTableTypes.BOOKED
+                        ? splitAppTheme.colors.blue[300]
+                        : splitAppTheme.colors.white,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: splitAppTheme.fontSizes.lg,
+                      fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                      color:
+                        tableType === AppTableTypes.BOOKED
+                          ? splitAppTheme.colors.white
+                          : splitAppTheme.colors.blue[300],
+                    }}>
+                    Book Table
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{flex: 1, marginLeft: splitAppTheme.space[3]}}>
+              <TouchableOpacity
+                onPress={() => setTableType(AppTableTypes.SPLIT)}>
+                <View
+                  style={{
+                    padding: splitAppTheme.space[3],
+                    borderRadius: splitAppTheme.radii.md,
+                    borderWidth: splitAppTheme.borderWidths[2],
+                    borderColor: splitAppTheme.colors.secondary[300],
+                    backgroundColor:
+                      tableType === AppTableTypes.SPLIT
+                        ? splitAppTheme.colors.secondary[300]
+                        : splitAppTheme.colors.white,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: splitAppTheme.fontSizes.lg,
+                      fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                      color:
+                        tableType === AppTableTypes.SPLIT
+                          ? splitAppTheme.colors.white
+                          : splitAppTheme.colors.secondary[300],
+                    }}>
+                    Split Table
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
         contentContainerStyle={{
           paddingTop: 0,
           padding: splitAppTheme.space[6],
         }}
+        ItemSeparatorComponent={() => (
+          <View style={{height: splitAppTheme.space[4]}} />
+        )}
         ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>

@@ -238,23 +238,42 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
               </TouchableOpacity>
 
               <ActionSheet ref={actionSheetRef}>
-                <TouchableOpacity onPress={handleTakePicture}>
-                  <View
-                    style={{
-                      padding: splitAppTheme.space[3],
-                    }}>
-                    <Text>Take photo</Text>
-                  </View>
-                </TouchableOpacity>
+                <View
+                  style={{
+                    paddingTop: splitAppTheme.space[3],
+                  }}>
+                  <TouchableOpacity onPress={handleTakePicture}>
+                    <View
+                      style={{
+                        padding: splitAppTheme.space[3],
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Roboto[500].normal,
+                        }}>
+                        Take photo
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleSelectImage}>
-                  <View
-                    style={{
-                      padding: splitAppTheme.space[3],
-                    }}>
-                    <Text>Select photo</Text>
-                  </View>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={handleSelectImage}>
+                    <View
+                      style={{
+                        padding: splitAppTheme.space[3],
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Roboto[500].normal,
+                        }}>
+                        Select photo
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </ActionSheet>
             </React.Fragment>
           )}
@@ -600,16 +619,21 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
           )}
         />
 
-        <AppGradientButton
-          width={"100%"}
-          color={"primary"}
-          touchableOpacityProps={{
-            disabled: isRegisteringUser,
-          }}
-          variant={"solid"}
-          title={"Sign Up"}
-          onPress={handleUserRegistration}
-        />
+        <View
+          style={{
+            marginTop: splitAppTheme.space[3],
+          }}>
+          <AppGradientButton
+            width={"100%"}
+            color={"primary"}
+            touchableOpacityProps={{
+              disabled: isRegisteringUser,
+            }}
+            variant={"solid"}
+            title={"Sign Up"}
+            onPress={handleUserRegistration}
+          />
+        </View>
       </View>
     </ScrollView>
   );

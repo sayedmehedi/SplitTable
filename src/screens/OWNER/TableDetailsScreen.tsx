@@ -1,21 +1,23 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import {OwnerStackRoutes} from "@constants/routes";
+import {isSplitTableDetails} from "@utils/table";
+import Ripple from "react-native-material-ripple";
+import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
-import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
-import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {OwnerStackRoutes, RootStackRoutes} from "@constants/routes";
+import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import EachTableNEventItem from "./OwnerTableScreen/EachTableNEventItem";
-import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
+import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
+import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.TABLE_DETAILS>,
   StackScreenProps<RootStackParamList>
 >;
 
-export default function TableDetailsScreen({route}: Props) {
+export default function TableDetailsScreen({route, navigation}: Props) {
   const {
     data: tableDetailsResponse,
     isLoading: isTableDetailsLoading,
@@ -47,12 +49,15 @@ export default function TableDetailsScreen({route}: Props) {
       }}>
       <EachTableNEventItem
         item={{
-          date: tableDetailsResponse.date,
           id: tableDetailsResponse.id,
-          distance: tableDetailsResponse.distance,
+          date: tableDetailsResponse.date,
+          name: tableDetailsResponse.name,
           image: tableDetailsResponse.image,
           location: tableDetailsResponse.location,
-          name: tableDetailsResponse.name,
+          distance: tableDetailsResponse.distance,
+          total_joined: isSplitTableDetails(tableDetailsResponse)
+            ? tableDetailsResponse.joined_users.length
+            : undefined,
         }}
         onPress={() => {}}
         onUpdatePress={() => {}}
@@ -71,30 +76,47 @@ export default function TableDetailsScreen({route}: Props) {
           {isSplitTableDetails(tableDetailsResponse) &&
           tableDetailsResponse.joined_users.length > 0 ? (
             tableDetailsResponse.joined_users.map((user, index) => (
-              <View
+              <Ripple
                 key={index}
-                style={{flexDirection: "row", alignItems: "center"}}>
-                <View>
-                  <Image
-                    source={{uri: user.image}}
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: splitAppTheme.radii.full,
-                    }}
-                  />
-                </View>
+                onPress={() => {
+                  navigation.navigate(RootStackRoutes.PROFILE, {
+                    userId: user.id,
+                  });
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: splitAppTheme.space[3],
+                    borderBottomWidth: splitAppTheme.borderWidths[1],
+                    borderBottomColor: splitAppTheme.colors.coolGray[300],
+                  }}>
+                  <View>
+                    <Image
+                      source={{uri: user.image}}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: splitAppTheme.radii.full,
+                      }}
+                    />
+                  </View>
 
-                <View style={{marginLeft: splitAppTheme.space[3]}}>
-                  <Text
-                    style={{
-                      fontSize: splitAppTheme.fontSizes.md,
-                      fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-                    }}>
-                    {user.name}
-                  </Text>
+                  <View style={{marginLeft: splitAppTheme.space[3], flex: 1}}>
+                    <Text
+                      style={{
+                        fontSize: splitAppTheme.fontSizes.md,
+                        fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                      }}>
+                      {user.name}
+                    </Text>
+                  </View>
+
+                  <View>
+                    <Entypo name={"chevron-right"} size={30} />
+                  </View>
                 </View>
-              </View>
+              </Ripple>
             ))
           ) : (
             <View>

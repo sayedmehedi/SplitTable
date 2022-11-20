@@ -1,12 +1,11 @@
 import React from "react";
+import dayjs from "dayjs";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
-import {BookedTable} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
-import {QueryKeys} from "@constants/query-keys";
-import {useQueryClient} from "@tanstack/react-query";
-import {RedMap, MapIcon, Clock} from "@constants/iconPath";
+import {BookedTable, SplitTable} from "@src/models";
 import {isResponseResultError} from "@utils/error-handling";
+import {MapIcon, Clock, JoinCountIcon} from "@constants/iconPath";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {
   Text,
@@ -16,15 +15,27 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import useDeleteOwnerTableMutation from "@hooks/clubs/useDeleteOwnerTableMutation";
 
-type Props = {
-  item: BookedTable;
-  onPress: (club: BookedTable) => void;
-  onUpdatePress: (club: BookedTable) => void;
+type TableItem = {
+  id: number;
+  name: string;
+  date: string;
+  location: string;
+  distance: string;
+  image: string;
+  total_joined?: number;
 };
+
+type Props = {
+  item: TableItem;
+  onPress: (table: TableItem) => void;
+  onUpdatePress: (table: TableItem) => void;
+};
+
+const CARD_HEIGHT = 200;
 
 const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
   const toast = useAppToast();
@@ -57,7 +68,7 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
     <Pressable
       style={{
         flex: 1,
-        minHeight: 200,
+        minHeight: CARD_HEIGHT,
         backgroundColor: "white",
         ...splitAppTheme.shadows[3],
         borderRadius: splitAppTheme.radii.lg,
@@ -65,12 +76,12 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
       onPress={handlePress}>
       <View
         style={{
-          flex: 1.5,
+          flex: 4,
         }}>
         <ImageBackground
           style={{
+            height: CARD_HEIGHT - 40,
             width: splitAppTheme.sizes.full,
-            height: splitAppTheme.sizes.full,
           }}
           source={{uri: item.image}}
           imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
@@ -85,31 +96,7 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 padding: splitAppTheme.space[2],
-              }}>
-              <View
-                style={{
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: splitAppTheme.space[1],
-                    borderRadius: splitAppTheme.radii.full,
-                    backgroundColor: splitAppTheme.colors.white,
-                  }}>
-                  <RedMap height={16} width={16} />
-                  <Text
-                    style={{
-                      color: splitAppTheme.colors.black,
-                    }}>
-                    {item.distance}
-                  </Text>
-                </View>
-              </View>
-            </View>
+              }}></View>
 
             <View
               style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -122,11 +109,21 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
                     style={{
                       padding: splitAppTheme.space[3],
                       borderTopRightRadius: splitAppTheme.radii.lg,
-                      backgroundColor: splitAppTheme.colors.blue[300],
+                      backgroundColor: splitAppTheme.colors.blue[500],
                     }}>
-                    <Text style={{color: splitAppTheme.colors.white}}>
-                      Update
-                    </Text>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                      <View style={{marginRight: splitAppTheme.space[2]}}>
+                        <MaterialIcons
+                          size={20}
+                          name={"edit"}
+                          color={splitAppTheme.colors.white}
+                        />
+                      </View>
+
+                      <Text style={{color: splitAppTheme.colors.white}}>
+                        Update
+                      </Text>
+                    </View>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -136,10 +133,17 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
                   <View
                     style={{
                       padding: splitAppTheme.space[3],
-                      backgroundColor: splitAppTheme.colors.red[300],
+                      backgroundColor: splitAppTheme.colors.red[500],
                       borderTopLeftRadius: splitAppTheme.radii.lg,
                     }}>
-                    <View style={{flexDirection: "row"}}>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                      <View style={{marginRight: splitAppTheme.space[2]}}>
+                        <MaterialIcons
+                          size={20}
+                          name={"close"}
+                          color={splitAppTheme.colors.white}
+                        />
+                      </View>
                       <View>
                         <Text style={{color: splitAppTheme.colors.white}}>
                           Remove
@@ -163,16 +167,56 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
         style={{
           flex: 1,
           justifyContent: "space-around",
-          paddingHorizontal: splitAppTheme.space[2],
+          paddingVertical: splitAppTheme.space[2],
+          paddingHorizontal: splitAppTheme.space[3],
         }}>
-        <Text
+        <View
           style={{
-            color: "#262B2E",
-            fontSize: splitAppTheme.fontSizes.lg,
-            fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
-          {item.name}
-        </Text>
+          <Text
+            style={{
+              color: "#262B2E",
+              fontSize: splitAppTheme.fontSizes.lg,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
+            {truncate(item.name)}
+          </Text>
+
+          {item.total_joined !== undefined && (
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+              }}>
+              <View>
+                <JoinCountIcon height={15} width={15} />
+              </View>
+
+              <View
+                style={{
+                  marginLeft: splitAppTheme.space[1],
+                }}>
+                <Text
+                  style={{
+                    fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                  }}>
+                  {item.total_joined}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+
+        <View
+          style={{
+            height: splitAppTheme.sizes["0.5"],
+            marginVertical: splitAppTheme.space[1],
+            backgroundColor: splitAppTheme.colors.coolGray[100],
+          }}
+        />
 
         <View
           style={{
@@ -185,13 +229,13 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
               alignItems: "center",
               flexDirection: "row",
             }}>
-            <Clock height={12} width={12} color={"#402B8C"} />
+            <MapIcon height={12} width={12} color={"#402B8C"} />
 
             <Text
               style={{
                 marginLeft: splitAppTheme.space[2],
               }}>
-              {item.date}
+              {truncate(item.location)}
             </Text>
           </View>
 
@@ -200,7 +244,7 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
               alignItems: "center",
               flexDirection: "row",
             }}>
-            <MapIcon height={12} width={12} color={"#402B8C"} />
+            <Clock height={12} width={12} color={"#402B8C"} />
 
             <View
               style={{
@@ -213,7 +257,9 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
                   fontSize: splitAppTheme.fontSizes.sm,
                   fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
                 }}>
-                {truncate(item.location)}
+                {dayjs(item.date, "YYYY-MM-DD HH:mm:ss").format(
+                  "DD MMM, hh:mm A",
+                )}
               </Text>
             </View>
           </View>

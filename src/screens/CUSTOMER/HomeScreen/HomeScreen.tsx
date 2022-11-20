@@ -52,7 +52,7 @@ type Props = CompositeScreenProps<
 
 const HomeScreen = ({navigation}: Props) => {
   const {data: authData} = useGetAuthDataQuery();
-  const {hours} = useTime({format: "12-hour"});
+  const {hours} = useTime({});
   const queryClient = useQueryClient();
   const isFetchingTables = useIsFetching({
     queryKey: [QueryKeys.TABLE],

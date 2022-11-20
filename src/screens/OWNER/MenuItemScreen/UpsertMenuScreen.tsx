@@ -17,6 +17,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Switch,
 } from "react-native";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {
@@ -43,7 +44,7 @@ type FormVlaues = {
   price: number;
   qty: number;
   details: string;
-  status: number;
+  status: 0 | 1;
   club_id: number;
   image?: {
     name: string;
@@ -63,6 +64,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
     defaultValues: {
       name: "",
       details: "",
+      status: 1,
     },
   });
 
@@ -81,6 +83,8 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
       setValue("price", parseFloat(route.params.menu.price));
 
       setValue("qty", route.params.menu.qty);
+
+      setValue("status", route.params.menu.status);
     }
   }, [
     setValue,
@@ -104,6 +108,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
     data: updateResponse,
     isLoading: isUpdating,
     isError: isUpdateError,
+    isSuccess: isUpdateSuccess,
   } = useUpdateOwnerClubMenuMutation();
   useHandleNonFieldError(upateError);
   useHandleResponseResultError(updateResponse);
@@ -123,19 +128,16 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
   const handleUpsert = handleSubmit(
     values => {
       if (route.params.actionMode === "create") {
-        createMenu(
-          {...values, status: 0},
-          {
-            onSuccess(data) {
-              if (!isResponseResultError(data)) {
-                toast.success(data.success);
-                navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
-                  screen: OwnerMainBottomTabRoutes.MENU,
-                });
-              }
-            },
+        createMenu(values, {
+          onSuccess(data) {
+            if (!isResponseResultError(data)) {
+              toast.success(data.success);
+              navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
+                screen: OwnerMainBottomTabRoutes.MENU,
+              });
+            }
           },
-        );
+        });
       }
 
       if (route.params.actionMode === "update") {
@@ -145,10 +147,6 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
           {
             onSuccess(data) {
               if (!isResponseResultError(data)) {
-                toast.success(data.success);
-                navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
-                  screen: OwnerMainBottomTabRoutes.MENU,
-                });
               }
             },
           },
@@ -239,6 +237,34 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
         alignItems: "center",
         padding: splitAppTheme.space[6],
       }}>
+      {isUpdating ? (
+        <View
+          style={{
+            padding: splitAppTheme.space[3],
+            marginBottom: splitAppTheme.space[4],
+          }}>
+          <ActivityIndicator />
+        </View>
+      ) : isUpdateSuccess ? (
+        <View
+          style={{
+            padding: splitAppTheme.space[3],
+            borderRadius: splitAppTheme.radii.lg,
+            marginBottom: splitAppTheme.space[4],
+            borderWidth: splitAppTheme.borderWidths[1],
+            borderColor: splitAppTheme.colors.green[400],
+          }}>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: splitAppTheme.fontSizes.sm,
+              color: splitAppTheme.colors.green[400],
+            }}>
+            Successfully updated
+          </Text>
+        </View>
+      ) : null}
+
       <Controller
         name={"image.uri"}
         control={control}
@@ -304,23 +330,40 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
             </TouchableOpacity>
 
             <ActionSheet ref={actionSheetRef}>
-              <TouchableOpacity onPress={handleTakePicture}>
-                <View
-                  style={{
-                    padding: splitAppTheme.space[3],
-                  }}>
-                  <Text>Take photo</Text>
-                </View>
-              </TouchableOpacity>
+              <View
+                style={{
+                  paddingTop: splitAppTheme.space[3],
+                }}>
+                <TouchableOpacity onPress={handleTakePicture}>
+                  <View
+                    style={{
+                      padding: splitAppTheme.space[3],
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: splitAppTheme.fontSizes.md,
+                        fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                      }}>
+                      Take photo
+                    </Text>
+                  </View>
+                </TouchableOpacity>
 
-              <TouchableOpacity onPress={handleSelectImage}>
-                <View
-                  style={{
-                    padding: splitAppTheme.space[3],
-                  }}>
-                  <Text>Select photo</Text>
-                </View>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={handleSelectImage}>
+                  <View
+                    style={{
+                      padding: splitAppTheme.space[3],
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: splitAppTheme.fontSizes.md,
+                        fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                      }}>
+                      Select photo
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </ActionSheet>
           </React.Fragment>
         )}
@@ -480,15 +523,65 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
           />
         </View>
 
+        <View
+          style={{
+            marginBottom: 10,
+          }}>
+          <Controller
+            name={"status"}
+            control={control}
+            render={({field, formState: {errors}}) => (
+              <React.Fragment>
+                <View
+                  style={{
+                    alignItems: "center",
+                    marginTop: splitAppTheme.space[3],
+                  }}>
+                  <View style={{marginBottom: splitAppTheme.space[1]}}>
+                    <Text
+                      style={{
+                        fontSize: splitAppTheme.fontSizes.md,
+                      }}>
+                      Available
+                    </Text>
+                  </View>
+
+                  <Switch
+                    disabled={isUpdating}
+                    value={field.value === 1}
+                    onValueChange={isActive => {
+                      field.onChange(isActive ? 1 : 0);
+                    }}
+                  />
+                </View>
+
+                <ErrorMessage
+                  errors={errors}
+                  name={field.name}
+                  render={({message}) => (
+                    <Text
+                      style={{
+                        marginTop: 5,
+                        color: splitAppTheme.colors.red[300],
+                      }}>
+                      {message}
+                    </Text>
+                  )}
+                />
+              </React.Fragment>
+            )}
+          />
+        </View>
+
         <AppGradientButton
           width={"100%"}
-          title={"Submit"}
           color={"primary"}
           variant={"solid"}
+          onPress={handleUpsert}
           touchableOpacityProps={{
             disabled: isCreating || isUpdating,
           }}
-          onPress={handleUpsert}
+          title={route.params.actionMode === "update" ? "Update" : "Submit"}
         />
       </View>
     </ScrollView>

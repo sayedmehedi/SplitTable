@@ -206,10 +206,12 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderWidth: 0,
-    color: splitAppTheme.colors.primary[300],
     borderRadius: 30,
     borderBottomWidth: 1,
     backgroundColor: "#F4F5F7",
+    fontSize: splitAppTheme.fontSizes.xl,
+    color: splitAppTheme.colors.primary[300],
+    fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
   },
   underlineStyleHighLighted: {
     width: 60,

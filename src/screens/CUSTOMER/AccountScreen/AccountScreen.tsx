@@ -1,6 +1,8 @@
 import React from "react";
+import {splitAppTheme} from "@src/theme";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
+import {version as AppVersion} from "../../../../app.json";
 import {
   CustomerProfileStackRoutes,
   CustomerStackRoutes,
@@ -36,7 +38,6 @@ import {
   CustomerBottomTabParamList,
   CustomerProfileStackParamList,
 } from "@src/navigation";
-import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -314,7 +315,7 @@ const AccountScreen = ({navigation}: Props) => {
             marginVertical: 5,
             alignSelf: "center",
           }}>
-          App Version V1.0
+          App Version {AppVersion}
         </Text>
       </View>
     </ScrollView>

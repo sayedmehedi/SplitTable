@@ -72,6 +72,8 @@ export default function ClubSliderImagesScreen() {
   }, [isOpen, selectedImageIndex]);
 
   const {
+    refetch,
+    isRefetching,
     error: clubInfoError,
     data: clubInfoResponse,
     isLoading: isLoadingInfiniteResources,
@@ -110,8 +112,12 @@ export default function ClubSliderImagesScreen() {
   }
 
   return (
-    <View style={{width: WINDOW_WIDTH, position: "relative"}}>
+    <View style={{width: WINDOW_WIDTH}}>
       <FlatList
+        onRefresh={() => {
+          refetch();
+        }}
+        refreshing={isRefetching}
         numColumns={3}
         key={"user-photos"}
         listKey={"user-photos"}
@@ -127,10 +133,10 @@ export default function ClubSliderImagesScreen() {
           />
         )}
         contentContainerStyle={{
-          paddingHorizontal: splitAppTheme.space["6"],
+          padding: splitAppTheme.space["6"],
+          paddingBottom: splitAppTheme.space[16],
         }}
       />
-
       <AddSliderPhotoBtn />
     </View>
   );

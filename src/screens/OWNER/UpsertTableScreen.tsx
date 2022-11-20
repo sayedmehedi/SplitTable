@@ -39,6 +39,15 @@ import AppGradientButton from "@components/AppGradientButton";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {isSplitTableDetails} from "@utils/table";
 import useUpdateOwnerTableMutation from "@hooks/clubs/useUpdateOwnerTableMutation";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import ModalSelector from "react-native-modal-selector";
+import {
+  CalendarIcon,
+  Clock,
+  DishIcon,
+  DjIcon,
+  MenuIcon,
+} from "@constants/iconPath";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_TABLE>,
@@ -47,7 +56,7 @@ type Props = CompositeScreenProps<
 
 type FormValues = {
   name: string;
-  type: TableType;
+  type: TableType | null;
   date_time: Date | null;
   performer?: string;
   cuisines?: string;
@@ -79,8 +88,8 @@ export default function UpsertTableScreen({route, navigation}: Props) {
     useForm<FormValues>({
       defaultValues: {
         name: "",
+        type: null,
         date_time: null,
-        type: AppTableTypes.BOOKED,
         performer: "",
         cuisines: "",
         description: "",
@@ -117,13 +126,27 @@ export default function UpsertTableScreen({route, navigation}: Props) {
         isSplitTableDetails(tableDetailsResponse)
           ? AppTableTypes.SPLIT
           : AppTableTypes.BOOKED,
+        {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        },
       );
 
-      setValue("name", tableDetailsResponse.name);
+      setValue("name", tableDetailsResponse.name, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
 
       setValue(
         "date_time",
         dayjs(tableDetailsResponse.date, "YYYY-MM-DD hh:mm:ss").toDate(),
+        {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        },
       );
 
       // console.log(
@@ -133,35 +156,77 @@ export default function UpsertTableScreen({route, navigation}: Props) {
       // setValue("date_time", dayjs("Nov 2022", "MMM YYYY").toDate());
 
       if (tableDetailsResponse.min_age !== undefined) {
-        setValue("age_limit", tableDetailsResponse.min_age);
+        setValue("age_limit", tableDetailsResponse.min_age, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
       }
 
       if (tableDetailsResponse.performer !== undefined) {
-        setValue("performer", tableDetailsResponse.performer);
+        setValue("performer", tableDetailsResponse.performer, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
       }
 
       if (tableDetailsResponse.cuisines !== undefined) {
-        setValue("cuisines", tableDetailsResponse.cuisines);
+        setValue("cuisines", tableDetailsResponse.cuisines, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
       }
 
       if (tableDetailsResponse.description !== undefined) {
-        setValue("description", tableDetailsResponse.description);
+        setValue("description", tableDetailsResponse.description, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
       }
 
       if (isSplitTableDetails(tableDetailsResponse)) {
-        setValue("men_seat", tableDetailsResponse.men_seat);
+        setValue("men_seat", tableDetailsResponse.men_seat, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
         setValue(
           "men_seat_price",
           parseFloat(tableDetailsResponse.men_seat_price),
+          {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          },
         );
-        setValue("women_seat", tableDetailsResponse.women_seat);
+        setValue("women_seat", tableDetailsResponse.women_seat, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
         setValue(
           "women_seat_price",
           parseFloat(tableDetailsResponse.women_seat_price),
+          {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          },
         );
       } else {
-        setValue("price", parseFloat(tableDetailsResponse.price));
-        setValue("total_seat", tableDetailsResponse.total_seat);
+        setValue("price", parseFloat(tableDetailsResponse.price), {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
+        setValue("total_seat", tableDetailsResponse.total_seat, {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        });
       }
     }
   }, [setValue, tableDetailsResponse]);
@@ -177,11 +242,12 @@ export default function UpsertTableScreen({route, navigation}: Props) {
   useHandleResponseResultError(createResponse);
 
   const {
+    error: upateError,
     mutate: updateTable,
     data: updateResponse,
     isLoading: isUpdating,
     isError: isUpdateError,
-    error: upateError,
+    isSuccess: isUpdateSuccess,
   } = useUpdateOwnerTableMutation();
   useHandleNonFieldError(upateError);
   useHandleResponseResultError(updateResponse);
@@ -220,9 +286,21 @@ export default function UpsertTableScreen({route, navigation}: Props) {
       result.assets !== undefined &&
       result.assets.length === 1
     ) {
-      setValue("image.uri", result.assets[0].uri!);
-      setValue("image.type", result.assets[0].type!);
-      setValue("image.name", result.assets[0].fileName!);
+      setValue("image.uri", result.assets[0].uri!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setValue("image.type", result.assets[0].type!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setValue("image.name", result.assets[0].fileName!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
     }
   };
 
@@ -270,6 +348,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
       total_seat,
       ...data
     } = values;
+
     const splitTablePaylod = {
       type: AppTableTypes.SPLIT,
       men_seat,
@@ -309,8 +388,8 @@ export default function UpsertTableScreen({route, navigation}: Props) {
         {
           onSuccess(data) {
             if (!isResponseResultError(data)) {
-              toast.success(data.success);
-              navigation.navigate(OwnerStackRoutes.MY_TABLES);
+              // toast.success(data.success);
+              // navigation.navigate(OwnerStackRoutes.MY_TABLES);
             }
           },
         },
@@ -349,6 +428,34 @@ export default function UpsertTableScreen({route, navigation}: Props) {
         contentContainerStyle={{
           padding: splitAppTheme.space[6],
         }}>
+        {isUpdating ? (
+          <View
+            style={{
+              padding: splitAppTheme.space[3],
+              marginBottom: splitAppTheme.space[4],
+            }}>
+            <ActivityIndicator />
+          </View>
+        ) : isUpdateSuccess ? (
+          <View
+            style={{
+              padding: splitAppTheme.space[3],
+              borderRadius: splitAppTheme.radii.lg,
+              marginBottom: splitAppTheme.space[4],
+              borderWidth: splitAppTheme.borderWidths[1],
+              borderColor: splitAppTheme.colors.green[400],
+            }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.sm,
+                color: splitAppTheme.colors.green[400],
+              }}>
+              Successfully updated
+            </Text>
+          </View>
+        ) : null}
+
         <Controller
           name={"image.uri"}
           control={control}
@@ -412,23 +519,42 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               </TouchableOpacity>
 
               <ActionSheet ref={actionSheetRef}>
-                <TouchableOpacity onPress={handleTakePicture}>
-                  <View
-                    style={{
-                      padding: splitAppTheme.space[3],
-                    }}>
-                    <Text>Take photo</Text>
-                  </View>
-                </TouchableOpacity>
+                <View
+                  style={{
+                    paddingTop: splitAppTheme.space[3],
+                  }}>
+                  <TouchableOpacity onPress={handleTakePicture}>
+                    <View
+                      style={{
+                        padding: splitAppTheme.space[3],
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Roboto[500].normal,
+                        }}>
+                        Take photo
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleSelectImage}>
-                  <View
-                    style={{
-                      padding: splitAppTheme.space[3],
-                    }}>
-                    <Text>Select photo</Text>
-                  </View>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={handleSelectImage}>
+                    <View
+                      style={{
+                        padding: splitAppTheme.space[3],
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: splitAppTheme.fontSizes.md,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Roboto[500].normal,
+                        }}>
+                        Select photo
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </ActionSheet>
             </React.Fragment>
           )}
@@ -443,13 +569,25 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           render={({field, formState: {errors}}) => (
             <React.Fragment>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                  placeholder={"Table/Event Name"}
-                  style={{flex: 1, paddingLeft: 20}}
-                />
+                <View style={{flexDirection: "row", alignItems: "center"}}>
+                  <View style={{flex: 1}}>
+                    <TextInput
+                      value={field.value}
+                      onBlur={field.onBlur}
+                      onChangeText={field.onChange}
+                      placeholder={"Table/Event Name"}
+                      style={{flex: 1, paddingLeft: 20}}
+                    />
+                  </View>
+
+                  <View style={{paddingRight: splitAppTheme.space[4]}}>
+                    <MaterialCommunityIcons
+                      size={22}
+                      name={"table-chair"}
+                      color={splitAppTheme.colors.secondary[400]}
+                    />
+                  </View>
+                </View>
               </View>
 
               <ErrorMessage
@@ -477,42 +615,55 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           control={control}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    Alert.alert("Select", "Please select a table type", [
-                      {
-                        text: "Booked",
-                        onPress() {
-                          field.onChange(AppTableTypes.BOOKED);
-                        },
-                      },
-                      {
-                        text: "Split",
-                        onPress() {
-                          field.onChange(AppTableTypes.SPLIT);
-                        },
-                      },
-                    ]);
+              <ModalSelector
+                data={[
+                  {
+                    key: 1,
+                    label: "Booked",
+                    value: AppTableTypes.BOOKED,
+                  },
+                  {
+                    key: 2,
+                    label: "Split",
+                    value: AppTableTypes.SPLIT,
+                  },
+                ]}
+                supportedOrientations={["landscape"]}
+                onChange={option => {
+                  // this.setState({textInputValue: option.label});
+                  field.onChange(option.value);
+                }}>
+                <View
+                  style={{
+                    height: 50,
+                    marginTop: 10,
+                    borderRadius: 10,
+                    alignItems: "center",
+                    flexDirection: "row",
+                    backgroundColor: "#F4F5F7",
+                    paddingVertical: splitAppTheme.space[3],
+                    paddingLeft: splitAppTheme.space[5],
+                    paddingRight: splitAppTheme.space[4],
                   }}>
-                  <View
-                    style={{
-                      height: 50,
-                      marginTop: 10,
-                      borderRadius: 10,
-                      alignItems: "center",
-                      flexDirection: "row",
-                      backgroundColor: "#F4F5F7",
-                      padding: splitAppTheme.space[3],
-                    }}>
+                  <View style={{flex: 1}}>
                     <Text>
                       {field.value === AppTableTypes.BOOKED
                         ? "Booked"
-                        : "Split"}
+                        : field.value === AppTableTypes.SPLIT
+                        ? "Split"
+                        : "Select Table Type"}
                     </Text>
                   </View>
-                </TouchableOpacity>
-              </View>
+
+                  <View>
+                    <MaterialCommunityIcons
+                      size={22}
+                      name={"chevron-down"}
+                      color={splitAppTheme.colors.secondary[400]}
+                    />
+                  </View>
+                </View>
+              </ModalSelector>
 
               <ErrorMessage
                 errors={errors}
@@ -547,17 +698,23 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                       height: 50,
                     },
                   ]}>
-                  <View
-                    style={{
-                      width: "100%",
-                      paddingLeft: 20,
-                      justifyContent: "flex-start",
-                    }}>
-                    <Text>
-                      {field.value
-                        ? dayjs(field.value).format("YYYY-MM-DD HH:mm:ss")
-                        : "Date & Time"}
-                    </Text>
+                  <View style={{flexDirection: "row"}}>
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingLeft: 20,
+                        justifyContent: "flex-start",
+                      }}>
+                      <Text>
+                        {field.value
+                          ? dayjs(field.value).format("DD MMM, hh:mm A")
+                          : "Date & Time"}
+                      </Text>
+                    </View>
+
+                    <View style={{paddingRight: splitAppTheme.space[4]}}>
+                      <Clock color={splitAppTheme.colors.secondary[300]} />
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -606,13 +763,26 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
-                    <TextInput
-                      onBlur={field.onBlur}
-                      value={`${field.value ?? ""}`}
-                      placeholder={"Total Seat/Guest"}
-                      style={{flex: 1, paddingLeft: 20}}
-                      onChangeText={value => field.onChange(value)}
-                    />
+                    <View style={{flex: 1}}>
+                      <TextInput
+                        onBlur={field.onBlur}
+                        value={`${field.value ?? ""}`}
+                        placeholder={"Total Seat/Guest"}
+                        style={{flex: 1, paddingLeft: 20}}
+                        onChangeText={value => field.onChange(value)}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingRight: splitAppTheme.space[4],
+                      }}>
+                      <MaterialCommunityIcons
+                        size={22}
+                        name={"account-group"}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
                   </View>
 
                   <ErrorMessage
@@ -642,13 +812,26 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
-                    <TextInput
-                      onBlur={field.onBlur}
-                      value={`${field.value ?? ""}`}
-                      placeholder={"Price/Whole table"}
-                      style={{flex: 1, paddingLeft: 20}}
-                      onChangeText={value => field.onChange(value)}
-                    />
+                    <View style={{flex: 1}}>
+                      <TextInput
+                        onBlur={field.onBlur}
+                        value={`${field.value ?? ""}`}
+                        placeholder={"Price/Whole table"}
+                        style={{flex: 1, paddingLeft: 20}}
+                        onChangeText={value => field.onChange(value)}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingRight: splitAppTheme.space[4],
+                      }}>
+                      <MaterialCommunityIcons
+                        size={22}
+                        name={"currency-usd"}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
                   </View>
 
                   <ErrorMessage
@@ -682,14 +865,27 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
-                    <TextInput
-                      value={`${field.value ?? ""}`}
-                      keyboardType="numeric"
-                      onBlur={field.onBlur}
-                      placeholder={"Total Men Seat/Guest"}
-                      style={{flex: 1, paddingLeft: 20}}
-                      onChangeText={field.onChange}
-                    />
+                    <View style={{flex: 1}}>
+                      <TextInput
+                        value={`${field.value ?? ""}`}
+                        keyboardType="numeric"
+                        onBlur={field.onBlur}
+                        placeholder={"Total Men Seat/Guest"}
+                        style={{flex: 1, paddingLeft: 20}}
+                        onChangeText={field.onChange}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingRight: splitAppTheme.space[4],
+                      }}>
+                      <MaterialCommunityIcons
+                        name={"human-male"}
+                        size={22}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
                   </View>
 
                   <ErrorMessage
@@ -719,14 +915,27 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
-                    <TextInput
-                      value={`${field.value ?? ""}`}
-                      keyboardType="numeric"
-                      onBlur={field.onBlur}
-                      placeholder={"Price/Each Men Guest"}
-                      style={{flex: 1, paddingLeft: 20}}
-                      onChangeText={field.onChange}
-                    />
+                    <View style={{flex: 1}}>
+                      <TextInput
+                        value={`${field.value ?? ""}`}
+                        keyboardType="numeric"
+                        onBlur={field.onBlur}
+                        placeholder={"Price/Each Men Guest"}
+                        style={{flex: 1, paddingLeft: 20}}
+                        onChangeText={field.onChange}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingRight: splitAppTheme.space[4],
+                      }}>
+                      <MaterialCommunityIcons
+                        size={22}
+                        name={"currency-usd"}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
                   </View>
 
                   <ErrorMessage
@@ -756,14 +965,27 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
-                    <TextInput
-                      value={`${field.value ?? ""}`}
-                      keyboardType="numeric"
-                      onBlur={field.onBlur}
-                      onChangeText={field.onChange}
-                      placeholder={"Total Women Seat/Guest"}
-                      style={{flex: 1, paddingLeft: 20}}
-                    />
+                    <View style={{flex: 1}}>
+                      <TextInput
+                        value={`${field.value ?? ""}`}
+                        keyboardType="numeric"
+                        onBlur={field.onBlur}
+                        onChangeText={field.onChange}
+                        placeholder={"Total Women Seat/Guest"}
+                        style={{flex: 1, paddingLeft: 20}}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingRight: splitAppTheme.space[4],
+                      }}>
+                      <MaterialCommunityIcons
+                        name={"human-female"}
+                        size={22}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
                   </View>
 
                   <ErrorMessage
@@ -793,14 +1015,27 @@ export default function UpsertTableScreen({route, navigation}: Props) {
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
-                    <TextInput
-                      value={`${field.value ?? ""}`}
-                      keyboardType="numeric"
-                      onBlur={field.onBlur}
-                      onChangeText={field.onChange}
-                      placeholder={"Price/Each Women Guest"}
-                      style={{flex: 1, paddingLeft: 20}}
-                    />
+                    <View style={{flex: 1}}>
+                      <TextInput
+                        value={`${field.value ?? ""}`}
+                        keyboardType="numeric"
+                        onBlur={field.onBlur}
+                        onChangeText={field.onChange}
+                        placeholder={"Price/Each Women Guest"}
+                        style={{flex: 1, paddingLeft: 20}}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingRight: splitAppTheme.space[4],
+                      }}>
+                      <MaterialCommunityIcons
+                        size={22}
+                        name={"currency-usd"}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
                   </View>
 
                   <ErrorMessage
@@ -828,13 +1063,26 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           render={({field, formState: {errors}}) => (
             <React.Fragment>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  onBlur={field.onBlur}
-                  value={field.value}
-                  placeholder={"Performer"}
-                  style={{flex: 1, paddingLeft: 20}}
-                  onChangeText={value => field.onChange(value)}
-                />
+                <View style={{flex: 1}}>
+                  <TextInput
+                    onBlur={field.onBlur}
+                    value={field.value}
+                    placeholder={"Performer"}
+                    style={{flex: 1, paddingLeft: 20}}
+                    onChangeText={value => field.onChange(value)}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    paddingRight: splitAppTheme.space[4],
+                  }}>
+                  <MaterialCommunityIcons
+                    name={"account-music-outline"}
+                    size={22}
+                    color={splitAppTheme.colors.secondary[400]}
+                  />
+                </View>
               </View>
 
               <ErrorMessage
@@ -860,13 +1108,22 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           render={({field, formState: {errors}}) => (
             <React.Fragment>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  onBlur={field.onBlur}
-                  value={field.value}
-                  style={{flex: 1, paddingLeft: 20}}
-                  placeholder={"Cuisines/Menu Offer"}
-                  onChangeText={value => field.onChange(value)}
-                />
+                <View style={{flex: 1}}>
+                  <TextInput
+                    onBlur={field.onBlur}
+                    value={field.value}
+                    style={{flex: 1, paddingLeft: 20}}
+                    placeholder={"Cuisines/Menu Offer"}
+                    onChangeText={value => field.onChange(value)}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    paddingRight: splitAppTheme.space[4],
+                  }}>
+                  <MenuIcon color={splitAppTheme.colors.secondary[400]} />
+                </View>
               </View>
 
               <ErrorMessage
@@ -892,14 +1149,27 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           render={({field, formState: {errors}}) => (
             <React.Fragment>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  keyboardType="numeric"
-                  onBlur={field.onBlur}
-                  placeholder={"Age limit"}
-                  onChangeText={field.onChange}
-                  value={`${field.value ?? ""}`}
-                  style={{flex: 1, paddingLeft: 20}}
-                />
+                <View style={{flex: 1}}>
+                  <TextInput
+                    keyboardType="numeric"
+                    onBlur={field.onBlur}
+                    placeholder={"Age limit"}
+                    onChangeText={field.onChange}
+                    value={`${field.value ?? ""}`}
+                    style={{flex: 1, paddingLeft: 20}}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    paddingRight: splitAppTheme.space[4],
+                  }}>
+                  <MaterialCommunityIcons
+                    name={"calendar-month-outline"}
+                    size={22}
+                    color={splitAppTheme.colors.secondary[400]}
+                  />
+                </View>
               </View>
 
               <ErrorMessage
@@ -925,18 +1195,31 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           render={({field, formState: {errors}}) => (
             <React.Fragment>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  multiline
-                  numberOfLines={5}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  textAlignVertical="top"
-                  placeholder={"Additional Info"}
-                  style={{flex: 1, paddingLeft: 20, height: 100}}
-                  onChangeText={value =>
-                    field.onChange(numberTransformer.output(value))
-                  }
-                />
+                <View style={{flex: 1}}>
+                  <TextInput
+                    multiline
+                    numberOfLines={5}
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    textAlignVertical="top"
+                    onChangeText={field.onChange}
+                    placeholder={"Additional Info"}
+                    style={{flex: 1, paddingLeft: 20, height: 100}}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    alignSelf: "flex-start",
+                    paddingTop: splitAppTheme.space[2],
+                    paddingRight: splitAppTheme.space[4],
+                  }}>
+                  <MaterialCommunityIcons
+                    size={22}
+                    name={"pencil"}
+                    color={splitAppTheme.colors.secondary[400]}
+                  />
+                </View>
               </View>
 
               <ErrorMessage

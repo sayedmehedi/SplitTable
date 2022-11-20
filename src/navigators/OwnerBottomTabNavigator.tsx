@@ -53,7 +53,7 @@ const OwnerBottomTabNavigator = () => {
 
           <Text
             style={{
-              fontSize: 10,
+              fontSize: splitAppTheme.fontSizes.sm,
               color: focused
                 ? splitAppTheme.colors.primary[400]
                 : splitAppTheme.colors.secondary[400],
@@ -97,7 +97,7 @@ const OwnerBottomTabNavigator = () => {
 
           <Text
             style={{
-              fontSize: 10,
+              fontSize: splitAppTheme.fontSizes.sm,
               color: focused
                 ? splitAppTheme.colors.primary[400]
                 : splitAppTheme.colors.secondary[400],
@@ -174,12 +174,12 @@ const OwnerBottomTabNavigator = () => {
 
           <Text
             style={{
-              fontSize: 10,
+              fontSize: splitAppTheme.fontSizes.sm,
               color: focused
                 ? splitAppTheme.colors.primary[400]
                 : splitAppTheme.colors.secondary[400],
             }}>
-            Home
+            Table
           </Text>
         </View>
       ),
@@ -218,7 +218,7 @@ const OwnerBottomTabNavigator = () => {
 
           <Text
             style={{
-              fontSize: 10,
+              fontSize: splitAppTheme.fontSizes.sm,
               color: focused
                 ? splitAppTheme.colors.primary[400]
                 : splitAppTheme.colors.secondary[400],

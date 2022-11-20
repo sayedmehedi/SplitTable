@@ -46,11 +46,12 @@ const addMenuItemScreenOptions:
         typeof OwnerStackRoutes.UPSERT_MENU
       >;
       navigation: any;
-    }) => StackNavigationOptions) = {
+    }) => StackNavigationOptions) = ({route}) => ({
   headerShown: true,
   header: CommonStackHeader,
-  headerTitle: "Add Menu Items",
-};
+  headerTitle:
+    route.params.actionMode === "update" ? "Update Menu Item" : "Add Menu Item",
+});
 
 const tableDetailsScreenOptions:
   | StackNavigationOptions
