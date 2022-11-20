@@ -1,48 +1,31 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
 import Feather from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient";
 import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerAuthStackRoutes} from "@constants/routes";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {
-  Image,
-  Text,
-  View,
-  StatusBar,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerAuthStackParamList,
-} from "@src/navigation";
-import useAppToast from "@hooks/useAppToast";
 import {isResponseResultError} from "@utils/error-handling";
+import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import useFacobookLoginMutation from "@hooks/auth/useFacobookLoginMutation";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
 import useGoogleLoginMutation from "@hooks/auth/useGoogleLoginMutation";
+import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
+import useFacobookLoginMutation from "@hooks/auth/useFacobookLoginMutation";
+import {Image, Text, View, StyleSheet, TouchableOpacity} from "react-native";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
-type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.LOGIN_PROMPT
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
-  StackScreenProps<RootStackParamList>
+type Props = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.CUSTOMER_LOGIN_PROMPT
 >;
 
 const LoginPromptScreen = ({navigation}: Props) => {
   const toast = useAppToast();
   const handleEmailLogin = () => {
-    navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
+    navigation.navigate(RootStackRoutes.SIGNIN);
   };
   const {mutate: setAuthData} = useAddAuthDataMutation();
 
@@ -304,7 +287,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
                 <TouchableOpacity
                   disabled={isLogginWithFb || isLogginWithGgl}
                   onPress={() => {
-                    navigation.navigate(CustomerAuthStackRoutes.SIGNUP);
+                    navigation.navigate(RootStackRoutes.SIGNUP);
                   }}>
                   <Text
                     style={{

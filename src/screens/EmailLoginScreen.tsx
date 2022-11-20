@@ -1,36 +1,25 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
+import {RootStackParamList} from "@src/navigation";
+import {RootStackRoutes} from "@constants/routes";
 import {ErrorMessage} from "@hookform/error-message";
 import {Controller, useForm} from "react-hook-form";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerAuthStackRoutes} from "@constants/routes";
 import useLoginMutation from "@hooks/auth/useLoginMutation";
 import AppGradientButton from "@components/AppGradientButton";
-import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {addServerErrors, isResponseResultError} from "@utils/error-handling";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerAuthStackParamList,
-} from "@src/navigation";
 import useAddAuthDataMutation from "@hooks/useAddAuthDataMutation";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
+import {addServerErrors, isResponseResultError} from "@utils/error-handling";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
-type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.SIGNIN
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
-  StackScreenProps<RootStackParamList>
+type Props = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.SIGNIN
 >;
 
 const EmailLoginScreen = ({navigation}: Props) => {
@@ -292,9 +281,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
                 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate(
-                      CustomerAuthStackRoutes.FORGOT_PASSWORD,
-                    );
+                    navigation.navigate(RootStackRoutes.FORGOT_PASSWORD);
                   }}>
                   <Text
                     style={{
@@ -349,7 +336,7 @@ const EmailLoginScreen = ({navigation}: Props) => {
         <View style={{marginLeft: splitAppTheme.space[1]}}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(CustomerAuthStackRoutes.SIGNUP);
+              navigation.navigate(RootStackRoutes.SIGNUP);
             }}>
             <Text
               style={{

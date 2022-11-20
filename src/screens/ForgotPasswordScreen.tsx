@@ -1,33 +1,22 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import {CustomerAuthStackRoutes} from "@constants/routes";
-import {StackScreenProps} from "@react-navigation/stack";
-import AppGradientButton from "@components/AppGradientButton";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {StyleSheet, Text, View, TextInput, StatusBar} from "react-native";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerAuthStackParamList,
-} from "@src/navigation";
 import useAppToast from "@hooks/useAppToast";
+import {RootStackParamList} from "@src/navigation";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
+import {StackScreenProps} from "@react-navigation/stack";
 import {isResponseResultError} from "@utils/error-handling";
+import AppGradientButton from "@components/AppGradientButton";
+import {StyleSheet, Text, View, TextInput} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {CustomerAuthStackRoutes, RootStackRoutes} from "@constants/routes";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useForgotPasswordMutation from "@hooks/auth/useForgotPasswordMutation";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
-type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.FORGOT_PASSWORD
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
-  StackScreenProps<RootStackParamList>
+type Props = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.FORGOT_PASSWORD
 >;
 
 const ForgotPasswordScreen = ({navigation, route}: Props) => {
@@ -53,7 +42,7 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
       onSuccess(data) {
         if (!isResponseResultError(data)) {
           toast.success(data.success);
-          navigation.navigate(CustomerAuthStackRoutes.RESET_PASSWORD, {
+          navigation.navigate(RootStackRoutes.RESET_PASSWORD, {
             email,
           });
         }

@@ -1,13 +1,12 @@
 import React from "react";
+import {AuthTypeNum} from "@constants/auth";
 import {RootStackParamList} from "@src/navigation";
 import {RootStackRoutes} from "@constants/routes";
 import InitialScreen from "@screens/InitialScreen";
 import {RouteProp} from "@react-navigation/native";
-import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import OwnerStackNavigator from "./OwnerStackNavigator";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
-import {AuthTypeContext} from "@providers/AuthTypeProvider";
 import CustomerStackNavigator from "./CustomerStackNavigator";
 import {ROOT_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
@@ -15,7 +14,14 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from "@react-navigation/stack";
+import SignUpScreen from "@screens/SignUpScreen";
 import ProfileScreen from "@screens/ProfileScreen";
+import EmailLoginScreen from "@screens/EmailLoginScreen";
+import ResetPasswordScreen from "@screens/ResetPasswordScreen";
+import ForgotPasswordScreen from "@screens/ForgotPasswordScreen";
+import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
+import EmailVerificationScreen from "@screens/EmailVerificationScreen";
+import LoginPromptScreen from "@screens/CUSTOMER/LoginPromptScreen";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -30,10 +36,9 @@ const globalScreenOptions:
 
 const RootStackNavigator = () => {
   const {data: authData} = useGetAuthDataQuery();
-  const {authType} = React.useContext(AuthTypeContext);
 
   const authenticatedScreens = (
-    <React.Fragment>
+    <RootStack.Group>
       {authData?.user_type === AuthTypeNum.CUSTOMER && (
         <RootStack.Screen
           name={RootStackRoutes.CUSTOMER}
@@ -59,32 +64,59 @@ const RootStackNavigator = () => {
         options={profileScreenOptions}
         name={RootStackRoutes.PROFILE}
       />
-    </React.Fragment>
+    </RootStack.Group>
   );
 
   const unauthenticatedScreens = (
-    <React.Fragment>
-      {authType === null && (
-        <RootStack.Screen
-          component={InitialScreen}
-          name={RootStackRoutes.INITIAL}
-        />
-      )}
+    <RootStack.Group>
+      <RootStack.Screen
+        component={InitialScreen}
+        name={RootStackRoutes.INITIAL}
+      />
 
-      {authType === AuthTypes.CUSTOMER && (
-        <RootStack.Screen
-          name={RootStackRoutes.CUSTOMER}
-          component={CustomerStackNavigator}
-        />
-      )}
+      <RootStack.Screen
+        component={OnboardingScreen}
+        name={RootStackRoutes.CUSTOMER_ONBOARDING}
+      />
 
-      {authType === AuthTypes.OWNER && (
+      <RootStack.Screen
+        component={LoginPromptScreen}
+        options={loginPromptScreenOptions}
+        name={RootStackRoutes.CUSTOMER_LOGIN_PROMPT}
+      />
+
+      <RootStack.Group screenOptions={authGroupScreenOptions}>
         <RootStack.Screen
-          name={RootStackRoutes.OWNER}
-          component={OwnerStackNavigator}
+          options={loginScreenOptions}
+          component={EmailLoginScreen}
+          name={RootStackRoutes.SIGNIN}
         />
-      )}
-    </React.Fragment>
+
+        <RootStack.Screen
+          component={SignUpScreen}
+          name={RootStackRoutes.SIGNUP}
+          options={registerScreenOptions}
+        />
+
+        <RootStack.Screen
+          component={EmailVerificationScreen}
+          options={emailVerificationScreenOptions}
+          name={RootStackRoutes.EMAIL_VERIFICATION}
+        />
+
+        <RootStack.Screen
+          component={ForgotPasswordScreen}
+          options={forgotPasswordScreenOptions}
+          name={RootStackRoutes.FORGOT_PASSWORD}
+        />
+
+        <RootStack.Screen
+          component={ResetPasswordScreen}
+          options={resetPasswordScreenOptions}
+          name={RootStackRoutes.RESET_PASSWORD}
+        />
+      </RootStack.Group>
+    </RootStack.Group>
   );
 
   return (
@@ -98,6 +130,17 @@ const RootStackNavigator = () => {
 };
 
 export default RootStackNavigator;
+
+const authGroupScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<RootStackParamList, keyof RootStackParamList>;
+      navigation: any;
+    }) => StackNavigationOptions)
+  | undefined = {
+  headerShown: true,
+  header: CommonStackHeader,
+};
 
 const notificationListScreenOptions:
   | StackNavigationOptions
@@ -117,6 +160,72 @@ const profileScreenOptions:
   | StackNavigationOptions
   | ((props: {
       route: RouteProp<RootStackParamList, typeof RootStackRoutes.PROFILE>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerShown: false,
+};
+
+const emailVerificationScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        RootStackParamList,
+        typeof RootStackRoutes.EMAIL_VERIFICATION
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Email Verification",
+};
+
+const loginScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<RootStackParamList, typeof RootStackRoutes.SIGNIN>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Sign In",
+};
+
+const forgotPasswordScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        RootStackParamList,
+        typeof RootStackRoutes.FORGOT_PASSWORD
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Forget Password",
+};
+
+const resetPasswordScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        RootStackParamList,
+        typeof RootStackRoutes.RESET_PASSWORD
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Reset Password",
+};
+
+const registerScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<RootStackParamList, typeof RootStackRoutes.SIGNUP>;
+      navigation: any;
+    }) => StackNavigationOptions) = {
+  headerTitle: "Sign Up",
+};
+
+const loginPromptScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        RootStackParamList,
+        typeof RootStackRoutes.CUSTOMER_LOGIN_PROMPT
+      >;
       navigation: any;
     }) => StackNavigationOptions) = {
   headerShown: false,

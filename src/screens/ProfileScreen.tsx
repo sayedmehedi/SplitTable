@@ -13,7 +13,7 @@ import {RootStackParamList} from "@src/navigation";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
-import ProfileImageUploader from "./ProfileImageUploader";
+import ProfileImageUploader from "../components/ProfileImageUploader";
 import {useDimensions} from "@react-native-community/hooks";
 import {SafeAreaView} from "react-native-safe-area-context";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";

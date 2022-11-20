@@ -196,6 +196,7 @@ const InitialScreen = ({navigation}: Props) => {
             color={"secondary"}
             onPress={() => {
               handleSetAuthType(AuthTypes.CUSTOMER);
+              navigation.navigate(RootStackRoutes.CUSTOMER_ONBOARDING);
             }}
           />
           <AppGradientButton
@@ -205,6 +206,7 @@ const InitialScreen = ({navigation}: Props) => {
             title={"Club/Bar Owner"}
             onPress={() => {
               handleSetAuthType(AuthTypes.OWNER);
+              navigation.navigate(RootStackRoutes.SIGNIN);
             }}
           />
         </View>

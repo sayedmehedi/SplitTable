@@ -29,30 +29,7 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 
 type CustomerAuthStackParamList = {
-  [CustomerAuthStackRoutes.SIGNIN]: undefined;
-  [CustomerAuthStackRoutes.SIGNUP]: undefined;
-  [CustomerAuthStackRoutes.LOGIN_PROMPT]: undefined;
   [CustomerAuthStackRoutes.LOCATION_ENABLE]: undefined;
-  [CustomerAuthStackRoutes.EMAIL_VERIFICATION]: {
-    email: string;
-  };
-  [CustomerAuthStackRoutes.RESET_PASSWORD]: {
-    email: string;
-  };
-  [CustomerAuthStackRoutes.FORGOT_PASSWORD]: undefined;
-};
-
-type OwnerAuthStackParamList = {
-  [OwnerAuthStackRoutes.SIGNIN]: undefined;
-  [OwnerAuthStackRoutes.SIGNUP]: undefined;
-  [OwnerAuthStackRoutes.LOCATION_ENABLE]: undefined;
-  [OwnerAuthStackRoutes.EMAIL_VERIFICATION]: {
-    email: string;
-  };
-  [OwnerAuthStackRoutes.RESET_PASSWORD]: {
-    email: string;
-  };
-  [OwnerAuthStackRoutes.FORGOT_PASSWORD]: undefined;
 };
 
 type CustomerBookingStackParamList = {
@@ -201,7 +178,6 @@ type CustomerStackParamList = {
     totalAmount: string;
     partialAmount: string;
   };
-  [CustomerStackRoutes.CUSTOMER_AUTH]: NavigatorScreenParams<CustomerAuthStackParamList>;
   [CustomerStackRoutes.CUSTOMER_MAIN_TAB]: NavigatorScreenParams<CustomerBottomTabParamList>;
 
   [CustomerStackRoutes.FAQ]: undefined;
@@ -271,6 +247,10 @@ type OwnerStackParamList = {
 };
 
 type RootStackParamList = {
+  [RootStackRoutes.CUSTOMER_LOGIN_PROMPT]: undefined;
+  [RootStackRoutes.CUSTOMER_ONBOARDING]: undefined;
+  [RootStackRoutes.SIGNUP]: undefined;
+  [RootStackRoutes.SIGNIN]: undefined;
   [RootStackRoutes.INITIAL]: undefined;
   [RootStackRoutes.PROFILE]: {
     userId?: number;
@@ -278,6 +258,14 @@ type RootStackParamList = {
   [RootStackRoutes.NOTIFICATIONS]: undefined;
   [RootStackRoutes.OWNER]: NavigatorScreenParams<OwnerStackParamList>;
   [RootStackRoutes.CUSTOMER]: NavigatorScreenParams<CustomerStackParamList>;
+
+  [RootStackRoutes.EMAIL_VERIFICATION]: {
+    email: string;
+  };
+  [RootStackRoutes.RESET_PASSWORD]: {
+    email: string;
+  };
+  [RootStackRoutes.FORGOT_PASSWORD]: undefined;
 };
 
 type ChatMessagesNavigationType = CompositeNavigationProp<

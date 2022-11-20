@@ -1,35 +1,22 @@
 import React from "react";
-import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
-import {useTimer} from "react-timer-hook";
-import {CustomerAuthStackRoutes} from "@constants/routes";
-import {StackScreenProps} from "@react-navigation/stack";
-import AppGradientButton from "@components/AppGradientButton";
-import {CompositeScreenProps} from "@react-navigation/native";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
-import {StyleSheet, Text, View, TextInput} from "react-native";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerAuthStackParamList,
-} from "@src/navigation";
 import useAppToast from "@hooks/useAppToast";
+import {RootStackRoutes} from "@constants/routes";
+import {RootStackParamList} from "@src/navigation";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
-import {addServerErrors, isResponseResultError} from "@utils/error-handling";
+import {StackScreenProps} from "@react-navigation/stack";
+import AppGradientButton from "@components/AppGradientButton";
+import OTPInputView from "@twotalltotems/react-native-otp-input";
+import {StyleSheet, Text, View, TextInput} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useResetPasswordMutation from "@hooks/auth/useResetPasswordMutation";
+import {addServerErrors, isResponseResultError} from "@utils/error-handling";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
-type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.RESET_PASSWORD
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
-  StackScreenProps<RootStackParamList>
+type Props = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.RESET_PASSWORD
 >;
 
 const ResetPasswordScreen = ({navigation, route}: Props) => {
@@ -69,7 +56,7 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
       onSuccess(data) {
         if (!isResponseResultError(data)) {
           toast.success(data.success);
-          navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
+          navigation.navigate(RootStackRoutes.SIGNIN);
         }
       },
     });
@@ -128,8 +115,8 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
               <React.Fragment>
                 <OTPInputView
                   pinCount={4}
-                  code={field.value}
                   autoFocusOnLoad
+                  code={field.value}
                   style={styles.otpInput}
                   onCodeChanged={field.onChange}
                   codeInputFieldStyle={styles.underlineStyleBase}

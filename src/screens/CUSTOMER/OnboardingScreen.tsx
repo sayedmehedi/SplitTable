@@ -1,19 +1,17 @@
 import React from "react";
+import {RootStackParamList} from "@src/navigation";
 import SplashScreen from "react-native-splash-screen";
 import {StackScreenProps} from "@react-navigation/stack";
 import {useDimensions} from "@react-native-community/hooks";
-import {CompositeScreenProps} from "@react-navigation/native";
-import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import {CustomerAuthStackRoutes, CustomerStackRoutes} from "@constants/routes";
+import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
 import {
-  StatusBar,
+  View,
   StyleSheet,
   SafeAreaView,
   ListRenderItem,
   NativeScrollEvent,
   NativeSyntheticEvent,
   FlatList as RNFlatList,
-  View,
   Image,
   Text,
   TouchableOpacity,
@@ -47,12 +45,9 @@ const slides = [
   },
 ];
 
-type Props = CompositeScreenProps<
-  StackScreenProps<
-    CustomerStackParamList,
-    typeof CustomerStackRoutes.ONBOARDING
-  >,
-  StackScreenProps<RootStackParamList>
+type Props = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.CUSTOMER_ONBOARDING
 >;
 
 const PAGINATION_INDICATOR_HEIGHT = 50;
@@ -160,9 +155,9 @@ const OnboardingScreen = ({navigation}: Props) => {
                       backgroundColor: "rgba(255,255,255, 0.3)",
                     }}
                     onPress={() => {
-                      navigation.navigate(CustomerStackRoutes.CUSTOMER_AUTH, {
-                        screen: CustomerAuthStackRoutes.LOGIN_PROMPT,
-                      });
+                      navigation.navigate(
+                        RootStackRoutes.CUSTOMER_LOGIN_PROMPT,
+                      );
                     }}>
                     <Text
                       style={{
@@ -192,9 +187,9 @@ const OnboardingScreen = ({navigation}: Props) => {
                   <View>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate(CustomerStackRoutes.CUSTOMER_AUTH, {
-                          screen: CustomerAuthStackRoutes.LOGIN_PROMPT,
-                        });
+                        navigation.navigate(
+                          RootStackRoutes.CUSTOMER_LOGIN_PROMPT,
+                        );
                       }}>
                       <Text
                         style={{

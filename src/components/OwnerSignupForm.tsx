@@ -1,37 +1,27 @@
 import React from "react";
-import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
-import DatePicker from "react-native-date-picker";
-import {makeGenderLabelFromValue} from "@utils/auth";
+import {RootStackRoutes} from "@constants/routes";
+import {RootStackParamList} from "@src/navigation";
 import {ErrorMessage} from "@hookform/error-message";
-import {useDisclosure} from "react-use-disclosure";
 import {Controller, useForm} from "react-hook-form";
-import {AuthGender, GenderType} from "@constants/auth";
-import ModalSelector from "react-native-modal-selector";
-import {CustomerAuthStackRoutes} from "@constants/routes";
-import {StackScreenProps} from "@react-navigation/stack";
+import {StackNavigationProp} from "@react-navigation/stack";
 import AppGradientButton from "@components/AppGradientButton";
-import {CompositeScreenProps} from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerAuthStackParamList,
-} from "@src/navigation";
+import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import {
   Text,
   View,
   Alert,
-  Image,
   TextInput,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import useRegisterMutation from "@hooks/auth/useRegisterMutation";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
@@ -41,15 +31,9 @@ import {
   ImagePickerResponse,
 } from "react-native-image-picker";
 
-type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.SIGNUP
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
-  StackScreenProps<RootStackParamList>
+type NavigationProp = StackNavigationProp<
+  RootStackParamList,
+  typeof RootStackRoutes.SIGNUP
 >;
 
 type FormValues = {
@@ -60,20 +44,26 @@ type FormValues = {
   };
   first_name: string;
   last_name: string;
+  club: string;
+  location_id: string;
+  job_role: string;
   phone: string;
   email: string;
-  dob: Date | null;
+  dob: string;
   password: string;
   password_confirmation: string;
-  gender: GenderType | null;
 };
 
-const maximumDob = dayjs().subtract(18, "years").toDate();
-
-const SignUpScreen = ({navigation}: Props) => {
+const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
   const toast = useAppToast();
-  const {isOpen, toggle} = useDisclosure();
   const actionSheetRef = React.useRef<ActionSheetRef>(null!);
+
+  const {
+    error: locationsError,
+    data: locationsResponse,
+    isLoading: isLocationsLoading,
+  } = useGetLocationsQuery();
+  useHandleNonFieldError(locationsError);
 
   const {control, handleSubmit, setValue, setError} = useForm<FormValues>({
     defaultValues: {
@@ -84,10 +74,12 @@ const SignUpScreen = ({navigation}: Props) => {
       },
       first_name: "",
       last_name: "",
+      club: "",
+      location_id: "",
+      job_role: "",
       phone: "",
       email: "",
-      dob: null,
-      gender: null,
+      dob: "",
       password: "",
       password_confirmation: "",
     },
@@ -109,23 +101,26 @@ const SignUpScreen = ({navigation}: Props) => {
     }
   }, [registerUserError, isRegisterError, setError]);
 
-  const handleUserRegistration = handleSubmit(({dob, ...values}) => {
-    registerUser(
-      {
-        ...values,
-        dob: dayjs(dob).format("YYYY-MM-DD"),
-      },
-      {
-        onSuccess(data) {
-          if (!isResponseResultError(data)) {
-            toast.success(data.success);
-            navigation.navigate(CustomerAuthStackRoutes.EMAIL_VERIFICATION, {
-              email: values.email,
-            });
-          }
-        },
-      },
+  const locationList = React.useMemo(() => {
+    return (
+      locationsResponse?.items?.map(location => ({
+        id: location.id.toString(),
+        title: location.location,
+      })) ?? []
     );
+  }, [locationsResponse?.items]);
+
+  const handleUserRegistration = handleSubmit(values => {
+    registerUser(values, {
+      onSuccess(data) {
+        if (!isResponseResultError(data)) {
+          toast.success(data.success);
+          navigation.navigate(RootStackRoutes.EMAIL_VERIFICATION, {
+            email: values.email,
+          });
+        }
+      },
+    });
   });
 
   const handleImageResult = (result: ImagePickerResponse) => {
@@ -195,11 +190,6 @@ const SignUpScreen = ({navigation}: Props) => {
         backgroundColor: "#FFFFFF",
         padding: splitAppTheme.space[6],
       }}>
-      <FocusAwareStatusBar
-      // barStyle={"dark-content"}
-      // backgroundColor={splitAppTheme.colors.white}
-      />
-
       <View style={{flex: 1, marginTop: 20}}>
         <Controller
           name={"image.uri"}
@@ -343,44 +333,22 @@ const SignUpScreen = ({navigation}: Props) => {
         </View>
 
         <Controller
-          name={"dob"}
+          name={"club"}
           rules={{
             required: "This field is required",
           }}
           control={control}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
-              <TouchableOpacity onPress={() => toggle()}>
-                <View style={styles.SectionStyle}>
-                  <View
-                    style={{
-                      width: "100%",
-                      paddingLeft: 20,
-                      justifyContent: "flex-start",
-                    }}>
-                    <Text>
-                      {field.value
-                        ? dayjs(field.value).format("YYYY-MM-DD")
-                        : "Date of Birth"}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              <DatePicker
-                modal
-                mode={"date"}
-                open={isOpen}
-                maximumDate={maximumDob}
-                date={field.value ?? maximumDob}
-                onCancel={() => {
-                  toggle();
-                }}
-                onConfirm={date => {
-                  field.onChange(date);
-                  toggle();
-                }}
-              />
+              <View style={styles.SectionStyle}>
+                <TextInput
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                  placeholder="Club/Bar Name"
+                  style={{flex: 1, paddingLeft: 20}}
+                />
+              </View>
 
               <ErrorMessage
                 errors={errors}
@@ -388,8 +356,8 @@ const SignUpScreen = ({navigation}: Props) => {
                 render={({message}) => (
                   <Text
                     style={{
-                      marginTop: 5,
                       color: splitAppTheme.colors.red[300],
+                      marginTop: 5,
                     }}>
                     {message}
                   </Text>
@@ -400,77 +368,43 @@ const SignUpScreen = ({navigation}: Props) => {
         />
 
         <Controller
-          name={"gender"}
+          name={"location_id"}
           rules={{
             required: "This field is required",
           }}
           control={control}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
-              <ModalSelector
-                data={[
-                  {
-                    key: 1,
-                    label: makeGenderLabelFromValue(AuthGender.MEN),
-                    value: AuthGender.MEN,
-                  },
-                  {
-                    key: 2,
-                    label: makeGenderLabelFromValue(AuthGender.WOMEN),
-                    value: AuthGender.WOMEN,
-                  },
-                  {
-                    key: 3,
-                    label: makeGenderLabelFromValue(AuthGender.OTHER),
-                    value: AuthGender.OTHER,
-                  },
-                ]}
-                supportedOrientations={["landscape"]}
-                onChange={option => {
-                  // this.setState({textInputValue: option.label});
-                  field.onChange(option.value);
-                }}>
-                {/* <TouchableOpacity
-                onPress={() => {
-                  Alert.prompt("Select Gender", "Please select your gender", [
-                    {
-                      text: "Male",
-                      onPress() {
-                        field.onChange(AuthGender.MEN);
-                      },
+              <View style={[styles.SectionStyle, {zIndex: 10}]}>
+                <AutocompleteDropdown
+                  inputHeight={50}
+                  dataSet={locationList}
+                  loading={isLocationsLoading}
+                  containerStyle={{flexGrow: 1, flexShrink: 1}}
+                  onSelectItem={item => {
+                    field.onChange(item?.id ?? "");
+                  }}
+                  textInputProps={{
+                    autoCorrect: false,
+                    autoCapitalize: "none",
+                    placeholder: "Club Location",
+                    style: {
+                      borderRadius: 0,
+                      color: splitAppTheme.colors.black,
                     },
-                    {
-                      text: "Female",
-                      onPress() {
-                        field.onChange(AuthGender.WOMEN);
-                      },
-                    },
-                    {
-                      text: "Other",
-                      onPress() {
-                        field.onChange(AuthGender.OTHER);
-                      },
-                    },
-                  ]);
-                }}
-                
-                > */}
-                <View style={styles.SectionStyle}>
-                  <View
-                    style={{
-                      width: "100%",
-                      paddingLeft: 20,
-                      justifyContent: "flex-start",
-                    }}>
-                    <Text>
-                      {field.value === null
-                        ? "Gender"
-                        : makeGenderLabelFromValue(field.value)}
-                    </Text>
-                  </View>
-                </View>
-                {/* </TouchableOpacity> */}
-              </ModalSelector>
+                  }}
+                  rightButtonsContainerStyle={{
+                    right: 8,
+                    height: 30,
+
+                    alignSelf: "center",
+                  }}
+                  inputContainerStyle={{
+                    borderRadius: 0,
+                    backgroundColor: "#F4F5F7",
+                  }}
+                />
+              </View>
 
               <ErrorMessage
                 errors={errors}
@@ -478,8 +412,43 @@ const SignUpScreen = ({navigation}: Props) => {
                 render={({message}) => (
                   <Text
                     style={{
-                      marginTop: 5,
                       color: splitAppTheme.colors.red[300],
+                      marginTop: 5,
+                    }}>
+                    {message}
+                  </Text>
+                )}
+              />
+            </React.Fragment>
+          )}
+        />
+
+        <Controller
+          name={"job_role"}
+          rules={{
+            required: "This field is required",
+          }}
+          control={control}
+          render={({field, formState: {errors}}) => (
+            <React.Fragment>
+              <View style={styles.SectionStyle}>
+                <TextInput
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                  style={{flex: 1, paddingLeft: 20}}
+                  placeholder="Your Position/Job Role"
+                />
+              </View>
+
+              <ErrorMessage
+                errors={errors}
+                name={field.name}
+                render={({message}) => (
+                  <Text
+                    style={{
+                      color: splitAppTheme.colors.red[300],
+                      marginTop: 5,
                     }}>
                     {message}
                   </Text>
@@ -631,22 +600,21 @@ const SignUpScreen = ({navigation}: Props) => {
           )}
         />
 
-        <View style={{marginTop: splitAppTheme.space[2]}}>
-          <AppGradientButton
-            width={"100%"}
-            color={"primary"}
-            touchableOpacityProps={{
-              disabled: isRegisteringUser,
-            }}
-            variant={"solid"}
-            title={"Sign Up"}
-            onPress={handleUserRegistration}
-          />
-        </View>
+        <AppGradientButton
+          width={"100%"}
+          color={"primary"}
+          touchableOpacityProps={{
+            disabled: isRegisteringUser,
+          }}
+          variant={"solid"}
+          title={"Sign Up"}
+          onPress={handleUserRegistration}
+        />
       </View>
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   SectionStyle: {
     height: 50,
@@ -659,4 +627,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default OwnerSignUpForm;

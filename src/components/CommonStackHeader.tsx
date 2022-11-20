@@ -31,26 +31,29 @@ const CommonStackHeader = (props: StackHeaderProps) => {
       headerShadowVisible
       headerRight={options.headerRight}
       headerStyle={options.headerStyle}
-      headerLeft={(props: {
-        tintColor?: string | undefined;
-        pressColor?: string | undefined;
-        pressOpacity?: number | undefined;
-        labelVisible?: boolean | undefined;
-      }) =>
-        back && (
-          <HeaderBackButton
-            {...props}
-            onPress={navigation.goBack}
-            canGoBack={navigation.canGoBack()}
-            backImage={() => (
-              <Entypo
-                size={20}
-                name={"chevron-thin-left"}
-                color={splitAppTheme.colors.black}
-              />
-            )}
-          />
-        )
+      headerLeft={
+        options.headerLeft
+          ? options.headerLeft
+          : (props: {
+              tintColor?: string | undefined;
+              pressColor?: string | undefined;
+              pressOpacity?: number | undefined;
+              labelVisible?: boolean | undefined;
+            }) =>
+              back && (
+                <HeaderBackButton
+                  {...props}
+                  onPress={navigation.goBack}
+                  canGoBack={navigation.canGoBack()}
+                  backImage={() => (
+                    <Entypo
+                      size={20}
+                      name={"chevron-thin-left"}
+                      color={splitAppTheme.colors.black}
+                    />
+                  )}
+                />
+              )
       }
       headerBackground={headerBackground}
       headerLeftContainerStyle={options.headerLeftContainerStyle}

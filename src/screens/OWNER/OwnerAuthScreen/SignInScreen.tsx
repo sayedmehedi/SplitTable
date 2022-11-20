@@ -21,6 +21,7 @@ import {
   OwnerAuthStackParamList,
 } from "@src/navigation";
 import {TouchableOpacity} from "react-native-gesture-handler";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -85,6 +86,12 @@ const SignInScreen = ({navigation}: Props) => {
       style={{
         height: splitAppTheme.sizes.full,
       }}>
+      <FocusAwareStatusBar
+        animated
+        // barStyle={"dark-content"}
+        // backgroundColor="#fff"
+      />
+
       <View style={{flex: 1}} />
 
       <View
@@ -144,13 +151,14 @@ const SignInScreen = ({navigation}: Props) => {
                       }}>
                       <View
                         style={{
+                          height: 50,
                           paddingLeft: splitAppTheme.space[2],
+                          paddingVertical: splitAppTheme.space[4],
                           borderTopLeftRadius: splitAppTheme.radii.lg,
                           borderBottomLeftRadius: splitAppTheme.radii.lg,
                           backgroundColor: splitAppTheme.colors.gray[100],
-                          paddingVertical: splitAppTheme.space[4],
                         }}>
-                        <Entypo size={30} name={"mail"} color={"black"} />
+                        <Entypo size={22} name={"mail"} color={"black"} />
                       </View>
 
                       <View
@@ -160,6 +168,7 @@ const SignInScreen = ({navigation}: Props) => {
                         <TextInput
                           onBlur={field.onBlur}
                           style={{
+                            height: 50,
                             padding: splitAppTheme.space[4],
                             width: splitAppTheme.sizes.full,
                             borderTopRightRadius: splitAppTheme.radii.lg,
@@ -169,7 +178,7 @@ const SignInScreen = ({navigation}: Props) => {
                           value={field.value}
                           onChangeText={field.onChange}
                           keyboardType={"email-address"}
-                          placeholder={"Enter Your Name Here"}
+                          placeholder={"Email Address"}
                         />
                       </View>
                     </View>
@@ -222,8 +231,9 @@ const SignInScreen = ({navigation}: Props) => {
                           borderBottomLeftRadius: splitAppTheme.radii.lg,
                           backgroundColor: splitAppTheme.colors.gray[100],
                           paddingVertical: splitAppTheme.space[4],
+                          height: 50,
                         }}>
-                        <FontAwesome5 size={30} name={"lock"} color={"black"} />
+                        <FontAwesome5 size={20} name={"lock"} color={"black"} />
                       </View>
 
                       <View
@@ -233,6 +243,7 @@ const SignInScreen = ({navigation}: Props) => {
                         <TextInput
                           onBlur={field.onBlur}
                           style={{
+                            height: 50,
                             padding: splitAppTheme.space[4],
                             width: splitAppTheme.sizes.full,
                             borderTopRightRadius: splitAppTheme.radii.lg,
@@ -278,23 +289,33 @@ const SignInScreen = ({navigation}: Props) => {
                 paddingHorizontal: splitAppTheme.space[2],
               }}>
               {/* <CheckView value={"one"} fontFamily={"Satoshi-Regular"}>
-                Remember me
-              </CheckView> */}
+              Remember me
+            </CheckView> */}
 
-              <Text
+              <View
                 style={{
-                  fontSize: splitAppTheme.fontSizes.md,
-                  color: splitAppTheme.colors.primary[300],
+                  alignSelf: "flex-end",
                 }}>
-                Forget password?
-              </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(OwnerAuthStackRoutes.FORGOT_PASSWORD);
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: splitAppTheme.fontSizes.md,
+                      color: splitAppTheme.colors.primary[300],
+                    }}>
+                    Forget password?
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <AppGradientButton
               width={"100%"}
               color={"primary"}
               variant={"solid"}
-              title={"Sign in"}
+              title={"Sign In"}
               onPress={handleSignin}
               touchableOpacityProps={{
                 disabled: isLoggingIn,
@@ -321,13 +342,15 @@ const SignInScreen = ({navigation}: Props) => {
           <Text
             style={{
               textAlign: "center",
+              alignItems: "center",
+              color: splitAppTheme.colors.black,
               fontSize: splitAppTheme.fontSizes.md,
             }}>
-            Don't have an account?{" "}
+            Don't have an account?
           </Text>
         </View>
 
-        <View>
+        <View style={{marginLeft: splitAppTheme.space[1]}}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(OwnerAuthStackRoutes.SIGNUP);

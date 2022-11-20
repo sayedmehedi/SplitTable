@@ -3,32 +3,21 @@ import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
 import {useTimer} from "react-timer-hook";
 import useAppToast from "@hooks/useAppToast";
+import {RootStackRoutes} from "@constants/routes";
+import {RootStackParamList} from "@src/navigation";
 import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerAuthStackRoutes} from "@constants/routes";
 import {isResponseResultError} from "@utils/error-handling";
 import AppGradientButton from "@components/AppGradientButton";
-import {CompositeScreenProps} from "@react-navigation/native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import useVerifyEmailMutation from "@hooks/auth/useVerifyEmailMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerAuthStackParamList,
-} from "@src/navigation";
 import useResendEmailVerificationCodeMutation from "@hooks/auth/useResendEmailVerificationCodeMutation";
 
-type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    StackScreenProps<
-      CustomerAuthStackParamList,
-      typeof CustomerAuthStackRoutes.EMAIL_VERIFICATION
-    >,
-    StackScreenProps<CustomerStackParamList>
-  >,
-  StackScreenProps<RootStackParamList>
+type Props = StackScreenProps<
+  RootStackParamList,
+  typeof RootStackRoutes.EMAIL_VERIFICATION
 >;
 
 const EmailVerificationScreen = ({navigation, route}: Props) => {
@@ -78,7 +67,7 @@ const EmailVerificationScreen = ({navigation, route}: Props) => {
         onSuccess(data) {
           if (!isResponseResultError(data)) {
             toast.success(data.success);
-            navigation.navigate(CustomerAuthStackRoutes.SIGNIN);
+            navigation.navigate(RootStackRoutes.SIGNIN);
           }
         },
       },

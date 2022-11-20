@@ -3,9 +3,9 @@ import {OwnerStackRoutes} from "@constants/routes";
 import {RouteProp} from "@react-navigation/native";
 import {OwnerStackParamList} from "@src/navigation";
 import {ActivityIndicator, View} from "react-native";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
 import {OWNER_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import OwnerAuthStackNavigator from "./OwnerAuthStackNavigator";
 import OwnerBottomTabNavigator from "./OwnerBottomTabNavigator";
 import UpsertMenuScreen from "@screens/OWNER/MenuItemScreen/UpsertMenuScreen";
 import {
@@ -26,7 +26,6 @@ import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScre
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import ClubSliderImagesScreen from "@screens/OWNER/OwnerAccountScreen/ClubSliderImagesScreen";
 import InitialSelectLocationScreen from "@screens/OWNER/OwnerAuthScreen/InitialSelectLocationScreen";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 const OwnerStack = createStackNavigator<OwnerStackParamList>();
 
@@ -117,117 +116,108 @@ const OwnerStackNavigator = () => {
     <OwnerStack.Navigator
       id={OWNER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!authData ? (
+      {showLocationScreen && (
         <OwnerStack.Screen
-          component={OwnerAuthStackNavigator}
-          name={OwnerStackRoutes.OWNER_AUTH}
+          options={locationEnableScreenOptions}
+          component={InitialSelectLocationScreen}
+          name={OwnerStackRoutes.LOCATION_ENABLE}
         />
-      ) : (
-        <React.Fragment>
-          {showLocationScreen && (
-            <OwnerStack.Screen
-              options={locationEnableScreenOptions}
-              component={InitialSelectLocationScreen}
-              name={OwnerStackRoutes.LOCATION_ENABLE}
-            />
-          )}
-
-          <OwnerStack.Screen
-            component={OwnerBottomTabNavigator}
-            name={OwnerStackRoutes.OWNER_MAIN_TABS}
-          />
-
-          <OwnerStack.Screen
-            component={UpsertMenuScreen}
-            options={addMenuItemScreenOptions}
-            name={OwnerStackRoutes.UPSERT_MENU}
-          />
-
-          <OwnerStack.Screen
-            component={TableDetailsScreen}
-            options={tableDetailsScreenOptions}
-            name={OwnerStackRoutes.TABLE_DETAILS}
-          />
-
-          <OwnerStack.Screen
-            component={UpsertTableScreen}
-            options={upsertTableScreenOptions}
-            name={OwnerStackRoutes.UPSERT_TABLE}
-          />
-
-          <OwnerStack.Screen
-            component={MyTablesScreen}
-            options={myTablesScreenOptions}
-            name={OwnerStackRoutes.MY_TABLES}
-          />
-
-          <OwnerStack.Group
-            screenOptions={{
-              headerShown: true,
-              header: CommonStackHeader,
-            }}>
-            <OwnerStack.Screen
-              component={OwnerAccountScreen}
-              options={accountScreenOptions}
-              name={OwnerStackRoutes.ACCOUNT}
-            />
-
-            <OwnerStack.Screen
-              component={InformationScreen}
-              options={informationScreenOptions}
-              name={OwnerStackRoutes.INFORMATION}
-            />
-
-            <OwnerStack.Screen
-              component={TransactionScreen}
-              options={transactionScreenOptions}
-              name={OwnerStackRoutes.TRANSACTION}
-            />
-
-            <OwnerStack.Screen
-              component={AccountSettingScreen}
-              options={accountSettingScreenOptions}
-              name={OwnerStackRoutes.ACCOUNT_SETTING}
-            />
-
-            <OwnerStack.Screen
-              component={ReviewsScreen}
-              options={reviewScreenOptions}
-              name={OwnerStackRoutes.REVIEWS}
-            />
-
-            <OwnerStack.Screen
-              component={LegalScreen}
-              options={legalScreenOptions}
-              name={OwnerStackRoutes.LEGAL}
-            />
-
-            <OwnerStack.Screen
-              component={FaqScreen}
-              options={faqScreenOptions}
-              name={OwnerStackRoutes.FAQ}
-            />
-
-            <OwnerStack.Screen
-              component={ClubSliderImagesScreen}
-              options={sliderImagesScreenOptions}
-              name={OwnerStackRoutes.SLIDER_IMAGES}
-            />
-
-            <OwnerStack.Screen
-              component={HolidaysScreen}
-              options={holidaysScreenOptions}
-              name={OwnerStackRoutes.HOLIDAYS}
-            />
-
-            <OwnerStack.Screen
-              component={AddHolidayScreen}
-              options={addholidaysScreenOptions}
-              name={OwnerStackRoutes.ADD_HOLIDAY}
-            />
-          </OwnerStack.Group>
-        </React.Fragment>
       )}
+
+      <OwnerStack.Screen
+        component={OwnerBottomTabNavigator}
+        name={OwnerStackRoutes.OWNER_MAIN_TABS}
+      />
+
+      <OwnerStack.Screen
+        component={UpsertMenuScreen}
+        options={addMenuItemScreenOptions}
+        name={OwnerStackRoutes.UPSERT_MENU}
+      />
+
+      <OwnerStack.Screen
+        component={TableDetailsScreen}
+        options={tableDetailsScreenOptions}
+        name={OwnerStackRoutes.TABLE_DETAILS}
+      />
+
+      <OwnerStack.Screen
+        component={UpsertTableScreen}
+        options={upsertTableScreenOptions}
+        name={OwnerStackRoutes.UPSERT_TABLE}
+      />
+
+      <OwnerStack.Screen
+        component={MyTablesScreen}
+        options={myTablesScreenOptions}
+        name={OwnerStackRoutes.MY_TABLES}
+      />
+
+      <OwnerStack.Group
+        screenOptions={{
+          headerShown: true,
+          header: CommonStackHeader,
+        }}>
+        <OwnerStack.Screen
+          component={OwnerAccountScreen}
+          options={accountScreenOptions}
+          name={OwnerStackRoutes.ACCOUNT}
+        />
+
+        <OwnerStack.Screen
+          component={InformationScreen}
+          options={informationScreenOptions}
+          name={OwnerStackRoutes.INFORMATION}
+        />
+
+        <OwnerStack.Screen
+          component={TransactionScreen}
+          options={transactionScreenOptions}
+          name={OwnerStackRoutes.TRANSACTION}
+        />
+
+        <OwnerStack.Screen
+          component={AccountSettingScreen}
+          options={accountSettingScreenOptions}
+          name={OwnerStackRoutes.ACCOUNT_SETTING}
+        />
+
+        <OwnerStack.Screen
+          component={ReviewsScreen}
+          options={reviewScreenOptions}
+          name={OwnerStackRoutes.REVIEWS}
+        />
+
+        <OwnerStack.Screen
+          component={LegalScreen}
+          options={legalScreenOptions}
+          name={OwnerStackRoutes.LEGAL}
+        />
+
+        <OwnerStack.Screen
+          component={FaqScreen}
+          options={faqScreenOptions}
+          name={OwnerStackRoutes.FAQ}
+        />
+
+        <OwnerStack.Screen
+          component={ClubSliderImagesScreen}
+          options={sliderImagesScreenOptions}
+          name={OwnerStackRoutes.SLIDER_IMAGES}
+        />
+
+        <OwnerStack.Screen
+          component={HolidaysScreen}
+          options={holidaysScreenOptions}
+          name={OwnerStackRoutes.HOLIDAYS}
+        />
+
+        <OwnerStack.Screen
+          component={AddHolidayScreen}
+          options={addholidaysScreenOptions}
+          name={OwnerStackRoutes.ADD_HOLIDAY}
+        />
+      </OwnerStack.Group>
     </OwnerStack.Navigator>
   );
 };

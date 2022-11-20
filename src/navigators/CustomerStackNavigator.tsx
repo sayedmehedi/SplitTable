@@ -5,13 +5,11 @@ import {AppTableListTypes} from "@constants/table";
 import {CustomerStackRoutes} from "@constants/routes";
 import CommonStackHeader from "@components/CommonStackHeader";
 import TableListScreen from "@screens/CUSTOMER/TableListScreen";
-import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
 import {CUSTOMER_STACK_NAVIGATOR_ID} from "@constants/navigators";
 import TableSearchScreen from "@screens/CUSTOMER/TableSearchScreen";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ClubDetailsScreen from "@screens/CUSTOMER/ClubDetailsScreen";
 import CustomerBottomTabNavigator from "./CustomerBottomTabNavigator";
-import CustomerAuthStackNavigator from "./CustomerAuthStackNavigator";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CompositeNavigationProp, RouteProp} from "@react-navigation/native";
 import {ActivityIndicator, Text, TouchableOpacity, View} from "react-native";
@@ -20,22 +18,22 @@ import {
   StackNavigationOptions,
   StackNavigationProp,
 } from "@react-navigation/stack";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
+import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
 import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
 import BookingDetailsScreen from "@screens/CUSTOMER/BookTableScreen/BookingDetailsScreen";
+import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
 import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
 import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
 import BookingSelectLocationScreen from "@screens/CUSTOMER/BookTableScreen/BookingSelectLocationScreen";
-import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
-import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -68,143 +66,127 @@ const CustomerStackNavigator = () => {
     <CustomerStack.Navigator
       id={CUSTOMER_STACK_NAVIGATOR_ID}
       screenOptions={globalScreenOptions}>
-      {!authData ? (
-        <React.Fragment>
-          <CustomerStack.Screen
-            component={OnboardingScreen}
-            name={CustomerStackRoutes.ONBOARDING}
-          />
-
-          <CustomerStack.Screen
-            component={CustomerAuthStackNavigator}
-            name={CustomerStackRoutes.CUSTOMER_AUTH}
-          />
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          {showLocationScreen && (
-            <CustomerStack.Screen
-              options={locationEnableScreenOptions}
-              component={InitialSelectLocationScreen}
-              name={CustomerStackRoutes.INITIAL_SELECT_LOCATION}
-            />
-          )}
-
-          <CustomerStack.Screen
-            component={CustomerBottomTabNavigator}
-            name={CustomerStackRoutes.CUSTOMER_MAIN_TAB}
-          />
-
-          <CustomerStack.Screen
-            component={TableListScreen}
-            options={tableListScreenOptions}
-            name={CustomerStackRoutes.TABLE_LIST}
-          />
-
-          <CustomerStack.Screen
-            component={TableDetailsScreen}
-            options={tableDetailsScreenOptions}
-            name={CustomerStackRoutes.TABLE_DETAILS}
-          />
-
-          <CustomerStack.Screen
-            component={JoinTableDetailsScreen}
-            options={joinTableDetailsScreenOptions}
-            name={CustomerStackRoutes.JOIN_TABLE_DETAILS}
-          />
-
-          <CustomerStack.Screen
-            component={ClubDetailsScreen}
-            name={CustomerStackRoutes.CLUB_DETAILS}
-          />
-
-          <CustomerStack.Screen
-            component={TableSearchScreen}
-            options={clubSearchScreenOptions}
-            name={CustomerStackRoutes.TABLE_SEARCH}
-          />
-
-          <CustomerStack.Group>
-            <CustomerStack.Screen
-              component={GuestAndOfferMenuScreen}
-              options={guestNOfferMenuScreenOptions}
-              name={CustomerStackRoutes.GUEST_N_MENU}
-            />
-
-            <CustomerStack.Screen
-              component={AddMenuItemScreen}
-              options={addMenuItemScreenOptions}
-              name={CustomerStackRoutes.ADD_MENU_ITEM}
-            />
-
-            <CustomerStack.Screen
-              component={BookingDetailsScreen}
-              name={CustomerStackRoutes.BOOKING_DETAILS}
-            />
-
-            <CustomerStack.Screen
-              component={BookingSelectLocationScreen}
-              options={bookingSelectLocationScreenOptions}
-              name={CustomerStackRoutes.BOOKING_SELECT_LOCATION}
-            />
-
-            <CustomerStack.Screen
-              component={PaymentScreen}
-              options={paymentScreenOptions}
-              name={CustomerStackRoutes.PAYMENT_AMOUNT}
-            />
-
-            <CustomerStack.Screen
-              component={PaymentMethodScreen}
-              options={paymentMethodScreenOptions}
-              name={CustomerStackRoutes.PAYMENT_METHOD}
-            />
-
-            <CustomerStack.Screen
-              component={PaymentGatewayScreen}
-              options={paymentGatewayScreenOptions}
-              name={CustomerStackRoutes.PAYMENT_GATEWAY}
-            />
-          </CustomerStack.Group>
-
-          <CustomerStack.Group
-            screenOptions={{
-              headerShown: true,
-              header: CommonStackHeader,
-              headerTitleAlign: "center",
-            }}>
-            <CustomerStack.Screen
-              component={TransactionScreen}
-              options={transactionScreenOptions}
-              name={CustomerStackRoutes.TRANSACTION}
-            />
-
-            <CustomerStack.Screen
-              component={AccountSettingScreen}
-              options={accountSettingScreenOptions}
-              name={CustomerStackRoutes.ACCOUNT_SETTING}
-            />
-
-            <CustomerStack.Screen
-              component={FavoriteScreen}
-              options={favoriteScreenOptions}
-              name={CustomerStackRoutes.FAVORITE}
-            />
-
-            <CustomerStack.Screen
-              component={LegalScreen}
-              options={legalScreenOptions}
-              name={CustomerStackRoutes.LEGAL}
-            />
-
-            <CustomerStack.Screen
-              component={FaqScreen}
-              options={faqScreenOptions}
-              name={CustomerStackRoutes.FAQ}
-            />
-          </CustomerStack.Group>
-        </React.Fragment>
+      {showLocationScreen && (
+        <CustomerStack.Screen
+          options={locationEnableScreenOptions}
+          component={InitialSelectLocationScreen}
+          name={CustomerStackRoutes.INITIAL_SELECT_LOCATION}
+        />
       )}
+
+      <CustomerStack.Screen
+        component={CustomerBottomTabNavigator}
+        name={CustomerStackRoutes.CUSTOMER_MAIN_TAB}
+      />
+
+      <CustomerStack.Screen
+        component={TableListScreen}
+        options={tableListScreenOptions}
+        name={CustomerStackRoutes.TABLE_LIST}
+      />
+
+      <CustomerStack.Screen
+        component={TableDetailsScreen}
+        options={tableDetailsScreenOptions}
+        name={CustomerStackRoutes.TABLE_DETAILS}
+      />
+
+      <CustomerStack.Screen
+        component={JoinTableDetailsScreen}
+        options={joinTableDetailsScreenOptions}
+        name={CustomerStackRoutes.JOIN_TABLE_DETAILS}
+      />
+
+      <CustomerStack.Screen
+        component={ClubDetailsScreen}
+        name={CustomerStackRoutes.CLUB_DETAILS}
+      />
+
+      <CustomerStack.Screen
+        component={TableSearchScreen}
+        options={clubSearchScreenOptions}
+        name={CustomerStackRoutes.TABLE_SEARCH}
+      />
+
+      <CustomerStack.Group>
+        <CustomerStack.Screen
+          component={GuestAndOfferMenuScreen}
+          options={guestNOfferMenuScreenOptions}
+          name={CustomerStackRoutes.GUEST_N_MENU}
+        />
+
+        <CustomerStack.Screen
+          component={AddMenuItemScreen}
+          options={addMenuItemScreenOptions}
+          name={CustomerStackRoutes.ADD_MENU_ITEM}
+        />
+
+        <CustomerStack.Screen
+          component={BookingDetailsScreen}
+          name={CustomerStackRoutes.BOOKING_DETAILS}
+        />
+
+        <CustomerStack.Screen
+          component={BookingSelectLocationScreen}
+          options={bookingSelectLocationScreenOptions}
+          name={CustomerStackRoutes.BOOKING_SELECT_LOCATION}
+        />
+
+        <CustomerStack.Screen
+          component={PaymentScreen}
+          options={paymentScreenOptions}
+          name={CustomerStackRoutes.PAYMENT_AMOUNT}
+        />
+
+        <CustomerStack.Screen
+          component={PaymentMethodScreen}
+          options={paymentMethodScreenOptions}
+          name={CustomerStackRoutes.PAYMENT_METHOD}
+        />
+
+        <CustomerStack.Screen
+          component={PaymentGatewayScreen}
+          options={paymentGatewayScreenOptions}
+          name={CustomerStackRoutes.PAYMENT_GATEWAY}
+        />
+      </CustomerStack.Group>
+
+      <CustomerStack.Group
+        screenOptions={{
+          headerShown: true,
+          header: CommonStackHeader,
+          headerTitleAlign: "center",
+        }}>
+        <CustomerStack.Screen
+          component={TransactionScreen}
+          options={transactionScreenOptions}
+          name={CustomerStackRoutes.TRANSACTION}
+        />
+
+        <CustomerStack.Screen
+          component={AccountSettingScreen}
+          options={accountSettingScreenOptions}
+          name={CustomerStackRoutes.ACCOUNT_SETTING}
+        />
+
+        <CustomerStack.Screen
+          component={FavoriteScreen}
+          options={favoriteScreenOptions}
+          name={CustomerStackRoutes.FAVORITE}
+        />
+
+        <CustomerStack.Screen
+          component={LegalScreen}
+          options={legalScreenOptions}
+          name={CustomerStackRoutes.LEGAL}
+        />
+
+        <CustomerStack.Screen
+          component={FaqScreen}
+          options={faqScreenOptions}
+          name={CustomerStackRoutes.FAQ}
+        />
+      </CustomerStack.Group>
     </CustomerStack.Navigator>
   );
 };

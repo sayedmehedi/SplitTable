@@ -4,16 +4,22 @@ export const RootStackRoutes = {
   PROFILE: "Profile",
   CUSTOMER: "Customer",
   NOTIFICATIONS: "Notifications",
+  CUSTOMER_ONBOARDING: "CustomerOnBoarding",
+  CUSTOMER_LOGIN_PROMPT: "CustomerLoginPrompt",
+
+  SIGNUP: "Signup",
+  SIGNIN: "Signin",
+  RESET_PASSWORD: "ResetPassword",
+  FORGOT_PASSWORD: "ForgotPassword",
+  EMAIL_VERIFICATION: "EmailVerification",
 } as const;
 
 export const CustomerStackRoutes = {
   BOOKING: "Booking",
   TABLE_LIST: "TableList",
   TABLE_SEARCH: "TableSearch",
-  ONBOARDING: "OnBoarding",
   CLUB_DETAILS: "ClubDetails",
   TABLE_DETAILS: "TableDetails",
-  CUSTOMER_AUTH: "CustomerAuth",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
   JOIN_TABLE_DETAILS: "JoinTableDetails",
   INITIAL_SELECT_LOCATION: "InitialSelectLocation",
@@ -40,22 +46,10 @@ export const CustomerChatStackRoutes = {
 } as const;
 
 export const CustomerAuthStackRoutes = {
-  SIGNIN: "Signin",
-  SIGNUP: "Signup",
-  LOGIN_PROMPT: "LoginPrompt",
   LOCATION_ENABLE: "LocationEnable",
-  EMAIL_VERIFICATION: "EmailVerification",
-  FORGOT_PASSWORD: "ForgotPassword",
-  RESET_PASSWORD: "ResetPassword",
 } as const;
 
-export const OwnerAuthStackRoutes = {
-  SIGNIN: "Signin",
-  SIGNUP: "Signup",
-  EMAIL_VERIFICATION: "EmailVerification",
-  FORGOT_PASSWORD: "ForgotPassword",
-  RESET_PASSWORD: "ResetPassword",
-} as const;
+export const OwnerAuthStackRoutes = {} as const;
 
 export const OwnerMainBottomTabRoutes = {
   MENU: "Menu",
