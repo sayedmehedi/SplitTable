@@ -245,6 +245,7 @@ export interface ClubDetails {
   cuisine: string;
   min_avg_cost: string;
   max_avg_cost: string;
+  // avg_cost: string;
   about: string;
   floor_plan: string;
 }
@@ -790,8 +791,9 @@ export interface ClubInfo {
   opening_time: string;
   closing_time: string;
   cuisine: string;
-  min_avg_cost: string;
-  max_avg_cost: string;
+  // min_avg_cost: string;
+  // max_avg_cost: string;
+  avg_cost: string;
   about: string;
   slider_images: string[];
 }

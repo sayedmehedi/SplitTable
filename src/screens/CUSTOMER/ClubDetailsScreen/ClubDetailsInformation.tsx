@@ -12,14 +12,10 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import {CustomerStackRoutes} from "@constants/routes";
-import {StackNavigationProp} from "@react-navigation/stack";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useGetClubDetailsQuery from "@hooks/clubs/useGetClubDetailsQuery";
-import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
-import Fontisto from "react-native-vector-icons/Fontisto";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 dayjs.extend(relativeTime);
@@ -30,19 +26,10 @@ type Props = {
   clubId: number;
 };
 
-type NavigationProp = CompositeNavigationProp<
-  StackNavigationProp<
-    CustomerStackParamList,
-    typeof CustomerStackRoutes.TABLE_LIST
-  >,
-  StackNavigationProp<RootStackParamList>
->;
-
 const ClubDetailsInformation = ({clubId}: Props) => {
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
-  const navigation = useNavigation<NavigationProp>();
 
   const {
     error: clubDetailsError,

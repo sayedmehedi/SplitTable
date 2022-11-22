@@ -1,64 +1,27 @@
-import React, {useState} from "react";
-import {View, Text} from "react-native";
-import Feather from "react-native-vector-icons/Feather";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
+import React from "react";
+import {View} from "react-native";
 import ProfileUpdaterItem from "./modals/ProfileUpdaterItem";
 import ClubInfoUpdaterItem from "./modals/ClubInfoUpdaterItem";
 
 const AccountSettingScreen = () => {
   return (
-    <>
-      <View
-        style={{paddingHorizontal: 12, backgroundColor: "#FFFFFF", flex: 1}}>
-        <ProfileUpdaterItem type="name" />
+    <View style={{paddingHorizontal: 12, backgroundColor: "#FFFFFF", flex: 1}}>
+      <ProfileUpdaterItem type="name" />
 
-        <ClubInfoUpdaterItem type="name" />
+      <ClubInfoUpdaterItem type="name" />
 
-        <ClubInfoUpdaterItem type="job_role" />
+      <ClubInfoUpdaterItem type="job_role" />
 
-        <ProfileUpdaterItem type="phone" />
+      <ProfileUpdaterItem type="phone" />
 
-        <ProfileUpdaterItem type="email" />
+      <ProfileUpdaterItem type="email" />
 
-        <ProfileUpdaterItem type="password" />
+      <ProfileUpdaterItem type="password" />
 
-        <ClubInfoUpdaterItem type="location" />
+      <ClubInfoUpdaterItem type="location" />
 
-        <ProfileUpdaterItem type="address" />
-
-        {/* 
-
-      
-
-      <AccountSettingsItem
-        modalInputs={[
-          {
-            name: 'facebook-account',
-            value: 'softiconic@gmail.com',
-          },
-        ]}
-        text={'Connect Facebook'}
-        modalTitle={'Update Facebook Profile'}
-        icon={<Feather name="facebook" size={20} color={'#707070'} />}
-      />
-
-      
-
-      <AccountSettingsItem
-        modalInputs={[
-          {
-            name: 'location',
-            placeholder: 'Location',
-          },
-        ]}
-        text={'Location'}
-        modalTitle={'Update Location'}
-        icon={<Feather name="map-pin" size={20} color={'#707070'} />}
-      /> */}
-      </View>
-    </>
+      <ProfileUpdaterItem type="address" />
+    </View>
   );
 };
 

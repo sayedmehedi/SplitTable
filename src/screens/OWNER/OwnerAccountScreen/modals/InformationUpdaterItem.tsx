@@ -33,6 +33,7 @@ import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 import useUpdateOwnerClubInfoMutation from "@hooks/clubs/useUpdateOwnerClubInfoMutation";
 import {Clock, MenuIcon} from "@constants/iconPath";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {parseClubAvgCost} from "@utils/club";
 
 type Props = {
   type: "time" | "cuisine" | "cost" | "about" | "slider";
@@ -93,12 +94,13 @@ export default function ProfileUpdaterItem({type}: Props) {
       setValue("cuisine", clubInfoData.cuisine);
     }
 
-    if (clubInfoData?.max_avg_cost) {
-      setValue("avg_cost_max", clubInfoData.max_avg_cost);
-    }
+    if (clubInfoData?.avg_cost) {
+      const {max_avg_cost, min_avg_cost} = parseClubAvgCost(
+        clubInfoData.avg_cost,
+      );
 
-    if (clubInfoData?.min_avg_cost) {
-      setValue("avg_cost_min", clubInfoData.min_avg_cost);
+      setValue("avg_cost_max", max_avg_cost);
+      setValue("avg_cost_min", min_avg_cost);
     }
   }, [clubInfoData, setValue]);
 
@@ -150,6 +152,14 @@ export default function ProfileUpdaterItem({type}: Props) {
     );
   }
 
+  let avgCost = "$0 - $0";
+  if (clubInfoData?.avg_cost !== undefined) {
+    const {max_avg_cost, min_avg_cost} = parseClubAvgCost(
+      clubInfoData.avg_cost,
+    );
+    avgCost = `$${min_avg_cost} - $${max_avg_cost}`;
+  }
+
   return (
     <React.Fragment>
       <View style={styles.buttonContainer}>
@@ -194,8 +204,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
-                Average Cost: ${clubInfoData?.min_avg_cost ?? 0} - $
-                {clubInfoData?.max_avg_cost ?? 0}
+                Average Cost: {avgCost}
               </Text>
             </React.Fragment>
           )}
