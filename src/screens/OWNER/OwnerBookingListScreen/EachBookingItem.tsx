@@ -163,7 +163,7 @@ const EachBookingItem = ({
             </TouchableOpacity>
           )}
 
-          {type === "upcoming" && (
+          {/* {type === "upcoming" && (
             <TouchableOpacity>
               <Text
                 style={{
@@ -175,7 +175,7 @@ const EachBookingItem = ({
                 Cancel
               </Text>
             </TouchableOpacity>
-          )}
+          )} */}
         </View>
       </View>
     </View>

@@ -641,6 +641,7 @@ export interface ClubBooking {
   club_image: string;
   tables: string[];
   is_reviewed: boolean;
+  can_cancel: boolean;
   status: "Completed" | "Cancelled";
 }
 
@@ -939,3 +940,5 @@ export type SocialLoginResponse = ResponseResult<{
   success: string;
   user: AuthData;
 }>;
+
+export type CancelBookingResponse = ResponseResult<{}>;

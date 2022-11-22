@@ -1,9 +1,21 @@
 import React from "react";
 import {ClubBooking} from "@src/models";
 import {splitAppTheme} from "@src/theme";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {useDisclosure} from "react-use-disclosure";
 import ReviewModal from "@components/ReviewModal";
+import useCancelBookingMutation from "@hooks/useCancelBookingMutation";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useAppToast from "@hooks/useAppToast";
+import {isResponseResultError} from "@utils/error-handling";
 
 const EachBookingItem = ({
   item,
@@ -12,7 +24,24 @@ const EachBookingItem = ({
   item: ClubBooking;
   type: "upcoming" | "history";
 }) => {
+  const toast = useAppToast();
+
   const {toggle, isOpen} = useDisclosure();
+
+  const {
+    mutate: cancelBooking,
+    isLoading: isCancelling,
+    error: cancelBookingError,
+    data: cancelBookingResponse,
+  } = useCancelBookingMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        toast.success(data.success);
+      }
+    },
+  });
+  useHandleNonFieldError(cancelBookingError);
+  useHandleResponseResultError(cancelBookingResponse);
 
   return (
     <View
@@ -163,19 +192,40 @@ const EachBookingItem = ({
             </TouchableOpacity>
           )}
 
-          {type === "upcoming" && (
-            <TouchableOpacity>
-              <Text
-                style={{
-                  textDecorationLine: "underline",
-                  fontSize: splitAppTheme.fontSizes.xs,
-                  color: splitAppTheme.colors.red[300],
-                  fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+          {type === "upcoming" && item.can_cancel ? (
+            isCancelling ? (
+              <View style={{padding: splitAppTheme.space[3]}}>
+                <ActivityIndicator color={"white"} size={"small"} />
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  Alert.alert("Cancel Booking", "Are your sure?", [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Sure",
+                      style: "destructive",
+                      onPress() {
+                        cancelBooking(item.id);
+                      },
+                    },
+                  ]);
                 }}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
-          )}
+                <Text
+                  style={{
+                    textDecorationLine: "underline",
+                    fontSize: splitAppTheme.fontSizes.xs,
+                    color: splitAppTheme.colors.red[300],
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                  }}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            )
+          ) : null}
         </View>
       </View>
     </View>

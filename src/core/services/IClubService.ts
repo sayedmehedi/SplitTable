@@ -45,9 +45,14 @@ import {
   GetOwnerClubHolidaysQueryParams,
   ConfirmBookingRequest,
   ConfirmBookingResponse,
+  CancelBookingResponse,
 } from "@src/models";
 
 export interface IClubService {
+  cancenBooking(
+    bookingId: number,
+  ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>>;
+
   getOwnerClubHolidays(
     params: GetOwnerClubHolidaysQueryParams,
   ): CancelablePromise<

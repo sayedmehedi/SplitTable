@@ -34,20 +34,13 @@ import {useDisclosure} from "react-use-disclosure";
 import DatePicker from "react-native-date-picker";
 import {ErrorMessage} from "@hookform/error-message";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {numberTransformer} from "@utils/form";
 import AppGradientButton from "@components/AppGradientButton";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {isSplitTableDetails} from "@utils/table";
 import useUpdateOwnerTableMutation from "@hooks/clubs/useUpdateOwnerTableMutation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ModalSelector from "react-native-modal-selector";
-import {
-  CalendarIcon,
-  Clock,
-  DishIcon,
-  DjIcon,
-  MenuIcon,
-} from "@constants/iconPath";
+import {Clock, MenuIcon} from "@constants/iconPath";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_TABLE>,
@@ -84,7 +77,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
   const {isOpen, toggle} = useDisclosure();
   const actionSheetRef = React.useRef<ActionSheetRef>(null!);
 
-  const {control, handleSubmit, setValue, setError, watch} =
+  const {control, handleSubmit, setValue, setError, watch, reset} =
     useForm<FormValues>({
       defaultValues: {
         name: "",
@@ -233,10 +226,11 @@ export default function UpsertTableScreen({route, navigation}: Props) {
 
   const {
     mutate: createTable,
+    error: createError,
     data: createResponse,
     isLoading: isCreating,
     isError: isCreateError,
-    error: createError,
+    isSuccess: isCreateSuccess,
   } = useCreateOwnerTableMutation();
   useHandleNonFieldError(createError);
   useHandleResponseResultError(createResponse);
@@ -372,8 +366,9 @@ export default function UpsertTableScreen({route, navigation}: Props) {
         {
           onSuccess(data) {
             if (!isResponseResultError(data)) {
-              toast.success(data.success);
-              navigation.navigate(OwnerStackRoutes.MY_TABLES);
+              // toast.success(data.success);
+              // navigation.navigate(OwnerStackRoutes.MY_TABLES);
+              reset();
             }
           },
         },
@@ -456,10 +451,41 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           </View>
         ) : null}
 
+        {isCreating ? (
+          <View
+            style={{
+              padding: splitAppTheme.space[3],
+              marginBottom: splitAppTheme.space[4],
+            }}>
+            <ActivityIndicator />
+          </View>
+        ) : isCreateSuccess ? (
+          <View
+            style={{
+              padding: splitAppTheme.space[3],
+              borderRadius: splitAppTheme.radii.lg,
+              marginBottom: splitAppTheme.space[4],
+              borderWidth: splitAppTheme.borderWidths[1],
+              borderColor: splitAppTheme.colors.green[400],
+            }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.sm,
+                color: splitAppTheme.colors.green[400],
+              }}>
+              Successfully created
+            </Text>
+          </View>
+        ) : null}
+
         <Controller
           name={"image.uri"}
           control={control}
-          render={({field}) => (
+          rules={{
+            required: "This field is required",
+          }}
+          render={({field, formState: {errors}}) => (
             <React.Fragment>
               <TouchableOpacity
                 onPress={() => {
@@ -517,6 +543,21 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                   </View>
                 )}
               </TouchableOpacity>
+
+              <ErrorMessage
+                errors={errors}
+                name={field.name}
+                render={({message}) => (
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      textAlign: "center",
+                      color: splitAppTheme.colors.red[300],
+                    }}>
+                    {message}
+                  </Text>
+                )}
+              />
 
               <ActionSheet ref={actionSheetRef}>
                 <View
@@ -766,6 +807,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     <View style={{flex: 1}}>
                       <TextInput
                         onBlur={field.onBlur}
+                        keyboardType={"number-pad"}
                         value={`${field.value ?? ""}`}
                         placeholder={"Total Seat/Guest"}
                         style={{flex: 1, paddingLeft: 20}}
@@ -815,6 +857,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     <View style={{flex: 1}}>
                       <TextInput
                         onBlur={field.onBlur}
+                        keyboardType={"number-pad"}
                         value={`${field.value ?? ""}`}
                         placeholder={"Price/Whole table"}
                         style={{flex: 1, paddingLeft: 20}}

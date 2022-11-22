@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Switch,
+  Alert,
 } from "react-native";
 import useDeleteOwnerClubMenuMutation from "@hooks/clubs/useDeleteOwnerClubMenuMutation";
 import useUpdateOwnerClubMenuMutation from "@hooks/clubs/useUpdateOwnerClubMenuMutation";
@@ -37,7 +38,13 @@ const EachMenuItem = ({item, onPress, index}: Props) => {
     error: deleteClubMenuError,
     isLoading: isDeleting,
     data: deleteClubMenuResponse,
-  } = useDeleteOwnerClubMenuMutation();
+  } = useDeleteOwnerClubMenuMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        toast.success(data.success);
+      }
+    },
+  });
   useHandleNonFieldError(deleteClubMenuError);
   useHandleResponseResultError(deleteClubMenuResponse);
 
@@ -57,16 +64,19 @@ const EachMenuItem = ({item, onPress, index}: Props) => {
   useHandleResponseResultError(updateResponse);
 
   const handleDelete = React.useCallback(() => {
-    deleteClubMenu(
-      {menuId: item.id},
+    Alert.alert("Remove", "Are your sure?", [
       {
-        onSuccess(data) {
-          if (!isResponseResultError(data)) {
-            toast.success(data.success);
-          }
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Sure",
+        style: "destructive",
+        onPress() {
+          deleteClubMenu({menuId: item.id});
         },
       },
-    );
+    ]);
   }, [deleteClubMenu]);
 
   const rightSwipeActions = () => {

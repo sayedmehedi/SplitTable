@@ -9,7 +9,7 @@ import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import CommonStackHeader from "@components/CommonStackHeader";
 import CustomerStackNavigator from "./CustomerStackNavigator";
 import {ROOT_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import NotificationListScreen from "@screens/CUSTOMER/NotificationListScreen";
+import NotificationListScreen from "@screens/NotificationListScreen";
 import {
   createStackNavigator,
   StackNavigationOptions,

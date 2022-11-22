@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import {useTime} from "react-timer-hook";
 import {splitAppTheme} from "@src/theme";
@@ -39,6 +40,8 @@ import {
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
+import {QueryKeys} from "@constants/query-keys";
+import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -52,6 +55,14 @@ type Props = CompositeScreenProps<
 >;
 
 const OwnerTableScreen = ({navigation}: Props) => {
+  const queryClient = useQueryClient();
+  const isFetchingTables = useIsFetching({
+    queryKey: [QueryKeys.TABLE, "LIST", "by-search"],
+  });
+  const isFetchingUpcomingBookings = useIsFetching({
+    queryKey: [QueryKeys.UPCOMING_BOOKING],
+  });
+
   const {
     window: {height: WINDOW_HEIGHT},
   } = useDimensions();
@@ -124,6 +135,15 @@ const OwnerTableScreen = ({navigation}: Props) => {
 
   return (
     <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={isFetchingTables == 1 || isFetchingUpcomingBookings == 1}
+          onRefresh={async () => {
+            await queryClient.invalidateQueries([QueryKeys.TABLE]);
+            await queryClient.invalidateQueries([QueryKeys.UPCOMING_BOOKING]);
+          }}
+        />
+      }
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         paddingBottom: splitAppTheme.space[8],

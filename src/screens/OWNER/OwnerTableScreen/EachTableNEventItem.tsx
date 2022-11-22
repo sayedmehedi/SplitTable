@@ -14,6 +14,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
@@ -59,9 +60,21 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
   useHandleResponseResultError(data);
 
   const handleDelete = () => {
-    deleteTable({
-      tableId: item.id,
-    });
+    Alert.alert("Remove", "Are your sure?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Sure",
+        style: "destructive",
+        onPress() {
+          deleteTable({
+            tableId: item.id,
+          });
+        },
+      },
+    ]);
   };
 
   return (

@@ -20,9 +20,12 @@ import {
   GlobalAxiosRequestConfig,
   GetSplitTablesQueryParams,
   ToggleFavoriteClubRequest,
+  GetBookingHistoryResponse,
   ToggleFavoriteClubResponse,
+  GetUpcomingBookingResponse,
   GetBookedTablesQueryParams,
   GetTablesByLocationResponse,
+  GetUpcomingBookingQueryParams,
   GetTablesBySearchTermResponse,
   GetTablesByLocationQueryParams,
   GetSplitTablesByClubIdResponse,
@@ -30,9 +33,6 @@ import {
   GetBookedTablesByClubIdResponse,
   GetBookedTablesByClubIdQueryParams,
   GetSplitTablesByClubIdQueryParams,
-  GetBookingHistoryResponse,
-  GetUpcomingBookingResponse,
-  GetUpcomingBookingQueryParams,
   GetBookingHistoryQueryParams,
   GetOwnerTablesQueryParams,
   GetOwnerTablesResponse,
@@ -53,6 +53,7 @@ import {
   GetOwnerClubHolidaysQueryParams,
   ConfirmBookingRequest,
   ConfirmBookingResponse,
+  CancelBookingResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -65,6 +66,14 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  cancenBooking(
+    bookingId: number,
+  ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.get<CancelBookingResponse>(
+      `cancel-booking/${bookingId}`,
+    );
+  }
 
   confirmBooking(
     data: ConfirmBookingRequest,

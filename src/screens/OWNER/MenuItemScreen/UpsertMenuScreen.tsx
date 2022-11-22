@@ -60,13 +60,14 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
   const {data: clubInfoData, isLoading: isClubInfoLoading} =
     useGetOwnerClubInfoQuery();
 
-  const {control, setValue, handleSubmit, setError} = useForm<FormVlaues>({
-    defaultValues: {
-      name: "",
-      details: "",
-      status: 1,
-    },
-  });
+  const {control, setValue, handleSubmit, setError, reset} =
+    useForm<FormVlaues>({
+      defaultValues: {
+        name: "",
+        details: "",
+        status: 1,
+      },
+    });
 
   React.useEffect(() => {
     if (clubInfoData?.id) {
@@ -98,6 +99,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
     isLoading: isCreating,
     isError: isCreateError,
     error: createError,
+    isSuccess: isCreateSuccess,
   } = useCreateOwnerClubMenuMutation();
   useHandleNonFieldError(createError);
   useHandleResponseResultError(createResponse);
@@ -132,9 +134,10 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
           onSuccess(data) {
             if (!isResponseResultError(data)) {
               toast.success(data.success);
-              navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
-                screen: OwnerMainBottomTabRoutes.MENU,
-              });
+              reset();
+              // navigation.navigate(OwnerStackRoutes.OWNER_MAIN_TABS, {
+              //   screen: OwnerMainBottomTabRoutes.MENU,
+              // });
             }
           },
         });
@@ -180,9 +183,21 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
       result.assets !== undefined &&
       result.assets.length === 1
     ) {
-      setValue("image.uri", result.assets[0].uri!);
-      setValue("image.type", result.assets[0].type!);
-      setValue("image.name", result.assets[0].fileName!);
+      setValue("image.uri", result.assets[0].uri!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setValue("image.type", result.assets[0].type!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setValue("image.name", result.assets[0].fileName!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
     }
   };
 
@@ -265,10 +280,41 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
         </View>
       ) : null}
 
+      {isCreating ? (
+        <View
+          style={{
+            padding: splitAppTheme.space[3],
+            marginBottom: splitAppTheme.space[4],
+          }}>
+          <ActivityIndicator />
+        </View>
+      ) : isCreateSuccess ? (
+        <View
+          style={{
+            padding: splitAppTheme.space[3],
+            borderRadius: splitAppTheme.radii.lg,
+            marginBottom: splitAppTheme.space[4],
+            borderWidth: splitAppTheme.borderWidths[1],
+            borderColor: splitAppTheme.colors.green[400],
+          }}>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: splitAppTheme.fontSizes.sm,
+              color: splitAppTheme.colors.green[400],
+            }}>
+            Successfully created
+          </Text>
+        </View>
+      ) : null}
+
       <Controller
         name={"image.uri"}
+        rules={{
+          required: "This field is required",
+        }}
         control={control}
-        render={({field}) => (
+        render={({field, formState: {errors}}) => (
           <React.Fragment>
             <TouchableOpacity
               onPress={() => {
@@ -329,6 +375,21 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
               )}
             </TouchableOpacity>
 
+            <ErrorMessage
+              errors={errors}
+              name={field.name}
+              render={({message}) => (
+                <Text
+                  style={{
+                    marginVertical: splitAppTheme.space[1],
+                    textAlign: "center",
+                    color: splitAppTheme.colors.red[300],
+                  }}>
+                  {message}
+                </Text>
+              )}
+            />
+
             <ActionSheet ref={actionSheetRef}>
               <View
                 style={{
@@ -373,6 +434,9 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
         <Controller
           control={control}
           name={"name"}
+          rules={{
+            required: "This field is required",
+          }}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
               <View style={styles.SectionStyle}>
@@ -391,7 +455,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                 render={({message}) => (
                   <Text
                     style={{
-                      marginTop: 5,
+                      marginVertical: splitAppTheme.space[1],
                       color: splitAppTheme.colors.red[300],
                     }}>
                     {message}
@@ -411,12 +475,16 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
             <Controller
               control={control}
               name={"price"}
+              rules={{
+                required: "This field is required",
+              }}
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
                     <TextInput
                       onBlur={field.onBlur}
                       placeholder={"Price"}
+                      keyboardType={"number-pad"}
                       value={`${field.value ?? ""}`}
                       onChangeText={field.onChange}
                       style={{flex: 1, paddingLeft: 20}}
@@ -429,7 +497,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                     render={({message}) => (
                       <Text
                         style={{
-                          marginTop: 5,
+                          marginVertical: splitAppTheme.space[1],
                           color: splitAppTheme.colors.red[300],
                         }}>
                         {message}
@@ -445,11 +513,15 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
             <Controller
               name={"qty"}
               control={control}
+              rules={{
+                required: "This field is required",
+              }}
               render={({field, formState: {errors}}) => (
                 <React.Fragment>
                   <View style={styles.SectionStyle}>
                     <TextInput
                       onBlur={field.onBlur}
+                      keyboardType={"number-pad"}
                       value={`${field.value ?? ""}`}
                       onChangeText={field.onChange}
                       placeholder={"Qty. Stock"}
@@ -463,7 +535,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                     render={({message}) => (
                       <Text
                         style={{
-                          marginTop: 5,
+                          marginVertical: splitAppTheme.space[1],
                           color: splitAppTheme.colors.red[300],
                         }}>
                         {message}
@@ -511,7 +583,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                   render={({message}) => (
                     <Text
                       style={{
-                        marginTop: 5,
+                        marginVertical: splitAppTheme.space[1],
                         color: splitAppTheme.colors.red[300],
                       }}>
                       {message}
@@ -561,7 +633,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                   render={({message}) => (
                     <Text
                       style={{
-                        marginTop: 5,
+                        marginVertical: splitAppTheme.space[1],
                         color: splitAppTheme.colors.red[300],
                       }}>
                       {message}
