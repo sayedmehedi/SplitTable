@@ -59,6 +59,12 @@ const EmailLoginScreen = ({navigation}: Props) => {
               toast.success(data.success);
             },
           });
+        } else {
+          if (/^please verify your email first$/i.test(data.error)) {
+            navigation.navigate(RootStackRoutes.EMAIL_VERIFICATION, {
+              email: values.email,
+            });
+          }
         }
       },
     });
