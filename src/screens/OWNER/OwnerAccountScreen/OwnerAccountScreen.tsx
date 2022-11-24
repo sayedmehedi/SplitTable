@@ -36,6 +36,7 @@ import {
   OwnerBottomTabParamList,
   OwnerAccountStackParamList,
 } from "@src/navigation";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -58,11 +59,12 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
     isLoading: isClubInfoLoading,
   } = useGetOwnerClubInfoQuery();
   useHandleNonFieldError(clubInfoError);
+  const {data: authData, isLoading: isAuthDataLoading} = useGetAuthDataQuery();
 
   const {mutate: logout, error: logoutError} = useLogoutMutation();
   useHandleNonFieldError(logoutError);
 
-  if (isClubInfoLoading) {
+  if (isClubInfoLoading || isAuthDataLoading) {
     return (
       <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
         <ActivityIndicator size={"small"} />
@@ -104,7 +106,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
             borderRadius: 30,
           }}
           source={{
-            uri: clubInfoData.slider_images[0],
+            uri: authData?.profile_image,
           }}
         />
 
