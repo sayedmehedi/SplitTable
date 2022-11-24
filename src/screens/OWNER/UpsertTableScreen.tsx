@@ -669,7 +669,6 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     value: AppTableTypes.SPLIT,
                   },
                 ]}
-                supportedOrientations={["landscape"]}
                 onChange={option => {
                   // this.setState({textInputValue: option.label});
                   field.onChange(option.value);

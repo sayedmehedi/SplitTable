@@ -437,7 +437,6 @@ export default function CustomerSignupForm({
                     value: AuthGender.OTHER,
                   },
                 ]}
-                supportedOrientations={["landscape"]}
                 onChange={option => {
                   // this.setState({textInputValue: option.label});
                   field.onChange(option.value);
