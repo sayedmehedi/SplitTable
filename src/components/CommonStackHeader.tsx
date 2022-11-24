@@ -1,23 +1,13 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import Entypo from "react-native-vector-icons/Entypo";
+import AppHeaderBackground from "./AppHeaderBackground";
 import {StackHeaderProps} from "@react-navigation/stack";
 import {
   Header,
   getHeaderTitle,
-  HeaderBackground,
   HeaderBackButton,
 } from "@react-navigation/elements";
-
-const headerBackground = () => (
-  <HeaderBackground
-    style={{
-      elevation: 20,
-      backgroundColor: splitAppTheme.colors.white,
-      shadowColor: splitAppTheme.colors.primary[400],
-    }}
-  />
-);
 
 const CommonStackHeader = (props: StackHeaderProps) => {
   const {back, route, layout, options, navigation} = props;
@@ -55,7 +45,7 @@ const CommonStackHeader = (props: StackHeaderProps) => {
                 />
               )
       }
-      headerBackground={headerBackground}
+      headerBackground={AppHeaderBackground}
       headerLeftContainerStyle={options.headerLeftContainerStyle}
       headerRightContainerStyle={options.headerRightContainerStyle}
       headerTitleStyle={{

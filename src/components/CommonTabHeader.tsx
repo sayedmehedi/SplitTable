@@ -1,24 +1,13 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import Entypo from "react-native-vector-icons/Entypo";
-import {RegisteredStyle, TextStyle} from "react-native";
+import AppHeaderBackground from "./AppHeaderBackground";
 import {BottomTabHeaderProps} from "@react-navigation/bottom-tabs";
 import {
   Header,
   getHeaderTitle,
-  HeaderBackground,
   HeaderBackButton,
 } from "@react-navigation/elements";
-
-const headerBackground = () => (
-  <HeaderBackground
-    style={{
-      elevation: 20,
-      backgroundColor: splitAppTheme.colors.white,
-      shadowColor: splitAppTheme.colors.primary[400],
-    }}
-  />
-);
 
 const CommonStackHeader = (props: BottomTabHeaderProps) => {
   const {route, layout, options, navigation} = props;
@@ -49,7 +38,7 @@ const CommonStackHeader = (props: BottomTabHeaderProps) => {
           )}
         />
       )}
-      headerBackground={headerBackground}
+      headerBackground={AppHeaderBackground}
       headerTitleStyle={{
         fontSize: 22,
         fontWeight: "bold",
