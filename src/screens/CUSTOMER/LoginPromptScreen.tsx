@@ -73,7 +73,11 @@ const LoginPromptScreen = ({navigation}: Props) => {
       style={{
         flex: 1,
       }}>
-      <FocusAwareStatusBar translucent backgroundColor="transparent" />
+      <FocusAwareStatusBar
+        translucent
+        barStyle={"light-content"}
+        backgroundColor="transparent"
+      />
 
       <LinearGradient
         style={{
