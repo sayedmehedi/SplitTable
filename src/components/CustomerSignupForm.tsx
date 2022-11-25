@@ -196,8 +196,11 @@ export default function CustomerSignupForm({
       <View style={{flex: 1, marginTop: 20}}>
         <Controller
           name={"image.uri"}
+          rules={{
+            required: "This field is required",
+          }}
           control={control}
-          render={({field}) => (
+          render={({field, formState: {errors}}) => (
             <React.Fragment>
               <TouchableOpacity
                 onPress={() => {
@@ -239,6 +242,21 @@ export default function CustomerSignupForm({
                   </View>
                 )}
               </TouchableOpacity>
+
+              <ErrorMessage
+                errors={errors}
+                name={field.name}
+                render={({message}) => (
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      textAlign: "center",
+                      color: splitAppTheme.colors.red[300],
+                    }}>
+                    {message}
+                  </Text>
+                )}
+              />
 
               <ActionSheet ref={actionSheetRef}>
                 <View
