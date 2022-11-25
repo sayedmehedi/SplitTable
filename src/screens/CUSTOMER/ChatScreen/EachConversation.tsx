@@ -79,7 +79,7 @@ const EachConversation = ({
             style={{
               fontSize: 12,
               color: "#023047",
-              fontFamily: "Inter-Regular",
+             // fontFamily: "Inter-Regular",
               width: WINDOW_WIDTH * 0.5,
             }}>
             {item.message.title}
@@ -110,7 +110,7 @@ const EachConversation = ({
           style={{
             fontSize: 10,
             color: "#E62B56",
-            fontFamily: "Inter-Regular",
+           // fontFamily: "Inter-Regular",
           }}>
           {item.message.created_at}
         </Text>

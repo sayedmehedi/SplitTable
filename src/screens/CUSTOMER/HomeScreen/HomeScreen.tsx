@@ -150,7 +150,7 @@ const HomeScreen = ({navigation}: Props) => {
           start={{x: 0, y: 1}}
           style={{height: WINDOW_HEIGHT * 0.25}}
           colors={["#DF3BC0", "#472BBE"]}>
-          <SafeAreaView>
+         
             <View
               style={{
                 paddingVertical: splitAppTheme.space[2],
@@ -269,7 +269,7 @@ const HomeScreen = ({navigation}: Props) => {
                 </View>
               </View>
             </View>
-          </SafeAreaView>
+         
         </LinearGradient>
       </View>
 

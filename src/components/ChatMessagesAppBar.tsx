@@ -10,6 +10,7 @@ import {CustomerChatStackRoutes} from "@constants/routes";
 import Entypo from "react-native-vector-icons/Entypo";
 import {splitAppTheme} from "@src/theme";
 import truncate from "lodash.truncate";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type RtProp = RouteProp<
   CustomerChatStackParamList,
@@ -24,7 +25,7 @@ export default function ChatMessagesAppBar({
   navigation: ChatMessagesNavigationType;
 }) {
   return (
-    <View style={{overflow: "hidden", paddingBottom: splitAppTheme.space[2]}}>
+    <SafeAreaView>
       <View
         style={[
           {
@@ -34,7 +35,7 @@ export default function ChatMessagesAppBar({
             paddingLeft: splitAppTheme.space[1],
             backgroundColor: splitAppTheme.colors.white,
           },
-          splitAppTheme.shadows[9],
+          splitAppTheme.shadows[1],
         ]}>
         <View>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -84,6 +85,6 @@ export default function ChatMessagesAppBar({
           </Text>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

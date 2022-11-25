@@ -276,7 +276,7 @@ const ChatMessagesScreen = ({route}: Props) => {
             }}>
             <TextInput
               style={{
-                padding: 10,
+                padding: 20,
                 paddingLeft: 15,
               }}
               multiline

@@ -210,7 +210,12 @@ export default function ProfileUpdaterItem({type}: Props) {
           )}
 
           {type === "address" && (
-            <React.Fragment>
+            <View style={{
+              
+              width:'90%',
+              flexDirection:'row',
+              alignItems:'center'
+            }}>
               <MaterialCommunityIcons
                 name="map-marker-outline"
                 size={20}
@@ -220,7 +225,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               <Text style={{marginLeft: 10, color: "#707070"}}>
                 {profileDataResponse?.location}
               </Text>
-            </React.Fragment>
+            </View>
           )}
         </View>
 
@@ -441,6 +446,7 @@ export default function ProfileUpdaterItem({type}: Props) {
                           style={[
                             styles.modalInput,
                             {
+                            
                               marginVertical: splitAppTheme.space[2],
                               marginBottom: splitAppTheme.space[3],
                             },
