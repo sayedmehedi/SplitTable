@@ -99,7 +99,7 @@ export default function ReviewList() {
               alignItems: "center",
               justifyContent: "space-between",
               marginTop: splitAppTheme.space[6],
-              marginHorizontal: splitAppTheme.space[6],
+              marginBottom: splitAppTheme.space[6],
             }}>
             <View
               style={{

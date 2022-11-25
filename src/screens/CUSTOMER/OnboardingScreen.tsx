@@ -97,14 +97,13 @@ const OnboardingScreen = ({navigation}: Props) => {
 
           <LinearGradient
             style={{
-              alignItems: "center",
               position: "absolute",
               borderTopLeftRadius: 30,
-              justifyContent: "center",
+              // justifyContent: "center",
               borderTopRightRadius: 30,
               width: splitAppTheme.sizes.full,
               bottom: PAGINATION_INDICATOR_HEIGHT,
-              height: height * 0.47 - PAGINATION_INDICATOR_HEIGHT,
+              height: height * 0.43 - PAGINATION_INDICATOR_HEIGHT,
             }}
             end={{x: 0, y: 0}}
             start={{x: 0, y: 1}}
@@ -112,7 +111,10 @@ const OnboardingScreen = ({navigation}: Props) => {
               splitAppTheme.colors.primary[400],
               splitAppTheme.colors.secondary[400],
             ]}>
-            <View>
+            <View
+              style={{
+                paddingTop: height * 0.47 * 0.12,
+              }}>
               <Text
                 style={{
                   textAlign: "center",
@@ -178,6 +180,7 @@ const OnboardingScreen = ({navigation}: Props) => {
                 style={{
                   width: splitAppTheme.sizes.full,
                   marginBottom: splitAppTheme.space[5],
+                  marginTop: height * 0.47 * 0.12,
                 }}>
                 <View
                   style={{

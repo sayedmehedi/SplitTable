@@ -1,6 +1,8 @@
 import React from "react";
 import {ClubBooking} from "@src/models";
 import EachBookingItem from "./EachBookingItem";
+import ReviewModal from "@components/ReviewModal";
+import {useDisclosure} from "react-use-disclosure";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -26,10 +28,6 @@ const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
 const renderUpcomingBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
   <EachBookingItem type={"upcoming"} item={item} />
-);
-
-const renderHistoryBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem type={"history"} item={item} />
 );
 
 const UpcomingBookingRoute = ({
@@ -154,12 +152,15 @@ const HistoryBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+  const [reviewerId, setReviewerId] = React.useState<number | null>(null);
   const {
     data: clubInfoData,
     isLoading: isClubInfoLoading,
     error: clubInfoError,
   } = useGetOwnerClubInfoQuery();
   useHandleNonFieldError(clubInfoError);
+
+  const {toggle, isOpen} = useDisclosure();
 
   const {
     refetch,
@@ -205,6 +206,26 @@ const HistoryBookingRoute = ({
     };
   }, [splitAppTheme.space[6]]);
 
+  const handleAddReviewPress = React.useCallback(
+    (item: ClubBooking) => {
+      setReviewerId(item.user_id);
+      toggle();
+    },
+    [toggle],
+  );
+
+  const renderHistoryBookingItem: ListRenderItem<ClubBooking> =
+    React.useCallback(
+      ({item}) => (
+        <EachBookingItem
+          type={"history"}
+          item={item}
+          onAddReviewPress={handleAddReviewPress}
+        />
+      ),
+      [handleAddReviewPress],
+    );
+
   if (isLoadingInfiniteResources || isClubInfoLoading) {
     return (
       <View
@@ -220,6 +241,7 @@ const HistoryBookingRoute = ({
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
+      <ReviewModal open={isOpen} onClose={toggle} reviewerId={reviewerId!} />
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator />
@@ -265,16 +287,6 @@ const OwnerBookingListScreen = () => {
     });
     setSelectedIndex(index);
   };
-
-  const setIndex = React.useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const viewSize = event.nativeEvent.layoutMeasurement.width;
-      const contentOffset = event.nativeEvent.contentOffset.x;
-      const carouselIndex = Math.floor(contentOffset / viewSize);
-      setSelectedIndex(carouselIndex);
-    },
-    [],
-  );
 
   const ListHeaderComponent = (
     <View
@@ -378,6 +390,10 @@ const OwnerBookingListScreen = () => {
 
   return (
     <View style={{flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       {selectedIndex === 0 ? (
         <UpcomingBookingRoute ListHeaderComponent={ListHeaderComponent} />
       ) : (

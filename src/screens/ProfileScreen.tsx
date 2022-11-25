@@ -1,9 +1,12 @@
 import React from "react";
+import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import {QueryKeys} from "@constants/query-keys";
 import {isCustomerProfile} from "@utils/profile";
 import PhotoList from "./CUSTOMER/AccountScreen/PhotoList";
 import ReviewList from "./CUSTOMER/AccountScreen/ReviewList";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import AddUserPhotoBtn from "./CUSTOMER/AccountScreen/AddUserPhotoBtn";
 import {
   RootStackRoutes,
   CustomerStackRoutes,
@@ -27,8 +30,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import AddUserPhotoBtn from "./CUSTOMER/AccountScreen/AddUserPhotoBtn";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -134,9 +135,10 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         </Text>
         <Text
           style={{
-            fontSize: 14,
             color: "#8A8D9F",
-            fontFamily: "Satoshi-Regular",
+            textAlign: "center",
+            fontSize: splitAppTheme.fontSizes.sm,
+            fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
           }}>
           {profileData?.location}
         </Text>
@@ -151,9 +153,9 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         }}>
         <View style={{alignItems: "center"}}>
           <LinearGradient
-            colors={["#DF3BC0", "#472BBE"]}
-            start={{x: 0, y: 1}}
             end={{x: 0, y: 0}}
+            start={{x: 0, y: 1}}
+            colors={["#DF3BC0", "#472BBE"]}
             style={{
               width: 40,
               height: 40,
@@ -368,8 +370,8 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           if (selectedIndex === 0) {
             return (
               <PhotoList
-                isMine={authData?.id === profileData.id}
                 userId={profileData.id}
+                isMine={authData?.id === profileData.id}
               />
             );
           }

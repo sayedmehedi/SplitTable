@@ -27,6 +27,7 @@ import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 import useUpdateOwnerClubInfoMutation from "@hooks/clubs/useUpdateOwnerClubInfoMutation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {timeToDate} from "@utils/club";
 
 type Props = {
   type: "time" | "cuisine" | "cost" | "about" | "slider";
@@ -40,14 +41,6 @@ type FormValues = {
   avg_cost_max: string;
   about: string;
 };
-
-function timeToDate(time: string) {
-  const [hour, min, sec] = time.split(":") as [string, string, string];
-  const date = new Date();
-  date.setHours(parseInt(hour), parseInt(min), parseInt(sec));
-
-  return date;
-}
 
 type NavigationProp = CompositeNavigationProp<
   StackNavigationProp<OwnerStackParamList, typeof OwnerStackRoutes.INFORMATION>,
@@ -211,7 +204,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
-                Abount Club/Bar - Max 500 word
+                Abount Club/Bar
               </Text>
             </React.Fragment>
           )}
@@ -225,7 +218,7 @@ export default function ProfileUpdaterItem({type}: Props) {
               />
 
               <Text style={{marginLeft: 10, color: "#707070"}}>
-                Slider image - max 10/10
+                Slider image
               </Text>
             </React.Fragment>
           )}

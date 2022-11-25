@@ -16,7 +16,6 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
@@ -107,7 +106,7 @@ const AccountScreen = ({navigation}: Props) => {
           }}
         />
 
-        <View style={{marginLeft: 10,width:'80%'}}>
+        <View style={{marginLeft: 10, width: "80%"}}>
           <Text
             style={{
               fontSize: 16,
@@ -117,21 +116,14 @@ const AccountScreen = ({navigation}: Props) => {
             {profileData?.name}
           </Text>
           <Text
-          numberOfLines={2}
+            numberOfLines={2}
             style={{
-              fontSize: 12,
+              width: "100%",
               color: "#8A8D9F",
+              fontSize: splitAppTheme.fontSizes.sm,
               fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
             }}>
             {profileData?.location}
-          </Text>
-          <Text
-            style={{
-              fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
-              fontSize: 12,
-              color: "#8A8D9F",
-            }}>
-            Member Since June 2022
           </Text>
         </View>
       </View>

@@ -2,32 +2,36 @@ import React from "react";
 import {ClubBooking} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import {
-  ActivityIndicator,
-  Alert,
-  Image,
   Text,
-  TouchableOpacity,
   View,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
-import {useDisclosure} from "react-use-disclosure";
-import ReviewModal from "@components/ReviewModal";
-import useCancelBookingMutation from "@hooks/useCancelBookingMutation";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useAppToast from "@hooks/useAppToast";
-import {isResponseResultError} from "@utils/error-handling";
 import FastImage from "react-native-fast-image";
+import {isResponseResultError} from "@utils/error-handling";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useCancelBookingMutation from "@hooks/useCancelBookingMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
-const EachBookingItem = ({
-  item,
-  type,
-}: {
+type IHistoryProps = {
+  type: "history";
   item: ClubBooking;
-  type: "upcoming" | "history";
-}) => {
-  const toast = useAppToast();
+  onAddReviewPress: (item: ClubBooking) => void;
+};
 
-  const {toggle, isOpen} = useDisclosure();
+type IUpcomingProps = {
+  type: "upcoming";
+  item: ClubBooking;
+};
+
+function EachBookingItem(props: IHistoryProps): JSX.Element;
+function EachBookingItem(props: IUpcomingProps): JSX.Element;
+function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
+  const {item, type} = props;
+
+  const toast = useAppToast();
 
   const {
     mutate: cancelBooking,
@@ -136,12 +140,6 @@ const EachBookingItem = ({
           </Text>
         </View>
 
-        <ReviewModal
-          open={isOpen}
-          onClose={toggle}
-          reviewerId={item.owner_id}
-        />
-
         <View
           style={{
             flexDirection: "row",
@@ -180,7 +178,10 @@ const EachBookingItem = ({
           </View>
 
           {type === "history" && !item.is_reviewed && (
-            <TouchableOpacity onPress={() => toggle()}>
+            <TouchableOpacity
+              onPress={() => {
+                props.onAddReviewPress(item);
+              }}>
               <Text
                 style={{
                   textDecorationLine: "underline",
@@ -231,6 +232,6 @@ const EachBookingItem = ({
       </View>
     </View>
   );
-};
+}
 
 export default EachBookingItem;

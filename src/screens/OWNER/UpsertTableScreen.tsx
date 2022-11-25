@@ -489,7 +489,10 @@ export default function UpsertTableScreen({route, navigation}: Props) {
           name={"image.uri"}
           control={control}
           rules={{
-            required: "This field is required",
+            required:
+              route.params.actionMode === "create"
+                ? "This field is required"
+                : false,
           }}
           render={({field, formState: {errors}}) => (
             <React.Fragment>
@@ -623,7 +626,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                       onBlur={field.onBlur}
                       onChangeText={field.onChange}
                       placeholder={"Table/Event Name"}
-                      style={{flex: 1, paddingLeft: 20,height:50}}
+                      style={{flex: 1, paddingLeft: 20, height: 50}}
                     />
                   </View>
 
@@ -815,7 +818,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                         keyboardType={"number-pad"}
                         value={`${field.value ?? ""}`}
                         placeholder={"Total Seat/Guest"}
-                        style={{flex: 1, paddingLeft: 20,height:50}}
+                        style={{flex: 1, paddingLeft: 20, height: 50}}
                         onChangeText={value => field.onChange(value)}
                       />
                     </View>
@@ -865,7 +868,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                         keyboardType={"number-pad"}
                         value={`${field.value ?? ""}`}
                         placeholder={"Price/Whole table"}
-                        style={{flex: 1, paddingLeft: 20,height:50}}
+                        style={{flex: 1, paddingLeft: 20, height: 50}}
                         onChangeText={value => field.onChange(value)}
                       />
                     </View>
@@ -919,7 +922,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                         keyboardType="numeric"
                         onBlur={field.onBlur}
                         placeholder={"Total Men Seat/Guest"}
-                        style={{flex: 1, paddingLeft: 20,height:50}}
+                        style={{flex: 1, paddingLeft: 20, height: 50}}
                         onChangeText={field.onChange}
                       />
                     </View>
@@ -969,7 +972,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                         keyboardType="numeric"
                         onBlur={field.onBlur}
                         placeholder={"Price/Each Men Guest"}
-                        style={{flex: 1, paddingLeft: 20,height:50}}
+                        style={{flex: 1, paddingLeft: 20, height: 50}}
                         onChangeText={field.onChange}
                       />
                     </View>
@@ -1020,7 +1023,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                         onBlur={field.onBlur}
                         onChangeText={field.onChange}
                         placeholder={"Total Women Seat/Guest"}
-                        style={{flex: 1, paddingLeft: 20,height:50}}
+                        style={{flex: 1, paddingLeft: 20, height: 50}}
                       />
                     </View>
 
@@ -1070,7 +1073,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                         onBlur={field.onBlur}
                         onChangeText={field.onChange}
                         placeholder={"Price/Each Women Guest"}
-                        style={{flex: 1, paddingLeft: 20,height:50}}
+                        style={{flex: 1, paddingLeft: 20, height: 50}}
                       />
                     </View>
 
@@ -1116,7 +1119,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     onBlur={field.onBlur}
                     value={field.value}
                     placeholder={"Performer"}
-                    style={{flex: 1, paddingLeft: 20,height:50}}
+                    style={{flex: 1, paddingLeft: 20, height: 50}}
                     onChangeText={value => field.onChange(value)}
                   />
                 </View>
@@ -1160,7 +1163,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                   <TextInput
                     onBlur={field.onBlur}
                     value={field.value}
-                    style={{flex: 1, paddingLeft: 20,height:50}}
+                    style={{flex: 1, paddingLeft: 20, height: 50}}
                     placeholder={"Cuisines/Menu Offer"}
                     onChangeText={value => field.onChange(value)}
                   />
@@ -1204,7 +1207,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     placeholder={"Age limit"}
                     onChangeText={field.onChange}
                     value={`${field.value ?? ""}`}
-                    style={{flex: 1, paddingLeft: 20,height:50}}
+                    style={{flex: 1, paddingLeft: 20, height: 50}}
                   />
                 </View>
 

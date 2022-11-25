@@ -16,3 +16,11 @@ export function parseClubAvgCost(avgCost: string) {
     min_avg_cost,
   };
 }
+
+export function timeToDate(time: string) {
+  const [hour, min, sec] = time.split(":") as [string, string, string];
+  const date = new Date();
+  date.setHours(parseInt(hour), parseInt(min), parseInt(sec));
+
+  return date;
+}

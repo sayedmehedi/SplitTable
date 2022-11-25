@@ -8,35 +8,43 @@ import {
 } from "react-native";
 import React from "react";
 import {splitAppTheme} from "@src/theme";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import {AirbnbRating, Rating} from "react-native-ratings";
-import useAddClubReviewMutation from "@hooks/clubs/useAddClubReviewMutation";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import AppGradientButton from "@components/AppGradientButton";
-import Toast from "react-native-toast-message";
 import useAppToast from "@hooks/useAppToast";
+import Toast from "react-native-toast-message";
+import {AirbnbRating} from "react-native-ratings";
 import {isResponseResultError} from "@utils/error-handling";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import AppGradientButton from "@components/AppGradientButton";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useAddClubReviewMutation from "@hooks/clubs/useAddClubReviewMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 type Props = {
-  reviewerId: number;
   open: boolean;
+  reviewerId: number;
   onClose: () => void;
 };
 
 export default function ReviewModal({onClose, open, reviewerId}: Props) {
   const toast = useAppToast();
-  const [rating, setRating] = React.useState<number>(1);
   const [review, setReview] = React.useState("");
+  const [rating, setRating] = React.useState<number>(1);
+  const [fieldErrors, setFieldErrors] = React.useState<string[]>([]);
 
   const {
     mutate: addClubReview,
     data: clubReviewResponse,
     error: addClubReviewError,
+    isError: isAddClubReviewError,
     isLoading: isAddingClubReview,
   } = useAddClubReviewMutation();
   useHandleNonFieldError(addClubReviewError);
   useHandleResponseResultError(clubReviewResponse);
+
+  React.useEffect(() => {
+    if (isAddClubReviewError) {
+      setFieldErrors(Object.values(addClubReviewError.field_errors));
+    }
+  }, [isAddClubReviewError]);
 
   const handleSubmitReview = () => {
     if (review === "") {
@@ -127,6 +135,9 @@ export default function ReviewModal({onClose, open, reviewerId}: Props) {
                 <TextInput
                   multiline
                   numberOfLines={5}
+                  onFocus={() => {
+                    setFieldErrors([]);
+                  }}
                   onChangeText={setReview}
                   textAlignVertical={"top"}
                   placeholder={"Write Review"}
@@ -137,6 +148,19 @@ export default function ReviewModal({onClose, open, reviewerId}: Props) {
                     borderWidth: splitAppTheme.borderWidths[1],
                   }}
                 />
+
+                {fieldErrors.map((errorMsg, i) => (
+                  <Text
+                    key={i}
+                    style={{
+                      textAlign: "center",
+                      marginTop: splitAppTheme.space[2],
+                      fontSize: splitAppTheme.fontSizes.xs,
+                      color: splitAppTheme.colors.red[500],
+                    }}>
+                    {errorMsg}
+                  </Text>
+                ))}
               </View>
 
               <View style={{marginVertical: splitAppTheme.space[4]}}>

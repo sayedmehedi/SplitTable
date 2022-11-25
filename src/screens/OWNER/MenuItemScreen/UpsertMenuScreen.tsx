@@ -318,7 +318,10 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
       <Controller
         name={"image.uri"}
         rules={{
-          required: "This field is required",
+          required:
+            route.params.actionMode === "create"
+              ? "This field is required"
+              : false,
         }}
         control={control}
         render={({field, formState: {errors}}) => (

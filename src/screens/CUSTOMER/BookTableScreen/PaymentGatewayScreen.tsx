@@ -3,19 +3,25 @@ import {
   CustomerStackRoutes,
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
+import {splitAppTheme} from "@src/theme";
 import {QueryKeys} from "@constants/query-keys";
 import {useQueryClient} from "@tanstack/react-query";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useGetPaymentUrlQuery from "@hooks/useGetPaymentUrlQuery";
-import {View, Text, StyleSheet, ActivityIndicator, Modal} from "react-native";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {
+  View,
+  Modal,
+  Keyboard,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import WebView, {
   WebViewNavigation,
   WebViewMessageEvent,
 } from "react-native-webview";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -30,7 +36,9 @@ const INJECTED_JAVASCRIPT = `(function() {
   
   okButton.addEventListener("click", () => {
     window.ReactNativeWebView.postMessage("success")
-  })
+  });
+
+ 
 })();`;
 
 const PaymentGatewayScreen = ({navigation, route}: Props) => {
@@ -90,10 +98,21 @@ const PaymentGatewayScreen = ({navigation, route}: Props) => {
         })
       `);
     }
+
+    if (titleLowercase.includes("payment")) {
+      webviewRef.current.injectJavaScript(`
+        const proceedBtn = document.querySelector(".btn.btn-primary");
+
+        
+        proceedBtn.addEventListener("click", () => {
+          window.ReactNativeWebView.postMessage("proceed")
+        });
+      `);
+    }
   }
 
   async function handleMessage(event: WebViewMessageEvent) {
-    const payload = event.nativeEvent.data as "success" | "error";
+    const payload = event.nativeEvent.data as "success" | "error" | "proceed";
 
     switch (payload) {
       case "success":
@@ -108,6 +127,13 @@ const PaymentGatewayScreen = ({navigation, route}: Props) => {
       case "error":
         {
           navigation.goBack();
+        }
+        break;
+
+      case "proceed":
+        {
+          // console.log("closing keyboard");
+          Keyboard.dismiss();
         }
         break;
     }

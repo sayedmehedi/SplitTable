@@ -13,7 +13,7 @@ function useHandleNonFieldError(
     } else if (!!error) {
       toast.error(error.message);
     }
-  }, [error]);
+  }, [JSON.stringify(error)]);
 
   return null;
 }

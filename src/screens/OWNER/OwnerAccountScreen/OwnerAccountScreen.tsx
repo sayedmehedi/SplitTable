@@ -39,6 +39,8 @@ import {
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import FastImage from "react-native-fast-image";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import dayjs from "dayjs";
+import {timeToDate} from "@utils/club";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -119,28 +121,35 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         <View style={{marginLeft: 10}}>
           <Text
             style={{
-              fontFamily: "SatoshiVariable-Bold",
               fontSize: 16,
               color: "#030819",
+              fontFamily: "SatoshiVariable-Bold",
             }}>
             {clubInfoData.name}
           </Text>
           <Text
             style={{
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
+              width: "100%",
               color: "#8A8D9F",
+              fontSize: splitAppTheme.fontSizes.sm,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
             }}>
             {clubInfoData.location}
           </Text>
           <Text
             style={{
-              fontFamily: "Satoshi-Regular",
-              fontSize: 12,
               color: "#8A8D9F",
+              fontSize: splitAppTheme.fontSizes.xs,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
             }}>
-            Opening hour: {clubInfoData.opening_time} -{" "}
-            {clubInfoData.closing_time}
+            Opening Hour:{" "}
+            {clubInfoData?.opening_time
+              ? dayjs(timeToDate(clubInfoData.opening_time)).format("hh:mm A")
+              : ""}{" "}
+            -{" "}
+            {clubInfoData?.closing_time
+              ? dayjs(timeToDate(clubInfoData.closing_time)).format("hh:mm A")
+              : ""}
           </Text>
         </View>
       </View>

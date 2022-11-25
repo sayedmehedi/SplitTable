@@ -1,19 +1,24 @@
 import React from "react";
 import {ClubBooking} from "@src/models";
 import {splitAppTheme} from "@src/theme";
-import ReviewModal from "@components/ReviewModal";
-import {useDisclosure} from "react-use-disclosure";
-import {Image, Text, TouchableOpacity, View} from "react-native";
 import FastImage from "react-native-fast-image";
+import {Text, TouchableOpacity, View} from "react-native";
 
-const EachBookingItem = ({
-  item,
-  type,
-}: {
+type IHistoryProps = {
+  type: "history";
   item: ClubBooking;
-  type: "upcoming" | "history";
-}) => {
-  const {toggle, isOpen} = useDisclosure();
+  onAddReviewPress: (item: ClubBooking) => void;
+};
+
+type IUpcomingProps = {
+  type: "upcoming";
+  item: ClubBooking;
+};
+
+function EachBookingItem(props: IHistoryProps): JSX.Element;
+function EachBookingItem(props: IUpcomingProps): JSX.Element;
+function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
+  const {item, type} = props;
 
   return (
     <View
@@ -107,12 +112,6 @@ const EachBookingItem = ({
           </Text>
         </View>
 
-        <ReviewModal
-          open={isOpen}
-          onClose={toggle}
-          reviewerId={item.owner_id}
-        />
-
         <View
           style={{
             flexDirection: "row",
@@ -151,7 +150,10 @@ const EachBookingItem = ({
           </View>
 
           {type === "history" && !item.is_reviewed && (
-            <TouchableOpacity onPress={() => toggle()}>
+            <TouchableOpacity
+              onPress={() => {
+                props.onAddReviewPress(item);
+              }}>
               <Text
                 style={{
                   textDecorationLine: "underline",
@@ -181,6 +183,6 @@ const EachBookingItem = ({
       </View>
     </View>
   );
-};
+}
 
 export default EachBookingItem;

@@ -20,15 +20,13 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
 } from "react-native";
+import ReviewModal from "@components/ReviewModal";
+import {useDisclosure} from "react-use-disclosure";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
 const renderUpcomingBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
   <EachBookingItem type={"upcoming"} item={item} />
-);
-
-const renderHistoryBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem type={"history"} item={item} />
 );
 
 const UpcomingBookingRoute = ({
@@ -140,6 +138,8 @@ const HistoryBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+  const {toggle, isOpen} = useDisclosure();
+  const [reviewerId, setReviewerId] = React.useState<number | null>(null);
 
   const {
     refetch,
@@ -177,6 +177,26 @@ const HistoryBookingRoute = ({
     fetchNextPage();
   }, [fetchNextPage]);
 
+  const handleAddReviewPress = React.useCallback(
+    (item: ClubBooking) => {
+      setReviewerId(item.owner_id);
+      toggle();
+    },
+    [toggle],
+  );
+
+  const renderHistoryBookingItem: ListRenderItem<ClubBooking> =
+    React.useCallback(
+      ({item}) => (
+        <EachBookingItem
+          item={item}
+          type={"history"}
+          onAddReviewPress={handleAddReviewPress}
+        />
+      ),
+      [handleAddReviewPress],
+    );
+
   const flatlistContentContainerStyle = React.useMemo(() => {
     return {
       padding: splitAppTheme.space[6],
@@ -199,6 +219,8 @@ const HistoryBookingRoute = ({
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
+      <ReviewModal open={isOpen} onClose={toggle} reviewerId={reviewerId!} />
+
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator />

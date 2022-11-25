@@ -22,12 +22,13 @@ export class ApplicationError extends Error {
     if (this.isValidationError()) {
       const validationError = this.response!.data as ServerValidationError;
 
-      return Object.entries(
-        validationError.errors ?? validationError.error!,
-      ).reduce((acc, [fieldName, [errorMessage]]) => {
-        acc[fieldName] = errorMessage;
-        return acc;
-      }, {} as Record<string, string>);
+      return Object.entries(validationError.errors ?? {}).reduce(
+        (acc, [fieldName, [errorMessage]]) => {
+          acc[fieldName] = errorMessage;
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
     }
 
     return {};

@@ -69,6 +69,8 @@ export default function ProfileUpdaterItem({type}: Props) {
     if (profileDataResponse) {
       setValue("email", profileDataResponse.email);
       setValue("phone", profileDataResponse.phone);
+      setValue("first_name", profileDataResponse.first_name);
+      setValue("last_name", profileDataResponse.last_name);
     }
 
     if (profileDataResponse?.latitude) {
@@ -210,12 +212,12 @@ export default function ProfileUpdaterItem({type}: Props) {
           )}
 
           {type === "address" && (
-            <View style={{
-              
-              width:'90%',
-              flexDirection:'row',
-              alignItems:'center'
-            }}>
+            <View
+              style={{
+                width: "90%",
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
               <MaterialCommunityIcons
                 name="map-marker-outline"
                 size={20}
@@ -263,7 +265,10 @@ export default function ProfileUpdaterItem({type}: Props) {
             </Text>
 
             {type === "name" && (
-              <View style={{flexDirection: "row"}}>
+              <View
+                style={{
+                  flexDirection: "row",
+                }}>
                 <View style={{flex: 1}}>
                   <Controller
                     control={control}
@@ -446,7 +451,6 @@ export default function ProfileUpdaterItem({type}: Props) {
                           style={[
                             styles.modalInput,
                             {
-                            
                               marginVertical: splitAppTheme.space[2],
                               marginBottom: splitAppTheme.space[3],
                             },
@@ -461,7 +465,10 @@ export default function ProfileUpdaterItem({type}: Props) {
               </View>
             )}
 
-            <View>
+            <View
+              style={{
+                marginTop: splitAppTheme.space[3],
+              }}>
               <AppGradientButton
                 width={290}
                 title={"Update"}

@@ -115,10 +115,10 @@ export default function AddSliderPhotoBtn() {
   return (
     <View
       style={{
-        marginTop: splitAppTheme.space[3],
-        position: "absolute",
-        width: "100%",
         bottom: 0,
+        width: "100%",
+        position: "absolute",
+        marginTop: splitAppTheme.space[3],
       }}>
       <View>
         <TouchableOpacity
