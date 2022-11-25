@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>279694335608-rt74hls0hdhnlu79318aj05fs8q222tq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.279694335608-rt74hls0hdhnlu79318aj05fs8q222tq</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>279694335608-loc7uludmsqdi8i7g2hfv33nbv63m1ei.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBQYMGC5dQ6yvPOytfp2oUWWOblQwo-394</string>
+	<key>GCM_SENDER_ID</key>
+	<string>279694335608</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.SplitTable</string>
+	<key>PROJECT_ID</key>
+	<string>split-tables-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>split-tables-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:279694335608:ios:c43fb32707a7814017178d</string>
+</dict>
+</plist>

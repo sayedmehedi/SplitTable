@@ -68,7 +68,7 @@ const EachConversation = ({
             style={{
               fontSize: 15,
               color: "#023047",
-              fontFamily: "Inter-Bold",
+              
               width: WINDOW_WIDTH * 0.5,
             }}>
             {item.user_name}
