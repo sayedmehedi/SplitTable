@@ -8,13 +8,21 @@ import Entypo from "react-native-vector-icons/Entypo";
 import {isResponseResultError} from "@utils/error-handling";
 import AppGradientButton from "@components/AppGradientButton";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {View, Text, TouchableOpacity, Modal, TextInput} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Platform,
+} from "react-native";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useUpdateOwnerClubInfoMutation from "@hooks/clubs/useUpdateOwnerClubInfoMutation";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
+import {ErrorMessage} from "@hookform/error-message";
 
 type Props = {
   type: "name" | "job_role" | "location";
@@ -209,34 +217,57 @@ export default function ClubInfoUpdaterItem({type}: Props) {
                   }}
                   control={control}
                   render={({field, formState: {errors}}) => (
-                    <AutocompleteDropdown
-                      inputHeight={50}
-                      dataSet={locationList}
-                      loading={isLocationsLoading}
-                      containerStyle={{flexGrow: 1, flexShrink: 1}}
-                      onSelectItem={item => {
-                        field.onChange(item?.id ?? "");
-                      }}
-                      textInputProps={{
-                        autoCorrect: false,
-                        autoCapitalize: "none",
-                        placeholder: "Club Location",
-                        style: {
-                          borderRadius: 0,
-                          color: splitAppTheme.colors.black,
-                        },
-                      }}
-                      rightButtonsContainerStyle={{
-                        right: 8,
-                        height: 30,
+                    <>
+                      <View
+                        style={[
+                          {flex: 1},
+                          Platform.select({ios: {zIndex: 10}}),
+                        ]}>
+                        <AutocompleteDropdown
+                          inputHeight={50}
+                          dataSet={locationList}
+                          loading={isLocationsLoading}
+                          containerStyle={{flexGrow: 1, flexShrink: 1}}
+                          onSelectItem={item => {
+                            field.onChange(item?.id ?? "");
+                          }}
+                          textInputProps={{
+                            autoCorrect: false,
+                            autoCapitalize: "none",
+                            placeholder: "Club Location",
+                            style: {
+                              borderRadius: 0,
+                              color: splitAppTheme.colors.black,
+                            },
+                          }}
+                          rightButtonsContainerStyle={{
+                            right: 8,
+                            height: 30,
 
-                        alignSelf: "center",
-                      }}
-                      inputContainerStyle={{
-                        borderRadius: 0,
-                        backgroundColor: "#F4F5F7",
-                      }}
-                    />
+                            alignSelf: "center",
+                          }}
+                          inputContainerStyle={{
+                            borderRadius: 0,
+                            backgroundColor: "#F4F5F7",
+                          }}
+                        />
+                      </View>
+
+                      <ErrorMessage
+                        errors={errors}
+                        name={field.name}
+                        render={({message}) => (
+                          <Text
+                            style={{
+                              marginTop: 5,
+                              textAlign: "center",
+                              color: splitAppTheme.colors.red[300],
+                            }}>
+                            {message}
+                          </Text>
+                        )}
+                      />
+                    </>
                   )}
                 />
               </View>
