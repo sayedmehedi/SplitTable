@@ -1,11 +1,11 @@
+import dayjs from "dayjs";
 import React from "react";
 import truncate from "lodash.truncate";
 import {SplitTable} from "@src/models";
 import {splitAppTheme} from "@src/theme";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import {Image, Pressable, Text, View} from "react-native";
+import FastImage from "react-native-fast-image";
+import {Pressable, Text, View} from "react-native";
 import {Clock, DistanceIcon, JoinCountIcon, MapIcon} from "@constants/iconPath";
-import dayjs from "dayjs";
 
 type Props = {
   item: SplitTable;
@@ -27,7 +27,7 @@ const EachSplitTableNEventItem = ({item, onPress}: Props) => {
           width: splitAppTheme.sizes.full,
           marginVertical: splitAppTheme.space[2],
         }}>
-        <Image
+        <FastImage
           style={{
             width: splitAppTheme.sizes["24"],
             height: 110,

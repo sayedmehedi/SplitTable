@@ -19,6 +19,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
+import FastImage from "react-native-fast-image";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
@@ -44,7 +45,7 @@ function EachClubImage({
         marginLeft: index % 3 === 1 ? splitAppTheme.space["3"] : 0,
         marginRight: index % 3 === 1 ? splitAppTheme.space["3"] : 0,
       }}>
-      <Image
+      <FastImage
         source={{uri: item}}
         style={{
           height: 100,

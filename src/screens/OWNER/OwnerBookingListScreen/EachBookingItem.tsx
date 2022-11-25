@@ -4,6 +4,7 @@ import {splitAppTheme} from "@src/theme";
 import ReviewModal from "@components/ReviewModal";
 import {useDisclosure} from "react-use-disclosure";
 import {Image, Text, TouchableOpacity, View} from "react-native";
+import FastImage from "react-native-fast-image";
 
 const EachBookingItem = ({
   item,
@@ -27,7 +28,7 @@ const EachBookingItem = ({
         paddingHorizontal: splitAppTheme.space["4"],
         paddingVertical: splitAppTheme.space["3"],
       }}>
-      <Image
+      <FastImage
         style={{
           width: 65,
           height: 65,

@@ -25,6 +25,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Toast from "react-native-toast-message";
+import FastImage from "react-native-fast-image";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
@@ -47,7 +48,7 @@ function EachUserImage({
         marginLeft: index % 3 === 1 ? splitAppTheme.space["3"] : 0,
         marginRight: index % 3 === 1 ? splitAppTheme.space["3"] : 0,
       }}>
-      <Image
+      <FastImage
         source={{uri: item.image}}
         style={{
           height: 100,
@@ -284,7 +285,7 @@ export default function PhotoList({
             )}
           </View>
 
-          <Image
+          <FastImage
             source={{uri: item.image}}
             style={{
               width: WINDOW_WIDTH,

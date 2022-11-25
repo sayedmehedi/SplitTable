@@ -4,6 +4,7 @@ import {ReviewItem} from "@src/models";
 import {Rating} from "react-native-ratings";
 import {Image, Text, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   item: ReviewItem;
@@ -13,7 +14,7 @@ const EachReviewItem = ({item}: Props) => {
   return (
     <View style={{height: splitAppTheme.sizes[32]}}>
       <View style={{alignItems: "center", flexDirection: "row"}}>
-        <Image
+        <FastImage
           source={{uri: item.user_image}}
           style={{
             width: 50,

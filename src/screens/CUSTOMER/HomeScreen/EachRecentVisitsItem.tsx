@@ -23,6 +23,7 @@ import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import {splitAppTheme} from "@src/theme";
 import dayjs from "dayjs";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   item: BookedTable;
@@ -73,10 +74,9 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
           splitAppTheme.shadows[3],
         ]}>
         <View style={{flex: 1.5}}>
-          <ImageBackground
+          <FastImage
             source={{uri: item.image}}
-            style={styles.ImageBackground}
-            imageStyle={styles.ImageBackgroundImg}>
+            style={[styles.ImageBackground, styles.ImageBackgroundImg]}>
             <View
               style={{
                 flexDirection: "row",
@@ -123,7 +123,7 @@ const EachRecentVisitsItem = ({item, onPress}: Props) => {
                 </TouchableOpacity>
               )} */}
             </View>
-          </ImageBackground>
+          </FastImage>
         </View>
 
         <View

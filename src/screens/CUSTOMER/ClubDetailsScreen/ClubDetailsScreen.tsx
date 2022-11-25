@@ -44,6 +44,7 @@ import {AppTableListTypes} from "@constants/table";
 import useShareResourceMutation from "@hooks/useShareResourceMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import FastImage from "react-native-fast-image";
 
 const CARD_HEIGHT = 100;
 const CARD_NEGATIVE_MARGIN = -1 * (CARD_HEIGHT / 2);
@@ -223,7 +224,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                 ref={imageSliderRef}
                 showsHorizontalScrollIndicator={false}>
                 {clubDetailsResponse.club.images.map((img, i) => (
-                  <ImageBackground
+                  <FastImage
                     key={i}
                     source={{uri: img}}
                     style={styles.ImageBackground}

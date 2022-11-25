@@ -33,6 +33,7 @@ import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useCreateOwnerClubMenuMutation from "@hooks/clubs/useCreateOwnerClubMenuMutation";
 import useUpdateOwnerClubMenuMutation from "@hooks/clubs/useUpdateOwnerClubMenuMutation";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_MENU>,
@@ -325,7 +326,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                 }
               }}>
               {!!field.value ? (
-                <Image
+                <FastImage
                   source={{
                     uri: field.value,
                   }}
@@ -342,7 +343,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                 />
               ) : route.params.actionMode === "update" &&
                 !!route.params.menu.image ? (
-                <Image
+                <FastImage
                   source={{
                     uri: route.params.menu.image,
                   }}

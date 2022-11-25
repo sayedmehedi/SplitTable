@@ -1,10 +1,12 @@
 import React from "react";
+import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 import {RedMap, MapIcon} from "@constants/iconPath";
+import {View, Text, StyleSheet} from "react-native";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {View, Text, ImageBackground, StyleSheet} from "react-native";
 
-const EachItem = ({item}) => {
+const EachItem = ({item}: any) => {
   return (
     <View
       style={{
@@ -20,10 +22,14 @@ const EachItem = ({item}) => {
         marginBottom: 20,
       }}>
       <View style={{flex: 2}}>
-        <ImageBackground
+        <FastImage
           source={item.uri}
-          imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
-          style={{height: "100%", width: "100%"}}>
+          style={{
+            height: "100%",
+            width: "100%",
+            borderTopLeftRadius: splitAppTheme.radii["2xl"],
+            borderTopRightRadius: splitAppTheme.radii["2xl"],
+          }}>
           <View
             style={{
               flexDirection: "row",
@@ -65,7 +71,7 @@ const EachItem = ({item}) => {
               </View>
             </View>
           </View>
-        </ImageBackground>
+        </FastImage>
       </View>
 
       <View style={{flex: 1, justifyContent: "space-around", padding: 12}}>
@@ -91,7 +97,7 @@ const EachItem = ({item}) => {
             justifyContent: "space-between",
           }}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
-            <MapIcon height={10} width={10} style={{color: "#402B8C"}} />
+            <MapIcon height={10} width={10} color={"#402B8C"} />
             <Text
               style={{
                 color: "#8A8D9F",

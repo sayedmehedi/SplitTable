@@ -19,6 +19,7 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useDeleteOwnerTableMutation from "@hooks/clubs/useDeleteOwnerTableMutation";
+import FastImage from "react-native-fast-image";
 
 type TableItem = {
   id: number;
@@ -91,13 +92,14 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
         style={{
           flex: 4,
         }}>
-        <ImageBackground
+        <FastImage
           style={{
             height: CARD_HEIGHT - 40,
             width: splitAppTheme.sizes.full,
+            borderTopLeftRadius: splitAppTheme.radii["2xl"],
+            borderTopRightRadius: splitAppTheme.radii["2xl"],
           }}
-          source={{uri: item.image}}
-          imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+          source={{uri: item.image}}>
           <View
             style={{
               height: splitAppTheme.sizes.full,
@@ -173,7 +175,7 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
               </View>
             </View>
           </View>
-        </ImageBackground>
+        </FastImage>
       </View>
 
       <View

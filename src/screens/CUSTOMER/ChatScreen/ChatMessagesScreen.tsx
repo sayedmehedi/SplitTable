@@ -29,6 +29,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useSendMessageMutation from "@hooks/chat/useSendMessageMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useInfiniteGetConversationMessagesQuery from "@hooks/chat/useInfiniteGetConversationMessagesQuery";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -142,7 +143,7 @@ const ChatMessagesScreen = ({route}: Props) => {
                 </View>
 
                 <View style={{marginLeft: 10}}>
-                  <Image
+                  <FastImage
                     source={{uri: item.sender_image}}
                     style={{
                       height: 20,
@@ -166,7 +167,7 @@ const ChatMessagesScreen = ({route}: Props) => {
               alignSelf: "flex-start",
             }}>
             <View style={{marginRight: 10, marginBottom: 20}}>
-              <Image
+              <FastImage
                 source={{uri: item.sender_image}}
                 style={{
                   height: 20,

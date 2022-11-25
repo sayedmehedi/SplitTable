@@ -41,6 +41,7 @@ import useUpdateOwnerTableMutation from "@hooks/clubs/useUpdateOwnerTableMutatio
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ModalSelector from "react-native-modal-selector";
 import {Clock, MenuIcon} from "@constants/iconPath";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_TABLE>,
@@ -496,7 +497,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                   }
                 }}>
                 {!!field.value ? (
-                  <Image
+                  <FastImage
                     source={{
                       uri: field.value,
                     }}
@@ -512,7 +513,7 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                     }}
                   />
                 ) : !!tableDetailsResponse?.image ? (
-                  <Image
+                  <FastImage
                     source={{
                       uri: tableDetailsResponse.image,
                     }}

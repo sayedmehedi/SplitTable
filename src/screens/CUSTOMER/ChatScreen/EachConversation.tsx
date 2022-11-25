@@ -9,6 +9,7 @@ import {View, Text, Image, ActivityIndicator, Dimensions} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useAcceptInvitationMutation from "@hooks/chat/useAcceptInvitationMutation";
+import FastImage from "react-native-fast-image";
 
 const {width: WINDOW_WIDTH} = Dimensions.get("window");
 
@@ -55,7 +56,7 @@ const EachConversation = ({
         justifyContent: "space-between",
       }}>
       <View style={{flexDirection: "row", alignItems: "center"}}>
-        <Image
+        <FastImage
           source={{
             uri: item.user_image,
           }}

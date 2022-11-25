@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import useDeleteOwnerClubMenuMutation from "@hooks/clubs/useDeleteOwnerClubMenuMutation";
 import useUpdateOwnerClubMenuMutation from "@hooks/clubs/useUpdateOwnerClubMenuMutation";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   item: ClubMenuItemOwnerSide;
@@ -135,7 +136,7 @@ const EachMenuItem = ({item, onPress, index}: Props) => {
                   width: splitAppTheme.sizes["1/4"],
                   height: splitAppTheme.sizes["full"],
                 }}>
-                <Image
+                <FastImage
                   style={{
                     width: splitAppTheme.sizes["full"],
                     height: splitAppTheme.sizes["full"],

@@ -3,6 +3,7 @@ import truncate from "lodash.truncate";
 import {ClubMenuItem} from "@src/models";
 import {Image, Text, View} from "react-native";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   item: ClubMenuItem;
@@ -24,7 +25,7 @@ const EachOfferMenuItem = ({item}: Props) => {
           width: splitAppTheme.sizes["2/6"],
           height: splitAppTheme.sizes["full"],
         }}>
-        <Image
+        <FastImage
           style={{
             width: splitAppTheme.sizes["full"],
             height: splitAppTheme.sizes["full"],

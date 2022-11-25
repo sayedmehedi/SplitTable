@@ -11,6 +11,7 @@ import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import EachTableNEventItem from "./OwnerTableScreen/EachTableNEventItem";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.TABLE_DETAILS>,
@@ -92,7 +93,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                     borderBottomColor: splitAppTheme.colors.coolGray[300],
                   }}>
                   <View>
-                    <Image
+                    <FastImage
                       source={{uri: user.image}}
                       style={{
                         width: 50,

@@ -11,6 +11,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
+import FastImage from "react-native-fast-image";
 
 const tableData = [
   {
@@ -74,10 +75,11 @@ const tableData = [
     pricePerGuest: "$607.00",
   },
 ];
-const SelectTableScreen = ({navigation}) => {
+
+const SelectTableScreen = ({navigation}: any) => {
   return (
     <View style={{flex: 1}}>
-      <Image
+      <FastImage
         source={require("@assets/layout.jpg")}
         style={{
           height: 170,
@@ -90,7 +92,6 @@ const SelectTableScreen = ({navigation}) => {
           data={tableData}
           renderItem={({item, index, separators}) => (
             <TouchableHighlight
-              key={item.key}
               onPress={() => {}}
               onShowUnderlay={separators.highlight}
               onHideUnderlay={separators.unhighlight}>

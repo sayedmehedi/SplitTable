@@ -37,6 +37,7 @@ import {
   OwnerAccountStackParamList,
 } from "@src/navigation";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
+import FastImage from "react-native-fast-image";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -99,7 +100,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           borderColor: "#DBDBDB",
           borderWidth: splitAppTheme.borderWidths[1],
         }}>
-        <Image
+        <FastImage
           style={{
             width: 60,
             height: 60,

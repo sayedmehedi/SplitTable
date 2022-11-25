@@ -27,6 +27,7 @@ import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import dayjs from "dayjs";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -208,7 +209,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{flex: 1}}>
-        <ImageBackground
+        <FastImage
           style={{
             height: 300,
             width: "100%",
@@ -392,7 +393,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
               </Text>
             </View>
           </View>
-        </ImageBackground>
+        </FastImage>
 
         <View
           style={{
@@ -411,7 +412,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                 backgroundColor: "rgba(255,255,255,0.9)",
               }}>
               <View>
-                <Image
+                <FastImage
                   source={{uri: item.image}}
                   style={{
                     width: 50,

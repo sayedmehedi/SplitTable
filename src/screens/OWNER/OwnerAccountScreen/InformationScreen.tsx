@@ -11,6 +11,7 @@ import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
 import InformationUpdaterItem from "./modals/InformationUpdaterItem";
 import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
+import FastImage from "react-native-fast-image";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -21,7 +22,7 @@ const renderAllStory: ListRenderItem<{
   disLike: string;
 }> = ({item}) => (
   <View style={{margin: 3}}>
-    <Image
+    <FastImage
       source={{uri: item.uri}}
       style={{
         height: 100,

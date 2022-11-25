@@ -13,6 +13,7 @@ import useSendInvitationMutation from "@hooks/chat/useSendInvitationMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {isResponseResultError} from "@utils/error-handling";
 import useAppToast from "@hooks/useAppToast";
+import FastImage from "react-native-fast-image";
 
 type SuggestionItem = {
   title: string;
@@ -148,7 +149,7 @@ export default function UserSearchInput() {
               padding: splitAppTheme.space[3],
             }}>
             <View>
-              <Image
+              <FastImage
                 source={{uri: item.image}}
                 style={{
                   height: splitAppTheme.sizes[12],
@@ -195,7 +196,7 @@ export default function UserSearchInput() {
               paddingVertical: splitAppTheme.space[5],
             }}>
             <View>
-              <Image
+              <FastImage
                 source={{uri: selectedUser?.image}}
                 style={{
                   width: splitAppTheme.sizes[24],

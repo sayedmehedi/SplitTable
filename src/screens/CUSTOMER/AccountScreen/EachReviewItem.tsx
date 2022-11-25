@@ -2,8 +2,9 @@ import React from "react";
 import truncate from "lodash.truncate";
 import {ReviewItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
+import {Text, View} from "react-native";
 import {Rating} from "react-native-ratings";
-import {Image, Text, View} from "react-native";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   item: ReviewItem;
@@ -13,7 +14,7 @@ const EachReviewItem = ({item}: Props) => {
   return (
     <View style={{height: splitAppTheme.sizes[32]}}>
       <View style={{alignItems: "center", flexDirection: "row"}}>
-        <Image
+        <FastImage
           source={{uri: item.user_image}}
           style={{
             width: 50,

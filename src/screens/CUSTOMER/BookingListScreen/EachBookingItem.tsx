@@ -16,6 +16,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useAppToast from "@hooks/useAppToast";
 import {isResponseResultError} from "@utils/error-handling";
+import FastImage from "react-native-fast-image";
 
 const EachBookingItem = ({
   item,
@@ -56,7 +57,7 @@ const EachBookingItem = ({
         paddingHorizontal: splitAppTheme.space["4"],
         paddingVertical: splitAppTheme.space["3"],
       }}>
-      <Image
+      <FastImage
         style={{
           width: 65,
           height: 65,

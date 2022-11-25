@@ -21,6 +21,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import dayjs from "dayjs";
+import FastImage from "react-native-fast-image";
 
 const keyExtractor = (item: {id: number}) => `menu-${item.id.toString()}`;
 
@@ -180,7 +181,7 @@ const AddMenuItemScreen = ({navigation, route}: Props) => {
           flexDirection: "row",
           backgroundColor: "rgba(255,255,255,0.9)",
         }}>
-        <Image
+        <FastImage
           source={{uri: item.image}}
           style={{
             width: 100,
