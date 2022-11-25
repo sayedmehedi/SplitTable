@@ -93,7 +93,11 @@ const InitialScreen = ({navigation}: Props) => {
 
   return (
     <>
-      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar
+        translucent
+        barStyle={"light-content"}
+        backgroundColor={"transparent"}
+      />
       <View
         style={{
           flex: 1,

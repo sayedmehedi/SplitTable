@@ -16,6 +16,7 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from "react-native";
 import {splitAppTheme} from "@src/theme";
 import LinearGradient from "react-native-linear-gradient";
@@ -240,8 +241,12 @@ const OnboardingScreen = ({navigation}: Props) => {
   }, [height]);
 
   return (
-    <SafeAreaView style={styles.safeareaBox}>
-      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
+    <View style={styles.safeareaBox}>
+      <FocusAwareStatusBar
+        translucent
+        barStyle={"light-content"}
+        backgroundColor={"transparent"}
+      />
 
       <FlatList
         ref={ref}
@@ -278,7 +283,7 @@ const OnboardingScreen = ({navigation}: Props) => {
           ))}
         </View>
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -317,11 +322,11 @@ const styles = StyleSheet.create({
   },
   btn: {
     height: 50,
-    borderRadius: 10,
-    backgroundColor: "rgba(255,255,255, 0.3)",
-    justifyContent: "center",
-    alignItems: "center",
     width: 290,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255, 0.3)",
   },
 });
 export default OnboardingScreen;
