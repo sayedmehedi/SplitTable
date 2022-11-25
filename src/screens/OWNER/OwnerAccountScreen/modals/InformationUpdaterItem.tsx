@@ -9,12 +9,7 @@ import {Controller, useForm} from "react-hook-form";
 import {OwnerStackRoutes} from "@constants/routes";
 import {ErrorMessage} from "@hookform/error-message";
 import Entypo from "react-native-vector-icons/Entypo";
-import Feather from "react-native-vector-icons/Feather";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import {isResponseResultError} from "@utils/error-handling";
-import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import AppGradientButton from "@components/AppGradientButton";
 import {StackNavigationProp} from "@react-navigation/stack";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
@@ -27,13 +22,11 @@ import {
   TextInput,
   ActivityIndicator,
 } from "react-native";
-import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
+import {Clock, MenuIcon} from "@constants/iconPath";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
 import useUpdateOwnerClubInfoMutation from "@hooks/clubs/useUpdateOwnerClubInfoMutation";
-import {Clock, MenuIcon} from "@constants/iconPath";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {parseClubAvgCost} from "@utils/club";
 
 type Props = {
   type: "time" | "cuisine" | "cost" | "about" | "slider";
@@ -94,13 +87,12 @@ export default function ProfileUpdaterItem({type}: Props) {
       setValue("cuisine", clubInfoData.cuisine);
     }
 
-    if (clubInfoData?.avg_cost) {
-      const {max_avg_cost, min_avg_cost} = parseClubAvgCost(
-        clubInfoData.avg_cost,
-      );
+    if (clubInfoData?.avg_cost_max !== undefined) {
+      setValue("avg_cost_max", clubInfoData.avg_cost_max);
+    }
 
-      setValue("avg_cost_max", max_avg_cost);
-      setValue("avg_cost_min", min_avg_cost);
+    if (clubInfoData?.avg_cost_min !== undefined) {
+      setValue("avg_cost_min", clubInfoData.avg_cost_min);
     }
   }, [clubInfoData, setValue]);
 
@@ -153,11 +145,12 @@ export default function ProfileUpdaterItem({type}: Props) {
   }
 
   let avgCost = "$0 - $0";
-  if (clubInfoData?.avg_cost !== undefined) {
-    const {max_avg_cost, min_avg_cost} = parseClubAvgCost(
-      clubInfoData.avg_cost,
-    );
-    avgCost = `$${min_avg_cost} - $${max_avg_cost}`;
+  if (
+    clubInfoData?.avg_cost_max !== undefined &&
+    clubInfoData?.avg_cost_min !== undefined
+  ) {
+    const {avg_cost_max, avg_cost_min} = clubInfoData;
+    avgCost = `$${avg_cost_min} - $${avg_cost_max}`;
   }
 
   return (
