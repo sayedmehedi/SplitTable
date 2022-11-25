@@ -207,6 +207,7 @@ export default function ClubInfoUpdaterItem({type}: Props) {
             {type === "location" && (
               <View
                 style={{
+                  ...Platform.select({ios: {zIndex: 10}}),
                   flexDirection: "row",
                   marginVertical: splitAppTheme.space[4],
                 }}>
