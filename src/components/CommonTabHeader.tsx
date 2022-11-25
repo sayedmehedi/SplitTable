@@ -8,6 +8,7 @@ import {
   getHeaderTitle,
   HeaderBackButton,
 } from "@react-navigation/elements";
+import {Platform} from "react-native";
 
 const CommonStackHeader = (props: BottomTabHeaderProps) => {
   const {route, layout, options, navigation} = props;
@@ -26,9 +27,11 @@ const CommonStackHeader = (props: BottomTabHeaderProps) => {
         labelVisible?: boolean | undefined;
       }) => (
         <HeaderBackButton
-        style={{
-          paddingLeft:15
-        }}
+          style={Platform.select({
+            ios: {
+              paddingLeft: 15,
+            },
+          })}
           {...props}
           onPress={navigation.goBack}
           canGoBack={navigation.canGoBack()}

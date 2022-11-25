@@ -20,6 +20,7 @@ import {
 } from "react-native";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
@@ -114,6 +115,11 @@ export default function ClubSliderImagesScreen() {
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <FlatList
         onRefresh={() => {
           refetch();
