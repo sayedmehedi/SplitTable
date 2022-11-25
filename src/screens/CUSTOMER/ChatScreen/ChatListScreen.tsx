@@ -115,7 +115,7 @@ const ChatListScreen = ({navigation}: Props) => {
   }
 
   return (
-    <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
+    <View style={{backgroundColor: splitAppTheme.colors.white, flex: 1}}>
       <SafeAreaView
         style={{
           paddingBottom: 0,

@@ -16,6 +16,7 @@ import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 import useFacobookLoginMutation from "@hooks/auth/useFacobookLoginMutation";
 import {Image, Text, View, StyleSheet, TouchableOpacity} from "react-native";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import FastImage from "react-native-fast-image";
 
 type Props = StackScreenProps<
   RootStackParamList,
@@ -88,7 +89,7 @@ const LoginPromptScreen = ({navigation}: Props) => {
             flex: 1,
             justifyContent: "center",
           }}>
-          <Image
+          <FastImage
             style={{
               width: 160,
               height: 100,

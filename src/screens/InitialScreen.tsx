@@ -2,6 +2,7 @@ import React from "react";
 import {AuthType} from "@src/models";
 import {AuthTypes} from "@constants/auth";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 import {RootStackRoutes} from "@constants/routes";
 import {RootStackParamList} from "@src/navigation";
 import {useDimensions} from "@react-native-community/hooks";
@@ -12,9 +13,7 @@ import {
   View,
   Text,
   Image,
-  StatusBar,
   ScrollView,
-  ImageBackground,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView as RNScrollView,
@@ -108,10 +107,9 @@ const InitialScreen = ({navigation}: Props) => {
           onMomentumScrollEnd={setIndex}
           showsHorizontalScrollIndicator={false}>
           {sliderImage.map((value, key) => (
-            <ImageBackground
+            <FastImage
               key={value.id}
               source={value.image}
-              resizeMode={"cover"}
               style={{
                 width: windowDimension.width * 1,
                 height: windowDimension.height * 1,
@@ -152,7 +150,7 @@ const InitialScreen = ({navigation}: Props) => {
             height: splitAppTheme.space.full,
             backgroundColor: "rgba(0,0,0,0.3)",
           }}>
-          <Image
+          <FastImage
             style={{
               width: 160,
               height: 100,

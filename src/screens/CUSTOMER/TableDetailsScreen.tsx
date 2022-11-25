@@ -36,6 +36,7 @@ import useShareResourceMutation from "@hooks/useShareResourceMutation";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -116,7 +117,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
   return (
     <ScrollView>
       <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
-      <ImageBackground source={{uri: tableDetailsResponse.image}}>
+      <FastImage source={{uri: tableDetailsResponse.image}}>
         <SafeAreaView
           style={{
             height: 300,
@@ -166,7 +167,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             </View>
           </View>
         </SafeAreaView>
-      </ImageBackground>
+      </FastImage>
 
       {/* EVENT NAME & INITIAL */}
       <View style={{overflow: "hidden", paddingBottom: splitAppTheme.space[5]}}>
@@ -466,7 +467,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                     marginLeft: splitAppTheme.space[3],
                   }}>
                   {tableDetailsResponse.joined_users.map((user, index) => (
-                    <Image
+                    <FastImage
                       key={index}
                       source={{uri: user.image}}
                       style={{

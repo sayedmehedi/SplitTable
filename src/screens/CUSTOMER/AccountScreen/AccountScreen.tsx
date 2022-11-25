@@ -38,6 +38,7 @@ import {
   CustomerBottomTabParamList,
   CustomerProfileStackParamList,
 } from "@src/navigation";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -90,7 +91,7 @@ const AccountScreen = ({navigation}: Props) => {
           flexDirection: "row",
           borderColor: "#DBDBDB",
         }}>
-        <Image
+        <FastImage
           style={{
             height: 60,
             width: 60,

@@ -1,15 +1,15 @@
 import React from "react";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import truncate from "lodash.truncate";
+import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
+import Entypo from "react-native-vector-icons/Entypo";
 import type {RouteProp} from "@react-navigation/native";
-import {StackHeaderProps} from "@react-navigation/stack";
+import {Text, TouchableOpacity, View} from "react-native";
+import {CustomerChatStackRoutes} from "@constants/routes";
 import {
   ChatMessagesNavigationType,
   CustomerChatStackParamList,
 } from "@src/navigation";
-import {CustomerChatStackRoutes} from "@constants/routes";
-import Entypo from "react-native-vector-icons/Entypo";
-import {splitAppTheme} from "@src/theme";
-import truncate from "lodash.truncate";
 
 type RtProp = RouteProp<
   CustomerChatStackParamList,
@@ -50,7 +50,7 @@ export default function ChatMessagesAppBar({
           style={{
             marginHorizontal: splitAppTheme.space[3],
           }}>
-          <Image
+          <FastImage
             source={{uri: route.params.partnerImage}}
             style={{
               width: 50,

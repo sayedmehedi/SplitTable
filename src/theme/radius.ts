@@ -8,7 +8,7 @@ const radii = {
   "2xl": 16,
   "3xl": 24,
   full: 9999,
-};
+} as const;
 
 export type IRadii = keyof typeof radii;
 

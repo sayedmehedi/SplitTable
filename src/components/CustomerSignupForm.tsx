@@ -1,6 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 import {RootStackRoutes} from "@constants/routes";
 import DatePicker from "react-native-date-picker";
 import {makeGenderLabelFromValue} from "@utils/auth";
@@ -16,11 +17,10 @@ import {
   Text,
   View,
   Alert,
-  Image,
   TextInput,
   ScrollView,
-  TouchableOpacity,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import {RootStackParamList} from "@src/navigation";
@@ -211,7 +211,7 @@ export default function CustomerSignupForm({
                   }
                 }}>
                 {!!field.value ? (
-                  <Image
+                  <FastImage
                     source={{
                       uri: field.value,
                     }}

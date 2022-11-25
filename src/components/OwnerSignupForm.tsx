@@ -1,5 +1,6 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 import {RootStackRoutes} from "@constants/routes";
 import {RootStackParamList} from "@src/navigation";
 import {ErrorMessage} from "@hookform/error-message";
@@ -16,7 +17,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import useRegisterMutation from "@hooks/auth/useRegisterMutation";
@@ -208,7 +208,7 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
                   }
                 }}>
                 {!!field.value ? (
-                  <Image
+                  <FastImage
                     source={{
                       uri: field.value,
                     }}

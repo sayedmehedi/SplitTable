@@ -20,6 +20,7 @@ import {
 import {splitAppTheme} from "@src/theme";
 import LinearGradient from "react-native-linear-gradient";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import FastImage from "react-native-fast-image";
 
 const slides = [
   {
@@ -86,7 +87,7 @@ const OnboardingScreen = ({navigation}: Props) => {
     ({item, index}) => {
       return (
         <View>
-          <Image
+          <FastImage
             style={{
               width: width,
               height: splitAppTheme.sizes["2/3"],

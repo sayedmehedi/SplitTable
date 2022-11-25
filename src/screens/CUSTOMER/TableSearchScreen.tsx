@@ -11,7 +11,7 @@ import {useDimensions} from "@react-native-community/hooks";
 import {CompositeScreenProps} from "@react-navigation/native";
 import AppGradientButton from "@components/AppGradientButton";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import {Text, View, ScrollView, StyleSheet} from "react-native";
+import {Text, View, ScrollView, StyleSheet, Platform} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
@@ -172,7 +172,7 @@ const TableSearchScreen = ({route, navigation}: Props) => {
           name={"location_id"}
           control={control}
           render={({field}) => (
-            <View>
+            <View style={Platform.select({ios: {zIndex: 10}})}>
               <AutocompleteDropdown
                 inputHeight={50}
                 dataSet={locationList}

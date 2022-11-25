@@ -11,6 +11,7 @@ import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
+import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -94,7 +95,7 @@ export default function JoinTableDetailsScreen({route, navigation}: Props) {
                     borderBottomColor: splitAppTheme.colors.coolGray[300],
                   }}>
                   <View>
-                    <Image
+                    <FastImage
                       source={{uri: user.image}}
                       style={{
                         width: 50,

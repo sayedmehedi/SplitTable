@@ -1,27 +1,13 @@
 import React from "react";
-import {
-  Text,
-  View,
-  Pressable,
-  StyleSheet,
-  ImageBackground,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import dayjs from "dayjs";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import {BookedTable} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
-import {QueryKeys} from "@constants/query-keys";
-import {RedMap, MapIcon, Clock} from "@constants/iconPath";
+import FastImage from "react-native-fast-image";
 import {useQueryClient} from "@tanstack/react-query";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import {isResponseResultError} from "@utils/error-handling";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
-import dayjs from "dayjs";
+import {RedMap, MapIcon, Clock} from "@constants/iconPath";
+import {Text, View, Pressable, StyleSheet} from "react-native";
 
 type Props = {
   item: BookedTable;
@@ -34,30 +20,6 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
   const handlePress = React.useCallback(() => {
     onPress(item);
   }, [onPress, item]);
-
-  const {
-    mutate: toggleFavoriteClub,
-    error: toggleFavoriteError,
-    isLoading: isTogglingFavorite,
-    data: toggleFavoriteClubResponse,
-  } = useToggleFavoriteClubMutation();
-
-  useHandleNonFieldError(toggleFavoriteError);
-  useHandleResponseResultError(toggleFavoriteClubResponse);
-
-  const handleToggleFavorite = React.useCallback(() => {
-    toggleFavoriteClub(
-      {clubId: item.id},
-      {
-        onSuccess(data) {
-          if (!isResponseResultError(data)) {
-            toast.success(data.message);
-            queryClient.invalidateQueries([QueryKeys.FAVORITE, "LIST"]);
-          }
-        },
-      },
-    );
-  }, [toggleFavoriteClub]);
 
   return (
     <Pressable
@@ -73,13 +35,14 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
         style={{
           flex: 3,
         }}>
-        <ImageBackground
+        <FastImage
           style={{
             width: splitAppTheme.sizes.full,
             height: splitAppTheme.sizes.full,
+            borderTopLeftRadius: splitAppTheme.radii["2xl"],
+            borderTopRightRadius: splitAppTheme.radii["2xl"],
           }}
-          source={{uri: item.image}}
-          imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}>
+          source={{uri: item.image}}>
           <View
             style={{
               alignItems: "center",
@@ -149,7 +112,7 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
               </View>
             </View>
           </View>
-        </ImageBackground>
+        </FastImage>
       </View>
 
       <View

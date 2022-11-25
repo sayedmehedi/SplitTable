@@ -18,6 +18,7 @@ import {Swipeable, GestureHandlerRootView} from "react-native-gesture-handler";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 
 export default function EachFavoriteItem({item}: {item: FavoriteClub}) {
   const toast = useAppToast();
@@ -75,10 +76,14 @@ export default function EachFavoriteItem({item}: {item: FavoriteClub}) {
             shadowColor: "#D6D6D6",
           }}>
           <View style={{flex: 2}}>
-            <ImageBackground
+            <FastImage
               source={{uri: item.image}}
-              imageStyle={{borderTopLeftRadius: 15, borderTopRightRadius: 15}}
-              style={{height: "100%", width: "100%"}}>
+              style={{
+                height: "100%",
+                width: "100%",
+                borderTopLeftRadius: splitAppTheme.radii["2xl"],
+                borderTopRightRadius: splitAppTheme.radii["2xl"],
+              }}>
               <View
                 style={{
                   padding: 10,
@@ -123,7 +128,7 @@ export default function EachFavoriteItem({item}: {item: FavoriteClub}) {
                   </TouchableOpacity>
                 )}
               </View>
-            </ImageBackground>
+            </FastImage>
           </View>
 
           <View style={{flex: 1, justifyContent: "space-around", padding: 12}}>

@@ -12,6 +12,7 @@ import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   item: TTableItem;
@@ -67,57 +68,17 @@ const TableListItem = ({item, onPress}: Props) => {
           },
         ]}>
         <View style={{flex: 2}}>
-          <ImageBackground
+          <FastImage
             source={{uri: item.image}}
-            style={styles.ImageBackground}
-            imageStyle={styles.ImageBackgroundImg}>
+            style={[styles.ImageBackground, styles.ImageBackgroundImg]}>
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: splitAppTheme.space[2],
-              }}>
-              {/* <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: splitAppTheme.space[1],
-                  borderRadius: splitAppTheme.radii.full,
-                  backgroundColor: splitAppTheme.colors.white,
-                  paddingHorizontal: splitAppTheme.space["2.5"],
-                }}>
-                <Text style={{color: "black"}}>{item.avgRating}</Text>
-                <View style={{marginHorizontal: splitAppTheme.space["0.5"]}}>
-                  <Fontisto name="star" color={"#FFC529"} size={16} />
-                </View>
-                <Text style={{color: "black"}}>({item.totalReviews})</Text>
-              </View> */}
-
-              {/* {isTogglingFavorite ? (
-                <View style={{padding: splitAppTheme.space["3"]}}>
-                  <ActivityIndicator color={"white"} size={"small"} />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  style={{
-                    width: 50,
-                    height: 50,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: splitAppTheme.radii.full,
-                  }}
-                  onPress={handleToggleFavorite}>
-                  <AntDesign
-                    size={22}
-                    color={"white"}
-                    name={item.isFavorite ? "heart" : "hearto"}
-                  />
-                </TouchableOpacity>
-              )} */}
-            </View>
-          </ImageBackground>
+              }}></View>
+          </FastImage>
         </View>
 
         <View

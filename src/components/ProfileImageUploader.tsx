@@ -1,6 +1,7 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
+import FastImage from "react-native-fast-image";
 import {isResponseResultError} from "@utils/error-handling";
 import {
   launchCamera,
@@ -11,8 +12,8 @@ import {useDimensions} from "@react-native-community/hooks";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import CircularProgress from "react-native-circular-progress-indicator";
+import {View, TouchableOpacity, Alert, Text, Modal} from "react-native";
 import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
-import {View, TouchableOpacity, Image, Alert, Text, Modal} from "react-native";
 
 export default function ProfileImageUploader({
   disabled = false,
@@ -139,7 +140,7 @@ export default function ProfileImageUploader({
           justifyContent: "center",
           backgroundColor: "white",
         }}>
-        <Image
+        <FastImage
           style={{height: 150, width: 150, borderRadius: 75}}
           source={{
             uri: imageUrl,
