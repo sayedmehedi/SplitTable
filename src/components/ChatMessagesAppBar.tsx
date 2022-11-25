@@ -3,17 +3,18 @@ import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import FastImage from "react-native-fast-image";
 import Entypo from "react-native-vector-icons/Entypo";
+import {CustomerStackRoutes} from "@constants/routes";
 import type {RouteProp} from "@react-navigation/native";
 import {Text, TouchableOpacity, View} from "react-native";
-import {CustomerChatStackRoutes} from "@constants/routes";
 import {
   ChatMessagesNavigationType,
-  CustomerChatStackParamList,
+  CustomerStackParamList,
 } from "@src/navigation";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 type RtProp = RouteProp<
-  CustomerChatStackParamList,
-  typeof CustomerChatStackRoutes.CHAT_MESSAGES
+  CustomerStackParamList,
+  typeof CustomerStackRoutes.CHAT_MESSAGES
 >;
 
 export default function ChatMessagesAppBar({
@@ -24,7 +25,7 @@ export default function ChatMessagesAppBar({
   navigation: ChatMessagesNavigationType;
 }) {
   return (
-    <View style={{overflow: "hidden", paddingBottom: splitAppTheme.space[2]}}>
+    <SafeAreaView>
       <View
         style={[
           {
@@ -34,7 +35,7 @@ export default function ChatMessagesAppBar({
             paddingLeft: splitAppTheme.space[1],
             backgroundColor: splitAppTheme.colors.white,
           },
-          splitAppTheme.shadows[9],
+          splitAppTheme.shadows[1],
         ]}>
         <View>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -84,6 +85,6 @@ export default function ChatMessagesAppBar({
           </Text>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

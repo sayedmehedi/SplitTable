@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   editText: {
     fontSize: 13,
     color: "#023047",
-    fontFamily: "Inter-Medium",
+    //fontFamily: "Inter-Medium",
     textDecorationLine: "underline",
   },
   offerButton: {
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   modalInput: {
+    height:50,
     borderWidth: 1,
     borderRadius: 8,
     marginTop: 20,

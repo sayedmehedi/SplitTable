@@ -75,10 +75,11 @@ const globalScreenOptions:
   headerShown: false,
   tabBarShowLabel: false,
   tabBarStyle: {
-    height: 60,
+    height: 70,
     elevation: 20,
     shadowColor: "#FF3FCB",
     backgroundColor: "#FFFFFF",
+    
   },
 };
 

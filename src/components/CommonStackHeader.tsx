@@ -32,12 +32,15 @@ const CommonStackHeader = (props: StackHeaderProps) => {
             }) =>
               back && (
                 <HeaderBackButton
+                style={{
+                  paddingLeft:15
+                }}
                   {...props}
                   onPress={navigation.goBack}
                   canGoBack={navigation.canGoBack()}
                   backImage={() => (
                     <Entypo
-                      size={20}
+                      size={25}
                       name={"chevron-thin-left"}
                       color={splitAppTheme.colors.black}
                     />

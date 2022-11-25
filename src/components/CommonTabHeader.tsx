@@ -26,12 +26,15 @@ const CommonStackHeader = (props: BottomTabHeaderProps) => {
         labelVisible?: boolean | undefined;
       }) => (
         <HeaderBackButton
+        style={{
+          paddingLeft:15
+        }}
           {...props}
           onPress={navigation.goBack}
           canGoBack={navigation.canGoBack()}
           backImage={() => (
             <Entypo
-              size={30}
+              size={25}
               name={"chevron-thin-left"}
               color={splitAppTheme.colors.black}
             />

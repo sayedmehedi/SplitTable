@@ -107,7 +107,7 @@ const AccountScreen = ({navigation}: Props) => {
           }}
         />
 
-        <View style={{marginLeft: 10}}>
+        <View style={{marginLeft: 10,width:'80%'}}>
           <Text
             style={{
               fontSize: 16,
@@ -117,6 +117,7 @@ const AccountScreen = ({navigation}: Props) => {
             {profileData?.name}
           </Text>
           <Text
+          numberOfLines={2}
             style={{
               fontSize: 12,
               color: "#8A8D9F",
