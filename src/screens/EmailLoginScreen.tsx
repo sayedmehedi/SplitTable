@@ -76,9 +76,8 @@ const EmailLoginScreen = ({navigation}: Props) => {
         height: splitAppTheme.sizes.full,
       }}>
       <FocusAwareStatusBar
-        animated
-        // barStyle={"dark-content"}
-        // backgroundColor="#fff"
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
       />
 
       <View style={{flex: 1}} />

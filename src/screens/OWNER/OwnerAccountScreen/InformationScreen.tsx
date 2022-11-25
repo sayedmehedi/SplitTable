@@ -12,6 +12,8 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import InformationUpdaterItem from "./modals/InformationUpdaterItem";
 import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {splitAppTheme} from "@src/theme";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -40,6 +42,11 @@ type Props = CompositeScreenProps<
 const InformationScreen = ({}: Props) => {
   return (
     <ScrollView>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <View
         style={{paddingHorizontal: 12, backgroundColor: "#FFFFFF", flex: 1}}>
         <InformationUpdaterItem type="time" />

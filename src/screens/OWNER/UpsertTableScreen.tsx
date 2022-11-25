@@ -42,6 +42,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import ModalSelector from "react-native-modal-selector";
 import {Clock, MenuIcon} from "@constants/iconPath";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_TABLE>,
@@ -420,6 +421,10 @@ export default function UpsertTableScreen({route, navigation}: Props) {
       style={{
         flex: 1,
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <ScrollView
         contentContainerStyle={{
           padding: splitAppTheme.space[6],

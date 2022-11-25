@@ -58,8 +58,8 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
         backgroundColor: splitAppTheme.colors.white,
       }}>
       <FocusAwareStatusBar
-      // barStyle={"dark-content"}
-      // backgroundColor={splitAppTheme.colors.white}
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
       />
       <View
         style={{

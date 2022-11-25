@@ -39,6 +39,7 @@ import {
   CustomerProfileStackParamList,
 } from "@src/navigation";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -79,6 +80,10 @@ const AccountScreen = ({navigation}: Props) => {
         paddingBottom: splitAppTheme.space[6],
         paddingHorizontal: splitAppTheme.space[6],
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View
         style={{
           height: 90,

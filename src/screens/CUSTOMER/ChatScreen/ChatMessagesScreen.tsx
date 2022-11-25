@@ -3,7 +3,6 @@ import {splitAppTheme} from "@src/theme";
 import {ConversationMessage} from "@src/models";
 import {TextInput} from "react-native-gesture-handler";
 import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerChatStackRoutes} from "@constants/routes";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {
@@ -15,32 +14,22 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
-import {
-  RootStackParamList,
-  CustomerStackParamList,
-  CustomerBottomTabParamList,
-  CustomerChatStackParamList,
-} from "@src/navigation";
+import FastImage from "react-native-fast-image";
+import {CustomerStackRoutes} from "@constants/routes";
 import {isResponseResultError} from "@utils/error-handling";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useSendMessageMutation from "@hooks/chat/useSendMessageMutation";
+import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useInfiniteGetConversationMessagesQuery from "@hooks/chat/useInfiniteGetConversationMessagesQuery";
-import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
-  CompositeScreenProps<
-    CompositeScreenProps<
-      StackScreenProps<
-        CustomerChatStackParamList,
-        typeof CustomerChatStackRoutes.CHAT_MESSAGES
-      >,
-      BottomTabScreenProps<CustomerBottomTabParamList>
-    >,
-    StackScreenProps<CustomerStackParamList>
+  StackScreenProps<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.CHAT_MESSAGES
   >,
   StackScreenProps<RootStackParamList>
 >;
@@ -222,6 +211,11 @@ const ChatMessagesScreen = ({route}: Props) => {
 
   return (
     <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator size={"small"} />

@@ -22,6 +22,7 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import {StackScreenProps} from "@react-navigation/stack";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import {OwnerStackRoutes} from "@constants/routes";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type FormValues = {
   name: string;
@@ -103,6 +104,11 @@ export default function AddHolidayScreen({navigation}: Props) {
       contentContainerStyle={{
         padding: splitAppTheme.space[6],
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <View style={{marginTop: splitAppTheme.space[4]}}>
         <Controller
           name={"date"}
@@ -143,7 +149,7 @@ export default function AddHolidayScreen({navigation}: Props) {
 
       <View style={{marginTop: splitAppTheme.space[5]}}>
         <AppGradientButton
-          title="Search"
+          title="Submit"
           color="primary"
           variant={"solid"}
           touchableOpacityProps={{

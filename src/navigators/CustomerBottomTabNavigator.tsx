@@ -17,7 +17,7 @@ import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-import CustomerChatStackNavigator from "./CustomerChatStackNavigator";
+import ChatListScreen from "@screens/CUSTOMER/ChatScreen";
 import CustomerTableScreen from "@screens/CUSTOMER/CustomerTableScreen";
 import CustomerProfileStackNavigator from "./CustomerProfileStackNavigator";
 import {CUSTOMER_MAIN_BOTTOM_TAB_NAVIGATOR_ID} from "@constants/navigators";
@@ -47,9 +47,9 @@ const CustomerBottomTabNavigator = () => {
       />
 
       <CustomerBottomTab.Screen
+        component={ChatListScreen}
         options={chatScreenOptions}
-        component={CustomerChatStackNavigator}
-        name={CustomerMainBottomTabRoutes.CHAT}
+        name={CustomerMainBottomTabRoutes.CHAT_LIST}
       />
 
       <CustomerBottomTab.Screen
@@ -262,10 +262,11 @@ const chatScreenOptions:
   | ((props: {
       route: RouteProp<
         CustomerBottomTabParamList,
-        typeof CustomerMainBottomTabRoutes.CHAT
+        typeof CustomerMainBottomTabRoutes.CHAT_LIST
       >;
       navigation: any;
     }) => BottomTabNavigationOptions) = {
+  headerShown: false,
   tabBarIcon: ({focused}) => (
     <View
       style={{

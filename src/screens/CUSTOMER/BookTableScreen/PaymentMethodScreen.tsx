@@ -12,6 +12,7 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import {AppSupportedPaymentMethods} from "@constants/payment";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import {CreditCardIcon, CryptoIcon, PaypalIcon} from "@constants/iconPath";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -49,6 +50,10 @@ const PaymentMethodScreen = ({navigation, route}: Props) => {
         backgroundColor: "#FFFFFF",
         padding: splitAppTheme.space[6],
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <Controller
         name={"paymentMethod"}
         rules={{

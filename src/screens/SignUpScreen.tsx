@@ -1,5 +1,6 @@
 import React from "react";
 import {StyleSheet} from "react-native";
+import {splitAppTheme} from "@src/theme";
 import {AuthTypes} from "@constants/auth";
 import {RootStackRoutes} from "@constants/routes";
 import {RootStackParamList} from "@src/navigation";
@@ -7,6 +8,7 @@ import OwnerSignUpForm from "@components/OwnerSignupForm";
 import {StackScreenProps} from "@react-navigation/stack";
 import {AuthTypeContext} from "@providers/AuthTypeProvider";
 import CustomerSignupForm from "@components/CustomerSignupForm";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = StackScreenProps<
   RootStackParamList,
@@ -16,10 +18,18 @@ type Props = StackScreenProps<
 const SignUpScreen = ({navigation}: Props) => {
   const {authType} = React.useContext(AuthTypeContext);
 
-  return authType === AuthTypes.CUSTOMER ? (
-    <CustomerSignupForm navigation={navigation} />
-  ) : (
-    <OwnerSignUpForm navigation={navigation} />
+  return (
+    <>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+      {authType === AuthTypes.CUSTOMER ? (
+        <CustomerSignupForm navigation={navigation} />
+      ) : (
+        <OwnerSignUpForm navigation={navigation} />
+      )}
+    </>
   );
 };
 const styles = StyleSheet.create({

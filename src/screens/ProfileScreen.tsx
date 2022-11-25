@@ -28,6 +28,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import AddUserPhotoBtn from "./CUSTOMER/AccountScreen/AddUserPhotoBtn";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -328,7 +329,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
               navigation.navigate(RootStackRoutes.CUSTOMER, {
                 screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
                 params: {
-                  screen: CustomerMainBottomTabRoutes.CHAT,
+                  screen: CustomerMainBottomTabRoutes.CHAT_LIST,
                 },
               });
             }}>
@@ -356,6 +357,10 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
 
   return (
     <View style={{position: "relative", flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"light-content"}
+        backgroundColor={splitAppTheme.colors.secondary[600]}
+      />
       <FlatList
         nestedScrollEnabled
         data={[{key: "body"}]}

@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import dayjs from "dayjs";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const keyExtractor = (item: {id: number}) => `menu-${item.id.toString()}`;
 
@@ -253,6 +254,10 @@ const AddMenuItemScreen = ({navigation, route}: Props) => {
 
   return (
     <View style={{flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View>
         {isFetchingNextPage && (
           <View style={{paddingTop: splitAppTheme.space[5]}}>

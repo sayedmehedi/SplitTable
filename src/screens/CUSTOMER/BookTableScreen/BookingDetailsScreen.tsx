@@ -28,6 +28,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import dayjs from "dayjs";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -208,6 +209,12 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      <FocusAwareStatusBar
+        translucent
+        barStyle={"light-content"}
+        backgroundColor={"transparent"}
+      />
+
       <View style={{flex: 1}}>
         <FastImage
           style={{

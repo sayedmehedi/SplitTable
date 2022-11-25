@@ -20,6 +20,7 @@ import {splitAppTheme} from "@src/theme";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookingHistoryQuery";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
@@ -108,6 +109,11 @@ const UpcomingBookingRoute = ({
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator />

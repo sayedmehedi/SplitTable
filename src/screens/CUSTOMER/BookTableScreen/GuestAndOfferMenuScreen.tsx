@@ -13,6 +13,7 @@ import {TouchableOpacity} from "react-native-gesture-handler";
 import {CompositeScreenProps} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -83,6 +84,10 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
       style={{
         flex: 1,
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View
         style={{
           paddingVertical: splitAppTheme.space[5],

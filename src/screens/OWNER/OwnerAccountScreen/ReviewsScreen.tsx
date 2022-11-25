@@ -20,6 +20,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
 import useInfiniteGetClubReviewsQuery from "@hooks/review/useInfiniteGetClubReviewsQuery";
 import GenericListEmpty from "@components/GenericListEmpty";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type FavoriteScreenProps = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.REVIEWS>,
@@ -99,6 +100,11 @@ const ReviewsScreen = ({}: FavoriteScreenProps) => {
 
   return (
     <View>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {!isLoadingInfiniteResources &&
         infiniteGetResourcesResponse !== undefined &&
         resourceListData.length > 0 && (

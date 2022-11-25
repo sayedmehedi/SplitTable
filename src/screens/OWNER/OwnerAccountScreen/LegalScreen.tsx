@@ -1,9 +1,16 @@
 import React from "react";
+import {splitAppTheme} from "@src/theme";
 import {View, Text} from "react-native";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const LegalScreen = () => {
   return (
     <View style={{flex: 1, backgroundColor: "#FFFFFF", padding: 20}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <Text
         style={{
           fontFamily: "SatoshiVariable-Bold",

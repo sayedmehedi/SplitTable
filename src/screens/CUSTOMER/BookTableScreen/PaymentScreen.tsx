@@ -9,6 +9,7 @@ import {TouchableOpacity} from "react-native-gesture-handler";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -45,6 +46,10 @@ const PaymentScreen = ({navigation, route}: Props) => {
         backgroundColor: "#FFFFFF",
         padding: splitAppTheme.space[6],
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <Controller
         name={"amount"}
         rules={{

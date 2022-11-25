@@ -1,9 +1,9 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import {ConversationItem} from "@src/models";
+import UserSearchInput from "./UserSearchInput";
 import EachConversation from "./EachConversation";
 import {StackScreenProps} from "@react-navigation/stack";
-import {CustomerChatStackRoutes} from "@constants/routes";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {CompositeScreenProps} from "@react-navigation/native";
@@ -22,18 +22,18 @@ import {
   RootStackParamList,
   CustomerStackParamList,
   CustomerBottomTabParamList,
-  CustomerChatStackParamList,
 } from "@src/navigation";
-import UserSearchInput from "./UserSearchInput";
+import {
+  CustomerMainBottomTabRoutes,
+  CustomerStackRoutes,
+} from "@constants/routes";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
-    CompositeScreenProps<
-      StackScreenProps<
-        CustomerChatStackParamList,
-        typeof CustomerChatStackRoutes.CHAT_LIST
-      >,
-      BottomTabScreenProps<CustomerBottomTabParamList>
+    BottomTabScreenProps<
+      CustomerBottomTabParamList,
+      typeof CustomerMainBottomTabRoutes.CHAT_LIST
     >,
     StackScreenProps<CustomerStackParamList>
   >,
@@ -80,7 +80,7 @@ const ChatListScreen = ({navigation}: Props) => {
 
   const handleItemPress = React.useCallback(
     (item: ConversationItem) => {
-      navigation.navigate(CustomerChatStackRoutes.CHAT_MESSAGES, {
+      navigation.navigate(CustomerStackRoutes.CHAT_MESSAGES, {
         chatId: item.id,
         partnerName: item.user_name,
         partnerImage: item.user_image,
@@ -116,6 +116,10 @@ const ChatListScreen = ({navigation}: Props) => {
 
   return (
     <View style={{backgroundColor: splitAppTheme.colors.white, flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <SafeAreaView
         style={{
           paddingBottom: 0,

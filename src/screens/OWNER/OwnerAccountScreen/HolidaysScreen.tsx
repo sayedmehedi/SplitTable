@@ -15,6 +15,7 @@ import useDeleteOwnerClubHolidayMutation from "@hooks/clubs/useDeleteOwnerClubHo
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import {isResponseResultError} from "@utils/error-handling";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.HOLIDAYS>,
@@ -128,6 +129,11 @@ export default function HolidaysScreen({navigation}: Props) {
 
   return (
     <View>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator size={"small"} />

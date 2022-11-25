@@ -18,6 +18,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {ScrollView, TouchableOpacity} from "react-native-gesture-handler";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
 import useInfiniteGetFaqsQuery from "@hooks/user/useInfiniteGetFaqsQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.FAQ>,
@@ -161,6 +162,11 @@ const FaqScreen = ({}: Props) => {
         flex: 1,
         backgroundColor: "#FFFFFF",
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {isFetchingNextPage ? (
         <View style={{alignItems: "center", justifyContent: "center"}}>
           <ActivityIndicator size={"small"} />

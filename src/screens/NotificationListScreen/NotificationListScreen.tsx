@@ -135,8 +135,8 @@ export default function NotificationListScreen({}: Props) {
   return (
     <View>
       <FocusAwareStatusBar
-      // barStyle={"dark-content"}
-      // backgroundColor={"white"}
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
       />
 
       {isFetchingNextPage ? (

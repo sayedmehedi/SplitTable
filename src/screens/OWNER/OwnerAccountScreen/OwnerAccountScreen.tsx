@@ -38,6 +38,7 @@ import {
 } from "@src/navigation";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -88,6 +89,10 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
         paddingBottom: splitAppTheme.space[6],
         paddingHorizontal: splitAppTheme.space[6],
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View
         style={{
           height: 90,

@@ -46,16 +46,6 @@ type CustomerProfileStackParamList = {
   [CustomerProfileStackRoutes.ACCOUNT]: undefined;
 };
 
-type CustomerChatStackParamList = {
-  [CustomerChatStackRoutes.CHAT_MESSAGES]: {
-    chatId: number;
-    partnerName: string;
-    partnerImage: string;
-  };
-
-  [CustomerChatStackRoutes.CHAT_LIST]: undefined;
-};
-
 type CustomerBottomTabParamList = {
   [CustomerMainBottomTabRoutes.HOME]: undefined;
   [CustomerMainBottomTabRoutes.CHAT]: undefined;
@@ -65,7 +55,7 @@ type CustomerBottomTabParamList = {
     partnerImage: string;
   };
   [CustomerMainBottomTabRoutes.TABLE_SCREEN]: undefined;
-  [CustomerMainBottomTabRoutes.CHAT]: NavigatorScreenParams<CustomerChatStackParamList>;
+  [CustomerMainBottomTabRoutes.CHAT_LIST]: undefined;
   [CustomerMainBottomTabRoutes.PROFILE_STACK]: NavigatorScreenParams<CustomerProfileStackParamList>;
 };
 
@@ -112,6 +102,12 @@ export type TableListScreenTypeRest = ClubListScreenCommon & {
 };
 
 type CustomerStackParamList = {
+  [CustomerStackRoutes.CHAT_MESSAGES]: {
+    chatId: number;
+    partnerName: string;
+    partnerImage: string;
+  };
+
   [CustomerStackRoutes.PAYMENT_METHOD]: {
     amount: string;
     bookingId: number;

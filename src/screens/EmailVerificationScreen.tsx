@@ -14,6 +14,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import useVerifyEmailMutation from "@hooks/auth/useVerifyEmailMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useResendEmailVerificationCodeMutation from "@hooks/auth/useResendEmailVerificationCodeMutation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = StackScreenProps<
   RootStackParamList,
@@ -81,6 +82,10 @@ const EmailVerificationScreen = ({navigation, route}: Props) => {
         height: splitAppTheme.sizes.full,
         backgroundColor: splitAppTheme.colors.white,
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View
         style={{
           width: splitAppTheme.sizes.full,

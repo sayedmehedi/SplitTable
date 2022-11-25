@@ -13,6 +13,7 @@ import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useResetPasswordMutation from "@hooks/auth/useResetPasswordMutation";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = StackScreenProps<
   RootStackParamList,
@@ -69,6 +70,10 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
         height: splitAppTheme.sizes.full,
         backgroundColor: splitAppTheme.colors.white,
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <View
         style={{
           width: splitAppTheme.sizes.full,

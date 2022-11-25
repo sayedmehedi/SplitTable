@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import useInfiniteGetTransactionsQuery from "@hooks/user/useInfiniteGetTransactionsQuery";
 import GenericListEmpty from "@components/GenericListEmpty";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
@@ -199,6 +200,10 @@ const TransactionScreen = () => {
 
   return (
     <View style={{backgroundColor: "white", flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       {isFetchingNextPage ? (
         <View style={{alignItems: "center", justifyContent: "center"}}>
           <ActivityIndicator size={"small"} />

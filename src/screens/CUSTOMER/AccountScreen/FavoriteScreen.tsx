@@ -15,6 +15,7 @@ import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useInfiniteGetFavoritesQuery from "@hooks/user/useInfiniteGetFavoritesQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.FAVORITE>,
@@ -75,6 +76,10 @@ const FavoriteScreen = ({}: Props) => {
 
   return (
     <View>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       {isFetchingNextPage ? (
         <View style={{alignItems: "center", justifyContent: "center"}}>
           <ActivityIndicator size={"small"} />

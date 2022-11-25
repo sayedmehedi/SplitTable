@@ -34,6 +34,7 @@ import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useCreateOwnerClubMenuMutation from "@hooks/clubs/useCreateOwnerClubMenuMutation";
 import useUpdateOwnerClubMenuMutation from "@hooks/clubs/useUpdateOwnerClubMenuMutation";
 import FastImage from "react-native-fast-image";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.UPSERT_MENU>,
@@ -253,6 +254,11 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
         alignItems: "center",
         padding: splitAppTheme.space[6],
       }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       {isUpdating ? (
         <View
           style={{

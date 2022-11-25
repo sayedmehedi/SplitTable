@@ -33,16 +33,13 @@ export const CustomerStackRoutes = {
   ADD_MENU_ITEM: "AddMenuItem",
   BOOKING_DETAILS: "BookingDetails",
 
+  CHAT_MESSAGES: "ChatMessages",
+
   FAQ: "Faq",
   LEGAL: "Legal",
   FAVORITE: "Favorite",
   TRANSACTION: "Transaction",
   ACCOUNT_SETTING: "AccountSetting",
-} as const;
-
-export const CustomerChatStackRoutes = {
-  CHAT_LIST: "ChatList",
-  CHAT_MESSAGES: "ChatMessages",
 } as const;
 
 export const CustomerAuthStackRoutes = {
@@ -61,7 +58,7 @@ export const OwnerMainBottomTabRoutes = {
 
 export const CustomerMainBottomTabRoutes = {
   HOME: "Home",
-  CHAT: "Chat",
+  CHAT_LIST: "ChatList",
   BOOKING: "Booking",
   TABLE_SCREEN: "TableScreen",
   PROFILE_STACK: "ProfileStack",

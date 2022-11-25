@@ -22,6 +22,7 @@ import {
   OwnerStackParamList,
   OwnerBottomTabParamList,
 } from "@src/navigation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -101,6 +102,10 @@ const MenuListScreen = ({navigation}: Props) => {
 
   return (
     <View>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator size={"small"} />

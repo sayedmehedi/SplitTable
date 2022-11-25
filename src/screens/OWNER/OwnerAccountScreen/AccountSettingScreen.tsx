@@ -2,10 +2,21 @@ import React from "react";
 import {View} from "react-native";
 import ProfileUpdaterItem from "./modals/ProfileUpdaterItem";
 import ClubInfoUpdaterItem from "./modals/ClubInfoUpdaterItem";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {splitAppTheme} from "@src/theme";
 
 const AccountSettingScreen = () => {
   return (
-    <View style={{paddingHorizontal: 12, backgroundColor: "#FFFFFF", flex: 1}}>
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: 12,
+        backgroundColor: splitAppTheme.colors.white,
+      }}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
       <ProfileUpdaterItem type="name" />
 
       <ClubInfoUpdaterItem type="name" />

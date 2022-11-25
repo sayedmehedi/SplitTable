@@ -349,7 +349,7 @@ const BookingListScreen = () => {
     <View style={{flex: 1}}>
       <FocusAwareStatusBar
         barStyle={"dark-content"}
-        // backgroundColor={splitAppTheme.colors.white}
+        backgroundColor={splitAppTheme.colors.white}
       />
 
       {selectedIndex === 0 ? (

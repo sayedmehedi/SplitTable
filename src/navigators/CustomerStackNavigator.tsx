@@ -19,12 +19,14 @@ import {
   StackNavigationProp,
 } from "@react-navigation/stack";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import ChatMessagesAppBar from "@components/ChatMessagesAppBar";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
 import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
+import ChatMessagesScreen from "@screens/CUSTOMER/ChatScreen/ChatMessagesScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
@@ -110,6 +112,12 @@ const CustomerStackNavigator = () => {
         component={TableSearchScreen}
         options={clubSearchScreenOptions}
         name={CustomerStackRoutes.TABLE_SEARCH}
+      />
+
+      <CustomerStack.Screen
+        component={ChatMessagesScreen}
+        options={chatMessagesScreenOptions}
+        name={CustomerStackRoutes.CHAT_MESSAGES}
       />
 
       <CustomerStack.Group>
@@ -457,3 +465,16 @@ const paymentGatewayScreenOptions:
   headerTitle: "Payment",
   header: CommonStackHeader,
 };
+
+const chatMessagesScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.CHAT_MESSAGES
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
+  headerShown: true,
+  header: () => <ChatMessagesAppBar route={route} navigation={navigation} />,
+});

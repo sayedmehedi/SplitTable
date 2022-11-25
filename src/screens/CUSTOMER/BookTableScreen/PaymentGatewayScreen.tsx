@@ -14,6 +14,8 @@ import WebView, {
   WebViewNavigation,
   WebViewMessageEvent,
 } from "react-native-webview";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {splitAppTheme} from "@src/theme";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -113,6 +115,11 @@ const PaymentGatewayScreen = ({navigation, route}: Props) => {
 
   return (
     <View style={{flex: 1}}>
+      <FocusAwareStatusBar
+        barStyle={"dark-content"}
+        backgroundColor={splitAppTheme.colors.white}
+      />
+
       <Modal transparent visible={isPaymentUrlLoading || isLoading}>
         <View
           style={{
