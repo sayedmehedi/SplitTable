@@ -54,6 +54,8 @@ import {
   ConfirmBookingRequest,
   ConfirmBookingResponse,
   CancelBookingResponse,
+  GetClubsBySearchTermQueryParams,
+  GetClubsBySearchTermResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -67,6 +69,30 @@ export class ClubService implements IClubService {
 
   constructor() {}
 
+  getClubsBySearchTerm(
+    params: GetClubsBySearchTermQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        console.log("aborting clubs by search term");
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetClubsBySearchTermResponse>(`search-club`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
   cancenBooking(
     bookingId: number,
   ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>> {
@@ -487,16 +513,21 @@ export class ClubService implements IClubService {
         controller.abort();
       });
 
+      const newParams: Record<string, any> = {
+        ...params,
+        club_id: clubId,
+      };
+
+      if (tableType !== undefined) {
+        newParams["table_type"] = tableType;
+      }
+
       this._httpService
         .get<GetSplitTablesByClubIdResponse | GetBookedTablesByClubIdResponse>(
           `club-tables`,
           {
             signal: controller.signal,
-            params: {
-              ...params,
-              club_id: clubId,
-              table_type: tableType,
-            },
+            params: newParams,
           },
         )
         .then(resolve)

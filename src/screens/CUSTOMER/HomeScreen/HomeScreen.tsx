@@ -38,6 +38,7 @@ import {
   CustomerBottomTabParamList,
 } from "@src/navigation";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import HomeScreenClubSearchInput from "@components/HomeScreenClubSearchInput";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -150,126 +151,125 @@ const HomeScreen = ({navigation}: Props) => {
           start={{x: 0, y: 1}}
           style={{height: WINDOW_HEIGHT * 0.25}}
           colors={["#DF3BC0", "#472BBE"]}>
-         
+          <View
+            style={{
+              paddingVertical: splitAppTheme.space[2],
+              height: splitAppTheme.sizes.full,
+              justifyContent: "flex-end",
+            }}>
             <View
               style={{
-                paddingVertical: splitAppTheme.space[2],
-                height: splitAppTheme.sizes.full,
-                justifyContent: "flex-end",
+                width: splitAppTheme.sizes.full,
+                marginBottom: splitAppTheme.space[1],
+                paddingHorizontal: splitAppTheme.space[6],
               }}>
               <View
                 style={{
                   width: splitAppTheme.sizes.full,
-                  marginBottom: splitAppTheme.space[1],
-                  paddingHorizontal: splitAppTheme.space[6],
                 }}>
                 <View
                   style={{
-                    width: splitAppTheme.sizes.full,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}>
-                    <View>
-                      <Text
-                        style={{
-                          color: splitAppTheme.colors.white,
-                          fontSize: splitAppTheme.fontSizes.xl,
-                          fontFamily:
-                            splitAppTheme.fontConfig.Sathoshi[700].normal,
-                        }}>
-                        Good{" "}
-                        {hours < 12
-                          ? "Morning"
-                          : hours < 18
-                          ? "Afternoon"
-                          : "Evening"}
-                        !
-                      </Text>
-
-                      <Text
-                        style={{
-                          color: splitAppTheme.colors.white,
-                          fontSize: splitAppTheme.fontSizes.md,
-                          marginTop: splitAppTheme.space["0.5"],
-                          fontFamily:
-                            splitAppTheme.fontConfig.Sathoshi[700].normal,
-                        }}>
-                        {authData?.name}
-                      </Text>
-                    </View>
-
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          padding: splitAppTheme.space[1],
-                          borderRadius: splitAppTheme.radii.full,
-                          backgroundColor: "rgba(255,255,255,0.2)",
-                        }}
-                        onPress={handleGotoNotifications}>
-                        <MaterialIcons
-                          size={30}
-                          color={"white"}
-                          name={"notifications-none"}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      marginVertical: splitAppTheme.space["0.5"],
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        height: 50,
-                        width: "100%",
-                        borderRadius: 8,
-                        paddingLeft: 15,
-                        marginVertical: 10,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        backgroundColor: splitAppTheme.colors.white,
-                      }}
-                      onPress={() => {
-                        navigation.navigate(CustomerStackRoutes.TABLE_SEARCH);
-                      }}>
-                      <Feather name="search" color={"#3B3B3B"} size={15} />
-                      <Text
-                        style={{
-                          color: "#3B3B3B",
-                          marginLeft: splitAppTheme.space[2],
-                          fontSize: splitAppTheme.fontSizes.sm,
-                        }}>
-                        Find your restaurant
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}>
-                    <MapIcon height={16} width={16} color={"white"} />
+                  <View>
                     <Text
                       style={{
                         color: splitAppTheme.colors.white,
-                        fontSize: splitAppTheme.fontSizes.sm,
-                        marginLeft: splitAppTheme.space[2],
+                        fontSize: splitAppTheme.fontSizes.xl,
                         fontFamily:
-                          splitAppTheme.fontConfig.Sathoshi[400].normal,
+                          splitAppTheme.fontConfig.Sathoshi[700].normal,
                       }}>
-                      {authData?.location}
+                      Good{" "}
+                      {hours < 12
+                        ? "Morning"
+                        : hours < 18
+                        ? "Afternoon"
+                        : "Evening"}
+                      !
+                    </Text>
+
+                    <Text
+                      style={{
+                        color: splitAppTheme.colors.white,
+                        fontSize: splitAppTheme.fontSizes.md,
+                        marginTop: splitAppTheme.space["0.5"],
+                        fontFamily:
+                          splitAppTheme.fontConfig.Sathoshi[700].normal,
+                      }}>
+                      {authData?.name}
                     </Text>
                   </View>
+
+                  <View>
+                    <TouchableOpacity
+                      style={{
+                        padding: splitAppTheme.space[1],
+                        borderRadius: splitAppTheme.radii.full,
+                        backgroundColor: "rgba(255,255,255,0.2)",
+                      }}
+                      onPress={handleGotoNotifications}>
+                      <MaterialIcons
+                        size={30}
+                        color={"white"}
+                        name={"notifications-none"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    marginVertical: splitAppTheme.space["0.5"],
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      height: 50,
+                      width: "100%",
+                      borderRadius: 8,
+                      paddingLeft: 15,
+                      marginVertical: 10,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: splitAppTheme.colors.white,
+                    }}
+                    onPress={() => {
+                      navigation.navigate(CustomerStackRoutes.TABLE_SEARCH);
+                    }}>
+                    <Feather name="search" color={"#3B3B3B"} size={15} />
+                    <Text
+                      style={{
+                        color: "#3B3B3B",
+                        marginLeft: splitAppTheme.space[2],
+                        fontSize: splitAppTheme.fontSizes.sm,
+                      }}>
+                      Find your club/bar
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* <HomeScreenClubSearchInput /> */}
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}>
+                  <MapIcon height={16} width={16} color={"white"} />
+                  <Text
+                    style={{
+                      color: splitAppTheme.colors.white,
+                      fontSize: splitAppTheme.fontSizes.sm,
+                      marginLeft: splitAppTheme.space[2],
+                      fontFamily: splitAppTheme.fontConfig.Sathoshi[400].normal,
+                    }}>
+                    {authData?.location}
+                  </Text>
                 </View>
               </View>
             </View>
-         
+          </View>
         </LinearGradient>
       </View>
 

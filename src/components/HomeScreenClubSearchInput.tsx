@@ -3,27 +3,27 @@ import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import FastImage from "react-native-fast-image";
+import {ScrollViewListItem} from "./ScrollViewListItem";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import {isResponseResultError} from "@utils/error-handling";
 import useSearchUserQuery from "@hooks/user/useSearchUserQuery";
-import {ScrollViewListItem} from "@components/ScrollViewListItem";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
-import {Image, Platform, Text, TouchableOpacity, View} from "react-native";
+import {Platform, Text, TouchableOpacity, View} from "react-native";
 import useSendInvitationMutation from "@hooks/chat/useSendInvitationMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useGetClubsBySearchTermQuery from "@hooks/clubs/useGetClubsBySearchTermQuery";
 
 type SuggestionItem = {
   title: string;
   image: string;
   id: string;
   location: string;
-  email: string;
 };
 
-export default function UserSearchInput() {
+export default function HomeScreenClubSearchInput() {
   const toast = useAppToast();
   const {
     window: {height: WINDOW_HEIGHT},
@@ -37,16 +37,15 @@ export default function UserSearchInput() {
   );
   const actionSheetRef = React.useRef<ActionSheetRef>(null!);
 
-  const {data: usersData, isFetching: isUsersFetching} = useSearchUserQuery(
-    {
-      q,
-    },
-    {
-      enabled: dropdownOpen,
-    },
-  );
-
-  //   console.log("searchRef", searchRef.current);
+  const {data: resources, isFetching: isUsersFetching} =
+    useGetClubsBySearchTermQuery(
+      {
+        search: q,
+      },
+      {
+        enabled: dropdownOpen,
+      },
+    );
 
   const {
     mutate: sendInvitation,
@@ -65,17 +64,16 @@ export default function UserSearchInput() {
   useHandleResponseResultError(sendResponse);
   useHandleNonFieldError(sendError);
 
-  const usersSuggestion: SuggestionItem[] = React.useMemo(() => {
+  const resourceSuggestion: SuggestionItem[] = React.useMemo(() => {
     return (
-      usersData?.users?.data?.map(user => ({
-        title: user.name,
-        email: user.email,
-        image: user.image,
-        id: user.id.toString(),
-        location: user.location,
+      resources?.clubs?.data?.map(resource => ({
+        title: resource.name,
+        image: resource.image,
+        id: resource.id.toString(),
+        location: resource.location,
       })) ?? []
     );
-  }, [JSON.stringify(usersData ?? {})]);
+  }, [JSON.stringify(resources ?? {})]);
 
   const handleSendInvitation = () => {
     if (selectedUser?.id) {
@@ -100,7 +98,7 @@ export default function UserSearchInput() {
         }}
         direction={Platform.select({ios: "down"})}
         onChangeText={setQ}
-        dataSet={usersSuggestion}
+        dataSet={resourceSuggestion}
         // @ts-ignore
         onSelectItem={(item: SuggestionItem) => {
           if (item !== null) {
@@ -116,7 +114,7 @@ export default function UserSearchInput() {
         textInputProps={{
           autoCorrect: false,
           autoCapitalize: "none",
-          placeholder: "Search",
+          placeholder: "Search club/bar",
           placeholderTextColor: splitAppTheme.colors.black,
           style: {
             color: splitAppTheme.colors.black,
@@ -154,7 +152,7 @@ export default function UserSearchInput() {
                 style={{
                   height: splitAppTheme.sizes[12],
                   width: splitAppTheme.sizes[12],
-                  borderRadius: splitAppTheme.radii.full,
+                  //   borderRadius: splitAppTheme.radii.full,
                 }}
               />
             </View>
@@ -167,7 +165,7 @@ export default function UserSearchInput() {
                   style={{
                     fontSize: splitAppTheme.fontSizes.sm,
                   }}
-                  title={truncate(item.email, {length: 22})}
+                  title={truncate(item.location, {length: 22})}
                 />
               </View>
             </View>

@@ -608,7 +608,7 @@ export type GetSplitTablesByClubIdQueryParams = PaginationQueryParams & {
 
 export type GetBookedTablesByClubIdQueryParams = PaginationQueryParams & {
   clubId: number;
-  tableType: typeof AppTableTypes.BOOKED;
+  tableType?: typeof AppTableTypes.BOOKED;
 };
 
 export type GetSplitTablesByClubIdResponse = {
@@ -942,3 +942,25 @@ export type SocialLoginResponse = ResponseResult<{
 }>;
 
 export type CancelBookingResponse = ResponseResult<{}>;
+
+export interface ClubSearchItem {
+  id: number;
+  name: string;
+  image: string;
+  date?: string;
+  distance: string;
+  location: string;
+  avg_rating: number;
+  opening_time: string;
+  closing_time: string;
+  total_reviews: number;
+  is_favourite: boolean;
+}
+
+export type GetClubsBySearchTermQueryParams = PaginationQueryParams & {
+  search?: string;
+};
+
+export type GetClubsBySearchTermResponse = {
+  clubs: SimplePaginatedResponse<ClubSearchItem>;
+};
