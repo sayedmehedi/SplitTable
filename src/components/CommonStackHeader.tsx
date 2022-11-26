@@ -1,4 +1,5 @@
 import React from "react";
+import {Platform} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import Entypo from "react-native-vector-icons/Entypo";
 import AppHeaderBackground from "./AppHeaderBackground";
@@ -32,9 +33,11 @@ const CommonStackHeader = (props: StackHeaderProps) => {
             }) =>
               back && (
                 <HeaderBackButton
-                style={{
-                  paddingLeft:15
-                }}
+                  style={Platform.select({
+                    ios: {
+                      paddingLeft: 15,
+                    },
+                  })}
                   {...props}
                   onPress={navigation.goBack}
                   canGoBack={navigation.canGoBack()}

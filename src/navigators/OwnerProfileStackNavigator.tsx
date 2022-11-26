@@ -7,8 +7,6 @@ import OwnerAccountScreen from "@screens/OWNER/OwnerAccountScreen";
 import FaqScreen from "@screens/OWNER/OwnerAccountScreen/FaqScreen";
 import LegalScreen from "@screens/OWNER/OwnerAccountScreen/LegalScreen";
 import {OWNER_PROFILE_STACK_NAVIGATOR_ID} from "@constants/navigators";
-import InformationScreen from "@screens/OWNER/OwnerAccountScreen/InformationScreen";
-import ReviewsScreen from "@screens/OWNER/OwnerAccountScreen/ReviewsScreen";
 import TransactionScreen from "@screens/OWNER/OwnerAccountScreen/TransactionScreen";
 import AccountSettingScreen from "@screens/OWNER/OwnerAccountScreen/AccountSettingScreen";
 import {
@@ -30,12 +28,6 @@ const OwnerProfileStackNavigator = () => {
       />
 
       <OwnerProfileStack.Screen
-        component={InformationScreen}
-        options={profileScreenOptions}
-        name={OwnerProfileStackRoutes.PROFILE}
-      />
-
-      <OwnerProfileStack.Screen
         component={TransactionScreen}
         options={transactionScreenOptions}
         name={OwnerProfileStackRoutes.TRANSACTION}
@@ -45,12 +37,6 @@ const OwnerProfileStackNavigator = () => {
         component={AccountSettingScreen}
         options={accountSettingScreenOptions}
         name={OwnerProfileStackRoutes.ACCOUNT_SETTING}
-      />
-
-      <OwnerProfileStack.Screen
-        component={ReviewsScreen}
-        options={favoriteScreenOptions}
-        name={OwnerProfileStackRoutes.FAVORITE}
       />
 
       <OwnerProfileStack.Screen
@@ -94,17 +80,7 @@ const accountScreenOptions:
     }) => StackNavigationOptions) = {
   headerTitle: "My Account",
 };
-const profileScreenOptions:
-  | StackNavigationOptions
-  | ((props: {
-      route: RouteProp<
-        OwnerAccountStackParamList,
-        typeof OwnerProfileStackRoutes.PROFILE
-      >;
-      navigation: any;
-    }) => StackNavigationOptions) = {
-  headerShown: false,
-};
+
 const transactionScreenOptions:
   | StackNavigationOptions
   | ((props: {
