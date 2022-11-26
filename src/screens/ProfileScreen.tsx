@@ -1,5 +1,4 @@
 import React from "react";
-import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import {QueryKeys} from "@constants/query-keys";
 import {isCustomerProfile} from "@utils/profile";
@@ -363,6 +362,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         barStyle={"light-content"}
         backgroundColor={splitAppTheme.colors.secondary[600]}
       />
+
       <FlatList
         nestedScrollEnabled
         data={[{key: "body"}]}
@@ -376,7 +376,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
             );
           }
 
-          return <ReviewList />;
+          return <ReviewList ownerId={profileData.id} />;
         }}
         onRefresh={handleRefresh}
         key={"profile-screen-list"}
@@ -384,6 +384,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         showsVerticalScrollIndicator={false}
         refreshing={isFetchingUserImages == 1}
         ListHeaderComponent={ListHeaderComponent}
+        ListFooterComponent={<View style={{height: 100}} />}
       />
 
       {authData?.id === profileData.id && <AddUserPhotoBtn />}

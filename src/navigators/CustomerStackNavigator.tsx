@@ -294,7 +294,7 @@ const clubSearchScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitleAlign: "center",
-  title: "Search Table & Events",
+  title: "Search Club/Bar",
 });
 
 const tableDetailsScreenOptions:

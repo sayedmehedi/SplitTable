@@ -377,31 +377,34 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             </View>
           </View>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginBottom: splitAppTheme.space[4],
-            }}>
-            <View
-              style={{
-                height: splitAppTheme.sizes[9],
-                width: splitAppTheme.sizes[9],
-                borderRadius: splitAppTheme.radii.full,
-                backgroundColor: "rgba(255, 63, 204, 0.2)",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-              <DishIcon
-                height={splitAppTheme.sizes[5]}
-                width={splitAppTheme.sizes[5]}
-              />
-            </View>
+          {tableDetailsResponse.cuisines !== "" ||
+            (tableDetailsResponse.cuisines !== null && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: splitAppTheme.space[4],
+                }}>
+                <View
+                  style={{
+                    height: splitAppTheme.sizes[9],
+                    width: splitAppTheme.sizes[9],
+                    borderRadius: splitAppTheme.radii.full,
+                    backgroundColor: "rgba(255, 63, 204, 0.2)",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                  <DishIcon
+                    height={splitAppTheme.sizes[5]}
+                    width={splitAppTheme.sizes[5]}
+                  />
+                </View>
 
-            <View style={{marginLeft: splitAppTheme.space[3]}}>
-              <Text>{tableDetailsResponse.cuisines}</Text>
-            </View>
-          </View>
+                <View style={{marginLeft: splitAppTheme.space[3]}}>
+                  <Text>{tableDetailsResponse.cuisines}</Text>
+                </View>
+              </View>
+            ))}
 
           <View
             style={{

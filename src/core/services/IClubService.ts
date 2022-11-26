@@ -46,12 +46,20 @@ import {
   ConfirmBookingRequest,
   ConfirmBookingResponse,
   CancelBookingResponse,
+  GetClubsBySearchTermQueryParams,
+  GetClubsBySearchTermResponse,
 } from "@src/models";
 
 export interface IClubService {
   cancenBooking(
     bookingId: number,
   ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>>;
+
+  getClubsBySearchTerm(
+    params: GetClubsBySearchTermQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
+  >;
 
   getOwnerClubHolidays(
     params: GetOwnerClubHolidaysQueryParams,
