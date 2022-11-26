@@ -118,7 +118,7 @@ const PaymentGatewayScreen = ({navigation, route}: Props) => {
       case "success":
         {
           await queryClient.invalidateQueries([QueryKeys.UPCOMING_BOOKING]);
-          navigation.navigate(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
+          navigation.replace(CustomerStackRoutes.CUSTOMER_MAIN_TAB, {
             screen: CustomerMainBottomTabRoutes.HOME,
           });
         }

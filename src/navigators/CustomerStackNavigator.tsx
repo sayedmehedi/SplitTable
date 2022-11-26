@@ -148,6 +148,7 @@ const CustomerStackNavigator = () => {
           component={PaymentScreen}
           options={paymentScreenOptions}
           name={CustomerStackRoutes.PAYMENT_AMOUNT}
+          getId={({params}) => JSON.stringify(params)}
         />
 
         <CustomerStack.Screen
