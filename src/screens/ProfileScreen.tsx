@@ -124,6 +124,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           alignSelf: "center",
           alignItems: "center",
           marginBottom: splitAppTheme.space[3],
+          paddingHorizontal:10
         }}>
         <Text
           style={{

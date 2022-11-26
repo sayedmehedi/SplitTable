@@ -21,7 +21,8 @@ const CommonStackHeader = (props: StackHeaderProps) => {
       layout={layout}
       headerShadowVisible
       headerRight={options.headerRight}
-      headerStyle={options.headerStyle}
+      headerStyle={{}}
+      
       headerLeft={
         options.headerLeft
           ? options.headerLeft
@@ -55,16 +56,18 @@ const CommonStackHeader = (props: StackHeaderProps) => {
       headerLeftContainerStyle={options.headerLeftContainerStyle}
       headerRightContainerStyle={options.headerRightContainerStyle}
       headerTitleStyle={{
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: "bold",
         color: splitAppTheme.colors.black,
         fontFamily: "SatoshiVariable-Bold",
         ...(typeof options.headerTitleStyle === "object"
           ? (options.headerTitleStyle as any)
           : {}),
+          
       }}
       modal={options.presentation === "modal"}
       headerTitleAlign={options.headerTitleAlign ?? "center"}
+    
     />
   );
 };

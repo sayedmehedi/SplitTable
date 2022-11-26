@@ -6,6 +6,7 @@
 
 #import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
+#import "RNSplashScreen.h"
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -57,7 +58,7 @@ static void InitializeFlipper(UIApplication *application) {
   [[FBSDKApplicationDelegate sharedInstance] application:application
                         didFinishLaunchingWithOptions:launchOptions];
   
-  
+  [RNSplashScreen show];
   return YES;
 }
 

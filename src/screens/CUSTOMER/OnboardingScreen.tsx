@@ -103,7 +103,7 @@ const OnboardingScreen = ({navigation}: Props) => {
               // justifyContent: "center",
               borderTopRightRadius: 30,
               width: splitAppTheme.sizes.full,
-              bottom: PAGINATION_INDICATOR_HEIGHT,
+              bottom: 0,
               height: height * 0.43 - PAGINATION_INDICATOR_HEIGHT,
             }}
             end={{x: 0, y: 0}}
@@ -256,7 +256,7 @@ const OnboardingScreen = ({navigation}: Props) => {
         renderItem={renderEachItem}
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={updateCurrentSlideIndex}
-        contentContainerStyle={flatlistContentContainerStyle}
+        // contentContainerStyle={flatlistContentContainerStyle}
       />
 
       <LinearGradient

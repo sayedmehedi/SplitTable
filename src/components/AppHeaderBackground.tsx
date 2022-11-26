@@ -15,6 +15,7 @@ export default function AppHeaderBackground() {
         },
         shadowOpacity: 0.24,
         shadowRadius: 3.27,
+        
       }}
     />
   );
