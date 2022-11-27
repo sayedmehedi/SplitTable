@@ -2,11 +2,8 @@ import React from "react";
 import {
   View,
   Text,
-  Image,
-  StatusBar,
   ScrollView,
   SafeAreaView,
-  ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
