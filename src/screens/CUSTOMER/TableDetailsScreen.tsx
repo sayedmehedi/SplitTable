@@ -151,7 +151,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
               </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={{paddingRight:10}}>
               <TouchableOpacity
                 disabled={isSharing}
                 onPress={() => {

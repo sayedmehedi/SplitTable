@@ -87,7 +87,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   }
 
   const ListHeaderComponent = (
-    <React.Fragment>
+    <>
       <LinearGradient
         end={{x: 0, y: 0}}
         start={{x: 0, y: 1}}
@@ -95,12 +95,15 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         style={{
           height: 150,
           width: "100%",
+          zIndex:-1000
         }}>
         <SafeAreaView>
           <TouchableOpacity
             style={{
-              width: 50,
+              width: 60,
               padding: 15,
+              
+              zIndex:10000
             }}
             onPress={() => navigation.goBack()}>
             <Feather name="chevron-left" size={25} color={"white"} />
@@ -110,7 +113,8 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
 
       <View
         style={{
-          marginTop: -75,
+          marginTop: -60,
+          zIndex:-100
         }}>
         <ProfileImageUploader
           imageUrl={profileData.image}
@@ -354,7 +358,9 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </TouchableOpacity>
         )}
       </View>
-    </React.Fragment>
+
+      </>
+    
   );
 
   return (
@@ -390,6 +396,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
 
       {authData?.id === profileData.id && <AddUserPhotoBtn />}
     </View>
+    
   );
 };
 

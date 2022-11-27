@@ -355,15 +355,16 @@ export default function PhotoList({
             backgroundColor: "rgba(0,0,0,0.7)",
           }}>
           <View style={{width: "100%"}}>
-            <Pressable
+            <TouchableOpacity
               onPress={() => toggle()}
               style={{
                 marginLeft: "auto",
-                marginTop: splitAppTheme.space[6],
+                marginTop: 40,
                 marginRight: splitAppTheme.space[6],
+                
               }}>
               <AntDesign name={"close"} size={33} color={"white"} />
-            </Pressable>
+            </TouchableOpacity>
           </View>
 
           <View>

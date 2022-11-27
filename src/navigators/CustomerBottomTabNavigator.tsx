@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text} from "react-native";
+import {View, Text,Platform} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import ChatIcon from "@assets/icons/chat.svg";
 import TableIcon from "@assets/icons/table-ico.svg";
@@ -75,10 +75,11 @@ const globalScreenOptions:
   headerShown: false,
   tabBarShowLabel: false,
   tabBarStyle: {
-    height: 70,
+    height: Platform.OS == 'ios' ? 85: 70,
     elevation: 20,
     shadowColor: "#FF3FCB",
     backgroundColor: "#FFFFFF",
+    
     
   },
 };
