@@ -25,8 +25,18 @@ export default function useAppToast() {
     [],
   );
 
+  const info = React.useCallback((msg: string, props: ToastShowParams = {}) => {
+    Toast.show({
+      text1: "Info",
+      text2: msg,
+      type: "info",
+      ...props,
+    });
+  }, []);
+
   return {
     error,
     success,
+    info,
   };
 }

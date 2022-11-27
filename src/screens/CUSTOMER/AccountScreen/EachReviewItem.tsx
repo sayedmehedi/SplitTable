@@ -1,5 +1,4 @@
 import React from "react";
-import truncate from "lodash.truncate";
 import {ReviewItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import {Text, View} from "react-native";

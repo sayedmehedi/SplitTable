@@ -12,7 +12,9 @@ type Props = {
 
 export default function BookedTablesSwiper({onItemPress}: Props) {
   const {data: tableNEventsResponse, isLoading: isPopularClubsLoading} =
-    useGetBookedTablesQuery();
+    useGetBookedTablesQuery({
+      paginate: 5,
+    });
 
   return (
     <ScrollView

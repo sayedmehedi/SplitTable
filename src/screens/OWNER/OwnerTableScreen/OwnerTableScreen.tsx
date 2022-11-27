@@ -272,7 +272,11 @@ const OwnerTableScreen = ({navigation}: Props) => {
                 color="primary"
                 variant="outlined"
                 title="Create Table"
-                onPress={() => {}}
+                onPress={() => {
+                  navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
+                    actionMode: "create",
+                  });
+                }}
               />
             </View>
           ) : (

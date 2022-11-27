@@ -20,6 +20,8 @@ import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import {CompositeScreenProps} from "@react-navigation/native";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {
@@ -35,7 +37,6 @@ import {
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -50,7 +51,7 @@ type Props = CompositeScreenProps<
 
 const CustomerTableScreen = ({navigation}: Props) => {
   const {hours} = useTime({});
-  const {data: authData} = useGetAuthDataQuery();
+  const {data: authData} = useGetProfileQuery();
   const {
     window: {height: WINDOW_HEIGHT},
   } = useDimensions();
@@ -169,7 +170,7 @@ const CustomerTableScreen = ({navigation}: Props) => {
                           marginLeft: splitAppTheme.space[2],
                           fontSize: splitAppTheme.fontSizes.sm,
                         }}>
-                        Find your restaurant
+                        Find your club/bar
                       </Text>
                     </TouchableOpacity>
                   </View>

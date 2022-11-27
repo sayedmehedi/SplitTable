@@ -261,6 +261,8 @@ export default function UpsertTableScreen({route, navigation}: Props) {
   }, [createError, isCreateError, setError]);
 
   const handleImageResult = (result: ImagePickerResponse) => {
+    actionSheetRef.current.hide();
+
     if (result.errorCode) {
       switch (result.errorCode) {
         case "camera_unavailable":
@@ -1298,10 +1300,8 @@ export default function UpsertTableScreen({route, navigation}: Props) {
             color="primary"
             variant="solid"
             title="Submit"
-            touchableOpacityProps={{
-              disabled: isCreating || isUpdating,
-            }}
             onPress={handleUpsertTable}
+            loading={isCreating || isUpdating}
           />
         </View>
       </ScrollView>

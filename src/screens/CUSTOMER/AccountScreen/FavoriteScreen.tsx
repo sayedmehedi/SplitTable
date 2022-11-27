@@ -12,10 +12,11 @@ import EachFavoriteItem from "./EachFavoriteItem";
 import {CustomerStackRoutes} from "@constants/routes";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
+import GenericListEmpty from "@components/GenericListEmpty";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useInfiniteGetFavoritesQuery from "@hooks/user/useInfiniteGetFavoritesQuery";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.FAVORITE>,
@@ -24,7 +25,7 @@ type Props = CompositeScreenProps<
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
-const FavoriteScreen = ({}: Props) => {
+const FavoriteScreen = ({navigation}: Props) => {
   const {
     refetch,
     isRefetching,
@@ -61,6 +62,22 @@ const FavoriteScreen = ({}: Props) => {
     fetchNextPage();
   }, [fetchNextPage]);
 
+  const handleItemPress = React.useCallback(
+    (item: FavoriteClub) => {
+      navigation.navigate(CustomerStackRoutes.CLUB_DETAILS, {
+        clubId: item.id,
+      });
+    },
+    [navigation],
+  );
+
+  const renderClubItem: ListRenderItem<FavoriteClub> = React.useCallback(
+    ({item}) => {
+      return <EachFavoriteItem item={item} onItemPress={handleItemPress} />;
+    },
+    [handleItemPress],
+  );
+
   if (isLoadingInfiniteResources) {
     return (
       <View
@@ -84,10 +101,6 @@ const FavoriteScreen = ({}: Props) => {
         <View style={{alignItems: "center", justifyContent: "center"}}>
           <ActivityIndicator size={"small"} />
         </View>
-      ) : resourceListData.length === 0 ? (
-        <View style={{alignItems: "center", justifyContent: "center"}}>
-          <Text>No Data</Text>
-        </View>
       ) : null}
       <FlatList
         onRefresh={refetch}
@@ -107,13 +120,10 @@ const FavoriteScreen = ({}: Props) => {
         contentContainerStyle={{
           padding: splitAppTheme.space["6"],
         }}
+        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
       />
     </View>
   );
 };
 
 export default FavoriteScreen;
-
-const renderClubItem: ListRenderItem<FavoriteClub> = ({item}) => {
-  return <EachFavoriteItem item={item} />;
-};

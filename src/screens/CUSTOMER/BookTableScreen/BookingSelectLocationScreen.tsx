@@ -137,10 +137,8 @@ export default function BookingSelectLocationScreen({
         width={"100%"}
         color={"primary"}
         variant={"solid"}
-        touchableOpacityProps={{
-          disabled: isGeolocationLoading,
-        }}
         title={"Enable Location"}
+        loading={isGeolocationLoading}
         onPress={handleEnableLocation}
       />
     </View>

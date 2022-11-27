@@ -304,10 +304,8 @@ const EmailLoginScreen = ({navigation}: Props) => {
               color={"primary"}
               variant={"solid"}
               title={"Sign In"}
+              loading={isLoggingIn}
               onPress={handleSignin}
-              touchableOpacityProps={{
-                disabled: isLoggingIn,
-              }}
             />
           </View>
         </View>

@@ -281,9 +281,7 @@ export default function ClubInfoUpdaterItem({type}: Props) {
                 color={"primary"}
                 variant={"solid"}
                 onPress={handleProfileUpdate}
-                touchableOpacityProps={{
-                  disabled: isUpdatingClubInfo,
-                }}
+                loading={isUpdatingClubInfo}
                 textProps={{
                   style: {
                     color: splitAppTheme.colors.white,

@@ -37,6 +37,8 @@ export default function ProfileImageUploader({
   useHandleNonFieldError(updateError);
 
   const handleImageResult = (result: ImagePickerResponse) => {
+    actionSheetRef.current.hide();
+
     if (result.errorCode) {
       switch (result.errorCode) {
         case "camera_unavailable":
@@ -77,8 +79,6 @@ export default function ProfileImageUploader({
               setUploadProgress(0);
               toast.success(data.success);
             }
-
-            actionSheetRef.current.hide();
           },
         },
       );

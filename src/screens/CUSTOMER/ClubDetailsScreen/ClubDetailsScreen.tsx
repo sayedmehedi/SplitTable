@@ -90,11 +90,18 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
   useHandleResponseResultError(toggleFavoriteClubResponse);
 
   const {
-    error: shareResourceError,
-    mutate: shareResource,
     isLoading: isSharing,
+    mutate: shareResource,
+    error: shareResourceError,
+    isError: isShareError,
   } = useShareResourceMutation();
-  useHandleNonFieldError(shareResourceError);
+  // useHandleNonFieldError(shareResourceError);
+
+  React.useEffect(() => {
+    if (isShareError) {
+      toast.info(shareResourceError.message);
+    }
+  }, [isShareError, JSON.stringify(shareResourceError)]);
 
   const handleToggleFavorite = React.useCallback(() => {
     toggleFavoriteClub(
@@ -186,7 +193,11 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
       style={{
         flex: 1,
       }}>
-      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar
+        translucent
+        barStyle={"light-content"}
+        backgroundColor={"transparent"}
+      />
 
       <FlatList
         data={[{key: "body"}]}
@@ -631,18 +642,18 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
             </View>
           </View>
         }
+        ListFooterComponent={
+          <View style={{marginTop: splitAppTheme.sizes[16]}}></View>
+        }
       />
 
-      <ReviewModal
+      {/* <ReviewModal
         open={isReviewModalOpen}
         onClose={toggleReviewModal}
         reviewerId={clubDetailsResponse.club.owner_id}
-      />
+      /> */}
 
-      <View style={{marginTop: splitAppTheme.sizes[16]}}></View>
-
-      {selectedIndex === 1 ? (
-        <View
+      {/* <View
           style={{
             bottom: 0,
             width: WINDOW_WIDTH,
@@ -683,8 +694,9 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
               </View>
             </LinearGradient>
           </TouchableOpacity>
-        </View>
-      ) : (
+        </View> */}
+
+      {selectedIndex === 1 ? null : (
         <View
           style={{
             bottom: 0,

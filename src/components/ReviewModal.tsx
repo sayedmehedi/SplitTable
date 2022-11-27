@@ -168,9 +168,7 @@ export default function ReviewModal({onClose, open, reviewerId}: Props) {
                   color={"primary"}
                   variant={"solid"}
                   title={"Submit"}
-                  touchableOpacityProps={{
-                    disabled: isAddingClubReview,
-                  }}
+                  loading={isAddingClubReview}
                   onPress={handleSubmitReview}
                 />
               </View>

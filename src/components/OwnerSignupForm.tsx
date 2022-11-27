@@ -124,6 +124,8 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
   });
 
   const handleImageResult = (result: ImagePickerResponse) => {
+    actionSheetRef.current.hide();
+
     if (result.errorCode) {
       switch (result.errorCode) {
         case "camera_unavailable":
@@ -644,11 +646,9 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
           <AppGradientButton
             width={"100%"}
             color={"primary"}
-            touchableOpacityProps={{
-              disabled: isRegisteringUser,
-            }}
             variant={"solid"}
             title={"Sign Up"}
+            loading={isRegisteringUser}
             onPress={handleUserRegistration}
           />
         </View>
