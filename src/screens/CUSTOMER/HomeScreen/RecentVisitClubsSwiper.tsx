@@ -12,7 +12,9 @@ type Props = {
 
 export default function RecentVisitsSwiper({onItemPress, onSeeAll}: Props) {
   const {data: recentVisitClubsResponse, isLoading: isRecentVisitClubsLoading} =
-    useGetRecentViewsClubsQuery();
+    useGetRecentViewsClubsQuery({
+      paginate: 5,
+    });
 
   return !isRecentVisitClubsLoading &&
     recentVisitClubsResponse?.tables?.data?.length === 0 ? (

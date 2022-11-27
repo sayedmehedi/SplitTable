@@ -5,6 +5,7 @@ import {
   TextProps,
   TouchableOpacity,
   TouchableOpacityProps,
+  ActivityIndicator,
 } from "react-native";
 import LinearGradient, {
   LinearGradientProps,
@@ -13,6 +14,7 @@ import {splitAppTheme} from "@src/theme";
 
 type SolidBtnProps = {
   title: string;
+  loading?: boolean;
   textProps?: TextProps;
   width?: number | string;
   onPress: (e: any) => void;
@@ -23,6 +25,7 @@ type SolidBtnProps = {
 type OutlinedBtnProps = {
   title: string;
   color: string;
+  loading?: boolean;
   textProps?: TextProps;
   width?: number | string;
   onPress: (e: any) => void;
@@ -31,6 +34,7 @@ type OutlinedBtnProps = {
 
 type BtnProps = {
   title: string;
+  loading?: boolean;
   textProps?: TextProps;
   width?: number | string;
   onPress: (e: any) => void;
@@ -45,6 +49,7 @@ const SecondaryButton = ({
   title,
   onPress,
   textProps = {},
+  loading = false,
   linearGradientProps,
   touchableOpacityProps = {},
 }: SolidBtnProps) => {
@@ -75,19 +80,22 @@ const SecondaryButton = ({
       <LinearGradient
         end={{x: 1, y: 0}}
         start={{x: 0, y: 0}}
-        // @ts-ignore
-        colors={["#00C1FF", "#402B8C"]}
         {...(linearGradientProps ?? {})}
+        colors={["#00C1FF", "#402B8C"]}
         style={defaultStyles}>
-        <Text
-          style={{
-            color: splitAppTheme.colors.white,
-            fontSize: 16,
-            fontWeight: "500",
-          }}
-          {...textProps}>
-          {title}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size={"small"} />
+        ) : (
+          <Text
+            style={{
+              color: splitAppTheme.colors.white,
+              fontSize: 16,
+              fontWeight: "500",
+            }}
+            {...textProps}>
+            {title}
+          </Text>
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -98,6 +106,7 @@ const PrimaryButton = ({
   title,
   onPress,
   textProps = {},
+  loading = false,
   linearGradientProps,
   touchableOpacityProps = {},
 }: SolidBtnProps) => {
@@ -124,23 +133,29 @@ const PrimaryButton = ({
   }
 
   return (
-    <TouchableOpacity onPress={onPress} {...touchableOpacityProps}>
+    <TouchableOpacity
+      onPress={onPress}
+      {...touchableOpacityProps}
+      disabled={loading || touchableOpacityProps.disabled}>
       <LinearGradient
         end={{x: 1, y: 0}}
         start={{x: 0, y: 0}}
         {...linearGradientProps}
-        // @ts-ignore
         colors={["#402B8C", "#FF3FCB"]}
         style={defaultStyles}>
-        <Text
-          style={{
-            color: splitAppTheme.colors.white,
-            fontSize: 16,
-            fontWeight: "500",
-          }}
-          {...textProps}>
-          {title}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size={"small"} />
+        ) : (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "500",
+              color: splitAppTheme.colors.white,
+            }}
+            {...textProps}>
+            {title}
+          </Text>
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -150,6 +165,7 @@ const OutlinedButton = ({
   title,
   onPress,
   textProps = {},
+  loading = false,
   color: propColor = "",
   touchableOpacityProps = {},
 }: OutlinedBtnProps) => {
@@ -167,19 +183,26 @@ const OutlinedButton = ({
   }
 
   return (
-    <TouchableOpacity onPress={onPress} {...touchableOpacityProps}>
+    <TouchableOpacity
+      onPress={onPress}
+      {...touchableOpacityProps}
+      disabled={loading || touchableOpacityProps.disabled}>
       <View
         style={{
           height: 50,
           borderColor,
           borderWidth: 1,
+          borderRadius: 8,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 8,
         }}>
-        <Text style={{color, fontSize: 16, fontWeight: "500"}} {...textProps}>
-          {title}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size={"small"} />
+        ) : (
+          <Text style={{color, fontSize: 16, fontWeight: "500"}} {...textProps}>
+            {title}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   );

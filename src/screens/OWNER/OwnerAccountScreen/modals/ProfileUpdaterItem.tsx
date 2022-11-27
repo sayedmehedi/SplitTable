@@ -70,6 +70,8 @@ export default function ProfileUpdaterItem({type}: Props) {
     if (profileDataResponse) {
       setValue("email", profileDataResponse.email);
       setValue("phone", profileDataResponse.phone);
+      setValue("first_name", profileDataResponse.first_name);
+      setValue("last_name", profileDataResponse.last_name);
     }
 
     if (profileDataResponse?.latitude) {
@@ -462,10 +464,8 @@ export default function ProfileUpdaterItem({type}: Props) {
                 title={"Update"}
                 color={"primary"}
                 variant={"solid"}
+                loading={isUpdatingProfile}
                 onPress={handleProfileUpdate}
-                touchableOpacityProps={{
-                  disabled: isUpdatingProfile,
-                }}
                 textProps={{
                   style: {
                     color: splitAppTheme.colors.white,

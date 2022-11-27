@@ -37,6 +37,7 @@ import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import FastImage from "react-native-fast-image";
+import useAppToast from "@hooks/useAppToast";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -47,6 +48,7 @@ type Props = CompositeScreenProps<
 >;
 
 export default function TableDetailsScreen({route, navigation}: Props) {
+  const toast = useAppToast();
   const {
     data: tableDetailsResponse,
     isLoading: isTableDetailsLoading,
@@ -55,11 +57,18 @@ export default function TableDetailsScreen({route, navigation}: Props) {
   useHandleNonFieldError(tableDetailsError);
 
   const {
-    error: shareResourceError,
-    mutate: shareResource,
     isLoading: isSharing,
+    mutate: shareResource,
+    error: shareResourceError,
+    isError: isShareError,
   } = useShareResourceMutation();
-  useHandleNonFieldError(shareResourceError);
+  // useHandleNonFieldError(shareResourceError);
+
+  React.useEffect(() => {
+    if (isShareError) {
+      toast.info(shareResourceError.message);
+    }
+  }, [isShareError, JSON.stringify(shareResourceError)]);
 
   const handleBookTable = () => {
     if (tableDetailsResponse) {
@@ -116,7 +125,11 @@ export default function TableDetailsScreen({route, navigation}: Props) {
 
   return (
     <ScrollView>
-      <FocusAwareStatusBar translucent backgroundColor={"transparent"} />
+      <FocusAwareStatusBar
+        translucent
+        barStyle={"light-content"}
+        backgroundColor={"transparent"}
+      />
       <FastImage source={{uri: tableDetailsResponse.image}}>
         <SafeAreaView
           style={{

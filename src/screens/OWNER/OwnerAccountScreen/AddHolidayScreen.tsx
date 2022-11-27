@@ -152,9 +152,7 @@ export default function AddHolidayScreen({navigation}: Props) {
           title="Submit"
           color="primary"
           variant={"solid"}
-          touchableOpacityProps={{
-            disabled: isCreating,
-          }}
+          loading={isCreating}
           onPress={handleAddHoliday}
         />
       </View>

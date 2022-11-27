@@ -229,9 +229,7 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
             variant={"solid"}
             title={"Reset Password"}
             onPress={handleVerify}
-            touchableOpacityProps={{
-              disabled: isSendingReq,
-            }}
+            loading={isSendingReq}
           />
         </View>
       </View>

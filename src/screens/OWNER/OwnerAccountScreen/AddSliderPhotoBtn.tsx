@@ -31,6 +31,8 @@ export default function AddSliderPhotoBtn() {
   useHandleNonFieldError(imageUploadError);
 
   const handleImageResult = (result: ImagePickerResponse) => {
+    actionSheetRef.current.hide();
+
     if (result.errorCode) {
       switch (result.errorCode) {
         case "camera_unavailable":
@@ -70,8 +72,6 @@ export default function AddSliderPhotoBtn() {
               setUploadProgress(0);
               toast.success(data.success);
             }
-
-            actionSheetRef.current.hide();
           },
         },
       );

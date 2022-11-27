@@ -35,6 +35,7 @@ const renderEachReview: ListRenderItem<ReviewItem> = ({item}) => (
     <View
       style={{
         borderStyle: "dashed",
+        marginTop: splitAppTheme.space[3],
         borderColor: splitAppTheme.colors.coolGray[300],
         borderBottomWidth: splitAppTheme.borderWidths[2],
       }}
@@ -145,126 +146,6 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
         width: WINDOW_WIDTH,
         position: "relative",
       }}>
-      {infiniteGetResourcesResponse !== undefined &&
-        infiniteGetResourcesResponse?.pages?.length > 0 && (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginVertical: splitAppTheme.space[6],
-              paddingHorizontal: splitAppTheme.space[6],
-            }}>
-            <View
-              style={{
-                maxWidth: splitAppTheme.sizes[32],
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}>
-                <Fontisto name="star" color={"#FFC529"} size={10} />
-                <Text
-                  style={{
-                    fontSize: splitAppTheme.fontSizes.md,
-                    marginLeft: splitAppTheme.space[1],
-                  }}>
-                  {infiniteGetResourcesResponse.pages[0].avg_rating}
-                </Text>
-              </View>
-
-              <Text
-                numberOfLines={2}
-                style={{
-                  fontSize: splitAppTheme.fontSizes.md,
-                  marginLeft: splitAppTheme.space[1],
-                }}>
-                Based on {infiniteGetResourcesResponse.pages[0].total_reviews}{" "}
-                Review
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flex: 1,
-                marginLeft: splitAppTheme.space[5],
-              }}>
-              {Object.entries(
-                infiniteGetResourcesResponse?.pages?.[0]?.review_percentages ??
-                  {},
-              ).map(([id, percentage]) => {
-                return (
-                  <View
-                    key={id}
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}>
-                    <Rating
-                      readonly
-                      jumpValue={1}
-                      imageSize={15}
-                      type={"custom"}
-                      showRating={false}
-                      tintColor={splitAppTheme.colors.white}
-                      ratingBackgroundColor={splitAppTheme.colors.coolGray[100]}
-                      startingValue={
-                        infiniteGetResourcesResponse.pages[0].review_numbers[
-                          id as any
-                        ]
-                      }
-                    />
-
-                    <View
-                      style={{
-                        flex: 1,
-                        position: "relative",
-                        marginHorizontal: splitAppTheme.space[3],
-                      }}>
-                      <View
-                        style={{
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          height: 1,
-                          zIndex: 1,
-                          position: "absolute",
-                          width: splitAppTheme.sizes.full,
-                          borderRadius: splitAppTheme.radii.full,
-                          backgroundColor: splitAppTheme.colors.gray[300],
-                        }}
-                      />
-                      <View
-                        style={{
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          height: 1,
-                          zIndex: 2,
-                          position: "absolute",
-                          width: `${percentage}%` as string,
-                          borderRadius: splitAppTheme.radii.full,
-                          backgroundColor: splitAppTheme.colors.yellow[300],
-                        }}
-                      />
-                    </View>
-
-                    <View>
-                      <Text style={{fontSize: splitAppTheme.fontSizes.xs}}>
-                        {percentage}%
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </View>
-          </View>
-        )}
-
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator size={"small"} />
@@ -280,10 +161,131 @@ const ClubDetailsAndReviewList = ({clubId}: Props) => {
         renderItem={renderEachReview}
         onEndReached={handleFetchNextPage}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={
-          {
-            // paddingVertical: splitAppTheme.space[6],
-          }
+        ListHeaderComponent={
+          !isLoadingInfiniteResources &&
+          infiniteGetResourcesResponse !== undefined &&
+          resourceListData.length > 0 ? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: splitAppTheme.space[6],
+                marginBottom: splitAppTheme.space[6],
+                paddingHorizontal: splitAppTheme.space["6"],
+              }}>
+              <View
+                style={{
+                  maxWidth: splitAppTheme.sizes[32],
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}>
+                  <Fontisto name="star" color={"#FFC529"} size={10} />
+                  <Text
+                    style={{
+                      fontSize: splitAppTheme.fontSizes.md,
+                      marginLeft: splitAppTheme.space[1],
+                    }}>
+                    {infiniteGetResourcesResponse.pages[0].avg_rating}
+                  </Text>
+                </View>
+
+                <Text
+                  numberOfLines={2}
+                  style={{
+                    fontSize: splitAppTheme.fontSizes.md,
+                    marginLeft: splitAppTheme.space[1],
+                  }}>
+                  Based on {infiniteGetResourcesResponse.pages[0].total_reviews}{" "}
+                  Review
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: splitAppTheme.space[5],
+                }}>
+                {Object.entries(
+                  infiniteGetResourcesResponse?.pages?.[0]
+                    ?.review_percentages ?? {},
+                ).map(([id, percentage]) => {
+                  return (
+                    <View
+                      key={id}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}>
+                      <View>
+                        <Rating
+                          readonly
+                          jumpValue={1}
+                          imageSize={15}
+                          type={"custom"}
+                          showRating={false}
+                          tintColor={splitAppTheme.colors.white}
+                          ratingBackgroundColor={
+                            splitAppTheme.colors.coolGray[100]
+                          }
+                          startingValue={
+                            infiniteGetResourcesResponse.pages[0]
+                              .review_numbers[id as any]
+                          }
+                        />
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          position: "relative",
+                          marginHorizontal: splitAppTheme.space[3],
+                        }}>
+                        <View
+                          style={{
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: 1,
+                            zIndex: 1,
+                            position: "absolute",
+                            width: splitAppTheme.sizes.full,
+                            borderRadius: splitAppTheme.radii.full,
+                            backgroundColor: splitAppTheme.colors.gray[300],
+                          }}
+                        />
+                        <View
+                          style={{
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: 1,
+                            zIndex: 2,
+                            position: "absolute",
+                            width: `${percentage}%` as string,
+                            borderRadius: splitAppTheme.radii.full,
+                            backgroundColor: splitAppTheme.colors.yellow[300],
+                          }}
+                        />
+                      </View>
+
+                      <View>
+                        <Text style={{fontSize: splitAppTheme.fontSizes.xs}}>
+                          {percentage}%
+                        </Text>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+          ) : null
         }
         ItemSeparatorComponent={() => (
           <View

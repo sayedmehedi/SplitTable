@@ -29,6 +29,7 @@ import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import dayjs from "dayjs";
 import FastImage from "react-native-fast-image";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {useDimensions} from "@react-native-community/hooks";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -117,6 +118,9 @@ const MenuItemAction = React.memo(
 const BookingDetailsScreen = ({navigation, route}: Props) => {
   const [tip, setTip] = React.useState(0);
   const [discount] = React.useState(0);
+  const {
+    window: {height: WINDOW_HEIGHT},
+  } = useDimensions();
   const [menus, setMenus] = React.useState<
     Record<number, ClubMenuItem & {purchaseQty: number}>
   >({});
@@ -218,8 +222,8 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
       <View style={{flex: 1}}>
         <FastImage
           style={{
-            height: 300,
             width: "100%",
+            height: WINDOW_HEIGHT * 0.43,
           }}
           source={require("@assets/images/book-details.jpg")}>
           <SafeAreaView>
@@ -632,9 +636,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             </Text>
 
             <AppGradientButton
-              touchableOpacityProps={{
-                disabled: isBookingTable,
-              }}
+              loading={isBookingTable}
               onPress={() => {
                 bookTable(
                   {

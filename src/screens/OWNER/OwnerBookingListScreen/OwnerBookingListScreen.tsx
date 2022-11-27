@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: splitAppTheme.radii.xl,
-    paddingVertical: splitAppTheme.space[5],
+    paddingVertical: splitAppTheme.space[4],
   },
 });
 

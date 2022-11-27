@@ -7,7 +7,7 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
-import SplitTables from "./SplitTables";
+import SplitTableList from "./SplitTableList";
 import {splitAppTheme} from "@src/theme";
 import {useTime} from "react-timer-hook";
 import {MapIcon} from "@constants/iconPath";
@@ -39,6 +39,7 @@ import {
 } from "@src/navigation";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import HomeScreenClubSearchInput from "@components/HomeScreenClubSearchInput";
+import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -52,7 +53,7 @@ type Props = CompositeScreenProps<
 >;
 
 const HomeScreen = ({navigation}: Props) => {
-  const {data: authData} = useGetAuthDataQuery();
+  const {data: authData} = useGetProfileQuery();
   const {hours} = useTime({});
   const queryClient = useQueryClient();
   const isFetchingTables = useIsFetching({
@@ -360,7 +361,7 @@ const HomeScreen = ({navigation}: Props) => {
             </TouchableOpacity>
           </View>
 
-          <SplitTables onItemPress={handleSpiltTablePress} />
+          <SplitTableList onItemPress={handleSpiltTablePress} />
         </View>
       </View>
 

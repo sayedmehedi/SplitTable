@@ -144,9 +144,7 @@ const ForgotPasswordScreen = ({navigation, route}: Props) => {
             title={"Send"}
             color={"primary"}
             variant={"solid"}
-            touchableOpacityProps={{
-              disabled: isSendingReq,
-            }}
+            loading={isSendingReq}
             onPress={handleVerify}
           />
         </View>

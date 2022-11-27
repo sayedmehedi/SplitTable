@@ -186,9 +186,10 @@ const EmailVerificationScreen = ({navigation, route}: Props) => {
             variant={"solid"}
             title={"Verify Now"}
             touchableOpacityProps={{
-              disabled: !isRunning || isVerifying,
+              disabled: !isRunning,
             }}
             onPress={handleVerify}
+            loading={isVerifying}
           />
         </View>
       </View>

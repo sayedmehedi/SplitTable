@@ -122,6 +122,8 @@ export default function CustomerSignupForm({
   });
 
   const handleImageResult = (result: ImagePickerResponse) => {
+    actionSheetRef.current.hide();
+
     if (result.errorCode) {
       switch (result.errorCode) {
         case "camera_unavailable":
@@ -638,11 +640,9 @@ export default function CustomerSignupForm({
           <AppGradientButton
             width={"100%"}
             color={"primary"}
-            touchableOpacityProps={{
-              disabled: isRegisteringUser,
-            }}
             variant={"solid"}
             title={"Sign Up"}
+            loading={isRegisteringUser}
             onPress={handleUserRegistration}
           />
         </View>

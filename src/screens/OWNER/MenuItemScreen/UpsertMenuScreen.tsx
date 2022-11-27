@@ -164,6 +164,8 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
   );
 
   const handleImageResult = (result: ImagePickerResponse) => {
+    actionSheetRef.current.hide();
+
     if (result.errorCode) {
       switch (result.errorCode) {
         case "camera_unavailable":
@@ -660,9 +662,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
           color={"primary"}
           variant={"solid"}
           onPress={handleUpsert}
-          touchableOpacityProps={{
-            disabled: isCreating || isUpdating,
-          }}
+          loading={isCreating || isUpdating}
           title={route.params.actionMode === "update" ? "Update" : "Submit"}
         />
       </View>

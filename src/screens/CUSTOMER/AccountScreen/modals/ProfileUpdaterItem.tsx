@@ -474,10 +474,8 @@ export default function ProfileUpdaterItem({type}: Props) {
                 title={"Update"}
                 color={"primary"}
                 variant={"solid"}
+                loading={isUpdatingProfile}
                 onPress={handleProfileUpdate}
-                touchableOpacityProps={{
-                  disabled: isUpdatingProfile,
-                }}
                 textProps={{
                   style: {
                     color: splitAppTheme.colors.white,
