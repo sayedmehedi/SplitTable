@@ -249,12 +249,14 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                   left: 0,
                   position: "absolute",
                   width: splitAppTheme.sizes.full,
+                 
                 }}>
                 <SafeAreaView>
                   <View
                     style={{
                       flexDirection: "row",
-                      padding: splitAppTheme.space[6],
+                      paddingHorizontal:20,
+                     // padding: splitAppTheme.space[6],
                       justifyContent: "space-between",
                     }}>
                     <TouchableOpacity
@@ -273,7 +275,7 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                       />
                     </TouchableOpacity>
 
-                    <View style={{flexDirection: "row"}}>
+                    <View style={{flexDirection: "row",}}>
                       <View>
                         <TouchableOpacity
                           disabled={isSharing}
