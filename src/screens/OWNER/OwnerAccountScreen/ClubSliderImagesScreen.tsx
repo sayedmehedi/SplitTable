@@ -2,8 +2,6 @@ import React from "react";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
 import AddSliderPhotoBtn from "./AddSliderPhotoBtn";
-import {useDisclosure} from "react-use-disclosure";
-import {useQueryClient} from "@tanstack/react-query";
 import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {
@@ -17,63 +15,98 @@ import {
   ListRenderItem,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
-import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import FastImage from "react-native-fast-image";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import GenericListEmpty from "@components/GenericListEmpty";
+import useDeleteClubSliderPhotoMutation from "@hooks/clubs/useDeleteClubSliderPhotoMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
-const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 const keyExtractor = (item: {id: number}) =>
   `club-photos-${item.id.toString()}`;
 
 function EachClubImage({
   item,
-  onPress,
   index,
+  clubId,
 }: {
   item: string;
   index: number;
-  onPress: () => void;
+  clubId: number;
 }) {
+  const toast = useAppToast();
+  const {
+    error: deleteError,
+    data: deleteResponse,
+    mutate: deleteSliderImage,
+    isLoading: isDeletingSliderImage,
+  } = useDeleteClubSliderPhotoMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        toast.success(data.success);
+      }
+    },
+  });
+  useHandleNonFieldError(deleteError);
+  useHandleResponseResultError(deleteResponse);
+
   return (
     <TouchableOpacity
-      onPress={() => {
-        onPress();
+      onLongPress={() => {
+        Alert.alert("Remove", "Are your sure?", [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Sure",
+            style: "destructive",
+            onPress() {
+              deleteSliderImage({clubId, file: item});
+            },
+          },
+        ]);
       }}
+      disabled={isDeletingSliderImage}
       style={{
         marginLeft: index % 3 === 1 ? splitAppTheme.space["3"] : 0,
         marginRight: index % 3 === 1 ? splitAppTheme.space["3"] : 0,
       }}>
-      <FastImage
-        source={{uri: item}}
-        style={{
-          height: 100,
-          width:
-            WINDOW_WIDTH * 0.3 -
-            splitAppTheme.space["6"] * 0.3 -
-            splitAppTheme.space["3"] * 0.3,
-        }}
-      />
+      <View style={{position: "relative"}}>
+        <FastImage
+          source={{uri: item}}
+          style={{
+            height: 100,
+            width:
+              WINDOW_WIDTH * 0.3 -
+              splitAppTheme.space["6"] * 0.3 -
+              splitAppTheme.space["3"] * 0.3,
+          }}
+        />
+
+        {isDeletingSliderImage ? (
+          <View
+            style={{
+              position: "absolute",
+              alignItems: "center",
+              justifyContent: "center",
+              width: splitAppTheme.sizes.full,
+              height: splitAppTheme.sizes.full,
+              backgroundColor: "rgba(0,0,0,0.3)",
+            }}>
+            <ActivityIndicator size={"small"} />
+          </View>
+        ) : null}
+      </View>
     </TouchableOpacity>
   );
 }
 
 export default function ClubSliderImagesScreen() {
-  const {isOpen, toggle} = useDisclosure();
-  const galleryListRef = React.useRef<FlatList>(null!);
-  const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (isOpen) {
-      galleryListRef?.current?.scrollToOffset({
-        offset: WINDOW_WIDTH * selectedImageIndex,
-      });
-    }
-  }, [isOpen, selectedImageIndex]);
-
   const {
     refetch,
     isRefetching,
@@ -84,17 +117,11 @@ export default function ClubSliderImagesScreen() {
   useHandleNonFieldError(clubInfoError);
 
   const renderImage: ListRenderItem<string> = React.useCallback(
-    ({item, index}) => (
-      <EachClubImage
-        onPress={() => {
-          setSelectedImageIndex(index);
-          toggle();
-        }}
-        item={item}
-        index={index}
-      />
-    ),
-    [toggle],
+    ({item, index}) =>
+      clubInfoResponse?.id === undefined ? null : (
+        <EachClubImage item={item} index={index} clubId={clubInfoResponse.id} />
+      ),
+    [clubInfoResponse?.id],
   );
 
   if (isLoadingInfiniteResources) {

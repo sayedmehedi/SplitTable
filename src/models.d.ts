@@ -964,3 +964,10 @@ export type GetClubsBySearchTermQueryParams = PaginationQueryParams & {
 export type GetClubsBySearchTermResponse = {
   clubs: SimplePaginatedResponse<ClubSearchItem>;
 };
+
+export type DeleteSliderImageRequest = {
+  file: string;
+  clubId: number;
+};
+
+export type DeleteSliderImageResponse = ResponseResult<{}>;

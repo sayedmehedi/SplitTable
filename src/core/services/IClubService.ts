@@ -48,9 +48,17 @@ import {
   CancelBookingResponse,
   GetClubsBySearchTermQueryParams,
   GetClubsBySearchTermResponse,
+  DeleteSliderImageRequest,
+  DeleteSliderImageResponse,
 } from "@src/models";
 
 export interface IClubService {
+  deleteClubSliderImage(
+    data: DeleteSliderImageRequest,
+  ): Promise<
+    AxiosResponse<DeleteSliderImageResponse, GlobalAxiosRequestConfig>
+  >;
+
   cancenBooking(
     bookingId: number,
   ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>>;

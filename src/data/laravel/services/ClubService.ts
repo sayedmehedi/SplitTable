@@ -56,6 +56,8 @@ import {
   CancelBookingResponse,
   GetClubsBySearchTermQueryParams,
   GetClubsBySearchTermResponse,
+  DeleteSliderImageRequest,
+  DeleteSliderImageResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -68,6 +70,17 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  deleteClubSliderImage(
+    data: DeleteSliderImageRequest,
+  ): Promise<
+    AxiosResponse<DeleteSliderImageResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.post<ConfirmBookingResponse>("delete-image", {
+      file: data.file,
+      club_id: data.clubId,
+    });
+  }
 
   getClubsBySearchTerm(
     params: GetClubsBySearchTermQueryParams,
