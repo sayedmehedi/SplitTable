@@ -324,11 +324,9 @@ const OwnerTableScreen = ({navigation}: Props) => {
                     <EachTableNEventItem
                       item={bookedTable}
                       onPress={table => {
-                        if (table.total_joined !== undefined) {
-                          navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
-                            tableId: table.id,
-                          });
-                        }
+                        navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
+                          tableId: table.id,
+                        });
                       }}
                       onUpdatePress={table => {
                         navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {

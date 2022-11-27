@@ -17,11 +17,9 @@ type Props = CompositeScreenProps<
 const MyTablesScreen = ({route, navigation}: Props) => {
   const handleItemPresss = React.useCallback(
     (table: TTableItem) => {
-      if (table.total_joined !== undefined) {
-        navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
-          tableId: table.id,
-        });
-      }
+      navigation.navigate(OwnerStackRoutes.TABLE_DETAILS, {
+        tableId: table.id,
+      });
     },
     [navigation],
   );

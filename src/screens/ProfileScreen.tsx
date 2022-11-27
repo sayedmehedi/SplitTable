@@ -29,6 +29,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import Entypo from "react-native-vector-icons/Entypo";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -95,18 +96,16 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         style={{
           height: 150,
           width: "100%",
-          zIndex:-1000
+          zIndex: -1000,
         }}>
         <SafeAreaView>
           <TouchableOpacity
             style={{
-              width: 60,
               padding: 15,
-              
-              zIndex:10000
+              zIndex: 10000,
             }}
             onPress={() => navigation.goBack()}>
-            <Feather name="chevron-left" size={25} color={"white"} />
+            <Entypo name="chevron-left" size={40} color={"white"} />
           </TouchableOpacity>
         </SafeAreaView>
       </LinearGradient>
@@ -114,7 +113,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
       <View
         style={{
           marginTop: -60,
-          zIndex:-100
+          zIndex: -100,
         }}>
         <ProfileImageUploader
           imageUrl={profileData.image}
@@ -127,7 +126,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           alignSelf: "center",
           alignItems: "center",
           marginBottom: splitAppTheme.space[3],
-          paddingHorizontal:10
+          paddingHorizontal: 10,
         }}>
         <Text
           style={{
@@ -358,9 +357,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </TouchableOpacity>
         )}
       </View>
-
-      </>
-    
+    </>
   );
 
   return (
@@ -396,7 +393,6 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
 
       {authData?.id === profileData.id && <AddUserPhotoBtn />}
     </View>
-    
   );
 };
 

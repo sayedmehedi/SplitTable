@@ -530,6 +530,7 @@ export interface BookedTableDetails {
   club_location: string;
   total_seat: number;
   price: string;
+  joined_users: JoinedUser[];
 }
 
 export type GetTableDetailsResponse = SplitTableDetails | BookedTableDetails;

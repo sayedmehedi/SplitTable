@@ -70,12 +70,11 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             fontSize: splitAppTheme.fontSizes.xl,
             fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
           }}>
-          Guest List
+          {isSplitTableDetails(tableDetailsResponse) ? "Guest List" : "Guest"}
         </Text>
 
         <View style={{marginTop: splitAppTheme.space[3]}}>
-          {isSplitTableDetails(tableDetailsResponse) &&
-          tableDetailsResponse.joined_users.length > 0 ? (
+          {tableDetailsResponse.joined_users.length > 0 ? (
             tableDetailsResponse.joined_users.map((user, index) => (
               <Ripple
                 key={index}

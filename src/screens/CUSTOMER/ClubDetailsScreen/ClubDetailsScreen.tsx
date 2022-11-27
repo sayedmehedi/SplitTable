@@ -38,6 +38,7 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Platform,
 } from "react-native";
 import ReviewModal from "@components/ReviewModal";
 import {AppTableListTypes} from "@constants/table";
@@ -249,15 +250,18 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                   left: 0,
                   position: "absolute",
                   width: splitAppTheme.sizes.full,
-                 
                 }}>
                 <SafeAreaView>
                   <View
                     style={{
                       flexDirection: "row",
-                      paddingHorizontal:20,
-                     // padding: splitAppTheme.space[6],
+                      paddingHorizontal: 20,
                       justifyContent: "space-between",
+                      ...Platform.select({
+                        android: {
+                          paddingVertical: splitAppTheme.space[6],
+                        },
+                      }),
                     }}>
                     <TouchableOpacity
                       style={{
@@ -269,13 +273,13 @@ const ClubDetailsScreen = ({navigation, route}: Props) => {
                         navigation.goBack();
                       }}>
                       <FontAwesome5
-                        size={22}
+                        size={30}
                         color={"white"}
                         name={"chevron-left"}
                       />
                     </TouchableOpacity>
 
-                    <View style={{flexDirection: "row",}}>
+                    <View style={{flexDirection: "row"}}>
                       <View>
                         <TouchableOpacity
                           disabled={isSharing}
