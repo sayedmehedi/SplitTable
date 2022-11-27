@@ -13,6 +13,7 @@ import {
   StyleSheet,
   TextInput,
   ActivityIndicator,
+  Platform
 } from "react-native";
 import {StackScreenProps} from "@react-navigation/stack";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
@@ -574,11 +575,13 @@ export default function UpsertTableScreen({route, navigation}: Props) {
                 <View
                   style={{
                     paddingTop: splitAppTheme.space[3],
+                    marginBottom:Platform.OS == 'ios'?10:0
                   }}>
                   <TouchableOpacity onPress={handleTakePicture}>
                     <View
                       style={{
                         padding: splitAppTheme.space[3],
+                        marginBottom:Platform.OS == 'ios'?10:0
                       }}>
                       <Text
                         style={{

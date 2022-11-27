@@ -12,7 +12,7 @@ import {useDimensions} from "@react-native-community/hooks";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import CircularProgress from "react-native-circular-progress-indicator";
-import {View, TouchableOpacity, Alert, Text, Modal} from "react-native";
+import {View, TouchableOpacity, Alert, Text, Modal,Platform} from "react-native";
 import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
 
 export default function ProfileImageUploader({
@@ -152,6 +152,7 @@ export default function ProfileImageUploader({
         <View
           style={{
             paddingTop: splitAppTheme.space[3],
+            marginBottom:Platform.OS == 'ios'?10:0
           }}>
           <TouchableOpacity onPress={handleTakePicture}>
             <View

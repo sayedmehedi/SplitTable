@@ -21,6 +21,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Platform
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import {RootStackParamList} from "@src/navigation";
@@ -264,6 +265,7 @@ export default function CustomerSignupForm({
                 <View
                   style={{
                     paddingTop: splitAppTheme.space[3],
+                    marginBottom:Platform.OS == 'ios'?10:0
                   }}>
                   <TouchableOpacity onPress={handleTakePicture}>
                     <View

@@ -17,6 +17,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Platform
 } from "react-native";
 import useAppToast from "@hooks/useAppToast";
 import useRegisterMutation from "@hooks/auth/useRegisterMutation";
@@ -261,6 +262,7 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
                 <View
                   style={{
                     paddingTop: splitAppTheme.space[3],
+                    marginBottom:Platform.OS == 'ios'?10:0
                   }}>
                   <TouchableOpacity onPress={handleTakePicture}>
                     <View

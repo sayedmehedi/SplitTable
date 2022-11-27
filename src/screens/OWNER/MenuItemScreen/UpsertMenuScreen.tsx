@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Switch,
+  Platform
 } from "react-native";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {
@@ -426,6 +427,7 @@ const UpsertMenuScreen = ({navigation, route}: Props) => {
                   <View
                     style={{
                       padding: splitAppTheme.space[3],
+                      marginBottom:Platform.OS == 'ios'?10:0
                     }}>
                     <Text
                       style={{

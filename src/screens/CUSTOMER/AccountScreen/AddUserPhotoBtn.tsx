@@ -3,7 +3,7 @@ import {splitAppTheme} from "@src/theme";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {View, Text, TouchableOpacity, Alert, Modal} from "react-native";
+import {View, Text, TouchableOpacity, Alert, Modal,Platform} from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import ActionSheet, {ActionSheetRef} from "react-native-actions-sheet";
 import CircularProgress from "react-native-circular-progress-indicator";
@@ -173,6 +173,7 @@ export default function AddUserPhotoBtn() {
             <View
               style={{
                 padding: splitAppTheme.space[3],
+                marginBottom:Platform.OS == 'ios'?10:0
               }}>
               <Text
                 style={{
