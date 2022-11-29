@@ -19,18 +19,18 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
+import FastImage from "react-native-fast-image";
+import Entypo from "react-native-vector-icons/Entypo";
+import useDebouncedState from "@hooks/useDebouncedState";
+import GenericListEmpty from "@components/GenericListEmpty";
+import {ScrollViewListItem} from "@components/ScrollViewListItem";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useGetLocationsQuery from "@hooks/clubs/useGetLocationsQuery";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import SplitappSingleSelectCalender from "@components/SplitappCalender";
+import {TextInput, TouchableOpacity} from "react-native-gesture-handler";
 import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 import useGetClubsBySearchTermQuery from "@hooks/clubs/useGetClubsBySearchTermQuery";
-import useDebouncedState from "@hooks/useDebouncedState";
-import {TextInput, TouchableOpacity} from "react-native-gesture-handler";
-import FastImage from "react-native-fast-image";
-import GenericListEmpty from "@components/GenericListEmpty";
-import Entypo from "react-native-vector-icons/Entypo";
-import {ScrollViewListItem} from "@components/ScrollViewListItem";
 
 type FormValues = {
   date: string | null;
@@ -53,7 +53,7 @@ const TableSearchScreen = ({route, navigation}: Props) => {
   const {
     error: resourcesError,
     data: resourcesResponse,
-    isLoading: isResourcesLoading,
+    isFetching: isResourcesLoading,
   } = useGetClubsBySearchTermQuery({
     search: dbncdSearchTerm,
   });
@@ -75,7 +75,7 @@ const TableSearchScreen = ({route, navigation}: Props) => {
         <TextInput
           value={searchTerm}
           onChangeText={setSearchTerm}
-          placeholder={"Search by keyword"}
+          placeholder={"Search for club"}
           style={{
             height: 50,
             padding: splitAppTheme.space[3],

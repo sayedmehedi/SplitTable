@@ -3,23 +3,23 @@ import dayjs from "dayjs";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
-import {BookedTable, SplitTable} from "@src/models";
+import {TableStatusType} from "@src/models";
 import {isResponseResultError} from "@utils/error-handling";
 import {MapIcon, Clock, JoinCountIcon} from "@constants/iconPath";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {
   Text,
   View,
+  Alert,
   Pressable,
-  ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useDeleteOwnerTableMutation from "@hooks/clubs/useDeleteOwnerTableMutation";
 import FastImage from "react-native-fast-image";
+import {TableStatusTypes} from "@constants/table";
 
 type TableItem = {
   id: number;
@@ -29,6 +29,7 @@ type TableItem = {
   distance: string;
   image: string;
   total_joined?: number;
+  status: TableStatusType;
 };
 
 type Props = {
@@ -102,16 +103,29 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
           source={{uri: item.image}}>
           <View
             style={{
-              height: splitAppTheme.sizes.full,
               justifyContent: "space-between",
+              height: splitAppTheme.sizes.full,
             }}>
-            <View
-              style={{
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                padding: splitAppTheme.space[2],
-              }}></View>
+            <View>
+              {item.status === TableStatusTypes.BOOKED && (
+                <View
+                  style={{
+                    alignSelf: "flex-end",
+                    margin: splitAppTheme.space[3],
+                    padding: splitAppTheme.space[2],
+                    borderRadius: splitAppTheme.radii.lg,
+                    backgroundColor: splitAppTheme.colors.green[400],
+                  }}>
+                  <Text
+                    style={{
+                      color: splitAppTheme.colors.white,
+                      fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                    }}>
+                    {item.status}
+                  </Text>
+                </View>
+              )}
+            </View>
 
             <View
               style={{flexDirection: "row", justifyContent: "space-between"}}>

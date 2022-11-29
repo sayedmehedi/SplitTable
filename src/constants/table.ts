@@ -13,3 +13,8 @@ export const AppTableTypes = {
   SPLIT: "split",
   BOOKED: "booked",
 } as const;
+
+export const TableStatusTypes = {
+  BOOKED: "Booked",
+  EMPTY: "Empty",
+} as const;

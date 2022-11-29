@@ -245,7 +245,7 @@ const HomeScreen = ({navigation}: Props) => {
                         marginLeft: splitAppTheme.space[2],
                         fontSize: splitAppTheme.fontSizes.sm,
                       }}>
-                      Find your club/bar
+                      Search for club
                     </Text>
                   </TouchableOpacity>
 

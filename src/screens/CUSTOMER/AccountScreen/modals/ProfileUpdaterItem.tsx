@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../styles";
 import {splitAppTheme} from "@src/theme";
+import {SocialLinks} from "@src/models";
 import useAppToast from "@hooks/useAppToast";
 import {useDisclosure} from "react-use-disclosure";
 import {Controller, useForm} from "react-hook-form";
@@ -26,9 +27,23 @@ import {
   TextInput,
   ActivityIndicator,
 } from "react-native";
+import {isCustomerProfile} from "@utils/profile";
+import truncate from "lodash.truncate";
+import {TiktokIcon} from "@constants/iconPath";
 
 type Props = {
-  type: "name" | "phone" | "email" | "password" | "address";
+  type:
+    | "name"
+    | "phone"
+    | "email"
+    | "password"
+    | "address"
+    | "facebook"
+    | "twitter"
+    | "linkedin"
+    | "youtube"
+    | "instagram"
+    | "tiktok";
 };
 
 type FormValues = {
@@ -41,6 +56,7 @@ type FormValues = {
   phone: string;
   latitude: string | null;
   longitude: string | null;
+  social_links: SocialLinks;
 };
 
 export default function ProfileUpdaterItem({type}: Props) {
@@ -56,9 +72,17 @@ export default function ProfileUpdaterItem({type}: Props) {
       last_name: "",
       first_name: "",
       old_password: "",
-      password_confirmation: "",
       latitude: null,
       longitude: null,
+      password_confirmation: "",
+      social_links: {
+        facebook: "",
+        instgram: "",
+        linkendin: "",
+        tiktok: "",
+        twitter: "",
+        youtube: "",
+      },
     },
   });
 
@@ -71,6 +95,69 @@ export default function ProfileUpdaterItem({type}: Props) {
       setValue("phone", profileDataResponse.phone);
       setValue("first_name", profileDataResponse.first_name);
       setValue("last_name", profileDataResponse.last_name);
+    }
+
+    if (
+      profileDataResponse !== undefined &&
+      isCustomerProfile(profileDataResponse) &&
+      !!profileDataResponse.social_links?.facebook
+    ) {
+      setValue(
+        "social_links.facebook",
+        profileDataResponse.social_links.facebook,
+      );
+    }
+
+    if (
+      profileDataResponse !== undefined &&
+      isCustomerProfile(profileDataResponse) &&
+      !!profileDataResponse.social_links?.twitter
+    ) {
+      setValue(
+        "social_links.twitter",
+        profileDataResponse.social_links.twitter,
+      );
+    }
+
+    if (
+      profileDataResponse !== undefined &&
+      isCustomerProfile(profileDataResponse) &&
+      !!profileDataResponse.social_links?.tiktok
+    ) {
+      setValue("social_links.tiktok", profileDataResponse.social_links.tiktok);
+    }
+
+    if (
+      profileDataResponse !== undefined &&
+      isCustomerProfile(profileDataResponse) &&
+      !!profileDataResponse.social_links?.linkendin
+    ) {
+      setValue(
+        "social_links.linkendin",
+        profileDataResponse.social_links.linkendin,
+      );
+    }
+
+    if (
+      profileDataResponse !== undefined &&
+      isCustomerProfile(profileDataResponse) &&
+      !!profileDataResponse.social_links?.youtube
+    ) {
+      setValue(
+        "social_links.youtube",
+        profileDataResponse.social_links.youtube,
+      );
+    }
+
+    if (
+      profileDataResponse !== undefined &&
+      isCustomerProfile(profileDataResponse) &&
+      !!profileDataResponse.social_links?.instgram
+    ) {
+      setValue(
+        "social_links.instgram",
+        profileDataResponse.social_links.instgram,
+      );
     }
 
     if (profileDataResponse?.latitude) {
@@ -146,10 +233,14 @@ export default function ProfileUpdaterItem({type}: Props) {
             latitude: values.latitude ?? undefined,
             longitude: values.longitude ?? undefined,
           }
-        : {
+        : type === "password"
+        ? {
             password: values.password,
             old_password: values.old_password,
             password_confirmation: values.password_confirmation,
+          }
+        : {
+            social_links: values.social_links,
           },
       {
         onSuccess(data) {
@@ -163,77 +254,250 @@ export default function ProfileUpdaterItem({type}: Props) {
     );
   });
 
+  function getEditText(keyName: keyof SocialLinks) {
+    if (
+      isCustomerProfile(profileDataResponse) &&
+      !profileDataResponse.social_links?.[keyName]
+    ) {
+      return "Add";
+    }
+
+    return "Edit";
+  }
+
   return (
     <React.Fragment>
       <View style={styles.buttonContainer}>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
+        <React.Fragment>
           {type === "name" && (
-            <React.Fragment>
-              <AntDesign name="user" size={20} color={"#707070"} />
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <AntDesign name="user" size={20} color={"#707070"} />
 
-              <Text style={{marginLeft: 10, color: "#707070"}}>
-                {profileDataResponse?.name}
-              </Text>
-            </React.Fragment>
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {profileDataResponse?.name}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>Edit</Text>
+              </TouchableOpacity>
+            </View>
           )}
 
           {type === "phone" && (
-            <React.Fragment>
-              <Feather name="phone" size={20} color={"#707070"} />
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <Feather name="phone" size={20} color={"#707070"} />
 
-              <Text style={{marginLeft: 10, color: "#707070"}}>
-                {profileDataResponse?.phone}
-              </Text>
-            </React.Fragment>
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {profileDataResponse?.phone}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>Edit</Text>
+              </TouchableOpacity>
+            </View>
           )}
 
           {type === "password" && (
-            <React.Fragment>
-              <MaterialCommunityIcons
-                name="lock-check-outline"
-                size={20}
-                color={"#707070"}
-              />
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <MaterialCommunityIcons
+                  name="lock-check-outline"
+                  size={20}
+                  color={"#707070"}
+                />
 
-              <Text style={{marginLeft: 10, color: "#707070"}}>
-                Update Password
-              </Text>
-            </React.Fragment>
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  Update Password
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>Edit</Text>
+              </TouchableOpacity>
+            </View>
           )}
 
           {type === "email" && (
-            <React.Fragment>
-              <Fontisto name="email" size={20} color={"#707070"} />
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <Fontisto name="email" size={20} color={"#707070"} />
 
-              <Text style={{marginLeft: 10, color: "#707070"}}>
-                {profileDataResponse?.email}
-              </Text>
-            </React.Fragment>
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {profileDataResponse?.email}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>Edit</Text>
+              </TouchableOpacity>
+            </View>
           )}
 
           {type === "address" && (
             <View
               style={{
-                width: "90%",
                 flexDirection: "row",
                 alignItems: "center",
               }}>
-              <MaterialCommunityIcons
-                name="map-marker-outline"
-                size={20}
-                color={"#707070"}
-              />
+              <View
+                style={{
+                  width: "80%",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                <MaterialCommunityIcons
+                  name="map-marker-outline"
+                  size={20}
+                  color={"#707070"}
+                />
 
-              <Text style={{marginLeft: 10, color: "#707070"}}>
-                {profileDataResponse?.location}
-              </Text>
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {profileDataResponse?.location}
+                </Text>
+              </View>
+
+              <View style={{flex: 1}} />
+
+              <View>
+                <TouchableOpacity onPress={() => toggle()}>
+                  <Text style={styles.editText}>Edit</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
-        </View>
 
-        <TouchableOpacity onPress={() => toggle()}>
-          <Text style={styles.editText}>Edit</Text>
-        </TouchableOpacity>
+          {isCustomerProfile(profileDataResponse) && type === "facebook" && (
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <MaterialCommunityIcons
+                  name="facebook"
+                  size={20}
+                  color={"#707070"}
+                />
+
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {!!profileDataResponse?.social_links?.facebook
+                    ? truncate(profileDataResponse?.social_links?.facebook)
+                    : "Facebook"}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>{getEditText("facebook")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {isCustomerProfile(profileDataResponse) && type === "twitter" && (
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <MaterialCommunityIcons
+                  name="twitter"
+                  size={20}
+                  color={"#707070"}
+                />
+
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {!!profileDataResponse?.social_links?.twitter
+                    ? truncate(profileDataResponse?.social_links?.twitter)
+                    : "Twitter"}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>{getEditText("twitter")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {isCustomerProfile(profileDataResponse) && type === "linkedin" && (
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <MaterialCommunityIcons
+                  name="linkedin"
+                  size={20}
+                  color={"#707070"}
+                />
+
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {!!profileDataResponse?.social_links?.linkendin
+                    ? truncate(profileDataResponse?.social_links?.linkendin)
+                    : "Linkedin"}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>{getEditText("linkendin")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {isCustomerProfile(profileDataResponse) && type === "instagram" && (
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <MaterialCommunityIcons
+                  name="instagram"
+                  size={20}
+                  color={"#707070"}
+                />
+
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {!!profileDataResponse?.social_links?.instgram
+                    ? truncate(profileDataResponse?.social_links?.instgram)
+                    : "Instagram"}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>{getEditText("instgram")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {isCustomerProfile(profileDataResponse) && type === "youtube" && (
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <MaterialCommunityIcons
+                  name="youtube"
+                  size={20}
+                  color={"#707070"}
+                />
+
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {!!profileDataResponse?.social_links?.youtube
+                    ? truncate(profileDataResponse?.social_links?.youtube)
+                    : "Youtube"}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>{getEditText("youtube")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {isCustomerProfile(profileDataResponse) && type === "tiktok" && (
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+              <View style={{flexDirection: "row", flex: 1}}>
+                <TiktokIcon height={20} width={20} color={"#707070"} />
+
+                <Text style={{marginLeft: 10, color: "#707070"}}>
+                  {!!profileDataResponse?.social_links?.tiktok
+                    ? truncate(profileDataResponse?.social_links?.tiktok)
+                    : "Tiktok"}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => toggle()}>
+                <Text style={styles.editText}>{getEditText("tiktok")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </React.Fragment>
       </View>
 
       <Modal transparent visible={isOpen} onRequestClose={() => toggle()}>
@@ -261,7 +525,21 @@ export default function ProfileUpdaterItem({type}: Props) {
                 ? "Update Email"
                 : type === "address"
                 ? "Update Address"
-                : "Update Password"}
+                : type === "password"
+                ? "Update Password"
+                : type === "facebook"
+                ? "Update Facebook"
+                : type === "twitter"
+                ? "Update Twitter"
+                : type === "instagram"
+                ? "Update Instagram"
+                : type === "linkedin"
+                ? "Update Linkedin"
+                : type === "tiktok"
+                ? "Update Tiktok"
+                : type === "youtube"
+                ? "Update Youtube"
+                : ""}
             </Text>
 
             {type === "name" && (
@@ -375,6 +653,132 @@ export default function ProfileUpdaterItem({type}: Props) {
                 <View style={{flex: 1}}>
                   <Controller
                     name={"email"}
+                    control={control}
+                    render={({field}) => {
+                      return (
+                        <TextInput
+                          placeholder={""}
+                          value={field.value}
+                          style={styles.modalInput}
+                          onChangeText={field.onChange}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            )}
+
+            {type === "facebook" && (
+              <View style={{flexDirection: "row"}}>
+                <View style={{flex: 1}}>
+                  <Controller
+                    name={"social_links.facebook"}
+                    control={control}
+                    render={({field}) => {
+                      return (
+                        <TextInput
+                          placeholder={""}
+                          value={field.value}
+                          style={styles.modalInput}
+                          onChangeText={field.onChange}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            )}
+
+            {type === "twitter" && (
+              <View style={{flexDirection: "row"}}>
+                <View style={{flex: 1}}>
+                  <Controller
+                    name={"social_links.twitter"}
+                    control={control}
+                    render={({field}) => {
+                      return (
+                        <TextInput
+                          placeholder={""}
+                          value={field.value}
+                          style={styles.modalInput}
+                          onChangeText={field.onChange}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            )}
+
+            {type === "linkedin" && (
+              <View style={{flexDirection: "row"}}>
+                <View style={{flex: 1}}>
+                  <Controller
+                    name={"social_links.linkendin"}
+                    control={control}
+                    render={({field}) => {
+                      return (
+                        <TextInput
+                          placeholder={""}
+                          value={field.value}
+                          style={styles.modalInput}
+                          onChangeText={field.onChange}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            )}
+
+            {type === "youtube" && (
+              <View style={{flexDirection: "row"}}>
+                <View style={{flex: 1}}>
+                  <Controller
+                    name={"social_links.youtube"}
+                    control={control}
+                    render={({field}) => {
+                      return (
+                        <TextInput
+                          placeholder={""}
+                          value={field.value}
+                          style={styles.modalInput}
+                          onChangeText={field.onChange}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            )}
+
+            {type === "instagram" && (
+              <View style={{flexDirection: "row"}}>
+                <View style={{flex: 1}}>
+                  <Controller
+                    name={"social_links.instgram"}
+                    control={control}
+                    render={({field}) => {
+                      return (
+                        <TextInput
+                          placeholder={""}
+                          value={field.value}
+                          style={styles.modalInput}
+                          onChangeText={field.onChange}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            )}
+
+            {type === "tiktok" && (
+              <View style={{flexDirection: "row"}}>
+                <View style={{flex: 1}}>
+                  <Controller
+                    name={"social_links.tiktok"}
                     control={control}
                     render={({field}) => {
                       return (

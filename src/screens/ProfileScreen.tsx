@@ -28,8 +28,11 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {TiktokIcon} from "@constants/iconPath";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -145,6 +148,151 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           }}>
           {profileData?.location}
         </Text>
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          marginBottom: splitAppTheme.space["1"],
+        }}>
+        {!!profileData.social_links.facebook && (
+          <View style={{marginRight: splitAppTheme.space[3]}}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(profileData.social_links.facebook!);
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space["1.5"],
+                  borderRadius: splitAppTheme.radii.full,
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[600],
+                }}>
+                <MaterialCommunityIcons
+                  name={"facebook"}
+                  size={20}
+                  color={splitAppTheme.colors.secondary[600]}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {!!profileData.social_links.tiktok && (
+          <View style={{marginRight: splitAppTheme.space[3]}}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(profileData.social_links.tiktok!);
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space["1.5"],
+                  borderRadius: splitAppTheme.radii.full,
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[600],
+                }}>
+                <TiktokIcon
+                  width={20}
+                  height={20}
+                  color={splitAppTheme.colors.secondary[600]}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {!!profileData.social_links.twitter && (
+          <View style={{marginRight: splitAppTheme.space[3]}}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(profileData.social_links.twitter!);
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space["1.5"],
+                  borderRadius: splitAppTheme.radii.full,
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[600],
+                }}>
+                <MaterialCommunityIcons
+                  name={"twitter"}
+                  size={20}
+                  color={splitAppTheme.colors.secondary[600]}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {!!profileData.social_links.instgram && (
+          <View style={{marginRight: splitAppTheme.space[3]}}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(profileData.social_links.instgram!);
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space["1.5"],
+                  borderRadius: splitAppTheme.radii.full,
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[600],
+                }}>
+                <MaterialCommunityIcons
+                  name={"instagram"}
+                  size={20}
+                  color={splitAppTheme.colors.secondary[600]}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {!!profileData.social_links.linkendin && (
+          <View style={{marginRight: splitAppTheme.space[3]}}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(profileData.social_links.linkendin!);
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space["1.5"],
+                  borderRadius: splitAppTheme.radii.full,
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[600],
+                }}>
+                <MaterialCommunityIcons
+                  name={"linkedin"}
+                  size={20}
+                  color={splitAppTheme.colors.secondary[600]}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {!!profileData.social_links.youtube && (
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(profileData.social_links.youtube!);
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space["1.5"],
+                  borderRadius: splitAppTheme.radii.full,
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[600],
+                }}>
+                <MaterialCommunityIcons
+                  name={"youtube"}
+                  size={20}
+                  color={splitAppTheme.colors.secondary[600]}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       <View

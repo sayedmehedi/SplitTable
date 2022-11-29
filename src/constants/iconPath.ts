@@ -4,6 +4,8 @@ import JoinCountIcon from "@assets/icons/join-count.svg";
 import CryptoIcon from "@assets/icons/crypto.svg";
 import DistanceIcon from "@assets/icons/distance.svg";
 
+import TiktokIcon from "@assets/icons/tiktok.svg";
+
 import PaymentIcon from "@assets/icons/payment-notification.svg";
 import SuccessIcon from "@assets/icons/success-notification.svg";
 import CancelIcon from "@assets/icons/cancel-notification.svg";
@@ -82,4 +84,5 @@ export {
   BookTableIcon,
   JoinTableIcon,
   SplitTableIcon,
+  TiktokIcon,
 };

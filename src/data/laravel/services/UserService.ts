@@ -29,6 +29,8 @@ import {
   GetFaqsResponse,
   SearchUserQueryParams,
   SearchUserResponse,
+  SocialLinks,
+  SocialLinksPayloadFieldName,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -176,12 +178,64 @@ export class UserService implements IUserService {
         typeof payload !== "string" &&
         payload !== undefined
       ) {
-        if (!!payload.name && !!payload.type && !!payload.uri) {
+        if ("name" in payload && "type" in payload && "uri" in payload) {
           acc.push({
             name: fieldName,
             type: payload.type,
             filename: payload.name,
             data: RNFetchBlob.wrap(payload.uri.replace("file://", "")),
+          });
+        }
+      } else if (
+        fieldName === "social_links" &&
+        typeof payload !== "string" &&
+        payload !== undefined &&
+        !("name" in payload) &&
+        !("type" in payload) &&
+        !("uri" in payload)
+      ) {
+        const {facebook, instgram, linkendin, tiktok, twitter, youtube} =
+          payload;
+
+        if (!!facebook) {
+          acc.push({
+            name: "social_links[facebook]",
+            data: facebook,
+          });
+        }
+
+        if (!!instgram) {
+          acc.push({
+            name: "social_links[instgram]",
+            data: instgram,
+          });
+        }
+
+        if (!!linkendin) {
+          acc.push({
+            name: "social_links[linkendin]",
+            data: linkendin,
+          });
+        }
+
+        if (!!tiktok) {
+          acc.push({
+            name: "social_links[tiktok]",
+            data: tiktok,
+          });
+        }
+
+        if (!!twitter) {
+          acc.push({
+            name: "social_links[twitter]",
+            data: twitter,
+          });
+        }
+
+        if (!!youtube) {
+          acc.push({
+            name: "social_links[youtube]",
+            data: youtube,
           });
         }
       } else if (typeof payload !== "object" && payload !== undefined) {
@@ -192,7 +246,7 @@ export class UserService implements IUserService {
       }
 
       return acc;
-    }, [] as {name: keyof typeof data; type?: string; filename?: string; data: string}[]);
+    }, [] as {name: keyof typeof data | SocialLinksPayloadFieldName; type?: string; filename?: string; data: string}[]);
 
     const response = await RNFetchBlob.config({
       trusty: true,

@@ -78,6 +78,7 @@ const MyTableList = ({onItemPress, onUpdatePress}: Props) => {
             distance: item.distance,
             total_joined:
               "total_joined" in item ? item.total_joined : undefined,
+            status: item.status,
           }}
           onPress={onItemPress}
           onUpdatePress={onUpdatePress}

@@ -1,5 +1,5 @@
 import {AxiosRequestConfig} from "axios";
-import {AppTableTypes} from "@constants/table";
+import {AppTableTypes, TableStatusTypes} from "@constants/table";
 import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import {AppSupportedPaymentMethods} from "@constants/payment";
@@ -46,6 +46,9 @@ export type ServerValidationError = {
 };
 
 export type ServerErrorType = ServerValidationError | ServerNonFieldError;
+
+export type TableStatusType =
+  typeof TableStatusTypes[keyof typeof TableStatusTypes];
 
 export type LoginRequest = {
   email: string;
@@ -156,14 +159,15 @@ export interface TableByLocationItem {
   location: string;
   distance: string;
   total_joined: number;
+  status: TableStatusType;
 }
 
 export type TableCommonSearchParams = {
   tableType?: TableType;
   date?: string;
+  clubId?: number;
   locationId?: number;
   distance?: [number, number];
-  clubId?: number;
 };
 
 export type GetTablesByLocationResponse = {
@@ -216,7 +220,8 @@ export interface TableBySearchTerm {
   location: string;
   distance: string;
   image: string;
-  total_joined: number;
+  total_joined?: number;
+  status: TableStatusType;
 }
 
 export type GetTablesBySearchTermResponse = {
@@ -321,6 +326,15 @@ export interface OwnerProfileData {
   club: string;
   job_role: string;
 }
+
+export interface SocialLinks {
+  facebook?: string;
+  twitter?: string;
+  tiktok?: string;
+  instgram?: string;
+  linkendin?: string;
+  youtube?: string;
+}
 export interface CustomerProfileData {
   id: number;
   image: string;
@@ -336,6 +350,8 @@ export interface CustomerProfileData {
   bookings: number;
   reviews: number;
   photos: number;
+
+  social_links?: SocialLinks;
 }
 
 export type GetProfileDataResponse = OwnerProfileData | CustomerProfileData;
@@ -400,6 +416,7 @@ export interface UpdateProfilePayload {
   phone: string;
   onUploadProgress?: OnUploadProgress;
   image: SplitAppImagePayload;
+  social_links: SocialLinks;
 }
 
 export type UpdateProfileRequest = Partial<UpdateProfilePayload>;
@@ -511,6 +528,7 @@ export interface SplitTableDetails {
   women_booked_seat: number;
   women_seat: number;
   women_seat_price: string;
+  status: TableStatusType;
 }
 
 export interface BookedTableDetails {
@@ -531,6 +549,7 @@ export interface BookedTableDetails {
   total_seat: number;
   price: string;
   joined_users: JoinedUser[];
+  status: TableStatusType;
 }
 
 export type GetTableDetailsResponse = SplitTableDetails | BookedTableDetails;
@@ -972,3 +991,9 @@ export type DeleteSliderImageRequest = {
 };
 
 export type DeleteSliderImageResponse = ResponseResult<{}>;
+
+type ValueOf<T extends {}> = T[keyof T];
+
+type SocialLinksPayloadFieldName = ValueOf<{
+  [Key in keyof SocialLinks]-?: `social_links[${Key}]`;
+}>;

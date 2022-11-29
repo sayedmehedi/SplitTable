@@ -19,7 +19,9 @@ function getGeolocation() {
           reject(error);
         },
         {
-          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 3600000,
+          enableHighAccuracy: false,
         },
       );
     } catch (err) {

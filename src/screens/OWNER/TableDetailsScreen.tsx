@@ -59,6 +59,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
           total_joined: isSplitTableDetails(tableDetailsResponse)
             ? tableDetailsResponse.joined_users.length
             : undefined,
+          status: tableDetailsResponse.status,
         }}
         onPress={() => {}}
         onUpdatePress={() => {}}
