@@ -1,38 +1,16 @@
 import React from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  Dimensions,
-  ListRenderItem,
-} from "react-native";
+import {splitAppTheme} from "@src/theme";
+import {View, ScrollView} from "react-native";
 import {OwnerStackRoutes} from "@constants/routes";
+import {useDisclosure} from "react-use-disclosure";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import InformationUpdaterModal from "./modals/InformationUpdaterModal";
 import InformationUpdaterItem from "./modals/InformationUpdaterItem";
 import {RootStackParamList, OwnerStackParamList} from "@src/navigation";
-import FastImage from "react-native-fast-image";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import {splitAppTheme} from "@src/theme";
 
-const screenWidth = Dimensions.get("screen").width;
-
-const renderAllStory: ListRenderItem<{
-  id: number;
-  uri: string;
-  like: string;
-  disLike: string;
-}> = ({item}) => (
-  <View style={{margin: 3}}>
-    <FastImage
-      source={{uri: item.uri}}
-      style={{
-        height: 100,
-        width: screenWidth / 3 - 10,
-      }}
-    />
-  </View>
-);
+type ResourceType = React.ComponentProps<typeof InformationUpdaterItem>["type"];
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.INFORMATION>,
@@ -40,6 +18,23 @@ type Props = CompositeScreenProps<
 >;
 
 const InformationScreen = ({}: Props) => {
+  const {isOpen, open, close} = useDisclosure();
+  const [modalResourceType, setModalResourceType] = React.useState<
+    ResourceType | ""
+  >("");
+
+  const handleOpenModal = React.useCallback(
+    (resrouceType: ResourceType) => {
+      setModalResourceType(resrouceType);
+      open();
+    },
+    [open],
+  );
+
+  const handleCloseModal = React.useCallback(() => {
+    setModalResourceType("");
+    close();
+  }, [close]);
   return (
     <ScrollView>
       <FocusAwareStatusBar
@@ -49,15 +44,21 @@ const InformationScreen = ({}: Props) => {
 
       <View
         style={{paddingHorizontal: 12, backgroundColor: "#FFFFFF", flex: 1}}>
-        <InformationUpdaterItem type="time" />
+        <InformationUpdaterItem type="time" openModal={handleOpenModal} />
 
-        <InformationUpdaterItem type="cuisine" />
+        <InformationUpdaterItem type="cuisine" openModal={handleOpenModal} />
 
-        <InformationUpdaterItem type="cost" />
+        <InformationUpdaterItem type="cost" openModal={handleOpenModal} />
 
-        <InformationUpdaterItem type="about" />
+        <InformationUpdaterItem type="about" openModal={handleOpenModal} />
 
-        <InformationUpdaterItem type="slider" />
+        <InformationUpdaterItem type="slider" openModal={handleOpenModal} />
+
+        <InformationUpdaterModal
+          isOpen={isOpen}
+          onClose={handleCloseModal}
+          type={modalResourceType}
+        />
       </View>
     </ScrollView>
   );

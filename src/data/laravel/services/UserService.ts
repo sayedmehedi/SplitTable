@@ -197,56 +197,44 @@ export class UserService implements IUserService {
         const {facebook, instgram, linkendin, tiktok, twitter, youtube} =
           payload;
 
-        if (!!facebook) {
-          acc.push({
-            name: "social_links[facebook]",
-            data: facebook,
-          });
-        }
+        acc.push({
+          name: "social_links[facebook]",
+          data: facebook,
+        });
 
-        if (!!instgram) {
-          acc.push({
-            name: "social_links[instgram]",
-            data: instgram,
-          });
-        }
+        acc.push({
+          name: "social_links[instgram]",
+          data: instgram,
+        });
 
-        if (!!linkendin) {
-          acc.push({
-            name: "social_links[linkendin]",
-            data: linkendin,
-          });
-        }
+        acc.push({
+          name: "social_links[linkendin]",
+          data: linkendin,
+        });
 
-        if (!!tiktok) {
-          acc.push({
-            name: "social_links[tiktok]",
-            data: tiktok,
-          });
-        }
+        acc.push({
+          name: "social_links[tiktok]",
+          data: tiktok,
+        });
 
-        if (!!twitter) {
-          acc.push({
-            name: "social_links[twitter]",
-            data: twitter,
-          });
-        }
+        acc.push({
+          name: "social_links[twitter]",
+          data: twitter,
+        });
 
-        if (!!youtube) {
-          acc.push({
-            name: "social_links[youtube]",
-            data: youtube,
-          });
-        }
+        acc.push({
+          name: "social_links[youtube]",
+          data: youtube,
+        });
       } else if (typeof payload !== "object" && payload !== undefined) {
         acc.push({
           name: fieldName,
-          data: payload,
+          data: payload ?? null,
         });
       }
 
       return acc;
-    }, [] as {name: keyof typeof data | SocialLinksPayloadFieldName; type?: string; filename?: string; data: string}[]);
+    }, [] as {name: keyof typeof data | SocialLinksPayloadFieldName; type?: string; filename?: string; data: string | null}[]);
 
     const response = await RNFetchBlob.config({
       trusty: true,

@@ -33,6 +33,7 @@ import {
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {TiktokIcon} from "@constants/iconPath";
+import {useDisclosure} from "react-use-disclosure";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -41,6 +42,7 @@ type ProfileScreenProps = StackScreenProps<
 
 const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   const queryClient = useQueryClient();
+  const {isOpen, toggle} = useDisclosure();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const isFetchingUserImages = useIsFetching({
@@ -156,11 +158,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           justifyContent: "center",
           marginBottom: splitAppTheme.space["1"],
         }}>
-        {!!profileData.social_links.facebook && (
+        {!!profileData.social_links?.facebook && (
           <View style={{marginRight: splitAppTheme.space[3]}}>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(profileData.social_links.facebook!);
+                Linking.openURL(profileData.social_links!.facebook!);
               }}>
               <View
                 style={{
@@ -179,11 +181,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </View>
         )}
 
-        {!!profileData.social_links.tiktok && (
+        {!!profileData.social_links?.tiktok && (
           <View style={{marginRight: splitAppTheme.space[3]}}>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(profileData.social_links.tiktok!);
+                Linking.openURL(profileData.social_links!.tiktok!);
               }}>
               <View
                 style={{
@@ -202,11 +204,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </View>
         )}
 
-        {!!profileData.social_links.twitter && (
+        {!!profileData.social_links?.twitter && (
           <View style={{marginRight: splitAppTheme.space[3]}}>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(profileData.social_links.twitter!);
+                Linking.openURL(profileData.social_links!.twitter!);
               }}>
               <View
                 style={{
@@ -225,11 +227,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </View>
         )}
 
-        {!!profileData.social_links.instgram && (
+        {!!profileData.social_links?.instgram && (
           <View style={{marginRight: splitAppTheme.space[3]}}>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(profileData.social_links.instgram!);
+                Linking.openURL(profileData.social_links!.instgram!);
               }}>
               <View
                 style={{
@@ -248,11 +250,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </View>
         )}
 
-        {!!profileData.social_links.linkendin && (
+        {!!profileData.social_links?.linkendin && (
           <View style={{marginRight: splitAppTheme.space[3]}}>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(profileData.social_links.linkendin!);
+                Linking.openURL(profileData.social_links!.linkendin!);
               }}>
               <View
                 style={{
@@ -271,11 +273,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </View>
         )}
 
-        {!!profileData.social_links.youtube && (
+        {!!profileData.social_links?.youtube && (
           <View>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(profileData.social_links.youtube!);
+                Linking.openURL(profileData.social_links!.youtube!);
               }}>
               <View
                 style={{

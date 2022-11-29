@@ -328,12 +328,12 @@ export interface OwnerProfileData {
 }
 
 export interface SocialLinks {
-  facebook?: string;
-  twitter?: string;
-  tiktok?: string;
-  instgram?: string;
-  linkendin?: string;
-  youtube?: string;
+  facebook: string | null;
+  twitter: string | null;
+  tiktok: string | null;
+  instgram: string | null;
+  linkendin: string | null;
+  youtube: string | null;
 }
 export interface CustomerProfileData {
   id: number;
