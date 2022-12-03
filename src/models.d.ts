@@ -3,6 +3,7 @@ import {AppTableTypes, TableStatusTypes} from "@constants/table";
 import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import {AppSupportedPaymentMethods} from "@constants/payment";
+import {BookingType} from "@constants/booking";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -229,7 +230,9 @@ export type GetTablesBySearchTermResponse = {
 };
 
 export type GetTablesBySearchTermQueryParams = PaginationQueryParams &
-  TableCommonSearchParams;
+  TableCommonSearchParams & {
+    old?: boolean;
+  };
 
 export interface ClubDetails {
   id: number;
@@ -997,3 +1000,34 @@ type ValueOf<T extends {}> = T[keyof T];
 type SocialLinksPayloadFieldName = ValueOf<{
   [Key in keyof SocialLinks]-?: `social_links[${Key}]`;
 }>;
+
+export interface BookingDetailsCommon {
+  id: number;
+  club: string;
+  tables: string[];
+  date: string;
+  time: string;
+  can_cancel: boolean;
+  menus: Array<{
+    id: number;
+    img: string;
+    menu: string;
+    qty: number;
+    price: number;
+    sub_total: number;
+  }>;
+}
+
+export interface BookingDetailsBooked extends BookingDetailsCommon {
+  "Booked Guests": number;
+}
+
+export interface BookingDetailsSplit extends BookingDetailsCommon {
+  "Men Guests": number;
+  "Women Guests": number;
+}
+
+export type GetBookingDetailsResponse = {
+  booking: BookingDetailsBooked | BookingDetailsSplit;
+  calculations: Record<string, number>;
+};

@@ -23,13 +23,15 @@ type Props = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
+const wantToAddMenu = true;
+
 const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
   const toast = useAppToast();
-  const {
-    open: addMenu,
-    close: removeMenu,
-    isOpen: wantToAddMenu,
-  } = useDisclosure();
+  // const {
+  //   open: addMenu,
+  //   close: removeMenu,
+  //   isOpen: wantToAddMenu,
+  // } = useDisclosure(true);
 
   const [menGuestCount, setMenGuestCount] = React.useState(0);
   const [womenGuestCount, setWomenGuestCount] = React.useState(0);
@@ -290,7 +292,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
           </React.Fragment>
         )}
 
-        <View style={{marginTop: splitAppTheme.space[12]}}>
+        {/* <View style={{marginTop: splitAppTheme.space[12]}}>
           <Text
             style={{
               color: "#030819",
@@ -400,7 +402,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
               </TouchableOpacity>
             )}
           </View>
-        </View>
+        </View> */}
       </View>
 
       <LinearGradient
@@ -460,7 +462,7 @@ const GuestAndOfferMenuScreen = ({navigation, route}: Props) => {
                 tableDetails: tableDetails,
               });
             } else {
-              navigation.navigate(CustomerStackRoutes.BOOKING_DETAILS, {
+              navigation.navigate(CustomerStackRoutes.BOOKING_TABLE, {
                 menGuestCount,
                 womenGuestCount,
                 menuListToAdd: [],

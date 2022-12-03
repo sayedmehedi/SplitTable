@@ -11,6 +11,7 @@ export const RootStackRoutes = {
   SIGNIN: "Signin",
   RESET_PASSWORD: "ResetPassword",
   FORGOT_PASSWORD: "ForgotPassword",
+  BOOKING_DETAILS: "BookingDetails",
   EMAIL_VERIFICATION: "EmailVerification",
 } as const;
 
@@ -31,7 +32,7 @@ export const CustomerStackRoutes = {
 
   GUEST_N_MENU: "GuestNMenu",
   ADD_MENU_ITEM: "AddMenuItem",
-  BOOKING_DETAILS: "BookingDetails",
+  BOOKING_TABLE: "BookingTable",
 
   CHAT_MESSAGES: "ChatMessages",
 

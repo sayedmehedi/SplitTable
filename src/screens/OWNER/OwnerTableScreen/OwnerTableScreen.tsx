@@ -42,6 +42,7 @@ import GenericListEmpty from "@components/GenericListEmpty";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {QueryKeys} from "@constants/query-keys";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
+import {BookingTypes} from "@constants/booking";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -385,7 +386,16 @@ const OwnerTableScreen = ({navigation}: Props) => {
               <View
                 key={booking.id}
                 style={{marginBottom: splitAppTheme.space[3]}}>
-                <EachBookingItem item={booking} type={"upcoming"} />
+                <EachBookingItem
+                  item={booking}
+                  type={"upcoming"}
+                  onPress={resource => {
+                    navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
+                      bookingId: resource.id,
+                      bookingType: BookingTypes.UPCOMING,
+                    });
+                  }}
+                />
               </View>
             ))}
           </View>

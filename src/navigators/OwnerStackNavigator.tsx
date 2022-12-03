@@ -73,11 +73,11 @@ const myTablesScreenOptions:
   | ((props: {
       route: RouteProp<OwnerStackParamList, typeof OwnerStackRoutes.MY_TABLES>;
       navigation: any;
-    }) => StackNavigationOptions) = {
+    }) => StackNavigationOptions) = ({route}) => ({
   headerShown: true,
   header: CommonStackHeader,
-  headerTitle: "My Table",
-};
+  headerTitle: route.params?.old ? "Archived Tables" : "My Tables",
+});
 
 const upsertTableScreenOptions:
   | StackNavigationOptions

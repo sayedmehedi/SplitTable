@@ -16,18 +16,33 @@ import {
   FlatList,
   ListRenderItem,
   TouchableOpacity,
-  NativeScrollEvent,
   ActivityIndicator,
-  NativeSyntheticEvent,
 } from "react-native";
 import ReviewModal from "@components/ReviewModal";
 import {useDisclosure} from "react-use-disclosure";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {CustomerMainBottomTabRoutes, RootStackRoutes} from "@constants/routes";
+import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
+import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
+import {
+  CustomerBottomTabParamList,
+  CustomerStackParamList,
+  RootStackParamList,
+} from "@src/navigation";
+import {BookingTypes} from "@constants/booking";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
-const renderUpcomingBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem type={"upcoming"} item={item} />
-);
+type NavigationProps = CompositeNavigationProp<
+  CompositeNavigationProp<
+    BottomTabNavigationProp<
+      CustomerBottomTabParamList,
+      typeof CustomerMainBottomTabRoutes.BOOKING
+    >,
+    StackNavigationProp<CustomerStackParamList>
+  >,
+  StackNavigationProp<RootStackParamList>
+>;
 
 const UpcomingBookingRoute = ({
   ListHeaderComponent,
@@ -39,6 +54,8 @@ const UpcomingBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+
+  const navigation = useNavigation<NavigationProps>();
 
   const {
     refetch,
@@ -81,6 +98,24 @@ const UpcomingBookingRoute = ({
       padding: splitAppTheme.space[6],
     };
   }, [splitAppTheme.space[6]]);
+
+  const handlePress = React.useCallback(
+    (resource: ClubBooking) => {
+      navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
+        bookingId: resource.id,
+        bookingType: BookingTypes.UPCOMING,
+      });
+    },
+    [navigation],
+  );
+
+  const renderUpcomingBookingItem: ListRenderItem<ClubBooking> =
+    React.useCallback(
+      ({item}) => (
+        <EachBookingItem type={"upcoming"} item={item} onPress={handlePress} />
+      ),
+      [handlePress],
+    );
 
   if (isLoadingInfiniteResources) {
     return (
@@ -140,6 +175,7 @@ const HistoryBookingRoute = ({
   } = useDimensions();
   const {toggle, isOpen} = useDisclosure();
   const [reviewerId, setReviewerId] = React.useState<number | null>(null);
+  const navigation = useNavigation<NavigationProps>();
 
   const {
     refetch,
@@ -185,16 +221,27 @@ const HistoryBookingRoute = ({
     [toggle],
   );
 
+  const handlePress = React.useCallback(
+    (resource: ClubBooking) => {
+      navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
+        bookingId: resource.id,
+        bookingType: BookingTypes.HISTORY,
+      });
+    },
+    [navigation],
+  );
+
   const renderHistoryBookingItem: ListRenderItem<ClubBooking> =
     React.useCallback(
       ({item}) => (
         <EachBookingItem
           item={item}
           type={"history"}
+          onPress={handlePress}
           onAddReviewPress={handleAddReviewPress}
         />
       ),
-      [handleAddReviewPress],
+      [handleAddReviewPress, handlePress],
     );
 
   const flatlistContentContainerStyle = React.useMemo(() => {

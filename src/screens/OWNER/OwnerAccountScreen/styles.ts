@@ -4,15 +4,15 @@ import {StyleSheet} from "react-native";
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 20,
     borderBottomWidth: 0.3,
     borderBottomColor: "#707070",
+    justifyContent: "space-between",
   },
   editText: {
     color: "#023047",
-   // fontFamily: "Inter-Medium",
+    // fontFamily: "Inter-Medium",
     fontSize: 11,
     textDecorationLine: "underline",
   },

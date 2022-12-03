@@ -69,9 +69,17 @@ export default function TableDetailsScreen({route, navigation}: Props) {
 
   const handleBookTable = () => {
     if (tableDetailsResponse) {
-      navigation.navigate(CustomerStackRoutes.GUEST_N_MENU, {
-        tableDetails: tableDetailsResponse,
-      });
+      if (isSplitTableDetails(tableDetailsResponse)) {
+        navigation.navigate(CustomerStackRoutes.GUEST_N_MENU, {
+          tableDetails: tableDetailsResponse,
+        });
+      } else {
+        navigation.navigate(CustomerStackRoutes.ADD_MENU_ITEM, {
+          menGuestCount: 0,
+          womenGuestCount: 0,
+          tableDetails: tableDetailsResponse,
+        });
+      }
     }
   };
 
@@ -151,7 +159,7 @@ export default function TableDetailsScreen({route, navigation}: Props) {
               </TouchableOpacity>
             </View>
 
-            <View style={{paddingRight:10}}>
+            <View style={{paddingRight: 10}}>
               <TouchableOpacity
                 disabled={isSharing}
                 onPress={() => {

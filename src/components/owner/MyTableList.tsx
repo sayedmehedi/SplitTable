@@ -1,9 +1,8 @@
 import React from "react";
 import {TTableItem} from "./shared";
 import {splitAppTheme} from "@src/theme";
-import TableListItem from "./TableListItem";
 import {AppTableTypes} from "@constants/table";
-import {TableByLocationItem, TableType} from "@src/models";
+import {TableBySearchTerm, TableType} from "@src/models";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import useInfiniteGetTablesBySearchTermQuery from "@hooks/clubs/useInfiniteGetTablesBySearchTermQuery";
@@ -18,11 +17,12 @@ import {
 import EachTableNEventItem from "@screens/OWNER/OwnerTableScreen/EachTableNEventItem";
 
 type Props = {
+  old?: boolean;
   onItemPress: (item: TTableItem) => void;
   onUpdatePress: (item: TTableItem) => void;
 };
 
-const MyTableList = ({onItemPress, onUpdatePress}: Props) => {
+const MyTableList = ({onItemPress, onUpdatePress, old = false}: Props) => {
   const [tableType, setTableType] = React.useState<TableType>(
     AppTableTypes.BOOKED,
   );
@@ -39,6 +39,7 @@ const MyTableList = ({onItemPress, onUpdatePress}: Props) => {
     data: infiniteGetClubsByLocationsResponse,
   } = useInfiniteGetTablesBySearchTermQuery(
     {
+      old,
       page: 1,
       tableType,
       clubId: clubInfoData?.id,
@@ -65,27 +66,25 @@ const MyTableList = ({onItemPress, onUpdatePress}: Props) => {
     );
   }, [infiniteGetClubsByLocationsResponse?.pages]);
 
-  const renderTableItem: ListRenderItem<TableByLocationItem> =
-    React.useCallback(
-      ({item}) => (
-        <EachTableNEventItem
-          item={{
-            id: item.id,
-            date: item.date,
-            name: item.name,
-            image: item.image,
-            location: item.location,
-            distance: item.distance,
-            total_joined:
-              "total_joined" in item ? item.total_joined : undefined,
-            status: item.status,
-          }}
-          onPress={onItemPress}
-          onUpdatePress={onUpdatePress}
-        />
-      ),
-      [onItemPress, onUpdatePress],
-    );
+  const renderTableItem: ListRenderItem<TableBySearchTerm> = React.useCallback(
+    ({item}) => (
+      <EachTableNEventItem
+        item={{
+          id: item.id,
+          date: item.date,
+          name: item.name,
+          image: item.image,
+          location: item.location,
+          distance: item.distance,
+          total_joined: "total_joined" in item ? item.total_joined : undefined,
+          status: item.status,
+        }}
+        onPress={onItemPress}
+        onUpdatePress={onUpdatePress}
+      />
+    ),
+    [onItemPress, onUpdatePress],
+  );
 
   const handleFetchNextPage = React.useCallback(() => {
     fetchNextPage();

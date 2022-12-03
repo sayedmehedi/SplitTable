@@ -20,7 +20,7 @@ export default function ProfileUpdaterItem({type, openModal}: Props) {
   return (
     <React.Fragment>
       <View style={styles.buttonContainer}>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
+        <View style={{flexDirection: "row", alignItems: "center", flex: 1}}>
           {type === "name" && (
             <React.Fragment>
               <AntDesign name="user" size={20} color={"#707070"} />
@@ -80,9 +80,15 @@ export default function ProfileUpdaterItem({type, openModal}: Props) {
           )}
         </View>
 
-        <TouchableOpacity onPress={() => openModal(type)}>
-          <Text style={styles.editText}>Edit</Text>
-        </TouchableOpacity>
+        <View
+          style={{
+            width: 50,
+            alignItems: "flex-end",
+          }}>
+          <TouchableOpacity onPress={() => openModal(type)}>
+            <Text style={styles.editText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </React.Fragment>
   );

@@ -30,11 +30,12 @@ import dayjs from "dayjs";
 import FastImage from "react-native-fast-image";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {useDimensions} from "@react-native-community/hooks";
+import useAppToast from "@hooks/useAppToast";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
     CustomerStackParamList,
-    typeof CustomerStackRoutes.BOOKING_DETAILS
+    typeof CustomerStackRoutes.BOOKING_TABLE
   >,
   StackScreenProps<RootStackParamList>
 >;
@@ -115,7 +116,8 @@ const MenuItemAction = React.memo(
     prevProps.initialQuantity === nextProps.initialQuantity,
 );
 
-const BookingDetailsScreen = ({navigation, route}: Props) => {
+const BookTableScreen = ({navigation, route}: Props) => {
+  const toast = useAppToast();
   const [tip, setTip] = React.useState(0);
   const [discount] = React.useState(0);
   const {
@@ -135,10 +137,17 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
     mutate: bookTable,
     error: bookTableError,
     data: bookTableResponse,
+    isError: isBookingError,
     isLoading: isBookingTable,
   } = useBookTableMutation();
   useHandleNonFieldError(bookTableError);
   useHandleResponseResultError(bookTableResponse);
+
+  React.useEffect(() => {
+    if (isBookingError) {
+      toast.error(Object.values(bookTableError.field_errors)[0]);
+    }
+  }, [isBookingError, bookTableError?.field_errors]);
 
   const handleItemQuantity = React.useCallback(
     (menuItem: ClubMenuItem, newQuantity: number) => {
@@ -714,4 +723,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BookingDetailsScreen;
+export default BookTableScreen;

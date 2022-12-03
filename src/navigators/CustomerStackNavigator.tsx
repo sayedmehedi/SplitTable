@@ -29,9 +29,9 @@ import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
 import ChatMessagesScreen from "@screens/CUSTOMER/ChatScreen/ChatMessagesScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
+import BookTableScreen from "@screens/CUSTOMER/BookTableScreen/BookTableScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
 import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
-import BookingDetailsScreen from "@screens/CUSTOMER/BookTableScreen/BookingDetailsScreen";
 import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
 import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
 import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
@@ -134,8 +134,8 @@ const CustomerStackNavigator = () => {
         />
 
         <CustomerStack.Screen
-          component={BookingDetailsScreen}
-          name={CustomerStackRoutes.BOOKING_DETAILS}
+          component={BookTableScreen}
+          name={CustomerStackRoutes.BOOKING_TABLE}
         />
 
         <CustomerStack.Screen

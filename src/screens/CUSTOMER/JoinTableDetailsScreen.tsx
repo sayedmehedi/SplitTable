@@ -48,6 +48,7 @@ export default function JoinTableDetailsScreen({route, navigation}: Props) {
 
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         padding: splitAppTheme.space[6],
       }}>

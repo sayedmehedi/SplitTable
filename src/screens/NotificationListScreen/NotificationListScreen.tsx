@@ -6,20 +6,17 @@ import {
   Text,
   View,
   FlatList,
-  StatusBar,
   ListRenderItem,
   ActivityIndicator,
 } from "react-native";
-import {PaymentIcon} from "@constants/iconPath";
 import {RootStackParamList} from "@src/navigation";
 import {StackScreenProps} from "@react-navigation/stack";
 import GenericListEmpty from "@components/GenericListEmpty";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import {NotificationStyles, NotificationTypes} from "@constants/notification";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {NotificationStyles, NotificationTypes} from "@constants/notification";
+import useInfiniteGetNotificationsQuery from "@hooks/notifications/useInfiniteGetNotificationsQuery";
 
 type Props = StackScreenProps<RootStackParamList>;
 
@@ -51,6 +48,7 @@ const renderNotificationItem: ListRenderItem<NotificationItem> = ({item}) => (
 
     <View
       style={{
+        flex: 1,
         marginLeft: splitAppTheme.space[5],
       }}>
       <Text

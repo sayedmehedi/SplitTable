@@ -1,4 +1,9 @@
-import {BookedTableDetails, SplitTableDetails} from "@src/models";
+import {
+  BookedTableDetails,
+  BookingDetailsBooked,
+  BookingDetailsSplit,
+  SplitTableDetails,
+} from "@src/models";
 
 export function isSplitTableDetails(
   tableData: SplitTableDetails | BookedTableDetails,
@@ -16,4 +21,16 @@ export function isBookedTableDetails(
   tableData: SplitTableDetails | BookedTableDetails,
 ): tableData is BookedTableDetails {
   return "total_seat" in tableData && "price" in tableData;
+}
+
+export function isBookedBookingDetails(
+  bookingDetails: BookingDetailsBooked | BookingDetailsSplit,
+): bookingDetails is BookingDetailsBooked {
+  return "Booked Guests" in bookingDetails;
+}
+
+export function isSplitBookingDetails(
+  bookingDetails: BookingDetailsBooked | BookingDetailsSplit,
+): bookingDetails is BookingDetailsSplit {
+  return "Men Guests" in bookingDetails && "Women Guests" in bookingDetails;
 }

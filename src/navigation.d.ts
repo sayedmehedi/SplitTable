@@ -190,7 +190,7 @@ type CustomerStackParamList = {
     menGuestCount: number;
     womenGuestCount: number;
   };
-  [CustomerStackRoutes.BOOKING_DETAILS]: {
+  [CustomerStackRoutes.BOOKING_TABLE]: {
     tableDetails: SplitTableDetails | BookingTableDetails;
     menuListToAdd: Array<ClubMenuItem & {purchaseQty: number}>;
     menGuestCount: number;
@@ -219,7 +219,11 @@ type OwnerStackParamList = {
   [OwnerStackRoutes.TABLE_DETAILS]: {
     tableId: number;
   };
-  [OwnerStackRoutes.MY_TABLES]: undefined;
+  [OwnerStackRoutes.MY_TABLES]:
+    | {
+        old: boolean;
+      }
+    | undefined;
   [OwnerStackRoutes.HOLIDAYS]: undefined;
   [OwnerStackRoutes.ADD_HOLIDAY]: undefined;
   [OwnerStackRoutes.SLIDER_IMAGES]: undefined;
@@ -243,6 +247,10 @@ type OwnerStackParamList = {
 };
 
 type RootStackParamList = {
+  [RootStackRoutes.BOOKING_DETAILS]: {
+    bookingId: number;
+    bookingType: "upcoming" | "history";
+  };
   [RootStackRoutes.CUSTOMER_LOGIN_PROMPT]: undefined;
   [RootStackRoutes.CUSTOMER_ONBOARDING]: undefined;
   [RootStackRoutes.SIGNUP]: undefined;

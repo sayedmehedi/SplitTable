@@ -58,6 +58,7 @@ import {
   GetClubsBySearchTermResponse,
   DeleteSliderImageRequest,
   DeleteSliderImageResponse,
+  GetBookingDetailsResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -70,6 +71,30 @@ export class ClubService implements IClubService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  getBookingDetails(
+    bookingId: number,
+  ): CancelablePromise<
+    AxiosResponse<GetBookingDetailsResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetBookingDetailsResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        console.log("aborting clubs by search term");
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetBookingDetailsResponse>(`booking-details/${bookingId}`, {
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   deleteClubSliderImage(
     data: DeleteSliderImageRequest,
@@ -617,6 +642,7 @@ export class ClubService implements IClubService {
     tableType,
     clubId,
     date,
+    old,
     distance,
     ...params
   }: GetTablesBySearchTermQueryParams): CancelablePromise<
@@ -657,6 +683,10 @@ export class ClubService implements IClubService {
 
       if (date !== undefined) {
         realParams.date = date;
+      }
+
+      if (old !== undefined) {
+        realParams.old = old ? 1 : 0;
       }
 
       this._httpService

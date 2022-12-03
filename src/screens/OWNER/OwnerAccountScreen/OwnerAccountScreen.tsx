@@ -41,6 +41,7 @@ import FastImage from "react-native-fast-image";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import dayjs from "dayjs";
 import {timeToDate} from "@utils/club";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -196,6 +197,55 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
                 fontFamily: "Satoshi-Regular",
               }}>
               Account Setting
+            </Text>
+          </View>
+
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate(OwnerStackRoutes.MY_TABLES)}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View>
+              <MaterialCommunityIcons name={"table-chair"} size={22} />
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+              }}>
+              My Tables
+            </Text>
+          </View>
+
+          <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate(OwnerStackRoutes.MY_TABLES, {
+              old: true,
+            })
+          }
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View>
+              <MaterialCommunityIcons
+                name={"archive-arrow-down-outline"}
+                size={22}
+              />
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: "Satoshi-Regular",
+              }}>
+              Table Archive
             </Text>
           </View>
 

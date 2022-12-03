@@ -12,23 +12,38 @@ import {
   FlatList,
   ListRenderItem,
   ActivityIndicator,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   StyleSheet,
 } from "react-native";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useInfiniteGetUpcomingBookingQuery from "@hooks/clubs/useInfiniteGetUpcomingBookingQuery";
 import {splitAppTheme} from "@src/theme";
 import GenericListEmpty from "@components/GenericListEmpty";
-import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookingHistoryQuery";
-import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
+import useInfiniteGetUpcomingBookingQuery from "@hooks/clubs/useInfiniteGetUpcomingBookingQuery";
+import useInfiniteGetBookingHistoryQuery from "@hooks/clubs/useInfiniteGetBookingHistoryQuery";
+import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
+import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
+import {
+  OwnerBottomTabParamList,
+  OwnerStackParamList,
+  RootStackParamList,
+} from "@src/navigation";
+import {OwnerMainBottomTabRoutes, RootStackRoutes} from "@constants/routes";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {BookingTypes} from "@constants/booking";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
-const renderUpcomingBookingItem: ListRenderItem<ClubBooking> = ({item}) => (
-  <EachBookingItem type={"upcoming"} item={item} />
-);
+type NavigationProps = CompositeNavigationProp<
+  CompositeNavigationProp<
+    BottomTabNavigationProp<
+      OwnerBottomTabParamList,
+      typeof OwnerMainBottomTabRoutes.OWNER_BOOKING
+    >,
+    StackNavigationProp<OwnerStackParamList>
+  >,
+  StackNavigationProp<RootStackParamList>
+>;
 
 const UpcomingBookingRoute = ({
   ListHeaderComponent,
@@ -40,6 +55,8 @@ const UpcomingBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
+
+  const navigation = useNavigation<NavigationProps>();
 
   const {
     data: clubInfoData,
@@ -91,6 +108,24 @@ const UpcomingBookingRoute = ({
       padding: splitAppTheme.space[6],
     };
   }, [splitAppTheme.space[6]]);
+
+  const handlePress = React.useCallback(
+    (resource: ClubBooking) => {
+      navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
+        bookingId: resource.id,
+        bookingType: BookingTypes.UPCOMING,
+      });
+    },
+    [navigation],
+  );
+
+  const renderUpcomingBookingItem: ListRenderItem<ClubBooking> =
+    React.useCallback(
+      ({item}) => (
+        <EachBookingItem type={"upcoming"} item={item} onPress={handlePress} />
+      ),
+      [handlePress],
+    );
 
   if (isLoadingInfiniteResources || isClubInfoLoading) {
     return (
@@ -159,6 +194,7 @@ const HistoryBookingRoute = ({
     error: clubInfoError,
   } = useGetOwnerClubInfoQuery();
   useHandleNonFieldError(clubInfoError);
+  const navigation = useNavigation<NavigationProps>();
 
   const {toggle, isOpen} = useDisclosure();
 
@@ -214,16 +250,27 @@ const HistoryBookingRoute = ({
     [toggle],
   );
 
+  const handlePress = React.useCallback(
+    (resource: ClubBooking) => {
+      navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
+        bookingId: resource.id,
+        bookingType: BookingTypes.HISTORY,
+      });
+    },
+    [navigation],
+  );
+
   const renderHistoryBookingItem: ListRenderItem<ClubBooking> =
     React.useCallback(
       ({item}) => (
         <EachBookingItem
-          type={"history"}
           item={item}
+          type={"history"}
+          onPress={handlePress}
           onAddReviewPress={handleAddReviewPress}
         />
       ),
-      [handleAddReviewPress],
+      [handleAddReviewPress, handlePress],
     );
 
   if (isLoadingInfiniteResources || isClubInfoLoading) {

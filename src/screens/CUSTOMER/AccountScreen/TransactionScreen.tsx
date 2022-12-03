@@ -1,5 +1,4 @@
 import React from "react";
-import dayjs from "dayjs";
 import {Transaction} from "@src/models";
 import {splitAppTheme} from "@src/theme";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
@@ -14,6 +13,7 @@ import {
 import useInfiniteGetTransactionsQuery from "@hooks/user/useInfiniteGetTransactionsQuery";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import truncate from "lodash.truncate";
 
 const keyExtractor = (item: {id: number}) => `${item.id.toString()}`;
 
@@ -39,7 +39,8 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
       justifyContent: "space-around",
       paddingHorizontal: splitAppTheme.space[1],
     }}>
-    <View style={{alignItems: "center"}}>
+    <View
+      style={{alignItems: "center", paddingHorizontal: splitAppTheme.space[4]}}>
       <Text
         style={{
           fontFamily: "Satoshi-Regular",
@@ -66,14 +67,14 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
       </Text>
     </View>
 
-    <View>
+    <View style={{flex: 1}}>
       <Text
         style={{
           fontFamily: "SatoshiVariable-Bold",
           fontSize: 14,
           color: "#262B2E",
         }}>
-        {item.club}
+        {truncate(item.club)}
       </Text>
       <View style={{flexDirection: "row", marginVertical: 4}}>
         <Text
@@ -82,7 +83,12 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
             fontSize: 12,
             color: "#8A8D9F",
           }}>
-          {item.tables} |
+          {Array.isArray(item.tables)
+            ? truncate(item.tables.join(", "), {
+                length: 20,
+              })
+            : ""}{" "}
+          |
         </Text>
         <Text
           style={{
@@ -124,7 +130,10 @@ const renderTransactionList: ListRenderItem<Transaction> = ({item}) => (
       </View>
     </View>
 
-    <View>
+    <View
+      style={{
+        paddingRight: splitAppTheme.space[3],
+      }}>
       <Text
         style={{
           fontSize: 10,

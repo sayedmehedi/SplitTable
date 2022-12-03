@@ -18,10 +18,11 @@ import SignUpScreen from "@screens/SignUpScreen";
 import ProfileScreen from "@screens/ProfileScreen";
 import EmailLoginScreen from "@screens/EmailLoginScreen";
 import ResetPasswordScreen from "@screens/ResetPasswordScreen";
+import BookingDetailsScreen from "@screens/BookingDetailsScreen";
 import ForgotPasswordScreen from "@screens/ForgotPasswordScreen";
 import OnboardingScreen from "@screens/CUSTOMER/OnboardingScreen";
-import EmailVerificationScreen from "@screens/EmailVerificationScreen";
 import LoginPromptScreen from "@screens/CUSTOMER/LoginPromptScreen";
+import EmailVerificationScreen from "@screens/EmailVerificationScreen";
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -63,6 +64,11 @@ const RootStackNavigator = () => {
         component={ProfileScreen}
         options={profileScreenOptions}
         name={RootStackRoutes.PROFILE}
+      />
+
+      <RootStack.Screen
+        component={BookingDetailsScreen}
+        name={RootStackRoutes.BOOKING_DETAILS}
       />
     </RootStack.Group>
   );

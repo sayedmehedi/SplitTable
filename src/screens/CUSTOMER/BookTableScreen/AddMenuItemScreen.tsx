@@ -1,6 +1,8 @@
 import React from "react";
 import {ClubMenuItem} from "@src/models";
 import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
+import FastImage from "react-native-fast-image";
 import Entypo from "react-native-vector-icons/Entypo";
 import {CustomerStackRoutes} from "@constants/routes";
 import useDebouncedState from "@hooks/useDebouncedState";
@@ -15,13 +17,11 @@ import {
   View,
   Text,
   FlatList,
-  Image,
   StyleSheet,
   ListRenderItem,
   ActivityIndicator,
 } from "react-native";
 import dayjs from "dayjs";
-import FastImage from "react-native-fast-image";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 const keyExtractor = (item: {id: number}) => `menu-${item.id.toString()}`;
@@ -105,6 +105,8 @@ const MenuItemAction = React.memo(
 );
 
 const AddMenuItemScreen = ({navigation, route}: Props) => {
+  const toast = useAppToast();
+
   const [menus, setMenus] = React.useState<
     Record<number, ClubMenuItem & {purchaseQty: number}>
   >({});
@@ -322,7 +324,12 @@ const AddMenuItemScreen = ({navigation, route}: Props) => {
           onPress={() => {
             const menuListToAdd = Object.values(menus);
 
-            navigation.navigate(CustomerStackRoutes.BOOKING_DETAILS, {
+            if (menuListToAdd.length === 0) {
+              toast.error("Please add at least one menu/bottle");
+              return;
+            }
+
+            navigation.navigate(CustomerStackRoutes.BOOKING_TABLE, {
               menuListToAdd,
               tableDetails: route.params.tableDetails,
               menGuestCount: route.params.menGuestCount,

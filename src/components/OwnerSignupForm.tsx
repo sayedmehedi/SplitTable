@@ -147,9 +147,21 @@ const OwnerSignUpForm = ({navigation}: {navigation: NavigationProp}) => {
       result.assets !== undefined &&
       result.assets.length === 1
     ) {
-      setValue("image.uri", result.assets[0].uri!);
-      setValue("image.type", result.assets[0].type!);
-      setValue("image.name", result.assets[0].fileName!);
+      setValue("image.uri", result.assets[0].uri!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setValue("image.type", result.assets[0].type!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+      setValue("image.name", result.assets[0].fileName!, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
     }
   };
 

@@ -62,7 +62,12 @@ export default function TableDetailsScreen({route, navigation}: Props) {
           status: tableDetailsResponse.status,
         }}
         onPress={() => {}}
-        onUpdatePress={() => {}}
+        onUpdatePress={table => {
+          navigation.navigate(OwnerStackRoutes.UPSERT_TABLE, {
+            actionMode: "update",
+            tableId: table.id,
+          });
+        }}
       />
 
       <View style={{marginTop: splitAppTheme.space[6]}}>

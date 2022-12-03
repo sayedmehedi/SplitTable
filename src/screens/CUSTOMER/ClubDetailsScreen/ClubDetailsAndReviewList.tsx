@@ -28,8 +28,8 @@ dayjs.extend(relativeTime);
 const keyExtractor = (item: {id: number}) => `review-${item.id.toString()}`;
 
 const renderEachReview: ListRenderItem<ReviewItem> = ({item}) => (
-  <View>
-    <View style={{paddingHorizontal: splitAppTheme.space[6]}}>
+  <View style={{paddingHorizontal: splitAppTheme.space[6]}}>
+    <View>
       <EachReviewItem item={item} />
     </View>
     <View
