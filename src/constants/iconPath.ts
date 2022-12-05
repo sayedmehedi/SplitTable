@@ -14,6 +14,9 @@ import BookTableIcon from "@assets/icons/book-table.svg";
 import JoinTableIcon from "@assets/icons/join-table.svg";
 import SplitTableIcon from "@assets/icons/split-table.svg";
 
+import ArchivedTableIcon from "@assets/icons/archived-table.svg";
+import TableEventsIcon from "@assets/icons/table-events.svg";
+
 import DjIcon from "@assets/icons/dj.svg";
 import DishIcon from "@assets/icons/dish.svg";
 import CalendarIcon from "@assets/icons/calendar.svg";
@@ -85,4 +88,6 @@ export {
   JoinTableIcon,
   SplitTableIcon,
   TiktokIcon,
+  ArchivedTableIcon,
+  TableEventsIcon,
 };

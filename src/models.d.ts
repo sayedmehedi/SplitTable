@@ -1,9 +1,13 @@
 import {AxiosRequestConfig} from "axios";
-import {AppTableTypes, TableStatusTypes} from "@constants/table";
+import {
+  AppTableTypes,
+  TableBookingStatusTypes,
+  TableCancelStatusTypes,
+} from "@constants/table";
 import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import {AppSupportedPaymentMethods} from "@constants/payment";
-import {BookingType} from "@constants/booking";
+import {BookingStatusesType, BookingTypesType} from "@constants/booking";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -48,8 +52,11 @@ export type ServerValidationError = {
 
 export type ServerErrorType = ServerValidationError | ServerNonFieldError;
 
-export type TableStatusType =
-  typeof TableStatusTypes[keyof typeof TableStatusTypes];
+export type TableBookingStatusType =
+  typeof TableBookingStatusTypes[keyof typeof TableBookingStatusTypes];
+
+export type TableCancelStatusType =
+  typeof TableCancelStatusTypes[keyof typeof TableCancelStatusTypes];
 
 export type LoginRequest = {
   email: string;
@@ -160,7 +167,7 @@ export interface TableByLocationItem {
   location: string;
   distance: string;
   total_joined: number;
-  status: TableStatusType;
+  status: TableBookingStatusType;
 }
 
 export type TableCommonSearchParams = {
@@ -222,7 +229,7 @@ export interface TableBySearchTerm {
   distance: string;
   image: string;
   total_joined?: number;
-  status: TableStatusType;
+  status: TableBookingStatusType;
 }
 
 export type GetTablesBySearchTermResponse = {
@@ -531,7 +538,10 @@ export interface SplitTableDetails {
   women_booked_seat: number;
   women_seat: number;
   women_seat_price: string;
-  status: TableStatusType;
+  status: TableBookingStatusType;
+  can_cancel: boolean;
+  status: TableCancelStatusType;
+  cancel_status: TableCancelStatusType;
 }
 
 export interface BookedTableDetails {
@@ -552,7 +562,9 @@ export interface BookedTableDetails {
   total_seat: number;
   price: string;
   joined_users: JoinedUser[];
-  status: TableStatusType;
+  status: TableBookingStatusType;
+  can_cancel: boolean;
+  cancel_status: TableCancelStatusType;
 }
 
 export type GetTableDetailsResponse = SplitTableDetails | BookedTableDetails;
@@ -1005,9 +1017,13 @@ export interface BookingDetailsCommon {
   id: number;
   club: string;
   tables: string[];
+  user_id: number;
+  owner_id: number;
   date: string;
   time: string;
   can_cancel: boolean;
+  is_reviewed: boolean;
+  status: BookingStatusesType;
   menus: Array<{
     id: number;
     img: string;

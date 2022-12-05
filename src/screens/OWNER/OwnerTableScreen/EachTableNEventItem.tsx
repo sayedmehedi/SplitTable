@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
-import {TableStatusType} from "@src/models";
+import {TableBookingStatusType} from "@src/models";
 import {isResponseResultError} from "@utils/error-handling";
 import {MapIcon, Clock, JoinCountIcon} from "@constants/iconPath";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
@@ -19,7 +19,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useDeleteOwnerTableMutation from "@hooks/clubs/useDeleteOwnerTableMutation";
 import FastImage from "react-native-fast-image";
-import {TableStatusTypes} from "@constants/table";
+import {TableBookingStatusTypes} from "@constants/table";
 
 type TableItem = {
   id: number;
@@ -29,7 +29,7 @@ type TableItem = {
   distance: string;
   image: string;
   total_joined?: number;
-  status: TableStatusType;
+  status: TableBookingStatusType;
 };
 
 type Props = {
@@ -107,7 +107,7 @@ const EachTableNEventItem = ({item, onPress, onUpdatePress}: Props) => {
               height: splitAppTheme.sizes.full,
             }}>
             <View>
-              {item.status === TableStatusTypes.BOOKED && (
+              {item.status === TableBookingStatusTypes.BOOKED && (
                 <View
                   style={{
                     alignSelf: "flex-end",

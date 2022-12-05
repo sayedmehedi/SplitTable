@@ -1,28 +1,32 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
+import {AuthTypeNum} from "@constants/auth";
 import useAppToast from "@hooks/useAppToast";
 import FastImage from "react-native-fast-image";
+import ReviewModal from "@components/ReviewModal";
+import {useDisclosure} from "react-use-disclosure";
 import {RootStackRoutes} from "@constants/routes";
 import {RootStackParamList} from "@src/navigation";
 import {isBookedBookingDetails} from "@utils/table";
+import {BookingStatusColors, BookingStatuses} from "@constants/booking";
 import {StackScreenProps} from "@react-navigation/stack";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
 import {isResponseResultError} from "@utils/error-handling";
-import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import {View, Text, StyleSheet, ActivityIndicator, Alert} from "react-native";
 import useCancelBookingMutation from "@hooks/useCancelBookingMutation";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import useGetBookingDetailsQuery from "@hooks/clubs/useGetBookingDetailsQuery";
+import {View, Text, StyleSheet, ActivityIndicator, Alert} from "react-native";
 import {
-  RefreshControl,
   ScrollView,
+  RefreshControl,
   TouchableOpacity,
 } from "react-native-gesture-handler";
-import useGetBookingDetailsQuery from "@hooks/clubs/useGetBookingDetailsQuery";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 type Props = StackScreenProps<
   RootStackParamList,
@@ -31,6 +35,8 @@ type Props = StackScreenProps<
 
 const BookingDetailsScreen = ({navigation, route}: Props) => {
   const toast = useAppToast();
+  const {toggle, isOpen} = useDisclosure();
+
   const {
     window: {height: WINDOW_HEIGHT},
   } = useDimensions();
@@ -44,7 +50,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   } = useGetBookingDetailsQuery(route.params.bookingId);
   useHandleNonFieldError(bookingDetailsError);
 
-  const {data: profileData, isLoading: isProfileLoading} = useGetProfileQuery();
+  const {data: authData, isLoading: isProfileLoading} = useGetAuthDataQuery();
 
   const {
     mutate: cancelBooking,
@@ -60,6 +66,10 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
   });
   useHandleNonFieldError(cancelBookingError);
   useHandleResponseResultError(cancelBookingResponse);
+
+  const handleAddReviewPress = () => {
+    toggle();
+  };
 
   if (isBookingDetailsLoading || isProfileLoading) {
     return (
@@ -155,6 +165,31 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                   color: "#FFFFFF",
                   fontFamily: "SatoshiVariable-Bold",
                 }}>
+                Status
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color:
+                    BookingStatusColors[bookingDetailsRepsonse.booking.status],
+                  fontFamily: "SatoshiVariable-Bold",
+                }}>
+                {bookingDetailsRepsonse.booking.status}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                marginVertical: 5,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#FFFFFF",
+                  fontFamily: "SatoshiVariable-Bold",
+                }}>
                 Club/Bar Name
               </Text>
               <Text
@@ -213,7 +248,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                       color: "#FFFFFF",
                       fontFamily: "SatoshiVariable-Bold",
                     }}>
-                    {bookingDetailsRepsonse.booking["Men Guests"]}
+                    {bookingDetailsRepsonse.booking["Men Guests"] ?? 0}
                   </Text>
                 </View>
 
@@ -237,7 +272,7 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
                       color: "#FFFFFF",
                       fontFamily: "SatoshiVariable-Bold",
                     }}>
-                    {bookingDetailsRepsonse.booking["Women Guests"]}
+                    {bookingDetailsRepsonse.booking["Women Guests"] ?? 0}
                   </Text>
                 </View>
               </React.Fragment>
@@ -495,50 +530,90 @@ const BookingDetailsScreen = ({navigation, route}: Props) => {
             </View>
           </View>
 
-          <View>
-            {route.params.bookingType === "upcoming" &&
-            bookingDetailsRepsonse.booking.can_cancel ? (
-              isCancelling ? (
-                <View style={{padding: splitAppTheme.space[3]}}>
-                  <ActivityIndicator
-                    size={"small"}
-                    color={splitAppTheme.colors.secondary[400]}
-                  />
-                </View>
-              ) : (
-                <TouchableOpacity
+          <ReviewModal
+            open={isOpen}
+            onClose={toggle}
+            reviewerId={
+              authData?.user_type === AuthTypeNum.CUSTOMER
+                ? bookingDetailsRepsonse.booking.owner_id
+                : bookingDetailsRepsonse.booking.user_id
+            }
+          />
+
+          <View style={{marginVertical: splitAppTheme.space[5]}}>
+            {route.params.bookingType === "history" &&
+            !bookingDetailsRepsonse.booking.is_reviewed &&
+            bookingDetailsRepsonse.booking.status ===
+              BookingStatuses.COMPLETED ? (
+              <TouchableOpacity
+                style={{
+                  zIndex: 99,
+                }}
+                onPress={handleAddReviewPress}>
+                <Text
                   style={{
-                    zIndex: 99,
-                  }}
-                  onPress={() => {
-                    Alert.alert("Cancel Booking", "Are your sure?", [
-                      {
-                        text: "Cancel",
-                        style: "cancel",
-                      },
-                      {
-                        text: "Sure",
-                        style: "destructive",
-                        onPress() {
-                          cancelBooking(bookingDetailsRepsonse.booking.id);
-                        },
-                      },
-                    ]);
+                    textAlign: "center",
+                    textDecorationLine: "underline",
+                    fontSize: splitAppTheme.fontSizes.lg,
+                    color: splitAppTheme.colors.blue[400],
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
                   }}>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      textDecorationLine: "underline",
-                      color: splitAppTheme.colors.red[300],
-                      fontSize: splitAppTheme.fontSizes.lg,
-                      fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
-                    }}>
-                    Cancel Booking
-                  </Text>
-                </TouchableOpacity>
-              )
+                  Add Review
+                </Text>
+              </TouchableOpacity>
             ) : null}
           </View>
+
+          {authData?.user_type === AuthTypeNum.CUSTOMER &&
+            bookingDetailsRepsonse.booking.can_cancel && (
+              <View style={{marginVertical: splitAppTheme.space[5]}}>
+                {route.params.bookingType === "upcoming" &&
+                bookingDetailsRepsonse.booking.can_cancel ? (
+                  isCancelling ? (
+                    <View style={{padding: splitAppTheme.space[3]}}>
+                      <ActivityIndicator
+                        size={"small"}
+                        color={splitAppTheme.colors.secondary[400]}
+                      />
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      style={{
+                        zIndex: 99,
+                      }}
+                      onPress={() => {
+                        Alert.alert("Cancel Booking", "Are your sure?", [
+                          {
+                            text: "Cancel",
+                            style: "cancel",
+                          },
+                          {
+                            text: "Sure",
+                            style: "destructive",
+                            onPress() {
+                              cancelBooking({
+                                bookingId: bookingDetailsRepsonse.booking.id,
+                              });
+                            },
+                          },
+                        ]);
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          textDecorationLine: "underline",
+                          color: splitAppTheme.colors.red[300],
+                          fontSize: splitAppTheme.fontSizes.lg,
+                          fontFamily:
+                            splitAppTheme.fontConfig.Sathoshi[500].normal,
+                        }}>
+                        Cancel Booking
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                ) : null}
+              </View>
+            )}
         </View>
       </View>
     </ScrollView>

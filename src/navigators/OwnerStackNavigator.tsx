@@ -76,7 +76,7 @@ const myTablesScreenOptions:
     }) => StackNavigationOptions) = ({route}) => ({
   headerShown: true,
   header: CommonStackHeader,
-  headerTitle: route.params?.old ? "Archived Tables" : "My Tables",
+  headerTitle: route.params?.old ? "Archived Table & Events" : "Table & Events",
 });
 
 const upsertTableScreenOptions:

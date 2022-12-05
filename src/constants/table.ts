@@ -14,7 +14,12 @@ export const AppTableTypes = {
   BOOKED: "booked",
 } as const;
 
-export const TableStatusTypes = {
+export const TableBookingStatusTypes = {
   BOOKED: "Booked",
   EMPTY: "Empty",
+} as const;
+
+export const TableCancelStatusTypes = {
+  CANCELLED: "Canceled",
+  NULL: "null",
 } as const;

@@ -8,7 +8,6 @@ import Ripple from "react-native-material-ripple";
 type IHistoryProps = {
   type: "history";
   item: ClubBooking;
-  onAddReviewPress: (item: ClubBooking) => void;
   onPress: (item: ClubBooking) => void;
 };
 
@@ -156,10 +155,10 @@ function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
               </Text>
             </View>
 
-            {type === "history" && !item.is_reviewed && (
+            {/* {type === "history" && !item.is_reviewed && (
               <TouchableOpacity
                 onPress={() => {
-                  props.onAddReviewPress(item);
+                  // props.onAddReviewPress(item);
                 }}>
                 <Text
                   style={{
@@ -171,7 +170,7 @@ function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
                   Add Review
                 </Text>
               </TouchableOpacity>
-            )}
+            )} */}
 
             {/* {type === "upcoming" && (
             <TouchableOpacity>

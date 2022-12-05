@@ -1,8 +1,6 @@
 import React from "react";
 import {ClubBooking} from "@src/models";
 import EachBookingItem from "./EachBookingItem";
-import ReviewModal from "@components/ReviewModal";
-import {useDisclosure} from "react-use-disclosure";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import {TouchableOpacity} from "react-native-gesture-handler";
@@ -187,7 +185,6 @@ const HistoryBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
-  const [reviewerId, setReviewerId] = React.useState<number | null>(null);
   const {
     data: clubInfoData,
     isLoading: isClubInfoLoading,
@@ -195,8 +192,6 @@ const HistoryBookingRoute = ({
   } = useGetOwnerClubInfoQuery();
   useHandleNonFieldError(clubInfoError);
   const navigation = useNavigation<NavigationProps>();
-
-  const {toggle, isOpen} = useDisclosure();
 
   const {
     refetch,
@@ -242,14 +237,6 @@ const HistoryBookingRoute = ({
     };
   }, [splitAppTheme.space[6]]);
 
-  const handleAddReviewPress = React.useCallback(
-    (item: ClubBooking) => {
-      setReviewerId(item.user_id);
-      toggle();
-    },
-    [toggle],
-  );
-
   const handlePress = React.useCallback(
     (resource: ClubBooking) => {
       navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
@@ -263,14 +250,9 @@ const HistoryBookingRoute = ({
   const renderHistoryBookingItem: ListRenderItem<ClubBooking> =
     React.useCallback(
       ({item}) => (
-        <EachBookingItem
-          item={item}
-          type={"history"}
-          onPress={handlePress}
-          onAddReviewPress={handleAddReviewPress}
-        />
+        <EachBookingItem item={item} type={"history"} onPress={handlePress} />
       ),
-      [handleAddReviewPress, handlePress],
+      [handlePress],
     );
 
   if (isLoadingInfiniteResources || isClubInfoLoading) {
@@ -288,7 +270,6 @@ const HistoryBookingRoute = ({
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
-      <ReviewModal open={isOpen} onClose={toggle} reviewerId={reviewerId!} />
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator />

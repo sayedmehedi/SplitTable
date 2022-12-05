@@ -1,17 +1,30 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
+import FastImage from "react-native-fast-image";
 import {isSplitTableDetails} from "@utils/table";
 import Ripple from "react-native-material-ripple";
+import {TableCancelStatusTypes} from "@constants/table";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
 import {CompositeScreenProps} from "@react-navigation/native";
+import {isResponseResultError} from "@utils/error-handling";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {OwnerStackRoutes, RootStackRoutes} from "@constants/routes";
 import {OwnerStackParamList, RootStackParamList} from "@src/navigation";
+import useCancelBookingMutation from "@hooks/useCancelBookingMutation";
 import EachTableNEventItem from "./OwnerTableScreen/EachTableNEventItem";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
-import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
-import FastImage from "react-native-fast-image";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
+import {
+  View,
+  Text,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
+import {RefreshControl} from "react-native-gesture-handler";
 
 type Props = CompositeScreenProps<
   StackScreenProps<OwnerStackParamList, typeof OwnerStackRoutes.TABLE_DETAILS>,
@@ -19,12 +32,31 @@ type Props = CompositeScreenProps<
 >;
 
 export default function TableDetailsScreen({route, navigation}: Props) {
+  const toast = useAppToast();
+
   const {
+    refetch,
+    isRefetching,
     data: tableDetailsResponse,
     isLoading: isTableDetailsLoading,
     error: tableDetailsError,
   } = useGetTableDetailsQuery(route.params.tableId);
   useHandleNonFieldError(tableDetailsError);
+
+  const {
+    mutate: cancelBooking,
+    isLoading: isCancelling,
+    error: cancelBookingError,
+    data: cancelBookingResponse,
+  } = useCancelBookingMutation({
+    onSuccess(data) {
+      if (!isResponseResultError(data)) {
+        toast.success(data.success);
+      }
+    },
+  });
+  useHandleNonFieldError(cancelBookingError);
+  useHandleResponseResultError(cancelBookingResponse);
 
   if (isTableDetailsLoading) {
     return (
@@ -45,6 +77,14 @@ export default function TableDetailsScreen({route, navigation}: Props) {
 
   return (
     <ScrollView
+      refreshControl={
+        <RefreshControl
+          onRefresh={() => {
+            refetch();
+          }}
+          refreshing={isRefetching}
+        />
+      }
       contentContainerStyle={{
         padding: splitAppTheme.space[6],
       }}>
@@ -71,13 +111,68 @@ export default function TableDetailsScreen({route, navigation}: Props) {
       />
 
       <View style={{marginTop: splitAppTheme.space[6]}}>
-        <Text
+        <View
           style={{
-            fontSize: splitAppTheme.fontSizes.xl,
-            fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
-          {isSplitTableDetails(tableDetailsResponse) ? "Guest List" : "Guest"}
-        </Text>
+          <Text
+            style={{
+              fontSize: splitAppTheme.fontSizes.xl,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
+            {isSplitTableDetails(tableDetailsResponse) ? "Guest List" : "Guest"}
+          </Text>
+
+          {tableDetailsResponse.cancel_status === TableCancelStatusTypes.NULL &&
+          tableDetailsResponse.can_cancel ? (
+            <View>
+              {isCancelling ? (
+                <View style={{padding: splitAppTheme.space[3]}}>
+                  <ActivityIndicator
+                    size={"small"}
+                    color={splitAppTheme.colors.secondary[400]}
+                  />
+                </View>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert("Cancel Table", "Are your sure?", [
+                      {
+                        text: "Cancel",
+                        style: "cancel",
+                      },
+                      {
+                        text: "Sure",
+                        style: "destructive",
+                        onPress() {
+                          cancelBooking({
+                            tableId: tableDetailsResponse.id,
+                          });
+                        },
+                      },
+                    ]);
+                  }}>
+                  <Text
+                    style={{
+                      color: splitAppTheme.colors.red[400],
+                      fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                    }}>
+                    Cancel Table
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : (
+            <Text
+              style={{
+                color: splitAppTheme.colors.red[400],
+              }}>
+              Canceled
+            </Text>
+          )}
+        </View>
 
         <View style={{marginTop: splitAppTheme.space[3]}}>
           {tableDetailsResponse.joined_users.length > 0 ? (

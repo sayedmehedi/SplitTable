@@ -8,9 +8,14 @@ import {RootStackParamList} from "@src/navigation";
 import {StackScreenProps} from "@react-navigation/stack";
 import {isResponseResultError} from "@utils/error-handling";
 import AppGradientButton from "@components/AppGradientButton";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import useVerifyEmailMutation from "@hooks/auth/useVerifyEmailMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 import useResendEmailVerificationCodeMutation from "@hooks/auth/useResendEmailVerificationCodeMutation";
@@ -123,15 +128,12 @@ const EmailVerificationScreen = ({navigation, route}: Props) => {
             {route.params.email}
           </Text>
 
-          <OTPInputView
-            pinCount={4}
-            code={otpCode}
-            autoFocusOnLoad
+          <TextInput
+            maxLength={4}
+            value={otpCode}
             editable={isRunning}
             style={styles.otpInput}
-            onCodeChanged={setOtpCode}
-            codeInputFieldStyle={styles.underlineStyleBase}
-            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+            onChangeText={setOtpCode}
           />
 
           <View
@@ -176,6 +178,18 @@ const EmailVerificationScreen = ({navigation, route}: Props) => {
           </Text>
         </View>
 
+        {!isRunning && (
+          <View style={{marginVertical: splitAppTheme.space[3]}}>
+            <Text
+              style={{
+                textAlign: "center",
+                color: splitAppTheme.colors.red[400],
+              }}>
+              Please press resend code again
+            </Text>
+          </View>
+        )}
+
         <View
           style={{
             width: splitAppTheme.sizes.full,
@@ -198,10 +212,15 @@ const EmailVerificationScreen = ({navigation, route}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  otpInput: {width: "100%", height: 170, backgroundColor: "white"},
-  borderStyleBase: {
-    width: 30,
-    height: 45,
+  otpInput: {
+    width: "50%",
+    letterSpacing: 24,
+    textAlign: "center",
+    backgroundColor: "white",
+    marginBottom: splitAppTheme.space[3],
+    fontSize: splitAppTheme.fontSizes["2xl"],
+    borderBottomWidth: splitAppTheme.borderWidths[1],
+    borderBottomColor: splitAppTheme.colors.primary[300],
   },
 
   borderStyleHighLighted: {

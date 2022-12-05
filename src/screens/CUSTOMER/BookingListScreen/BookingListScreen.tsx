@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./styles";
-import {splitAppTheme} from "@src/theme";
 import {ClubBooking} from "@src/models";
+import {splitAppTheme} from "@src/theme";
 import EachBookingItem from "./EachBookingItem";
+import {BookingTypes} from "@constants/booking";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
@@ -18,18 +19,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import ReviewModal from "@components/ReviewModal";
-import {useDisclosure} from "react-use-disclosure";
 import {StackNavigationProp} from "@react-navigation/stack";
+import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 import {CustomerMainBottomTabRoutes, RootStackRoutes} from "@constants/routes";
 import {CompositeNavigationProp, useNavigation} from "@react-navigation/native";
-import {BottomTabNavigationProp} from "@react-navigation/bottom-tabs";
 import {
   CustomerBottomTabParamList,
   CustomerStackParamList,
   RootStackParamList,
 } from "@src/navigation";
-import {BookingTypes} from "@constants/booking";
 
 const keyExtractor = (item: {id: number}) => `booking-${item.id.toString()}`;
 
@@ -173,8 +171,6 @@ const HistoryBookingRoute = ({
   const {
     window: {width: WINDOW_WIDTH},
   } = useDimensions();
-  const {toggle, isOpen} = useDisclosure();
-  const [reviewerId, setReviewerId] = React.useState<number | null>(null);
   const navigation = useNavigation<NavigationProps>();
 
   const {
@@ -213,14 +209,6 @@ const HistoryBookingRoute = ({
     fetchNextPage();
   }, [fetchNextPage]);
 
-  const handleAddReviewPress = React.useCallback(
-    (item: ClubBooking) => {
-      setReviewerId(item.owner_id);
-      toggle();
-    },
-    [toggle],
-  );
-
   const handlePress = React.useCallback(
     (resource: ClubBooking) => {
       navigation.navigate(RootStackRoutes.BOOKING_DETAILS, {
@@ -234,14 +222,9 @@ const HistoryBookingRoute = ({
   const renderHistoryBookingItem: ListRenderItem<ClubBooking> =
     React.useCallback(
       ({item}) => (
-        <EachBookingItem
-          item={item}
-          type={"history"}
-          onPress={handlePress}
-          onAddReviewPress={handleAddReviewPress}
-        />
+        <EachBookingItem item={item} type={"history"} onPress={handlePress} />
       ),
-      [handleAddReviewPress, handlePress],
+      [handlePress],
     );
 
   const flatlistContentContainerStyle = React.useMemo(() => {
@@ -266,8 +249,6 @@ const HistoryBookingRoute = ({
 
   return (
     <View style={{width: WINDOW_WIDTH}}>
-      <ReviewModal open={isOpen} onClose={toggle} reviewerId={reviewerId!} />
-
       {isFetchingNextPage ? (
         <View>
           <ActivityIndicator />

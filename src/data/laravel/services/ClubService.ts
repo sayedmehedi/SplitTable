@@ -132,11 +132,24 @@ export class ClubService implements IClubService {
     });
   }
   cancenBooking(
-    bookingId: number,
+    payload: {bookingId: number} | {tableId: number},
   ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>> {
-    return this._httpService.get<CancelBookingResponse>(
-      `cancel-booking/${bookingId}`,
-    );
+    const params: Record<"booking_id" | "table_id", number> = {} as Record<
+      "booking_id" | "table_id",
+      number
+    >;
+
+    if ("bookingId" in payload) {
+      params["booking_id"] = payload.bookingId;
+    }
+
+    if ("tableId" in payload) {
+      params["table_id"] = payload.tableId;
+    }
+
+    return this._httpService.get<CancelBookingResponse>(`cancel-booking`, {
+      params,
+    });
   }
 
   confirmBooking(

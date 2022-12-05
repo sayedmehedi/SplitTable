@@ -1,19 +1,23 @@
 import React from "react";
+import dayjs from "dayjs";
+import {timeToDate} from "@utils/club";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 import {OwnerStackRoutes} from "@constants/routes";
 import Feather from "react-native-vector-icons/Feather";
 import {StackScreenProps} from "@react-navigation/stack";
 import {version as AppVersion} from "../../../../app.json";
 import GenericListEmpty from "@components/GenericListEmpty";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useLogoutMutation from "@hooks/auth/useLogoutMutation";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
 import useGetOwnerClubInfoQuery from "@hooks/clubs/useGetOwnerClubInfoQuery";
 import {
   View,
   Text,
-  Image,
   Alert,
   StyleSheet,
   ScrollView,
@@ -29,6 +33,8 @@ import {
   HolidayIcon,
   TransactionIcon,
   AccountSettingIcon,
+  TableEventsIcon,
+  ArchivedTableIcon,
 } from "@constants/iconPath";
 import {
   RootStackParamList,
@@ -36,12 +42,6 @@ import {
   OwnerBottomTabParamList,
   OwnerAccountStackParamList,
 } from "@src/navigation";
-import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
-import FastImage from "react-native-fast-image";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import dayjs from "dayjs";
-import {timeToDate} from "@utils/club";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type OwnerAccountScreenProps = CompositeScreenProps<
   CompositeScreenProps<
@@ -208,7 +208,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <View>
-              <MaterialCommunityIcons name={"table-chair"} size={22} />
+              <TableEventsIcon height={35} width={35} />
             </View>
             <Text
               style={{
@@ -217,7 +217,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
                 color: "#262B2E",
                 fontFamily: "Satoshi-Regular",
               }}>
-              My Tables
+              Table & Events
             </Text>
           </View>
 
@@ -233,10 +233,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
           style={styles.sectionContainer}>
           <View style={{flexDirection: "row", alignItems: "center"}}>
             <View>
-              <MaterialCommunityIcons
-                name={"archive-arrow-down-outline"}
-                size={22}
-              />
+              <ArchivedTableIcon height={35} width={35} />
             </View>
             <Text
               style={{
@@ -245,7 +242,7 @@ const OwnerAccountScreen = ({navigation}: OwnerAccountScreenProps) => {
                 color: "#262B2E",
                 fontFamily: "Satoshi-Regular",
               }}>
-              Table Archive
+              Archived Table & Events
             </Text>
           </View>
 

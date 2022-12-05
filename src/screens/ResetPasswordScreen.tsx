@@ -7,13 +7,12 @@ import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
 import {StackScreenProps} from "@react-navigation/stack";
 import AppGradientButton from "@components/AppGradientButton";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
 import {StyleSheet, Text, View, TextInput} from "react-native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import useResetPasswordMutation from "@hooks/auth/useResetPasswordMutation";
 import {addServerErrors, isResponseResultError} from "@utils/error-handling";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 
 type Props = StackScreenProps<
   RootStackParamList,
@@ -118,14 +117,11 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
             }}
             render={({field, formState: {errors}}) => (
               <React.Fragment>
-                <OTPInputView
-                  pinCount={4}
-                  autoFocusOnLoad
-                  code={field.value}
+                <TextInput
+                  maxLength={4}
+                  value={field.value}
                   style={styles.otpInput}
-                  onCodeChanged={field.onChange}
-                  codeInputFieldStyle={styles.underlineStyleBase}
-                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                  onChangeText={field.onChange}
                 />
 
                 <ErrorMessage
@@ -238,7 +234,16 @@ const ResetPasswordScreen = ({navigation, route}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  otpInput: {width: "100%", height: 100, backgroundColor: "white"},
+  otpInput: {
+    width: "50%",
+    letterSpacing: 24,
+    textAlign: "center",
+    backgroundColor: "white",
+    marginBottom: splitAppTheme.space[3],
+    fontSize: splitAppTheme.fontSizes["2xl"],
+    borderBottomWidth: splitAppTheme.borderWidths[1],
+    borderBottomColor: splitAppTheme.colors.primary[300],
+  },
   borderStyleBase: {
     width: 30,
     height: 45,

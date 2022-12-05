@@ -67,7 +67,7 @@ export interface IClubService {
   >;
 
   cancenBooking(
-    bookingId: number,
+    payload: {bookingId: number} | {tableId: number},
   ): Promise<AxiosResponse<CancelBookingResponse, GlobalAxiosRequestConfig>>;
 
   getClubsBySearchTerm(

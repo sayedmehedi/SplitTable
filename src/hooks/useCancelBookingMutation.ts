@@ -14,18 +14,23 @@ import {
 
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
+type TPayload = {bookingId: number} | {tableId: number};
+
 const mutationFunction: MutationFunction<
   CancelBookingResponse,
-  number
-> = bookingId =>
-  service.cancenBooking(bookingId).then(response => response.data);
+  TPayload
+> = payload => service.cancenBooking(payload).then(response => response.data);
 
 export default function useCancelBookingMutation(
-  options?: UseMutationOptions<CancelBookingResponse, ApplicationError, number>,
+  options?: UseMutationOptions<
+    CancelBookingResponse,
+    ApplicationError,
+    TPayload
+  >,
 ) {
   const queryClient = useQueryClient();
 
-  return useMutation<CancelBookingResponse, ApplicationError, number>(
+  return useMutation<CancelBookingResponse, ApplicationError, TPayload>(
     mutationFunction,
     {
       ...options,
@@ -34,6 +39,8 @@ export default function useCancelBookingMutation(
           QueryKeys.UPCOMING_BOOKING,
           "LIST",
         ]);
+
+        await queryClient.invalidateQueries([QueryKeys.TABLE]);
         options?.onSuccess?.(data, variables, context);
       },
     },

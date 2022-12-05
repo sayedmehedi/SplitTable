@@ -1,5 +1,6 @@
 import React from "react";
 import {splitAppTheme} from "@src/theme";
+import FastImage from "react-native-fast-image";
 import {isSplitTableDetails} from "@utils/table";
 import Ripple from "react-native-material-ripple";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -8,10 +9,9 @@ import TableListItem from "./TableListScreen/TableListItem";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
+import {View, Text, ScrollView, ActivityIndicator} from "react-native";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
-import {View, Text, ScrollView, Image, ActivityIndicator} from "react-native";
-import FastImage from "react-native-fast-image";
 
 type Props = CompositeScreenProps<
   StackScreenProps<

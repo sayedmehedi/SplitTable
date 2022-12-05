@@ -8,7 +8,6 @@ import {Text, View, TouchableOpacity} from "react-native";
 type IHistoryProps = {
   type: "history";
   item: ClubBooking;
-  onAddReviewPress: (item: ClubBooking) => void;
   onPress: (resource: ClubBooking) => void;
 };
 
@@ -156,7 +155,7 @@ function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
               </Text>
             </View>
 
-            {type === "history" && !item.is_reviewed && (
+            {/* {type === "history" && !item.is_reviewed && (
               <TouchableOpacity
                 onPress={() => {
                   props.onAddReviewPress(item);
@@ -171,7 +170,7 @@ function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
                   Add Review
                 </Text>
               </TouchableOpacity>
-            )}
+            )} */}
           </View>
         </View>
       </View>
