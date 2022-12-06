@@ -19,7 +19,8 @@ import {
 const service = container.get<IClubService>(ServiceProviderTypes.ClubService);
 
 type QueryKey = [
-  typeof QueryKeys.UPCOMING_BOOKING,
+  typeof QueryKeys.BOOKING,
+  "UPCOMING",
   "LIST",
   GetUpcomingBookingQueryParams,
 ];
@@ -30,7 +31,7 @@ const queryFn: QueryFunction<GetUpcomingBookingResponse, QueryKey> = ({
   pageParam,
 }: QueryFunctionContext<QueryKey, GetUpcomingBookingQueryParams>) => {
   const queryParams = {
-    ...queryKey[2],
+    ...queryKey[3],
     ...(pageParam ?? {}),
   };
 
@@ -53,5 +54,5 @@ export default function useGetUpcomingBookingQuery(
     ApplicationError,
     GetUpcomingBookingResponse,
     QueryKey
-  >([QueryKeys.UPCOMING_BOOKING, "LIST", queryParams], queryFn, options);
+  >([QueryKeys.BOOKING, "UPCOMING", "LIST", queryParams], queryFn, options);
 }

@@ -9,20 +9,21 @@ import {
   ActivityIndicator,
 } from "react-native";
 import {SocialLinks} from "@src/models";
+import {splitAppTheme} from "@src/theme";
+import useAppToast from "@hooks/useAppToast";
+import {isCustomerProfile} from "@utils/profile";
+import MapView, {Marker} from "react-native-maps";
 import {Controller, useForm} from "react-hook-form";
+import MapMarker from "@assets/icons/map-marker.svg";
+import Entypo from "react-native-vector-icons/Entypo";
 import {isResponseResultError} from "@utils/error-handling";
+import AppGradientButton from "@components/AppGradientButton";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import useGetGeolocationQuery from "@hooks/useGetGeolocationQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import useUpdateProfileMutation from "@hooks/user/useUpdateProfileMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import {isCustomerProfile} from "@utils/profile";
-import {splitAppTheme} from "@src/theme";
-import useAppToast from "@hooks/useAppToast";
-import MapView, {Marker} from "react-native-maps";
-import MapMarker from "@assets/icons/map-marker.svg";
-import Entypo from "react-native-vector-icons/Entypo";
-import AppGradientButton from "@components/AppGradientButton";
+import {ErrorMessage} from "@hookform/error-message";
 
 type FormValues = {
   first_name: string;
@@ -57,32 +58,43 @@ type Props = {
   onClose: () => void;
 };
 
+const httpPrefixCheckerRegex = /^https?:\/\/(www\.)?/;
+
+function validHttpUrlValidator(value: string) {
+  if (!httpPrefixCheckerRegex.test(value)) {
+    return "Please insert a valid url";
+  }
+
+  return undefined;
+}
+
 export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
   const toast = useAppToast();
 
   const {data: profileDataResponse} = useGetProfileQuery();
 
-  const {setValue, control, handleSubmit, watch} = useForm<FormValues>({
-    defaultValues: {
-      phone: "",
-      email: "",
-      password: "",
-      last_name: "",
-      first_name: "",
-      old_password: "",
-      latitude: null,
-      longitude: null,
-      password_confirmation: "",
-      social_links: {
-        facebook: "",
-        instgram: "",
-        linkendin: "",
-        tiktok: "",
-        twitter: "",
-        youtube: "",
+  const {setValue, control, handleSubmit, watch, setError} =
+    useForm<FormValues>({
+      defaultValues: {
+        phone: "",
+        email: "",
+        password: "",
+        last_name: "",
+        first_name: "",
+        old_password: "",
+        latitude: null,
+        longitude: null,
+        password_confirmation: "",
+        social_links: {
+          facebook: "",
+          instgram: "",
+          linkendin: "",
+          tiktok: "",
+          twitter: "",
+          youtube: "",
+        },
       },
-    },
-  });
+    });
 
   const lat = watch("latitude");
   const lng = watch("longitude");
@@ -169,9 +181,9 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
 
   const {
     mutate: updateProfile,
+    error: updateProfileError,
     data: updateProfileResponse,
     isLoading: isUpdatingProfile,
-    error: updateProfileError,
     // isError: isUpdateProfileError,
   } = useUpdateProfileMutation();
   useHandleNonFieldError(updateProfileError);
@@ -181,7 +193,9 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
     data: geolocationData,
     error: geolocationError,
     isLoading: isGeolocationLoading,
-  } = useGetGeolocationQuery();
+  } = useGetGeolocationQuery({
+    enabled: type === "address" && isOpen,
+  });
   useHandleNonFieldError(geolocationError);
 
   React.useEffect(() => {
@@ -428,15 +442,37 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
                 <View style={{flex: 1}}>
                   <Controller
                     name={"social_links.facebook"}
+                    rules={{
+                      validate: validHttpUrlValidator,
+                    }}
                     control={control}
-                    render={({field}) => {
+                    render={({field, formState: {errors}}) => {
                       return (
-                        <TextInput
-                          placeholder={""}
-                          value={field.value}
-                          style={styles.modalInput}
-                          onChangeText={field.onChange}
-                        />
+                        <React.Fragment>
+                          <View>
+                            <TextInput
+                              placeholder={""}
+                              value={field.value}
+                              style={styles.modalInput}
+                              onChangeText={field.onChange}
+                            />
+                          </View>
+
+                          <ErrorMessage
+                            errors={errors}
+                            name={field.name}
+                            render={({message}) => (
+                              <Text
+                                style={{
+                                  color: splitAppTheme.colors.red[300],
+                                  marginTop: 5,
+                                  textAlign: "center",
+                                }}>
+                                {message}
+                              </Text>
+                            )}
+                          />
+                        </React.Fragment>
                       );
                     }}
                   />
@@ -450,14 +486,36 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
                   <Controller
                     name={"social_links.twitter"}
                     control={control}
-                    render={({field}) => {
+                    rules={{
+                      validate: validHttpUrlValidator,
+                    }}
+                    render={({field, formState: {errors}}) => {
                       return (
-                        <TextInput
-                          placeholder={""}
-                          value={field.value}
-                          style={styles.modalInput}
-                          onChangeText={field.onChange}
-                        />
+                        <React.Fragment>
+                          <View>
+                            <TextInput
+                              placeholder={""}
+                              value={field.value}
+                              style={styles.modalInput}
+                              onChangeText={field.onChange}
+                            />
+                          </View>
+
+                          <ErrorMessage
+                            errors={errors}
+                            name={field.name}
+                            render={({message}) => (
+                              <Text
+                                style={{
+                                  color: splitAppTheme.colors.red[300],
+                                  marginTop: 5,
+                                  textAlign: "center",
+                                }}>
+                                {message}
+                              </Text>
+                            )}
+                          />
+                        </React.Fragment>
                       );
                     }}
                   />
@@ -471,14 +529,36 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
                   <Controller
                     name={"social_links.linkendin"}
                     control={control}
-                    render={({field}) => {
+                    rules={{
+                      validate: validHttpUrlValidator,
+                    }}
+                    render={({field, formState: {errors}}) => {
                       return (
-                        <TextInput
-                          placeholder={""}
-                          value={field.value}
-                          style={styles.modalInput}
-                          onChangeText={field.onChange}
-                        />
+                        <React.Fragment>
+                          <View>
+                            <TextInput
+                              placeholder={""}
+                              value={field.value}
+                              style={styles.modalInput}
+                              onChangeText={field.onChange}
+                            />
+                          </View>
+
+                          <ErrorMessage
+                            errors={errors}
+                            name={field.name}
+                            render={({message}) => (
+                              <Text
+                                style={{
+                                  color: splitAppTheme.colors.red[300],
+                                  marginTop: 5,
+                                  textAlign: "center",
+                                }}>
+                                {message}
+                              </Text>
+                            )}
+                          />
+                        </React.Fragment>
                       );
                     }}
                   />
@@ -492,14 +572,36 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
                   <Controller
                     name={"social_links.youtube"}
                     control={control}
-                    render={({field}) => {
+                    rules={{
+                      validate: validHttpUrlValidator,
+                    }}
+                    render={({field, formState: {errors}}) => {
                       return (
-                        <TextInput
-                          placeholder={""}
-                          value={field.value}
-                          style={styles.modalInput}
-                          onChangeText={field.onChange}
-                        />
+                        <React.Fragment>
+                          <View>
+                            <TextInput
+                              placeholder={""}
+                              value={field.value}
+                              style={styles.modalInput}
+                              onChangeText={field.onChange}
+                            />
+                          </View>
+
+                          <ErrorMessage
+                            errors={errors}
+                            name={field.name}
+                            render={({message}) => (
+                              <Text
+                                style={{
+                                  color: splitAppTheme.colors.red[300],
+                                  marginTop: 5,
+                                  textAlign: "center",
+                                }}>
+                                {message}
+                              </Text>
+                            )}
+                          />
+                        </React.Fragment>
                       );
                     }}
                   />
@@ -513,14 +615,36 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
                   <Controller
                     name={"social_links.instgram"}
                     control={control}
-                    render={({field}) => {
+                    rules={{
+                      validate: validHttpUrlValidator,
+                    }}
+                    render={({field, formState: {errors}}) => {
                       return (
-                        <TextInput
-                          placeholder={""}
-                          value={field.value}
-                          style={styles.modalInput}
-                          onChangeText={field.onChange}
-                        />
+                        <React.Fragment>
+                          <View>
+                            <TextInput
+                              placeholder={""}
+                              value={field.value}
+                              style={styles.modalInput}
+                              onChangeText={field.onChange}
+                            />
+                          </View>
+
+                          <ErrorMessage
+                            errors={errors}
+                            name={field.name}
+                            render={({message}) => (
+                              <Text
+                                style={{
+                                  color: splitAppTheme.colors.red[300],
+                                  marginTop: 5,
+                                  textAlign: "center",
+                                }}>
+                                {message}
+                              </Text>
+                            )}
+                          />
+                        </React.Fragment>
                       );
                     }}
                   />
@@ -534,14 +658,36 @@ export default function ProfileUpdaterModal({type, onClose, isOpen}: Props) {
                   <Controller
                     name={"social_links.tiktok"}
                     control={control}
-                    render={({field}) => {
+                    rules={{
+                      validate: validHttpUrlValidator,
+                    }}
+                    render={({field, formState: {errors}}) => {
                       return (
-                        <TextInput
-                          placeholder={""}
-                          value={field.value}
-                          style={styles.modalInput}
-                          onChangeText={field.onChange}
-                        />
+                        <React.Fragment>
+                          <View>
+                            <TextInput
+                              placeholder={""}
+                              value={field.value}
+                              style={styles.modalInput}
+                              onChangeText={field.onChange}
+                            />
+                          </View>
+
+                          <ErrorMessage
+                            errors={errors}
+                            name={field.name}
+                            render={({message}) => (
+                              <Text
+                                style={{
+                                  color: splitAppTheme.colors.red[300],
+                                  marginTop: 5,
+                                  textAlign: "center",
+                                }}>
+                                {message}
+                              </Text>
+                            )}
+                          />
+                        </React.Fragment>
                       );
                     }}
                   />

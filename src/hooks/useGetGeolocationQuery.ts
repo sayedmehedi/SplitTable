@@ -1,5 +1,5 @@
 import React from "react";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {QueryKeys} from "@constants/query-keys";
 import {PermissionsAndroid, Platform} from "react-native";
 import Geolocation from "@react-native-community/geolocation";
@@ -30,7 +30,9 @@ function getGeolocation() {
   });
 }
 
-function useGetGeolocationQuery() {
+function useGetGeolocationQuery(
+  options?: Omit<UseQueryOptions<GeolocationPosition, Error>, "networkMode">,
+) {
   return useQuery<GeolocationPosition, Error>(
     [QueryKeys.GEOLOCATION],
     async () => {
@@ -43,6 +45,7 @@ function useGetGeolocationQuery() {
       return await getGeolocation();
     },
     {
+      ...options,
       networkMode: "always",
     },
   );

@@ -35,7 +35,7 @@ function useConfirmBookingMutation(
       ...options,
       async onSuccess(_data, _variables, _context) {
         await queryClient.invalidateQueries([QueryKeys.TRANSACTION]);
-        await queryClient.invalidateQueries([QueryKeys.UPCOMING_BOOKING]);
+        await queryClient.invalidateQueries([QueryKeys.BOOKING]);
 
         options.onSuccess?.(_data, _variables, _context);
       },

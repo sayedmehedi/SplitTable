@@ -677,7 +677,7 @@ export interface ClubBooking {
   tables: string[];
   is_reviewed: boolean;
   can_cancel: boolean;
-  status: "Completed" | "Cancelled";
+  status: BookingStatusesType;
 }
 
 export type GetBookingHistoryResponse = {

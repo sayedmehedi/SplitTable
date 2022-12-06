@@ -61,7 +61,7 @@ const OwnerTableScreen = ({navigation}: Props) => {
     queryKey: [QueryKeys.TABLE, "LIST", "by-search"],
   });
   const isFetchingUpcomingBookings = useIsFetching({
-    queryKey: [QueryKeys.UPCOMING_BOOKING],
+    queryKey: [QueryKeys.BOOKING, "UPCOMING"],
   });
 
   const {
@@ -141,7 +141,10 @@ const OwnerTableScreen = ({navigation}: Props) => {
           refreshing={isFetchingTables == 1 || isFetchingUpcomingBookings == 1}
           onRefresh={async () => {
             await queryClient.invalidateQueries([QueryKeys.TABLE]);
-            await queryClient.invalidateQueries([QueryKeys.UPCOMING_BOOKING]);
+            await queryClient.invalidateQueries([
+              QueryKeys.BOOKING,
+              "UPCOMING",
+            ]);
           }}
         />
       }

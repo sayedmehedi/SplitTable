@@ -4,6 +4,7 @@ import {splitAppTheme} from "@src/theme";
 import FastImage from "react-native-fast-image";
 import {Text, TouchableOpacity, View} from "react-native";
 import Ripple from "react-native-material-ripple";
+import {BookingStatusColors} from "@constants/booking";
 
 type IHistoryProps = {
   type: "history";
@@ -134,10 +135,7 @@ function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
                   width: splitAppTheme.sizes[2],
                   height: splitAppTheme.sizes[2],
                   borderRadius: splitAppTheme.radii.full,
-                  backgroundColor:
-                    item.status === "Cancelled"
-                      ? splitAppTheme.colors.red[300]
-                      : splitAppTheme.colors.green[300],
+                  backgroundColor: BookingStatusColors[item.status],
                 }}
               />
 
@@ -145,13 +143,10 @@ function EachBookingItem(props: IHistoryProps | IUpcomingProps) {
                 style={{
                   marginLeft: splitAppTheme.space[1],
                   fontSize: splitAppTheme.fontSizes.xs,
+                  color: BookingStatusColors[item.status],
                   fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
-                  color:
-                    item.status === "Cancelled"
-                      ? splitAppTheme.colors.red[300]
-                      : splitAppTheme.colors.green[300],
                 }}>
-                {type === "upcoming" ? "Upcoming" : item.status}
+                {item.status}
               </Text>
             </View>
 

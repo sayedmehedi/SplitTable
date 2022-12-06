@@ -126,7 +126,9 @@ export default function TableDetailsScreen({route, navigation}: Props) {
           </Text>
 
           {tableDetailsResponse.cancel_status === TableCancelStatusTypes.NULL &&
-          tableDetailsResponse.can_cancel ? (
+          tableDetailsResponse.joined_users.length ===
+            0 ? null : tableDetailsResponse.cancel_status ===
+              TableCancelStatusTypes.NULL && tableDetailsResponse.can_cancel ? (
             <View>
               {isCancelling ? (
                 <View style={{padding: splitAppTheme.space[3]}}>
@@ -154,13 +156,22 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                       },
                     ]);
                   }}>
-                  <Text
+                  <View
                     style={{
-                      color: splitAppTheme.colors.red[400],
-                      fontFamily: splitAppTheme.fontConfig.Roboto[400].normal,
+                      paddingHorizontal: splitAppTheme.space[2],
+                      paddingVertical: splitAppTheme.space[1],
+                      borderWidth: splitAppTheme.borderWidths[2],
+                      borderRadius: splitAppTheme.radii.md,
+                      borderColor: splitAppTheme.colors.red[400],
                     }}>
-                    Cancel Table
-                  </Text>
+                    <Text
+                      style={{
+                        color: splitAppTheme.colors.red[400],
+                        fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+                      }}>
+                      Cancel Table
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               )}
             </View>

@@ -8,6 +8,7 @@ export const BookingTypes = {
 export type BookingTypesType = typeof BookingTypes[keyof typeof BookingTypes];
 
 export const BookingStatuses = {
+  UNPAID: "Unpaid",
   UPCOMING: "Upcoming",
   COMPLETED: "Completed",
   CANCELLED: "Canceled",
@@ -18,6 +19,7 @@ export type BookingStatusesType =
 
 export const BookingStatusColors = {
   [BookingStatuses.UPCOMING]: splitAppTheme.colors.success[400],
-  [BookingStatuses.COMPLETED]: splitAppTheme.colors.yellow[400],
+  [BookingStatuses.COMPLETED]: splitAppTheme.colors.blue[400],
   [BookingStatuses.CANCELLED]: splitAppTheme.colors.red[400],
+  [BookingStatuses.UNPAID]: splitAppTheme.colors.yellow[400],
 } as const;

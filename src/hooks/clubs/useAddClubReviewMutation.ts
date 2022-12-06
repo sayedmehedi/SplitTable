@@ -37,7 +37,7 @@ export default function useAddClubReviewMutation(
   >(mutationFunction, {
     ...options,
     async onSuccess(data, variables, context) {
-      await queryClient.invalidateQueries([QueryKeys.BOOKING_HISTORY]);
+      await queryClient.invalidateQueries([QueryKeys.BOOKING]);
       await queryClient.invalidateQueries([
         QueryKeys.REVIEW,
         "LIST",

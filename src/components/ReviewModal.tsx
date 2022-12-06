@@ -9,7 +9,6 @@ import {
 import React from "react";
 import {splitAppTheme} from "@src/theme";
 import useAppToast from "@hooks/useAppToast";
-import Toast from "react-native-toast-message";
 import {AirbnbRating} from "react-native-ratings";
 import {isResponseResultError} from "@utils/error-handling";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -188,8 +187,6 @@ export default function ReviewModal({onClose, open, reviewerId}: Props) {
             </View>
           </View>
         </View>
-
-        <Toast />
       </Modal>
     </>
   );

@@ -21,5 +21,5 @@ export const TableBookingStatusTypes = {
 
 export const TableCancelStatusTypes = {
   CANCELLED: "Canceled",
-  NULL: "null",
+  NULL: null,
 } as const;

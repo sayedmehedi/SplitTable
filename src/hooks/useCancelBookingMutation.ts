@@ -35,10 +35,7 @@ export default function useCancelBookingMutation(
     {
       ...options,
       async onSuccess(data, variables, context) {
-        await queryClient.invalidateQueries([
-          QueryKeys.UPCOMING_BOOKING,
-          "LIST",
-        ]);
+        await queryClient.invalidateQueries([QueryKeys.BOOKING]);
 
         await queryClient.invalidateQueries([QueryKeys.TABLE]);
         options?.onSuccess?.(data, variables, context);
