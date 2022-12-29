@@ -1,7 +1,7 @@
 import React from "react";
-import {View, Text,Platform} from "react-native";
 import {splitAppTheme} from "@src/theme";
 import ChatIcon from "@assets/icons/chat.svg";
+import {View, Text, Platform} from "react-native";
 import TableIcon from "@assets/icons/table-ico.svg";
 import {RouteProp} from "@react-navigation/native";
 import HomeIcon from "@assets/icons/HomeIcon.svg";
@@ -75,12 +75,10 @@ const globalScreenOptions:
   headerShown: false,
   tabBarShowLabel: false,
   tabBarStyle: {
-    height: Platform.OS == 'ios' ? 85: 70,
+    height: Platform.OS == "ios" ? 85 : 70,
     elevation: 20,
     shadowColor: "#FF3FCB",
     backgroundColor: "#FFFFFF",
-    
-    
   },
 };
 

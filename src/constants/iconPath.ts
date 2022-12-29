@@ -3,6 +3,7 @@ import CreditCardIcon from "@assets/icons/credit-card.svg";
 import JoinCountIcon from "@assets/icons/join-count.svg";
 import CryptoIcon from "@assets/icons/crypto.svg";
 import DistanceIcon from "@assets/icons/distance.svg";
+import FriendIcon from "@assets/icons/friend-ico.svg";
 
 import TiktokIcon from "@assets/icons/tiktok.svg";
 
@@ -48,6 +49,7 @@ import ReviewIcon from "@assets/icons/reviews-ico.svg";
 import HolidayIcon from "@assets/icons/holidays-ico.svg";
 
 export {
+  FriendIcon,
   MapIcon,
   LasVegas,
   Miami,

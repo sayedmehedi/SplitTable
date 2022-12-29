@@ -29,8 +29,17 @@ import {
   GetFaqsResponse,
   SearchUserQueryParams,
   SearchUserResponse,
-  SocialLinks,
   SocialLinksPayloadFieldName,
+  GetFriendListQueryParams,
+  GetFriendListResponse,
+  AcceptFriendshipRequest,
+  AcceptFriendshipResponse,
+  AddFriendshipRequest,
+  AddFriendshipResponse,
+  RemoveFriendshipRequest,
+  RemoveFriendshipResponse,
+  CheckFriendshipQueryParams,
+  CheckFriendshipResponse,
 } from "@src/models";
 import {parseRnFetchBlobJsonResponse} from "@utils/http";
 
@@ -43,6 +52,82 @@ export class UserService implements IUserService {
   private readonly _config!: ConfigService;
 
   constructor() {}
+
+  checkFriendship(
+    payload: CheckFriendshipQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<CheckFriendshipResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<CheckFriendshipResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<CheckFriendshipResponse>(`check-friendship/${payload.friendId}`, {
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  addFriend(
+    payload: AddFriendshipRequest,
+  ): Promise<AxiosResponse<AddFriendshipResponse, GlobalAxiosRequestConfig>> {
+    return this._httpService.post<AddFriendshipResponse>("friends", {
+      friend_id: payload.friendId,
+    });
+  }
+
+  acceptFriendship(
+    payload: AcceptFriendshipRequest,
+  ): Promise<
+    AxiosResponse<AcceptFriendshipResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.post<AcceptFriendshipResponse>("update-status", {
+      friend_id: payload.friendId,
+      status: payload.status,
+    });
+  }
+
+  removeFriendship(
+    payload: RemoveFriendshipRequest,
+  ): Promise<
+    AxiosResponse<RemoveFriendshipResponse, GlobalAxiosRequestConfig>
+  > {
+    return this._httpService.delete<RemoveFriendshipResponse>(
+      `friends/${payload.friendId}`,
+    );
+  }
+
+  getFriendList(
+    params: GetFriendListQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetFriendListResponse, GlobalAxiosRequestConfig>
+  > {
+    const controller = new AbortController();
+
+    return new CancelablePromise<
+      AxiosResponse<GetFriendListResponse, GlobalAxiosRequestConfig>
+    >((resolve, reject, onCancel) => {
+      onCancel(() => {
+        controller.abort();
+      });
+
+      this._httpService
+        .get<GetFriendListResponse>(`friends`, {
+          params,
+          signal: controller.signal,
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 
   searchUser(
     params: SearchUserQueryParams,

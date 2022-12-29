@@ -30,6 +30,7 @@ import {
   FavouriteIcon,
   TransactionIcon,
   AccountSettingIcon,
+  FriendIcon,
 } from "@constants/iconPath";
 import {
   RootStackParamList,
@@ -172,6 +173,29 @@ const AccountScreen = ({navigation}: Props) => {
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Account Setting
+            </Text>
+          </View>
+
+          <View>
+            <Feather name="chevron-right" color={"#8A8D9F"} size={22} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate(CustomerStackRoutes.FRIENDS)}
+          style={styles.sectionContainer}>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <View>
+              <FriendIcon height={35} width={35} />
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginLeft: 10,
+                color: "#262B2E",
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
+              Friends
             </Text>
           </View>
 

@@ -22,19 +22,19 @@ import {
   CalendarIcon,
   MapMarkerPrimaryIcon,
 } from "@constants/iconPath";
-import {CustomerStackRoutes} from "@constants/routes";
+import useAppToast from "@hooks/useAppToast";
+import FastImage from "react-native-fast-image";
 import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
 import AppGradientButton from "@components/AppGradientButton";
 import {CompositeScreenProps} from "@react-navigation/native";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
 import {isBookedTableDetails, isSplitTableDetails} from "@utils/table";
 import useShareResourceMutation from "@hooks/useShareResourceMutation";
 import {CustomerStackParamList, RootStackParamList} from "@src/navigation";
 import useGetTableDetailsQuery from "@hooks/clubs/useGetTableDetailsQuery";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import FastImage from "react-native-fast-image";
-import useAppToast from "@hooks/useAppToast";
 
 type Props = CompositeScreenProps<
   StackScreenProps<
@@ -69,17 +69,9 @@ export default function TableDetailsScreen({route, navigation}: Props) {
 
   const handleBookTable = () => {
     if (tableDetailsResponse) {
-      if (isSplitTableDetails(tableDetailsResponse)) {
-        navigation.navigate(CustomerStackRoutes.GUEST_N_MENU, {
-          tableDetails: tableDetailsResponse,
-        });
-      } else {
-        navigation.navigate(CustomerStackRoutes.ADD_MENU_ITEM, {
-          menGuestCount: 0,
-          womenGuestCount: 0,
-          tableDetails: tableDetailsResponse,
-        });
-      }
+      navigation.navigate(CustomerStackRoutes.TABLE_AGREEMENT, {
+        tableDetails: tableDetailsResponse,
+      });
     }
   };
 
@@ -488,16 +480,23 @@ export default function TableDetailsScreen({route, navigation}: Props) {
                     marginLeft: splitAppTheme.space[3],
                   }}>
                   {tableDetailsResponse.joined_users.map((user, index) => (
-                    <FastImage
+                    <TouchableOpacity
                       key={index}
-                      source={{uri: user.image}}
-                      style={{
-                        width: splitAppTheme.sizes[8],
-                        height: splitAppTheme.sizes[8],
-                        marginRight: splitAppTheme.space[2],
-                        borderRadius: splitAppTheme.radii.full,
-                      }}
-                    />
+                      onPress={() => {
+                        navigation.navigate(RootStackRoutes.PROFILE, {
+                          userId: user.id,
+                        });
+                      }}>
+                      <FastImage
+                        source={{uri: user.image}}
+                        style={{
+                          width: splitAppTheme.sizes[8],
+                          height: splitAppTheme.sizes[8],
+                          marginRight: splitAppTheme.space[2],
+                          borderRadius: splitAppTheme.radii.full,
+                        }}
+                      />
+                    </TouchableOpacity>
                   ))}
                 </ScrollView>
               )}
@@ -619,7 +618,11 @@ export default function TableDetailsScreen({route, navigation}: Props) {
             <AppGradientButton
               color={"primary"}
               variant={"solid"}
-              title={"Join Now"}
+              title={
+                isBookedTableDetails(tableDetailsResponse)
+                  ? "Book Table"
+                  : "Request to Join"
+              }
               onPress={handleBookTable}
             />
           </View>

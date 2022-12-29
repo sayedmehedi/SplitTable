@@ -14,7 +14,6 @@ import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import {Image, Platform, Text, TouchableOpacity, View} from "react-native";
 import useSendInvitationMutation from "@hooks/chat/useSendInvitationMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useAddFriendshipMutation from "@hooks/user/useAddFriendshipMutation";
 
 type SuggestionItem = {
   title: string;
@@ -24,11 +23,7 @@ type SuggestionItem = {
   email: string;
 };
 
-type Props = {
-  mode: "invite" | "add";
-};
-
-export default function UserSearchInput({mode}: Props) {
+export default function UserSearchInput() {
   const toast = useAppToast();
   const {
     window: {height: WINDOW_HEIGHT},
@@ -70,23 +65,6 @@ export default function UserSearchInput({mode}: Props) {
   useHandleResponseResultError(sendResponse);
   useHandleNonFieldError(sendError);
 
-  const {
-    error: addError,
-    data: addResponse,
-    mutate: addFriendship,
-    isLoading: isAddingFriendship,
-  } = useAddFriendshipMutation({
-    onSuccess(data) {
-      if (!isResponseResultError(data)) {
-        toast.success(data.success);
-        searchRef.current.clear();
-        actionSheetRef.current.hide();
-      }
-    },
-  });
-  useHandleNonFieldError(addError);
-  useHandleResponseResultError(addResponse);
-
   const usersSuggestion: SuggestionItem[] = React.useMemo(() => {
     return (
       usersData?.users?.data?.map(user => ({
@@ -101,17 +79,9 @@ export default function UserSearchInput({mode}: Props) {
 
   const handleSendInvitation = () => {
     if (selectedUser?.id) {
-      if (mode === "invite") {
-        sendInvitation({
-          receiverId: +selectedUser.id,
-        });
-      }
-
-      if (mode === "add") {
-        addFriendship({
-          friendId: +selectedUser.id,
-        });
-      }
+      sendInvitation({
+        receiverId: +selectedUser.id,
+      });
     }
   };
 
@@ -261,8 +231,8 @@ export default function UserSearchInput({mode}: Props) {
 
             <View style={{marginTop: splitAppTheme.space[5]}}>
               <TouchableOpacity
-                onPress={handleSendInvitation}
-                disabled={isSending || isAddingFriendship}>
+                disabled={isSending}
+                onPress={handleSendInvitation}>
                 <View
                   style={{
                     borderRadius: splitAppTheme.radii.xl,
@@ -277,7 +247,7 @@ export default function UserSearchInput({mode}: Props) {
                       fontSize: splitAppTheme.fontSizes.lg,
                       fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
                     }}>
-                    {mode === "invite" ? "Invite" : "Add Friend"}
+                    Invite
                   </Text>
                 </View>
               </TouchableOpacity>

@@ -2,21 +2,21 @@ import React from "react";
 import dayjs from "dayjs";
 import truncate from "lodash.truncate";
 import {splitAppTheme} from "@src/theme";
-import {BookedTable} from "@src/models";
-import useAppToast from "@hooks/useAppToast";
 import FastImage from "react-native-fast-image";
-import {useQueryClient} from "@tanstack/react-query";
-import {RedMap, MapIcon, Clock} from "@constants/iconPath";
+import {BookedTable, SplitTable} from "@src/models";
 import {Text, View, Pressable, StyleSheet} from "react-native";
+import {RedMap, MapIcon, Clock, JoinCountIcon} from "@constants/iconPath";
 
 type Props = {
-  item: BookedTable;
-  onPress: (club: BookedTable) => void;
+  item: BookedTable | SplitTable;
+  onPress: (club: BookedTable | SplitTable) => void;
 };
 
+function isSplitTable(club: BookedTable | SplitTable): club is SplitTable {
+  return "total_joined" in club;
+}
+
 const EachTableNEventItem = ({item, onPress}: Props) => {
-  const toast = useAppToast();
-  const queryClient = useQueryClient();
   const handlePress = React.useCallback(() => {
     onPress(item);
   }, [onPress, item]);
@@ -121,14 +121,45 @@ const EachTableNEventItem = ({item, onPress}: Props) => {
           justifyContent: "space-around",
           paddingHorizontal: splitAppTheme.space[2],
         }}>
-        <Text
+        <View
           style={{
-            color: "#262B2E",
-            fontSize: splitAppTheme.fontSizes.lg,
-            fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
-          {item.name}
-        </Text>
+          <Text
+            style={{
+              color: "#262B2E",
+              fontSize: splitAppTheme.fontSizes.lg,
+              fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
+            }}>
+            {truncate(item.name)}
+          </Text>
+
+          {isSplitTable(item) && (
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+              }}>
+              <View>
+                <JoinCountIcon height={15} width={15} />
+              </View>
+
+              <View
+                style={{
+                  marginLeft: splitAppTheme.space[1],
+                }}>
+                <Text
+                  style={{
+                    fontFamily: splitAppTheme.fontConfig.Roboto[700].normal,
+                  }}>
+                  {item.total_joined}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
 
         <View
           style={{

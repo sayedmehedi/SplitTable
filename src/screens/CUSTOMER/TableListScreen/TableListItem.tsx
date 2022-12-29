@@ -1,28 +1,11 @@
 import React from "react";
+import dayjs from "dayjs";
 import {TTableItem} from "./shared";
 import truncate from "lodash.truncate";
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  ImageBackground,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
 import {splitAppTheme} from "@src/theme";
-import useAppToast from "@hooks/useAppToast";
-import {QueryKeys} from "@constants/query-keys";
-import {Clock, JoinCountIcon, MapIcon} from "@constants/iconPath";
-import {useQueryClient} from "@tanstack/react-query";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import {isResponseResultError} from "@utils/error-handling";
-import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
-import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useToggleFavoriteClubMutation from "@hooks/clubs/useToggleFavoriteClubMutation";
-import dayjs from "dayjs";
 import FastImage from "react-native-fast-image";
+import {View, Text, Pressable, StyleSheet} from "react-native";
+import {Clock, JoinCountIcon, MapIcon} from "@constants/iconPath";
 
 type Props = {
   item: TTableItem;
@@ -30,35 +13,9 @@ type Props = {
 };
 
 const TableListItem = ({item, onPress}: Props) => {
-  const toast = useAppToast();
-  const queryClient = useQueryClient();
   const handlePress = React.useCallback(() => {
     onPress(item);
   }, [onPress, item]);
-
-  const {
-    mutate: toggleFavoriteClub,
-    error: toggleFavoriteError,
-    isLoading: isTogglingFavorite,
-    data: toggleFavoriteClubResponse,
-  } = useToggleFavoriteClubMutation();
-
-  useHandleNonFieldError(toggleFavoriteError);
-  useHandleResponseResultError(toggleFavoriteClubResponse);
-
-  const handleToggleFavorite = React.useCallback(() => {
-    toggleFavoriteClub(
-      {clubId: item.id},
-      {
-        onSuccess(data) {
-          if (!isResponseResultError(data)) {
-            toast.success(data.message);
-            queryClient.invalidateQueries([QueryKeys.TABLE, "LIST"]);
-          }
-        },
-      },
-    );
-  }, [toggleFavoriteClub]);
 
   return (
     <Pressable

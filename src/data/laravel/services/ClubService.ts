@@ -107,12 +107,21 @@ export class ClubService implements IClubService {
     });
   }
 
-  getClubsBySearchTerm(
-    params: GetClubsBySearchTermQueryParams,
-  ): CancelablePromise<
+  getClubsBySearchTerm({
+    useCurrentLocation,
+    ...params
+  }: GetClubsBySearchTermQueryParams): CancelablePromise<
     AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
   > {
     const controller = new AbortController();
+
+    let realParams: Record<string, any> = {
+      ...params,
+    };
+
+    if (useCurrentLocation) {
+      realParams.use_current_location = 1;
+    }
 
     return new CancelablePromise<
       AxiosResponse<GetClubsBySearchTermResponse, GlobalAxiosRequestConfig>
@@ -124,7 +133,7 @@ export class ClubService implements IClubService {
 
       this._httpService
         .get<GetClubsBySearchTermResponse>(`search-club`, {
-          params,
+          params: realParams,
           signal: controller.signal,
         })
         .then(resolve)

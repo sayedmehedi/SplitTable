@@ -21,6 +21,7 @@ export const CustomerStackRoutes = {
   TABLE_SEARCH: "TableSearch",
   CLUB_DETAILS: "ClubDetails",
   TABLE_DETAILS: "TableDetails",
+  TABLE_AGREEMENT: "TableAgreement",
   CUSTOMER_MAIN_TAB: "CustomerMainTab",
   JOIN_TABLE_DETAILS: "JoinTableDetails",
   INITIAL_SELECT_LOCATION: "InitialSelectLocation",
@@ -38,7 +39,9 @@ export const CustomerStackRoutes = {
 
   FAQ: "Faq",
   LEGAL: "Legal",
+  FRIENDS: "Friends",
   FAVORITE: "Favorite",
+  ADD_FRIEND: "AddFriend",
   TRANSACTION: "Transaction",
   ACCOUNT_SETTING: "AccountSetting",
 } as const;

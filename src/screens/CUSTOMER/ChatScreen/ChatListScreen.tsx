@@ -146,7 +146,7 @@ const ChatListScreen = ({navigation}: Props) => {
             message
           </Text>
 
-          <UserSearchInput />
+          <UserSearchInput mode={"invite"} />
         </View>
       </SafeAreaView>
 

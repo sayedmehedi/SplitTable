@@ -37,9 +37,9 @@ import {
   CustomerStackParamList,
   CustomerBottomTabParamList,
 } from "@src/navigation";
-import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
-import HomeScreenClubSearchInput from "@components/HomeScreenClubSearchInput";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
+import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
+import {TTableItem} from "@components/owner/shared";
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -83,7 +83,7 @@ const HomeScreen = ({navigation}: Props) => {
   );
 
   const handleSpiltTablePress = React.useCallback(
-    (item: SplitTable) => {
+    (item: TTableItem) => {
       navigation.navigate(CustomerStackRoutes.TABLE_DETAILS, {
         tableId: item.id,
       });
@@ -338,12 +338,12 @@ const HomeScreen = ({navigation}: Props) => {
               alignItems: "center",
               width: splitAppTheme.sizes.full,
               justifyContent: "space-between",
-              marginBottom: splitAppTheme.space[1],
+              marginBottom: splitAppTheme.space[3],
             }}>
             <Text
               style={{
-                fontSize: splitAppTheme.fontSizes.xl,
                 color: "#030819",
+                fontSize: splitAppTheme.fontSizes.xl,
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
               }}>
               Split Table & Events

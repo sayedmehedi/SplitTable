@@ -21,6 +21,16 @@ import {
   GetProfileDataResponse,
   SearchUserQueryParams,
   SearchUserResponse,
+  GetFriendListQueryParams,
+  GetFriendListResponse,
+  AddFriendshipRequest,
+  AddFriendshipResponse,
+  AcceptFriendshipRequest,
+  AcceptFriendshipResponse,
+  RemoveFriendshipRequest,
+  RemoveFriendshipResponse,
+  CheckFriendshipQueryParams,
+  CheckFriendshipResponse,
 } from "@src/models";
 
 export interface IUserService {
@@ -72,5 +82,29 @@ export interface IUserService {
     params: GetFaqsQueryParams,
   ): CancelablePromise<
     AxiosResponse<GetFaqsResponse, GlobalAxiosRequestConfig>
+  >;
+
+  getFriendList(
+    params: GetFriendListQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<GetFriendListResponse, GlobalAxiosRequestConfig>
+  >;
+
+  addFriend(
+    payload: AddFriendshipRequest,
+  ): Promise<AxiosResponse<AddFriendshipResponse, GlobalAxiosRequestConfig>>;
+
+  acceptFriendship(
+    payload: AcceptFriendshipRequest,
+  ): Promise<AxiosResponse<AcceptFriendshipResponse, GlobalAxiosRequestConfig>>;
+
+  removeFriendship(
+    payload: RemoveFriendshipRequest,
+  ): Promise<AxiosResponse<RemoveFriendshipResponse, GlobalAxiosRequestConfig>>;
+
+  checkFriendship(
+    payload: CheckFriendshipQueryParams,
+  ): CancelablePromise<
+    AxiosResponse<CheckFriendshipResponse, GlobalAxiosRequestConfig>
   >;
 }

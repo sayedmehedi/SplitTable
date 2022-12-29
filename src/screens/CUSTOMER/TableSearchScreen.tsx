@@ -31,6 +31,8 @@ import SplitappSingleSelectCalender from "@components/SplitappCalender";
 import {TextInput, TouchableOpacity} from "react-native-gesture-handler";
 import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
 import useGetClubsBySearchTermQuery from "@hooks/clubs/useGetClubsBySearchTermQuery";
+import {useDisclosure} from "react-use-disclosure";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 type FormValues = {
   date: string | null;
@@ -50,12 +52,15 @@ type Props = CompositeScreenProps<
 const TableSearchScreen = ({route, navigation}: Props) => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [dbncdSearchTerm] = useDebouncedState(searchTerm, 500);
+  const {isOpen: useCurrentLocation, toggle: toggleCurrentLocation} =
+    useDisclosure();
   const {
     error: resourcesError,
     data: resourcesResponse,
     isFetching: isResourcesLoading,
   } = useGetClubsBySearchTermQuery({
-    search: dbncdSearchTerm,
+    search: dbncdSearchTerm === "" ? undefined : dbncdSearchTerm,
+    useCurrentLocation,
   });
   useHandleNonFieldError(resourcesError);
 
@@ -72,20 +77,61 @@ const TableSearchScreen = ({route, navigation}: Props) => {
         padding: splitAppTheme.space[6],
       }}>
       <View>
-        <TextInput
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-          placeholder={"Search for club"}
+        <View
           style={{
-            height: 50,
-            padding: splitAppTheme.space[3],
-            fontSize: splitAppTheme.fontSizes.lg,
-            borderRadius: splitAppTheme.radii["lg"],
-            borderWidth: splitAppTheme.borderWidths[2],
-            borderColor: splitAppTheme.colors.secondary[500],
-            fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
-          }}
-        />
+            flexDirection: "row",
+          }}>
+          <View
+            style={{
+              flex: 1,
+            }}>
+            <TextInput
+              value={searchTerm}
+              onChangeText={setSearchTerm}
+              placeholder={"Search for club"}
+              style={{
+                height: 50,
+                padding: splitAppTheme.space[3],
+                fontSize: splitAppTheme.fontSizes.lg,
+                borderRadius: splitAppTheme.radii["lg"],
+                borderWidth: splitAppTheme.borderWidths[2],
+                borderColor: splitAppTheme.colors.secondary[500],
+                fontFamily: splitAppTheme.fontConfig.Roboto[500].normal,
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              marginLeft: splitAppTheme.space[2],
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                toggleCurrentLocation();
+              }}>
+              <View
+                style={{
+                  padding: splitAppTheme.space[3],
+                  borderRadius: splitAppTheme.radii["lg"],
+                  backgroundColor: useCurrentLocation
+                    ? splitAppTheme.colors.secondary[400]
+                    : "transparent",
+                  borderWidth: splitAppTheme.borderWidths[1],
+                  borderColor: splitAppTheme.colors.secondary[400],
+                }}>
+                <Ionicons
+                  size={22}
+                  name={"ios-locate"}
+                  color={
+                    useCurrentLocation
+                      ? splitAppTheme.colors.white
+                      : splitAppTheme.colors.secondary[400]
+                  }
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         <View>
           {isResourcesLoading ? (

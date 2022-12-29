@@ -18,24 +18,29 @@ import {
   StackNavigationOptions,
   StackNavigationProp,
 } from "@react-navigation/stack";
+import FriendListScreen from "@screens/CUSTOMER/FriendScreen";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import ChatMessagesAppBar from "@components/ChatMessagesAppBar";
+import AddFriendScreen from "@screens/CUSTOMER/AddFriendScreen";
 import FaqScreen from "@screens/CUSTOMER/AccountScreen/FaqScreen";
 import TableDetailsScreen from "@screens/CUSTOMER/TableDetailsScreen";
 import LegalScreen from "@screens/CUSTOMER/AccountScreen/LegalScreen";
+import TableAgreementScreen from "@screens/CUSTOMER/TableAgreementScreen";
 import FavoriteScreen from "@screens/CUSTOMER/AccountScreen/FavoriteScreen";
 import PaymentScreen from "@screens/CUSTOMER/BookTableScreen/PaymentScreen";
 import JoinTableDetailsScreen from "@screens/CUSTOMER/JoinTableDetailsScreen";
+import BookTableScreen from "@screens/CUSTOMER/BookTableScreen/BookTableScreen";
 import ChatMessagesScreen from "@screens/CUSTOMER/ChatScreen/ChatMessagesScreen";
 import TransactionScreen from "@screens/CUSTOMER/AccountScreen/TransactionScreen";
 import AddMenuItemScreen from "@screens/CUSTOMER/BookTableScreen/AddMenuItemScreen";
-import BookTableScreen from "@screens/CUSTOMER/BookTableScreen/BookTableScreen";
 import AccountSettingScreen from "@screens/CUSTOMER/AccountScreen/AccountSettingScreen";
 import PaymentMethodScreen from "@screens/CUSTOMER/BookTableScreen/PaymentMethodScreen";
 import PaymentGatewayScreen from "@screens/CUSTOMER/BookTableScreen/PaymentGatewayScreen";
 import GuestAndOfferMenuScreen from "@screens/CUSTOMER/BookTableScreen/GuestAndOfferMenuScreen";
 import InitialSelectLocationScreen from "@screens/CUSTOMER/CustomerAuthScreen/InitialSelectLocationScreen";
 import BookingSelectLocationScreen from "@screens/CUSTOMER/BookTableScreen/BookingSelectLocationScreen";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Ripple from "react-native-material-ripple";
 
 const CustomerStack = createStackNavigator<CustomerStackParamList>();
 
@@ -120,7 +125,25 @@ const CustomerStackNavigator = () => {
         name={CustomerStackRoutes.CHAT_MESSAGES}
       />
 
+      <CustomerStack.Screen
+        component={FriendListScreen}
+        options={friendsScreenOptions}
+        name={CustomerStackRoutes.FRIENDS}
+      />
+
+      <CustomerStack.Screen
+        component={AddFriendScreen}
+        options={addFriendScreenOptions}
+        name={CustomerStackRoutes.ADD_FRIEND}
+      />
+
       <CustomerStack.Group>
+        <CustomerStack.Screen
+          component={TableAgreementScreen}
+          options={tableAgreementScreenOptions}
+          name={CustomerStackRoutes.TABLE_AGREEMENT}
+        />
+
         <CustomerStack.Screen
           component={GuestAndOfferMenuScreen}
           options={guestNOfferMenuScreenOptions}
@@ -278,7 +301,7 @@ const guestNOfferMenuScreenOptions:
   headerShown: true,
   header: CommonStackHeader,
   headerTitle: isSplitTableDetails(route.params.tableDetails)
-    ? "Join Now"
+    ? "Request to Join"
     : "Book Table",
 });
 
@@ -295,6 +318,19 @@ const clubSearchScreenOptions:
   header: CommonStackHeader,
   headerTitleAlign: "center",
   title: "Search Club/Bar",
+});
+
+const tableAgreementScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.TABLE_AGREEMENT
+      >;
+      navigation: NavitaionProps;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
+  headerShown: false,
+  presentation: "modal",
 });
 
 const tableDetailsScreenOptions:
@@ -478,4 +514,51 @@ const chatMessagesScreenOptions:
     }) => StackNavigationOptions) = ({route, navigation}) => ({
   headerShown: true,
   header: () => <ChatMessagesAppBar route={route} navigation={navigation} />,
+});
+
+const friendsScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.FRIENDS
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
+  headerShown: true,
+  header: CommonStackHeader,
+  headerRight(props) {
+    return (
+      <View
+        style={{
+          paddingRight: splitAppTheme.space[3],
+        }}>
+        <Ripple
+          onPress={() => {
+            navigation.navigate(CustomerStackRoutes.ADD_FRIEND);
+          }}>
+          <Ionicons
+            size={22}
+            name={"ios-person-add-outline"}
+            color={splitAppTheme.colors.primary[400]}
+          />
+        </Ripple>
+      </View>
+    );
+  },
+  // header: () => <ChatMessagesAppBar route={route} navigation={navigation} />,
+});
+
+const addFriendScreenOptions:
+  | StackNavigationOptions
+  | ((props: {
+      route: RouteProp<
+        CustomerStackParamList,
+        typeof CustomerStackRoutes.ADD_FRIEND
+      >;
+      navigation: any;
+    }) => StackNavigationOptions) = ({route, navigation}) => ({
+  headerShown: true,
+  title: "Add Friend",
+  header: CommonStackHeader,
 });

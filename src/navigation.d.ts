@@ -178,10 +178,15 @@ type CustomerStackParamList = {
 
   [CustomerStackRoutes.FAQ]: undefined;
   [CustomerStackRoutes.LEGAL]: undefined;
+  [CustomerStackRoutes.FRIENDS]: undefined;
   [CustomerStackRoutes.FAVORITE]: undefined;
+  [CustomerStackRoutes.ADD_FRIEND]: undefined;
   [CustomerStackRoutes.TRANSACTION]: undefined;
   [CustomerStackRoutes.ACCOUNT_SETTING]: undefined;
 
+  [CustomerStackRoutes.TABLE_AGREEMENT]: {
+    tableDetails: SplitTableDetails | BookingTableDetails;
+  };
   [CustomerStackRoutes.GUEST_N_MENU]: {
     tableDetails: SplitTableDetails | BookingTableDetails;
   };

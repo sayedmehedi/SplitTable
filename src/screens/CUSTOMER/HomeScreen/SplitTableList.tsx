@@ -1,11 +1,12 @@
 import React from "react";
-import {SplitTable} from "@src/models";
+import {splitAppTheme} from "@src/theme";
+import {TTableItem} from "@components/owner/shared";
 import {ActivityIndicator, View} from "react-native";
-import EachSplitTableNEventItem from "./EachSplitTableNEventItem";
+import EachTableNEventItem from "@components/EachTableNEventItem";
 import useGetSplitTablesQuery from "@hooks/clubs/useGetSplitTablesQuery";
 
 type Props = {
-  onItemPress: (item: SplitTable) => void;
+  onItemPress: (item: TTableItem) => void;
 };
 
 export default function SplitTableList({onItemPress}: Props) {
@@ -31,11 +32,24 @@ export default function SplitTableList({onItemPress}: Props) {
     <View>
       {splitTableNEventsResponse?.tables.data.map(item => {
         return (
-          <EachSplitTableNEventItem
-            item={item}
+          <View
             key={item.id}
-            onPress={onItemPress}
-          />
+            style={{
+              marginBottom: splitAppTheme.space[5],
+            }}>
+            <EachTableNEventItem
+              item={{
+                id: item.id,
+                date: item.date,
+                name: item.name,
+                image: item.image,
+                location: item.location,
+                distance: item.distance,
+                total_joined: item.total_joined,
+              }}
+              onPress={onItemPress}
+            />
+          </View>
         );
       })}
     </View>

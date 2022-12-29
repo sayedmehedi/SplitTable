@@ -8,6 +8,10 @@ import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import {AppSupportedPaymentMethods} from "@constants/payment";
 import {BookingStatusesType, BookingTypesType} from "@constants/booking";
+import {
+  FriendshipStatus,
+  TFriendshipStatusQueryParams,
+} from "@constants/friend";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -994,6 +998,7 @@ export interface ClubSearchItem {
 
 export type GetClubsBySearchTermQueryParams = PaginationQueryParams & {
   search?: string;
+  useCurrentLocation?: boolean;
 };
 
 export type GetClubsBySearchTermResponse = {
@@ -1046,4 +1051,47 @@ export interface BookingDetailsSplit extends BookingDetailsCommon {
 export type GetBookingDetailsResponse = {
   booking: BookingDetailsBooked | BookingDetailsSplit;
   calculations: Record<string, number>;
+};
+
+export type FriendListItem = {
+  id: number;
+  name: string;
+  user_id: number;
+  user_image: string;
+  status: FriendshipStatus;
+};
+
+export type GetFriendListResponse = {
+  items: SimplePaginatedResponse<FriendListItem>;
+};
+
+export type GetFriendListQueryParams = PaginationQueryParams & {
+  status: TFriendshipStatusQueryParams;
+};
+
+export type AddFriendshipRequest = {
+  friendId: number;
+};
+
+export type AddFriendshipResponse = ResponseResult;
+
+export type AcceptFriendshipRequest = {
+  friendId: number;
+  status: TFriendshipStatusQueryParams;
+};
+
+export type AcceptFriendshipResponse = ResponseResult;
+
+export type RemoveFriendshipRequest = {
+  friendId: number;
+};
+
+export type RemoveFriendshipResponse = ResponseResult;
+
+export type CheckFriendshipResponse = {
+  data: FriendshipStatus;
+};
+
+export type CheckFriendshipQueryParams = {
+  friendId: number;
 };

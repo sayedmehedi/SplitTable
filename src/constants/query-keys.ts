@@ -7,6 +7,7 @@ export const QueryKeys = {
   IMAGE: "image",
   TABLE: "table",
   REVIEW: "review",
+  FRIEND: "friend",
   BOOKING: "booking",
   PAYMENT: "payment",
   HOLIDAY: "holiday",

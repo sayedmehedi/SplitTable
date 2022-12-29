@@ -12,8 +12,9 @@ import {
   CustomerMainBottomTabRoutes,
 } from "@constants/routes";
 import {AuthTypeNum} from "@constants/auth";
+import {TiktokIcon} from "@constants/iconPath";
 import {RootStackParamList} from "@src/navigation";
-import Feather from "react-native-vector-icons/Feather";
+import Entypo from "react-native-vector-icons/Entypo";
 import {StackScreenProps} from "@react-navigation/stack";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
@@ -22,18 +23,20 @@ import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import useGetProfileQuery from "@hooks/auth/useGetProfileQuery";
 import {useIsFetching, useQueryClient} from "@tanstack/react-query";
 import ProfileImageUploader from "../components/ProfileImageUploader";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   View,
   Text,
+  Linking,
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  Linking,
 } from "react-native";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {TiktokIcon} from "@constants/iconPath";
-import {useDisclosure} from "react-use-disclosure";
+import {FriendshipStatuses} from "@constants/friend";
+import useCheckFriendshipQuery from "@hooks/user/useCheckFriendshipQuery";
+import useAddFriendshipMutation from "@hooks/user/useAddFriendshipMutation";
+import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
@@ -42,7 +45,6 @@ type ProfileScreenProps = StackScreenProps<
 
 const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   const queryClient = useQueryClient();
-  const {isOpen, toggle} = useDisclosure();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const isFetchingUserImages = useIsFetching({
@@ -54,6 +56,27 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   } = useDimensions();
 
   const {data: authData, isLoading: isAuthDataLoading} = useGetAuthDataQuery();
+  const {data: checkFriendshipData, isLoading: isCheckingFriendship} =
+    useCheckFriendshipQuery(
+      {
+        friendId: route.params.userId ?? 0,
+      },
+      {
+        enabled:
+          route.params.userId !== undefined &&
+          authData?.id !== route.params.userId,
+      },
+    );
+
+  const {
+    mutate: addFriendship,
+    isLoading: isAddingFriendship,
+    error: addFriendshipError,
+    data: addFriendshipResponse,
+  } = useAddFriendshipMutation();
+  useHandleNonFieldError(addFriendshipError);
+  useHandleResponseResultError(addFriendshipResponse);
+
   const {data: profileData, isLoading} = useGetProfileQuery(
     route.params.userId,
   );
@@ -92,6 +115,8 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
     );
   }
 
+  const isMyProfile = authData?.id === profileData.id;
+
   const ListHeaderComponent = (
     <>
       <LinearGradient
@@ -99,7 +124,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         start={{x: 0, y: 1}}
         colors={["#DF3BC0", "#472BBE"]}
         style={{
-          height: 150,
+          height: 180,
           width: "100%",
           zIndex: -1000,
         }}>
@@ -113,16 +138,91 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
             <Entypo name="chevron-left" size={40} color={"white"} />
           </TouchableOpacity>
         </SafeAreaView>
+
+        {isCheckingFriendship || isAddingFriendship ? (
+          <View>
+            <ActivityIndicator />
+          </View>
+        ) : checkFriendshipData?.data === FriendshipStatuses.REJECTED ? (
+          <TouchableOpacity
+            onPress={() => {
+              if (route.params.userId !== undefined) {
+                addFriendship({
+                  friendId: route.params.userId,
+                });
+              }
+            }}>
+            <View
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                padding: splitAppTheme.space[2],
+                width: splitAppTheme.sizes["2/4"],
+                borderWidth: splitAppTheme.borderWidths[1],
+                borderColor: splitAppTheme.colors.blue[400],
+              }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: splitAppTheme.fontSizes.md,
+                  color: splitAppTheme.colors.blue[400],
+                  fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                }}>
+                Add Friend
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : checkFriendshipData?.data === FriendshipStatuses.PENDING ? (
+          <View
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              padding: splitAppTheme.space[2],
+              width: splitAppTheme.sizes["2/4"],
+              borderWidth: splitAppTheme.borderWidths[1],
+              borderColor: splitAppTheme.colors.warning[400],
+            }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.md,
+                color: splitAppTheme.colors.warning[400],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
+              Pending Friend Request
+            </Text>
+          </View>
+        ) : checkFriendshipData?.data === FriendshipStatuses.FRIEND ? (
+          <View
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              padding: splitAppTheme.space[2],
+              width: splitAppTheme.sizes["2/4"],
+              borderWidth: splitAppTheme.borderWidths[1],
+              borderColor: splitAppTheme.colors.success[400],
+            }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: splitAppTheme.fontSizes.md,
+                color: splitAppTheme.colors.success[400],
+                fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+              }}>
+              You are friends
+            </Text>
+          </View>
+        ) : null}
       </LinearGradient>
 
       <View
         style={{
-          marginTop: -60,
           zIndex: -100,
+          marginTop: -60,
         }}>
         <ProfileImageUploader
+          disabled={!isMyProfile}
           imageUrl={profileData.image}
-          disabled={authData?.id !== profileData.id}
         />
       </View>
 
@@ -130,8 +230,8 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         style={{
           alignSelf: "center",
           alignItems: "center",
-          marginBottom: splitAppTheme.space[3],
           paddingHorizontal: 10,
+          marginBottom: splitAppTheme.space[3],
         }}>
         <Text
           style={{
@@ -481,12 +581,36 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         {authData?.user_type === AuthTypeNum.CUSTOMER && (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(RootStackRoutes.CUSTOMER, {
-                screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
-                params: {
-                  screen: CustomerMainBottomTabRoutes.CHAT_LIST,
-                },
-              });
+              if (isMyProfile) {
+                navigation.navigate(RootStackRoutes.CUSTOMER, {
+                  screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
+                  params: {
+                    screen: CustomerMainBottomTabRoutes.CHAT_LIST,
+                  },
+                });
+              } else {
+                navigation.navigate(RootStackRoutes.CUSTOMER, {
+                  screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
+                  params: {
+                    screen: CustomerMainBottomTabRoutes.CHAT_LIST,
+                  },
+                });
+
+                navigation.navigate(RootStackRoutes.CUSTOMER, {
+                  screen: CustomerStackRoutes.CHAT_MESSAGES,
+                  params: {
+                    // chatId: item.id,
+                    partnerName: profileData.name,
+                    partnerImage: profileData.image,
+                  },
+                });
+              }
+
+              // CustomerStackRoutes.CHAT_MESSAGES, {
+              //   chatId: item.id,
+              //   partnerName: item.user_name,
+              //   partnerImage: item.user_image,
+              // }
             }}>
             <LinearGradient
               colors={["#201648", "#7359D1"]}
@@ -522,12 +646,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         data={[{key: "body"}]}
         renderItem={() => {
           if (selectedIndex === 0) {
-            return (
-              <PhotoList
-                userId={profileData.id}
-                isMine={authData?.id === profileData.id}
-              />
-            );
+            return <PhotoList userId={profileData.id} isMine={isMyProfile} />;
           }
 
           return <ReviewList ownerId={profileData.id} />;
@@ -541,7 +660,7 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         ListFooterComponent={<View style={{height: 100}} />}
       />
 
-      {authData?.id === profileData.id && <AddUserPhotoBtn />}
+      {isMyProfile && <AddUserPhotoBtn />}
     </View>
   );
 };
