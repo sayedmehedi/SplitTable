@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import {splitAppTheme} from "@src/theme";
-import {CustomerStackRoutes} from "@constants/routes";
-import {StackScreenProps} from "@react-navigation/stack";
+import {CustomerStackRoutes, RootStackRoutes} from "@constants/routes";
+import {StackNavigationProp, StackScreenProps} from "@react-navigation/stack";
 import {
   useNavigation,
   CompositeScreenProps,
@@ -18,24 +18,31 @@ import {
 } from "@react-navigation/native";
 import {FriendListItem} from "@src/models";
 import FastImage from "react-native-fast-image";
+import {FriendshipStatusNum} from "@constants/friend";
 import LinearGradient from "react-native-linear-gradient";
 import {useDimensions} from "@react-native-community/hooks";
 import GenericListEmpty from "@components/GenericListEmpty";
-import {FriendshipStatusQueryParams} from "@constants/friend";
+import useGetAuthDataQuery from "@hooks/useGetAuthDataQuery";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
 import {FocusAwareStatusBar} from "@components/FocusAwareStatusBar";
 import {RootStackParamList, CustomerStackParamList} from "@src/navigation";
-import useInfiniteGetFriendListQuery from "@hooks/user/useInfiniteGetFriendListQuery";
-import useRemoveFriendshipMutation from "@hooks/user/useRemoveFriendshipMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
-import useAddFriendshipMutation from "@hooks/user/useAddFriendshipMutation";
+import useAcceptFriendshipMutation from "@hooks/user/useAcceptFriendshipMutation";
+import useRemoveFriendshipMutation from "@hooks/user/useRemoveFriendshipMutation";
+import useInfiniteGetFriendListQuery from "@hooks/user/useInfiniteGetFriendListQuery";
 
 type Props = CompositeScreenProps<
   StackScreenProps<CustomerStackParamList, typeof CustomerStackRoutes.FRIENDS>,
   StackScreenProps<RootStackParamList>
 >;
 
-type NavigationProps = {};
+type NavigationProps = CompositeNavigationProp<
+  StackNavigationProp<
+    CustomerStackParamList,
+    typeof CustomerStackRoutes.FRIENDS
+  >,
+  StackNavigationProp<RootStackParamList>
+>;
 
 const AcceptedFriendsRoute = ({
   ListHeaderComponent,
@@ -61,7 +68,7 @@ const AcceptedFriendsRoute = ({
   } = useInfiniteGetFriendListQuery(
     {
       page: 1,
-      status: FriendshipStatusQueryParams.ACCEPTED,
+      status: FriendshipStatusNum.ACCEPTED,
     },
     {
       getNextPageParam(lastPage) {
@@ -113,71 +120,79 @@ const AcceptedFriendsRoute = ({
   const renderUpcomingBookingItem: ListRenderItem<FriendListItem> =
     React.useCallback(
       ({item}) => (
-        <View>
-          <View
-            style={{
-              borderWidth: 1,
-              alignItems: "center",
-              flexDirection: "row",
-              borderColor: "#F1F1F1",
-              backgroundColor: "white",
-              width: splitAppTheme.sizes.full,
-              borderRadius: splitAppTheme.radii.xl,
-              paddingVertical: splitAppTheme.space["3"],
-              paddingHorizontal: splitAppTheme.space["4"],
-            }}>
-            <FastImage
-              style={{
-                width: 65,
-                height: 65,
-                borderRadius: splitAppTheme.radii.full,
-              }}
-              source={{
-                uri: item.user_image,
-              }}
-            />
-
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RootStackRoutes.PROFILE, {
+              userId: item.friend_id,
+            });
+          }}>
+          <View>
             <View
               style={{
-                flex: 1,
-                marginLeft: splitAppTheme.space[4],
+                borderWidth: 1,
+                alignItems: "center",
+                flexDirection: "row",
+                borderColor: "#F1F1F1",
+                backgroundColor: "white",
+                width: splitAppTheme.sizes.full,
+                borderRadius: splitAppTheme.radii.xl,
+                paddingVertical: splitAppTheme.space["3"],
+                paddingHorizontal: splitAppTheme.space["4"],
               }}>
-              <Text
+              <FastImage
                 style={{
-                  color: "#262B2E",
-                  fontSize: splitAppTheme.fontSizes.md,
-                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
-                }}>
-                {item.name}
-              </Text>
+                  width: 65,
+                  height: 65,
+                  borderRadius: splitAppTheme.radii.full,
+                }}
+                source={{
+                  uri: item.friend_image,
+                }}
+              />
 
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: splitAppTheme.space[2],
+                  flex: 1,
+                  marginLeft: splitAppTheme.space[4],
                 }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleRemoveFriendship(item);
+                <Text
+                  style={{
+                    color: "#262B2E",
+                    fontSize: splitAppTheme.fontSizes.md,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                   }}>
-                  <Text
-                    style={{
-                      textDecorationLine: "underline",
-                      fontSize: splitAppTheme.fontSizes.xs,
-                      color: splitAppTheme.colors.error[300],
-                      fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
+                  {item.name}
+                </Text>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: splitAppTheme.space[2],
+                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleRemoveFriendship(item);
                     }}>
-                    Remove
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        textDecorationLine: "underline",
+                        fontSize: splitAppTheme.fontSizes.xs,
+                        color: splitAppTheme.colors.error[300],
+                        fontFamily:
+                          splitAppTheme.fontConfig.Sathoshi[500].normal,
+                      }}>
+                      Remove
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ),
-      [handleRemoveFriendship],
+      [handleRemoveFriendship, navigation],
     );
 
   if (isLoadingInfiniteResources) {
@@ -238,6 +253,8 @@ const PendingFriendsRoute = ({
   } = useDimensions();
   const navigation = useNavigation<NavigationProps>();
 
+  const {data: authData, isLoading: isAuthDataLoading} = useGetAuthDataQuery();
+
   const {
     refetch,
     isRefetching,
@@ -249,7 +266,7 @@ const PendingFriendsRoute = ({
   } = useInfiniteGetFriendListQuery(
     {
       page: 1,
-      status: FriendshipStatusQueryParams.PENDING,
+      status: FriendshipStatusNum.PENDING,
     },
     {
       getNextPageParam(lastPage) {
@@ -264,12 +281,12 @@ const PendingFriendsRoute = ({
   useHandleNonFieldError(infiniteGetResourcesError);
 
   const {
-    mutate: addFriendship,
-    error: addFriendshipError,
-    data: addFriendshipResponse,
-  } = useAddFriendshipMutation();
-  useHandleNonFieldError(addFriendshipError);
-  useHandleResponseResultError(addFriendshipResponse);
+    mutate: acceptFriendship,
+    error: acceptFriendshipError,
+    data: acceptFriendshipResponse,
+  } = useAcceptFriendshipMutation();
+  useHandleNonFieldError(acceptFriendshipError);
+  useHandleResponseResultError(acceptFriendshipResponse);
 
   const resourceListData = React.useMemo(() => {
     return (
@@ -283,80 +300,103 @@ const PendingFriendsRoute = ({
     fetchNextPage();
   }, [fetchNextPage]);
 
-  const handleAddFriendship = React.useCallback((resource: FriendListItem) => {
-    addFriendship({
-      friendId: resource.user_id,
-    });
-  }, []);
+  const handleAcceptFriendship = React.useCallback(
+    (resource: FriendListItem) => {
+      acceptFriendship({
+        friendId: resource.user_id,
+        status: FriendshipStatusNum.ACCEPTED,
+      });
+    },
+    [],
+  );
 
   const renderHistoryBookingItem: ListRenderItem<FriendListItem> =
     React.useCallback(
       ({item}) => (
-        <View>
-          <View
-            style={{
-              borderWidth: 1,
-              alignItems: "center",
-              flexDirection: "row",
-              borderColor: "#F1F1F1",
-              backgroundColor: "white",
-              width: splitAppTheme.sizes.full,
-              borderRadius: splitAppTheme.radii.xl,
-              paddingVertical: splitAppTheme.space["3"],
-              paddingHorizontal: splitAppTheme.space["4"],
-            }}>
-            <FastImage
-              style={{
-                width: 65,
-                height: 65,
-                borderRadius: splitAppTheme.radii.full,
-              }}
-              source={{
-                uri: item.user_image,
-              }}
-            />
-
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RootStackRoutes.PROFILE, {
+              userId: item.friend_id,
+            });
+          }}>
+          <View>
             <View
               style={{
-                flex: 1,
-                marginLeft: splitAppTheme.space[4],
+                borderWidth: 1,
+                alignItems: "center",
+                flexDirection: "row",
+                borderColor: "#F1F1F1",
+                backgroundColor: "white",
+                width: splitAppTheme.sizes.full,
+                borderRadius: splitAppTheme.radii.xl,
+                paddingVertical: splitAppTheme.space["3"],
+                paddingHorizontal: splitAppTheme.space["4"],
               }}>
-              <Text
+              <FastImage
                 style={{
-                  color: "#262B2E",
-                  fontSize: splitAppTheme.fontSizes.md,
-                  fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
-                }}>
-                {item.name}
-              </Text>
+                  width: 65,
+                  height: 65,
+                  borderRadius: splitAppTheme.radii.full,
+                }}
+                source={{
+                  uri: item.friend_image,
+                }}
+              />
 
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: splitAppTheme.space[2],
+                  flex: 1,
+                  marginLeft: splitAppTheme.space[4],
                 }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleAddFriendship(item);
+                <Text
+                  style={{
+                    color: "#262B2E",
+                    fontSize: splitAppTheme.fontSizes.md,
+                    fontFamily: splitAppTheme.fontConfig.Sathoshi[700].normal,
                   }}>
-                  <Text
-                    style={{
-                      textDecorationLine: "underline",
-                      fontSize: splitAppTheme.fontSizes.xs,
-                      color: splitAppTheme.colors.success[300],
-                      fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
-                    }}>
-                    Accept
-                  </Text>
-                </TouchableOpacity>
+                  {item.name}
+                </Text>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: splitAppTheme.space[2],
+                  }}>
+                  {item.user_id === authData?.id ? (
+                    <Text>Pending</Text>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleAcceptFriendship(item);
+                      }}>
+                      <View
+                        style={{
+                          padding: splitAppTheme.space[1.5],
+                          borderWidth: splitAppTheme.borderWidths[1],
+                          borderColor: splitAppTheme.colors.success[300],
+                        }}>
+                        <Text
+                          style={{
+                            textDecorationLine: "underline",
+                            fontSize: splitAppTheme.fontSizes.xs,
+                            color: splitAppTheme.colors.success[300],
+                            fontFamily:
+                              splitAppTheme.fontConfig.Sathoshi[500].normal,
+                          }}>
+                          Accept
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ),
-      [handleAddFriendship],
+      [handleAcceptFriendship, navigation, JSON.stringify(authData)],
     );
 
   const flatlistContentContainerStyle = React.useMemo(() => {
@@ -365,7 +405,7 @@ const PendingFriendsRoute = ({
     };
   }, [splitAppTheme.space[6]]);
 
-  if (isLoadingInfiniteResources) {
+  if (isLoadingInfiniteResources || isAuthDataLoading) {
     return (
       <View
         style={{

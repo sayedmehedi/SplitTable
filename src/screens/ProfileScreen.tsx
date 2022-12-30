@@ -32,10 +32,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import {FriendshipStatuses} from "@constants/friend";
-import useCheckFriendshipQuery from "@hooks/user/useCheckFriendshipQuery";
-import useAddFriendshipMutation from "@hooks/user/useAddFriendshipMutation";
+import useAppToast from "@hooks/useAppToast";
+import {FriendshipStatuseText, FriendshipStatusNum} from "@constants/friend";
 import useHandleNonFieldError from "@hooks/useHandleNonFieldError";
+// import useCheckFriendshipQuery from "@hooks/user/useCheckFriendshipQuery";
+import useAddFriendshipMutation from "@hooks/user/useAddFriendshipMutation";
 import useHandleResponseResultError from "@hooks/useHandleResponseResultError";
 
 type ProfileScreenProps = StackScreenProps<
@@ -44,6 +45,7 @@ type ProfileScreenProps = StackScreenProps<
 >;
 
 const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
+  const toast = useAppToast();
   const queryClient = useQueryClient();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -56,17 +58,17 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
   } = useDimensions();
 
   const {data: authData, isLoading: isAuthDataLoading} = useGetAuthDataQuery();
-  const {data: checkFriendshipData, isLoading: isCheckingFriendship} =
-    useCheckFriendshipQuery(
-      {
-        friendId: route.params.userId ?? 0,
-      },
-      {
-        enabled:
-          route.params.userId !== undefined &&
-          authData?.id !== route.params.userId,
-      },
-    );
+  // const {data: checkFriendshipData, isLoading: isCheckingFriendship} =
+  //   useCheckFriendshipQuery(
+  //     {
+  //       friendId: route.params.userId ?? 0,
+  //     },
+  //     {
+  //       enabled:
+  //         route.params.userId !== undefined &&
+  //         authData?.id !== route.params.userId,
+  //     },
+  //   );
 
   const {
     mutate: addFriendship,
@@ -124,9 +126,9 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
         start={{x: 0, y: 1}}
         colors={["#DF3BC0", "#472BBE"]}
         style={{
-          height: 180,
           width: "100%",
           zIndex: -1000,
+          height: isMyProfile ? 150 : 180,
         }}>
         <SafeAreaView>
           <TouchableOpacity
@@ -139,11 +141,11 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
           </TouchableOpacity>
         </SafeAreaView>
 
-        {isCheckingFriendship || isAddingFriendship ? (
+        {isMyProfile ? null : isAddingFriendship ? (
           <View>
             <ActivityIndicator />
           </View>
-        ) : checkFriendshipData?.data === FriendshipStatuses.REJECTED ? (
+        ) : !profileData?.friend ? (
           <TouchableOpacity
             onPress={() => {
               if (route.params.userId !== undefined) {
@@ -172,27 +174,27 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
               </Text>
             </View>
           </TouchableOpacity>
-        ) : checkFriendshipData?.data === FriendshipStatuses.PENDING ? (
+        ) : profileData?.friend.status === FriendshipStatusNum.PENDING ? (
           <View
             style={{
               marginLeft: "auto",
               marginRight: "auto",
               padding: splitAppTheme.space[2],
               width: splitAppTheme.sizes["2/4"],
+              borderColor: splitAppTheme.colors.white,
               borderWidth: splitAppTheme.borderWidths[1],
-              borderColor: splitAppTheme.colors.warning[400],
             }}>
             <Text
               style={{
                 textAlign: "center",
+                color: splitAppTheme.colors.white,
                 fontSize: splitAppTheme.fontSizes.md,
-                color: splitAppTheme.colors.warning[400],
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               Pending Friend Request
             </Text>
           </View>
-        ) : checkFriendshipData?.data === FriendshipStatuses.FRIEND ? (
+        ) : profileData?.friend.status === FriendshipStatusNum.ACCEPTED ? (
           <View
             style={{
               marginLeft: "auto",
@@ -200,13 +202,13 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
               padding: splitAppTheme.space[2],
               width: splitAppTheme.sizes["2/4"],
               borderWidth: splitAppTheme.borderWidths[1],
-              borderColor: splitAppTheme.colors.success[400],
+              borderColor: splitAppTheme.colors.white,
             }}>
             <Text
               style={{
                 textAlign: "center",
                 fontSize: splitAppTheme.fontSizes.md,
-                color: splitAppTheme.colors.success[400],
+                color: splitAppTheme.colors.white,
                 fontFamily: splitAppTheme.fontConfig.Sathoshi[500].normal,
               }}>
               You are friends
@@ -588,29 +590,23 @@ const ProfileScreen = ({navigation, route}: ProfileScreenProps) => {
                     screen: CustomerMainBottomTabRoutes.CHAT_LIST,
                   },
                 });
-              } else {
-                navigation.navigate(RootStackRoutes.CUSTOMER, {
-                  screen: CustomerStackRoutes.CUSTOMER_MAIN_TAB,
-                  params: {
-                    screen: CustomerMainBottomTabRoutes.CHAT_LIST,
-                  },
-                });
 
-                navigation.navigate(RootStackRoutes.CUSTOMER, {
-                  screen: CustomerStackRoutes.CHAT_MESSAGES,
-                  params: {
-                    // chatId: item.id,
-                    partnerName: profileData.name,
-                    partnerImage: profileData.image,
-                  },
-                });
+                return;
               }
 
-              // CustomerStackRoutes.CHAT_MESSAGES, {
-              //   chatId: item.id,
-              //   partnerName: item.user_name,
-              //   partnerImage: item.user_image,
-              // }
+              if (!profileData.chat_room_id) {
+                toast.error("Chat option not avaialbe");
+                return;
+              }
+
+              navigation.navigate(RootStackRoutes.CUSTOMER, {
+                screen: CustomerStackRoutes.CHAT_MESSAGES,
+                params: {
+                  chatId: profileData.chat_room_id,
+                  partnerName: profileData.name,
+                  partnerImage: profileData.image,
+                },
+              });
             }}>
             <LinearGradient
               colors={["#201648", "#7359D1"]}

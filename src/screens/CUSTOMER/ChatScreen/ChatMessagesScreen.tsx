@@ -242,7 +242,11 @@ const ChatMessagesScreen = ({route}: Props) => {
             }}
           />
         )}
-        ListEmptyComponent={<GenericListEmpty height={300} width={300} />}
+        ListEmptyComponent={
+          <View style={{}}>
+            <GenericListEmpty height={300} width={300} />
+          </View>
+        }
       />
       <View
         style={{

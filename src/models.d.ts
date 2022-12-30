@@ -8,10 +8,7 @@ import {AuthTypeNum, AuthTypes} from "@constants/auth";
 import {NotificationStyles, NotificationTypes} from "@constants/notification";
 import {AppSupportedPaymentMethods} from "@constants/payment";
 import {BookingStatusesType, BookingTypesType} from "@constants/booking";
-import {
-  FriendshipStatus,
-  TFriendshipStatusQueryParams,
-} from "@constants/friend";
+import {FriendshipStatus, TFriendshipStatusNum} from "@constants/friend";
 
 export type ResponseResult<T extends {} = {}> =
   | {error: string}
@@ -366,6 +363,15 @@ export interface CustomerProfileData {
   photos: number;
 
   social_links?: SocialLinks;
+  chat_room_id?: number;
+  friend?: {
+    id: number;
+    user_id: number;
+    friend_id: number;
+    status: 0 | 1 | 2;
+    created_at: string;
+    updated_at: string;
+  };
 }
 
 export type GetProfileDataResponse = OwnerProfileData | CustomerProfileData;
@@ -1057,7 +1063,9 @@ export type FriendListItem = {
   id: number;
   name: string;
   user_id: number;
+  friend_id: number;
   user_image: string;
+  friend_image: string;
   status: FriendshipStatus;
 };
 
@@ -1066,7 +1074,7 @@ export type GetFriendListResponse = {
 };
 
 export type GetFriendListQueryParams = PaginationQueryParams & {
-  status: TFriendshipStatusQueryParams;
+  status: TFriendshipStatusNum;
 };
 
 export type AddFriendshipRequest = {
@@ -1077,7 +1085,7 @@ export type AddFriendshipResponse = ResponseResult;
 
 export type AcceptFriendshipRequest = {
   friendId: number;
-  status: TFriendshipStatusQueryParams;
+  status: TFriendshipStatusNum;
 };
 
 export type AcceptFriendshipResponse = ResponseResult;

@@ -143,7 +143,7 @@ const TableSearchScreen = ({route, navigation}: Props) => {
             </View>
           ) : null}
 
-          {dbncdSearchTerm !== "" ? (
+          {resourcesList.length !== 0 ? (
             resourcesList.map(resource => (
               <Ripple
                 style={{

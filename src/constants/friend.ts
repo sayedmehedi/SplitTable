@@ -1,17 +1,17 @@
-export const FriendshipStatuses = {
+export const FriendshipStatuseText = {
   FRIEND: "Friend",
   PENDING: "Pending",
   REJECTED: "Rejected",
 } as const;
 
 export type FriendshipStatus =
-  typeof FriendshipStatuses[keyof typeof FriendshipStatuses];
+  typeof FriendshipStatuseText[keyof typeof FriendshipStatuseText];
 
-export const FriendshipStatusQueryParams = {
+export const FriendshipStatusNum = {
   PENDING: 0,
   ACCEPTED: 1,
   REJECTED: 2,
 } as const;
 
-export type TFriendshipStatusQueryParams =
-  typeof FriendshipStatusQueryParams[keyof typeof FriendshipStatusQueryParams];
+export type TFriendshipStatusNum =
+  typeof FriendshipStatusNum[keyof typeof FriendshipStatusNum];
